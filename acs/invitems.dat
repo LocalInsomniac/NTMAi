@@ -1,0 +1,50 @@
+#library "invitems"
+#include "zcommon.acs"
+#libDefine NTM_Infrared_Unit 42
+script "NTM_Use_Infrared" (void)
+{
+	int visTimer;
+	TakeInventory("NTM_Infrared", 1);
+	while (CheckInventory("NTM_PowerInfrared"))
+	{
+		visTimer++;
+		if (!(visTimer % NTM_Infrared_Unit))
+			TakeInventory("NTM_Infrared", 1);
+		if (!CheckInventory("NTM_Infrared"))
+			break;
+		Delay(1);
+	}
+	TakeInventory("NTM_PowerInfrared", 1);
+}
+#libDefine NTM_RadSuit_Unit 21
+script "NTM_Use_RadSuit" (void)
+{
+	int visTimer;
+	TakeInventory("NTM_RadSuit", 1);
+	while (CheckInventory("NTM_PowerRadSuit"))
+	{
+		visTimer++;
+		if (!(visTimer % NTM_RadSuit_Unit))
+			TakeInventory("NTM_RadSuit", 1);
+		if (!CheckInventory("NTM_RadSuit"))
+			break;
+		Delay(1);
+	}
+	TakeInventory("NTM_PowerRadSuit", 1);
+}
+#libDefine NTM_Berserk_Unit 16
+script "NTM_Use_Berserk" (void)
+{
+	int visTimer;
+	TakeInventory("NTM_Berserk", 1);
+	while (CheckInventory("NTM_PowerBerserk"))
+	{
+		visTimer++;
+		if(!(visTimer % NTM_Berserk_Unit))
+			TakeInventory("NTM_Berserk", 1);
+		if(!CheckInventory("NTM_Berserk"))
+			break;
+		Delay(1);
+	}
+	TakeInventory("NTM_PowerBerserk", 1);
+}
