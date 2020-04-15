@@ -6,6 +6,7 @@ https://discord.gg/PwNBFRW
 
 # Downloads:
 RELEASE: https://www.mediafire.com/file/2lwu7khu94uo6ur/ntmai.zip/file
+
 DEV BUILD (frequent updates, unstable): https://www.dropbox.com/s/02fav9gpmka3jfc/ntmai.zip?dl=1
 
 # SUMMARY
