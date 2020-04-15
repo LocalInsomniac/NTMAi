@@ -1,0 +1,455 @@
+class NTMAI : EventHandler
+{
+	NTM_Thinker st;
+	static bool CanQuake()
+	{
+		return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());
+	}
+	static bool CanLeap()
+	{
+		return (CVar.FindCVar("sv_ntm_monsterLeap").GetBool());
+	}
+	static bool CanJump()
+	{
+		return (CVar.FindCVar("sv_ntm_monsterJump").GetBool());
+	}
+	static bool CanFly()
+	{
+		return (CVar.FindCVar("sv_ntm_monsterFly").GetBool());
+	}
+	static bool CanBloodDeath()
+	{
+		return (CVar.FindCVar("sv_ntm_bloodDeath").GetBool());
+	}
+	static bool CanGrenade()
+	{
+		return (CVar.FindCVar("sv_ntm_grenadiers").GetBool());
+	}
+	static float Lerp(float firstFloat, float secondFloat, float by)
+	{
+		return (firstFloat * (1 - by) + secondFloat * by);
+	}
+	static int Sign(int number)
+	{
+		return (Round(Clamp(number, -1, 1)));
+	}
+	override void PlayerEntered(PlayerEvent e)
+	{
+		let pmo = players[e.playerNumber].mo;
+		if (pmo)
+			if (!pmo.CountInv("NTM_Actor"))
+				pmo.A_GiveInventory("NTM_Actor", 1);
+	}
+	override void PlayerRespawned(PlayerEvent e)
+	{
+		let pmo = players[e.playerNumber].mo;
+		if (pmo)
+			DoThingRevive(pmo);
+	}
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.thing && e.thing.bIsMonster && !e.thing.CountInv("NTM_Actor"))
+			e.thing.A_GiveInventory("NTM_Actor", 1);
+	}
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.thing.bIsMonster || e.thing is "PlayerPawn")
+			e.thing.scale.x *= FRandomPick(-1, 1);
+	}
+	override void WorldThingRevived(WorldEvent e)
+	{
+		DoThingRevive(e.thing);
+	}
+	override void WorldLoaded(WorldEvent e)
+	{
+		level.airControl = 0.55;
+		if (!st)
+			st = new("NTM_Thinker");
+	}
+	override void WorldUnloaded(WorldEvent e)
+	{
+		if (st)
+			st.DoDestroy();
+	}
+	override void WorldLinePreActivated(WorldEvent e)
+	{
+		if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && CVar.FindCVar("sv_ntm_keycard").GetBool())
+		{
+			e.shouldActivate = (NTM_Player(e.thing).curDoor != e.activatedLine) ? false : true;
+			if (NTM_Player(e.thing).curDoor != e.activatedLine)
+			{
+				NTM_Player(e.thing).doorTics = 25;
+				NTM_Player(e.thing).curDoor = e.activatedLine;
+				switch (e.activatedLine.args[3])
+				{
+					case (1):
+						UseKey(e, "RedCard", "NTM_OpenRed");
+					break;
+					case (2):
+						UseKey(e, "BlueCard", "NTM_OpenBlue");
+					break;
+					case (3):
+						UseKey(e, "YellowCard", "NTM_OpenYellow");
+					break;
+					case (4):
+						UseKey(e, "RedSkull", "NTM_SkullRed");
+					break;
+					case (5):
+						UseKey(e, "BlueSkull", "NTM_SkullBlue");
+					break;
+					case (6):
+						UseKey(e, "YellowSkull", "NTM_SkullYellow");
+					break;
+					case (129):
+						if (UseKey(e, "RedCard", "NTM_OpenRed")) {}
+						else
+							if (UseKey(e, "RedSkull", "NTM_SkullRed")) {}
+					break;
+					case (130):
+						if (UseKey(e, "BlueCard", "NTM_OpenBlue")) {}
+						else
+							if (UseKey(e, "BlueSkull", "NTM_SkullBlue")) {}
+					break;
+					case (131):
+						if (UseKey(e, "YellowCard", "NTM_OpenYellow")) {}
+						else
+							if (UseKey(e, "YellowSkull", "NTM_SkullYellow")) {}
+					break;
+				}
+			}
+		}
+	}
+	bool UseKey(WorldEvent e, Class<Key> keyItem, Class<NTM_OpenRed> keyAnim)
+	{
+		if (e.thing.CountInv(keyItem) && !e.thing.CountInv(keyAnim))
+		{
+			let prevWeapon = e.thing.player.readyWeapon;
+            e.thing.A_GiveInventory(keyAnim, 1);
+            let keycard = NTM_OpenRed(e.thing.FindInventory(keyAnim));
+            if (keycard)
+			{
+                keycard.prevWeapon = prevWeapon.GetClassName();
+                e.thing.player.pendingWeapon = keycard;
+            }
+			return (true);
+		}
+		return (false);
+	}
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		if (e.replacee == "RealGibs")
+			e.replacement = "NTM_RealGibs";
+	}
+	void DoThingRevive(Actor mo)
+	{
+		if (mo.CountInv("NTM_CorpseGib"))
+			mo.RemoveInventory(mo.FindInventory("NTM_CorpseGib"));
+		mo.scale = mo.default.scale;
+		if (!(mo is "PlayerPawn"))
+			mo.translation = mo.default.translation;
+	}
+}
+class NTM_System : Inventory
+{
+	Default
+	{
+		FloatBobPhase 0;
+		Inventory.MaxAmount 1;
+		+Inventory.Undroppable
+		+Inventory.Untossable
+		+Inventory.AutoActivate
+	}
+	States
+	{
+		Use:
+			TNT1 A 0;
+			Fail;
+		Pickup:
+			TNT1 A 0
+			{
+				return true;
+			}
+			Stop;
+	}
+}
+class NTM_Actor : NTM_System
+{
+	bool gibbed, bPool, crushed, rKO, bDeath, dead;
+	int cvPool, fallTics, fpDuration, fpInterval, fpSide, lastFrame;
+	float oldHeight;
+	NTM_BloodPool fpBlood;
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		cvPool = CVar.FindCVar("sv_ntm_bloodPools").GetInt();
+		fpSide = 1;
+		Vector2 getOldHeight = TexMan.GetScaledSize(owner.FindState("Spawn").GetSpriteTexture(0));
+		oldHeight = getOldHeight.y;
+	}
+	override void Tick()
+	{
+		if (owner.target && owner.target is "PlayerPawn" && owner.target.bShadow && !owner.CountInv("NTM_CantSee"))
+			owner.A_GiveInventory("NTM_CantSee", 1);
+		if (owner.pos.z <= owner.floorZ || owner.bOnMObj)
+		{
+			if (CVar.FindCVar("sv_ntm_bloodFootprints").GetBool() && fpDuration > 0)
+			{
+				if (owner.vel.Length() > 0)
+				{
+					fpDuration--;
+					fpInterval++;
+					if (fpInterval >= 8 && fpBlood != null)
+					{
+						bool result;
+						Actor footprint;
+						double ang = owner.angle;
+						[result, footprint] = fpBlood.A_SpawnItemEx("NTM_BloodyFootprint", angle: ang, flags: SXF_TransferTranslation | SXF_NoCheckPosition | SXF_AbsoluteAngle);
+						if (footprint)
+						{
+							fpSide *= -1;
+							footprint.SetOrigin((owner.pos.x + Cos(ang + (fpSide * 90)) * 5, owner.pos.y + Sin(ang + (fpSide * 90)) * 5, owner.pos.z), false);
+						}
+						fpInterval = 0;
+					}
+				}
+				else
+					fpInterval = 0;
+			}
+		}
+		if (owner.health <= 0)
+		{
+			if (NTMAI.CanBloodDeath() && lastFrame != owner.curState.frame && owner.curState.frame != 0)
+			{
+				Vector2 getSize = TexMan.GetScaledSize(owner.curState.GetSpriteTexture(0));
+				float getHeight = getSize.y;
+				owner.SetOrigin(owner.pos + (0, 0, owner.scale.y * (oldHeight - getHeight)), false);
+				oldHeight = getHeight;
+				lastFrame = owner.curState.frame;
+			}
+			if (!owner.bBoss && !rKO && owner.target)
+			{
+				double dist = owner.Distance3D(owner.target);
+				if (owner.damageTypeReceived == "Berserk" || owner.damageTypeReceived == "SSG")
+				{
+					float force = 8 / Max(1, dist / 200);
+					owner.A_FaceTarget();
+					owner.A_Recoil(force);
+					owner.A_ChangeVelocity(vel.x, vel.y, force);
+				}
+				if (owner.damageTypeReceived == "Saw" || owner.damageTypeReceived == "Saw2")
+					owner.A_GiveToTarget("NTM_Bloody", 1);
+				if (owner.damageTypeReceived == "Sawed")
+				{
+					owner.A_FaceTarget();
+					owner.A_Recoil(15 / Max(1, dist / 200));
+				}
+				rKO = true;
+			}
+			if (!owner.bNoBlood)
+			{
+				if (owner.pos.z <= owner.floorZ || owner.bOnMObj)
+				{
+					if (fallTics > 18 + (NTMAI.CanBloodDeath() * 3) && owner.waterLevel == 0)
+					{
+						for (int i; i < Random(3, 6); i++)
+							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+						owner.A_PlaySound("misc/pancake");
+					}
+					fallTics = 0;
+				}
+				else
+					if (!(owner is "PlayerChunk"))
+						fallTics++;
+				if (!dead)
+				{
+					if (owner.health < owner.GetGibHealth() && !gibbed)
+					{
+						for (int i; i < Random(5, 8); i++)
+						{
+							if (i >= 0 && i <= 2)
+								owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+						}
+						if (owner.target is "NTM_Player" && !Random(0, 3) && CVar.FindCVar("cl_ntm_taunt").GetBool())
+							owner.A_GiveToTarget("NTM_Taunt");
+						gibbed = true;
+					}
+					dead = true;
+				}
+				if ((cvPool == 1 || (cvPool == 2 && gibbed)) && !(owner is "NTM_PlayerHead") && owner.vel ~== (0, 0, 0) && !bPool)
+				{
+					bool result;
+					Actor bloodP;
+					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
+					if (bloodP)
+						bloodP.target = owner;
+					bPool = true;
+				}
+				if (!crushed && owner.pos.z <= owner.floorZ && owner.ceilingZ <= ((owner.pos.z + owner.height) + owner.GetDeathHeight()))
+				{
+					if (owner.radius > 31)
+						owner.A_SpawnItemEx("NTM_BigGibs", flags: SXF_UseBloodColor);
+					else
+						if (owner.radius > 23)
+							owner.A_SpawnItemEx("NTM_MediumGibs", flags: SXF_UseBloodColor);
+						else
+							owner.A_SpawnItemEx("NTM_SmallGibs", flags: SXF_UseBloodColor);
+					crushed = true;
+				}
+			}
+		}
+		Super.Tick();
+	}
+}
+class NTM_ShadowCaster
+{
+	Actor mo;
+	Actor shadow;
+	bool hasShadow;
+}
+class NTM_Thinker : Thinker
+{
+	Array<NTM_ShadowCaster> shadowCasters;
+	override void Tick(void)
+	{
+		float shadowDist = CVar.FindCVar("cl_ntm_shadowDistance").GetFloat();
+		Actor camera = players[consolePlayer].camera;
+		if (!camera)
+			return;
+		BlockThingsIterator it = BlockThingsIterator.Create(camera, shadowDist);
+		while (it.Next())
+		{
+			let other = it.Thing;
+			if ((other.Distance3D(camera) - 1) < shadowDist)
+			{
+				if (!(other.bIsMonster || other is "PlayerPawn"))
+					continue;
+				bool isDuplicate = false;
+				int i = 0;
+				for (i; i < shadowCasters.Size(); i++)
+					if (shadowCasters[i] && shadowCasters[i].mo == other)
+					{
+						isDuplicate = true;
+						break;
+					}
+				if (!isDuplicate)
+				{
+					AddShadowCaster(other);
+					if (!shadowCasters[i].hasShadow)
+					{
+						let shadow = NTM_Shadow(Actor.Spawn("NTM_Shadow", shadowCasters[i].mo.pos, No_Replace));
+						if (shadow)
+						{
+							shadow.caster = shadowCasters[i].mo;
+							shadowCasters[i].shadow = shadow;
+							shadowCasters[i].hasShadow = true;
+						}
+					}
+				}
+			}
+			else
+				for (int j = 0; j < shadowCasters.Size(); j++)
+					if (shadowCasters[j] && shadowCasters[j].mo == other)
+					{
+						if (shadowCasters[j].shadow) shadowCasters[j].shadow.Destroy();
+							shadowCasters.Delete(j);
+						break;
+					}
+			for (int k = 0; k < shadowCasters.Size(); k++)
+				if (shadowCasters[k] && !shadowCasters[k].shadow)
+					shadowCasters.Delete(k);
+		}
+	}
+	void AddShadowCaster(Actor mo)
+	{
+		let sc = new("NTM_ShadowCaster");
+		if (sc)
+		{
+			sc.mo = mo;
+			shadowCasters.Push(sc);
+		}
+	}
+	void DoDestroy(void)
+	{
+		shadowCasters.Clear();
+		ThinkerIterator it = ThinkerIterator.Create("NTM_Shadow");
+		NTM_Shadow shadow;
+		while (shadow = NTM_Shadow(it.Next()))
+			shadow.Destroy();
+		Destroy();
+	}
+}
+class NTM_CorpseGib : NTM_System
+{
+	override void AttachToOwner(Actor user)
+	{
+		Super.AttachToOwner(user);
+        if (!owner)
+            return;
+		let find = NTM_Actor(owner.FindInventory("NTM_Actor"));
+		if (!find)
+			return;
+		if (find.gibbed)
+			return;
+		if (owner.health >= owner.GetGibHealth() && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss && !(owner is "RealGibs"))
+		{
+			owner.A_PlaySound("misc/gibbed");
+			owner.sprite = GetSpriteIndex("NMGI");
+			owner.frame = 7;
+			owner.scale = (0.625, 0.625);
+			owner.health = owner.GetGibHealth() - 1;
+			owner.translation = owner.bloodTranslation;
+			for (int i; i < Random(5, 8); i++)
+			{
+				if (i >= 0 && i <= 2)
+					owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+				owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+			}
+		}
+		DepleteOrDestroy();
+	}
+}
+class NTM_Taunt : NTM_System
+{
+	override void AttachToOwner(Actor user)
+	{
+		Super.AttachToOwner(user);
+        if (!owner || owner.health <= 0)
+            return;
+		owner.A_PlaySound("player/taunt", 2);
+		DepleteOrDestroy();
+	}
+}
+class NTM_CantSee : NTM_System
+{
+	override void AttachToOwner(Actor user)
+	{
+		user.minMissileChance *= 100;
+		Super.AttachToOwner(user);
+	}
+    override void DoEffect()
+    {
+        if (!owner)
+			return;
+		let targ = owner.target;
+		if (!targ || targ.health <= 0 || owner.health <= 0 || !targ.bShadow)
+		{
+			DepleteOrDestroy();
+			return;
+		}
+		if (!owner.InStateSequence(owner.curState, owner.FindState("See")))
+			return;
+		if (level.mapTime % owner.curState.tics)
+		{
+			Vector3 oldPos = owner.pos;
+			owner.A_Wander();
+			owner.A_Warp(AAPTR_Default, oldPos.x, oldPos.y, oldPos.z, flags: WARPF_AbsolutePosition | WARPF_Interpolate);
+		}
+        Super.DoEffect();
+    }
+	override void DepleteOrDestroy()
+	{
+		owner.minMissileChance = owner.default.minMissileChance;
+		Super.DepleteOrDestroy();
+	}
+}

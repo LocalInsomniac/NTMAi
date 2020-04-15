@@ -1,0 +1,1618 @@
+class NTM_Monster : Actor
+{
+	int oldLeap, leapFail;
+	bool fullMod;
+	double leapDistance;
+	Default
+	{
+		Scale 0.625;
+		Speed 10;
+		Monster;
+		+FloorClip
+	}
+	enum EJumpFlags
+	{
+		JF_Forward = (1 << 0),
+		JF_Up = (1 << 1),
+		JF_All = JF_Forward | JF_Up
+	}
+	double GetGroundHeight()
+	{
+		double _floorZ = GetZAt();
+		bool ok;
+		Actor pOnMObj;
+		[ok, pOnMObj] = TestMObjZ(true);
+		if (!pOnMObj)
+			return _floorZ;
+		double _actorZ = pOnMObj.pos.z + pOnMObj.height;
+		return (Max(_floorZ, _actorZ));
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		oldLeap = false;
+		fullMod = true;
+	}
+	void A_Leap()
+    {
+        if (Abs(GetGroundHeight() - pos.z) < 1)
+        {
+            if (!oldLeap)
+            {
+				painChance = 0;
+				A_FaceTarget();
+				double vertical = 10;
+				if (target.pos.z - pos.z > 64 && ceilingZ - pos.z > 128)
+					double vertical = 15;
+				double horizontalMult = leapDistance / 2048;
+				double horizontal = 1;
+				for (int i; i < 4; i++)
+					horizontal *= horizontalMult;
+				vel += (Cos(angle) * horizontal, Sin(angle) * horizontal, vertical);
+				oldLeap = frame;
+			}
+			else
+				LeapEnd();
+		}
+		else
+			if (vel.z > 0)
+				vel += (Cos(angle) * 1.5, Sin(angle) * 1.5, 0);
+		if (leapFail > 35)
+			LeapEnd();
+		else
+			leapFail++;
+	}
+	void LeapEnd()
+	{
+		painChance = default.painChance;
+		leapFail = 0;
+		if (curState != ResolveState("See"))
+		{
+			vel = (0, 0, 0);
+			SetStateLabel("See");
+		}
+		return;
+	}
+	double GetJumpDistance()
+	{
+		double dst = 2048;
+		if (ceilingZ - pos.z > 128)
+			dst *= 2;
+		return (dst);
+	}
+	bool CheckPitBeforeTarget()
+	{
+		if (!CheckSight(target) || ceilingZ < (pos.z + height + 32))
+			return (false);
+		int step = int(radius * 0.5);
+		Vector3 checkDirection = (target.pos - pos).Unit() * step;
+		int steps = min(Distance2D(target), GetJumpDistance()) / step;
+		double curZ = pos.z;
+		SetXYZ((pos.x, pos.y, pos.z + 64));
+		for (int i; i < steps; i++)
+		{
+			double zAt = GetZAt(pos.x + checkDirection.x * i, pos.y + checkDirection.y * i, 0, GZF_AbsolutePos | GZF_AbsoluteAng);
+			if (curZ - zAt > maxStepHeight * 2 || zAt - curZ > maxStepHeight)
+			{
+				SetXYZ((pos.x, pos.y, curZ));
+				return (true);
+			}
+		}
+		SetXYZ((pos.x, pos.y, curZ));
+		return (false);
+	}
+	bool TryLeap(State leapState, EJumpFlags flags)
+    {
+        if (!target || !NTMAI.CanLeap())
+			return (false);
+        if (Abs(GetGroundHeight() - pos.z) < 1 && !Random(0, 16) && (((flags & JF_Up) && (Abs(target.pos.z - pos.z) > default.maxStepHeight)) || ((flags & JF_Forward) && CheckPitBeforeTarget())) && Distance2D(target) < GetJumpDistance())
+		{
+			oldLeap = 0;
+			leapDistance = Distance2D(target);
+			SetStateLabel("Leap");
+			return (true);
+		}
+		return (false);
+	}
+	void A_NTMChase()
+	{
+		if (!CheckMove(pos.xy))
+		{
+			A_Wander();
+			return;
+		}
+		else
+		{
+			bool beNoTeleport = bNoTeleport;
+			int bMinMissileChance = minMissileChance;
+			Vector3 oldPos = pos;
+			minMissileChance <<= 1;
+			bNoTeleport = true;
+			if (self is "NTM_Archvile")
+				A_VileChase();
+			else
+				A_Chase();
+			Vector3 posDif = pos - oldPos;
+			A_Warp(AAPTR_Default, oldPos.x, oldPos.y, oldPos.z, flags: WARPF_AbsolutePosition | WARPF_Interpolate);
+			if (bFloat && bNoGravity)
+				vel *= 0.6;
+			else
+				vel.xy *= 0.7;
+			if (posDif != (0, 0, 0))
+				vel += posDif.Unit() * speed * 0.16;
+			bNoTeleport = beNoTeleport;
+			minMissileChance = bMinMissileChance;
+		}
+	}
+	void A_LeapChase()
+	{
+		if (TryLeap(ResolveState("Leap"), JF_All))
+			return;
+		A_NTMChase();
+	}
+	void A_NTMFall(class<Actor> new = "NTM_SMG")
+	{
+		if (CheckClass("NTM_NewPlayer", AAPTR_Player1))
+		{
+			A_DropItem(new);
+			A_NoBlocking(false);
+		}
+		else
+			A_NoBlocking();
+	}
+}
+class NTM_Humanoid : NTM_Monster
+{
+	Default
+	{
+		Height 56;
+	}
+	States
+	{
+		Death.Fire:
+			TNT1 A 0
+			{
+				if (CVar.FindCVar("sv_ntm_burn").GetBool())
+				{
+					NTM_Burn burn = NTM_Burn(Spawn("NTM_Burn", pos));
+					burn.original = GetClassName();
+					return (State(null));
+				}
+				return (FindState("Death"));
+			}
+			Stop;
+	}
+}
+class NTM_Zombieman : NTM_Humanoid replaces Zombieman
+{
+	Default
+	{
+		Health 20;
+		PainChance 200;
+		SeeSound "grunt/sight";
+		AttackSound "grunt/attack";
+		PainSound "grunt/pain";
+		DeathSound "grunt/death";
+		ActiveSound "grunt/active";
+		Obituary "$OB_ZOMBIE";
+		Tag "$FN_ZOMBIE";
+		DropItem "Clip";
+		Species "Zombieman";
+	}
+	States
+	{
+		Spawn:
+			NZOM A 10 A_Look;
+			Loop;
+		See:
+			NZOM AABBCCDD 3 A_NTMChase;
+			Loop;
+		Missile:
+			NZOM E 0
+			{
+				if (NTMAI.CanGrenade())
+				{
+					int ran = Random(0, 256);
+					if ((G_SkillPropertyInt(7) == 4 && ran <= 20) || (G_SkillPropertyInt(7) == 3 && ran <= 10))
+						return (FindState("Grenade"));
+				}
+				return (FindState("StartMissile"));
+			}
+			Stop;
+		StartMissile:
+			NZOM E 10 A_FaceTarget;
+			NZOM F 2 Bright A_NTMPosAttack;
+			NZOM E 2 A_FaceTarget;
+			NZOM F 2 Bright A_NTMPosAttack;
+			NZOM E 2 A_FaceTarget;
+			NZOM F 2 Bright A_NTMPosAttack;
+			NZOM E 8;
+			Goto See;
+		Grenade:
+			NZOM V 0 A_JumpIfCloser(960, 1, true);
+			Goto Missile;
+			NZOM VW 6 A_FaceTarget;
+			NZOM X 6 A_ThrowGrenade("NTM_Boom", 25, 8, 4);
+			NZOM Y 6;
+			Goto See;
+		Pain:
+			NZOM G 3;
+			NZOM G 3 A_Pain;
+			NZOM G 0 A_JumpIf((health <= 10 && Random(0, 1)), "Duck");
+			Goto See;
+		Duck:
+			NZOM S Random(10, 30)
+			{
+				painChance = 0;
+			}
+			NZOM T 10
+			{
+				if (Random(0, 1))
+					SetStateLabel("See");
+				A_FaceTarget();
+			}
+			NZOM U 2 Bright A_NTMPosAttack;
+			NZOM T 2 A_FaceTarget;
+			NZOM U 2 Bright A_NTMPosAttack;
+			NZOM T 2 A_FaceTarget;
+			NZOM U 2 Bright A_NTMPosAttack;
+			NZOM T 8;
+			NZOM T 0
+			{
+				painChance = default.painChance;
+			}
+			Goto See;
+		Death:
+			NZOM H 5;
+			NZOM I 5 A_Scream;
+			NZOM J 5 A_NoBlocking;
+			NZOM K 5;
+			NZOM L 0;
+			#### # -1;
+			Stop;
+		Death.Saw:
+			NZOM MMMMM 10 A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 32, Random(-4, 4), Random(-4, 4), Random(0, 2));
+			NZOM N 7 A_Scream;
+			NZOM O 7 A_NoBlocking;
+			NZOM PQ 7;
+			NZOM R 0;
+		Bleed:
+			#### # 0 A_Jump(96, 3);
+			#### ### 3 A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-3, 3), Random(-3, 3), Random(10, 5), failchance: 56);
+			#### # Random(35, 70) A_Jump(96, 1);
+			Goto Bleed + 1;
+			#### # -1;
+			Stop;
+		XDeath:
+			NMGI A 5 A_XScream;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		Raise:
+			NZOM LKJIH 5;
+			Goto See;
+	}
+	void A_NTMPosAttack()
+	{
+		A_CustomBulletAttack(30, 0, 1, Random(1,5), "BulletPuff", 0, CBAF_NORANDOM);
+	}
+}
+class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy
+{
+	Default
+	{
+		Health 30;
+		Mass 100;
+		PainChance 170;
+		SeeSound "shotguy/sight";
+		AttackSound "shotguy/attack";
+		PainSound "shotguy/pain";
+		DeathSound "shotguy/death";
+		ActiveSound "shotguy/active";
+		Obituary "$OB_SHOTGUY";
+		Tag "$FN_SHOTGUN";
+		DropItem "NTM_Shotgun";
+		Translation "128:143=100:111", "144:151=104:111", "152:159=104:111", "112:127=96:111", "78:79=5:6", "1:2=6:7", "16:47=24:47";
+		Species "ShotgunGuy";
+	}
+	States
+	{
+		StartMissile:
+			NZOM E 10 A_FaceTarget;
+			NZOM F 8 Bright A_SPosAttackUseAtkSound;
+			NZOM E 10;
+			Goto See;
+		Duck:
+			NZOM S Random(10, 30)
+			{
+				painChance = 0;
+			}
+			NZOM T 10
+			{
+				if (Random(0, 1))
+					SetStateLabel("See");
+				A_FaceTarget();
+			}
+			NZOM U 8 Bright A_SPosAttackUseAtkSound;
+			NZOM T 10;
+			NZOM T 0
+			{
+				painChance = default.painChance;
+			}
+			Goto See;
+	}
+}
+class NTM_ChaingunGuy : NTM_Humanoid replaces ChaingunGuy
+{
+	bool fired;
+	Default
+	{
+		Health 70;
+		Radius 20;
+		Height 56;
+		Mass 100;
+		PainChance 170;
+		SeeSound "chainguy/sight";
+		PainSound "chainguy/pain";
+		DeathSound "chainguy/death";
+		ActiveSound "chainguy/active";
+		AttackSound "chainguy/attack";
+		Obituary "$OB_CHAINGUY";
+		Tag "$FN_HEAVY";
+		DropItem "NTM_Chaingun";
+		Species "ChaingunGuy";
+	}
+	States
+	{
+		Spawn:
+			NCGZ A 10 A_Look;
+			Loop;
+		See:
+			NCGZ A 0
+			{
+				fired = false;
+			}
+			NCGZ AABBCCDD 3 A_NTMChase;
+			Goto See + 1;
+		Missile:
+			NCGZ E 10
+			{
+				A_FaceTarget();
+				fired = true;
+			}
+			NCGZ FE 4 Bright A_CPosAttack;
+			NCGZ F 0 A_CPosRefire;
+			Goto Missile + 1;
+		Pain:
+			NCGZ G 3;
+			NCGZ G 3 A_Pain;
+			Goto See;
+		Death:
+			NCGZ H 6 A_JumpIf((fired && Random(0, 1)), "Death2");
+			NCGZ I 6 A_Scream;
+			NCGZ J 6;
+			NCGZ K 6;
+			NCGZ L 0 A_NTMFall;
+			#### # -1;
+			Stop;
+		Death2:
+			NCGZ M 3;
+			NCGZ N 3 Bright
+			{
+				A_PlaySound("chainguy/attack", Chan_Weapon);
+				A_CustomBulletAttack(22.5, 0, 1, Random(1, 5) * 3, "BulletPuff", 0, CBAF_NoRandom | CBAF_AimFacing);
+			}
+			NCGZ H 3 A_Scream;
+			NCGZ O 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ I 3;
+			NCGZ P 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ J 3;
+			NCGZ Q 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ K 3;
+			NCGZ R 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ L 0 A_NTMFall;
+			#### # -1;
+			Stop;
+		XDeath:
+			NMGI A 5 A_XScream;
+			NMGI B 5 A_NTMFall;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		Raise:
+			NCGZ LLLKJIH 5;
+			Goto See;
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (!(self is "NTM_SMGGuy") && CheckClass("NTM_NewPlayer", AAPTR_Player1))
+		{
+			Actor guy = Spawn("NTM_SMGGuy", pos);
+			guy.angle = angle;
+			Destroy();
+		}
+	}
+}
+class NTM_SMGGuy : NTM_ShotgunGuy
+{
+	float smgFail;
+	Default
+	{
+		Health 70;
+		SeeSound "grunt/sight";
+		AttackSound "weapons/smg";
+		PainSound "grunt/pain";
+		DeathSound "grunt/death";
+		ActiveSound "grunt/active";
+		Obituary "%o was mowed down by an SMG Guy.";
+		Tag "SMG Guy";
+		Translation "128:143=64:79", "144:151=71:79", "152:159=72:79", "112:127=64:79";
+		DropItem "NTM_Chaingun";
+	}
+	States
+	{
+		See:
+			NZOM A 0
+			{
+				smgFail = 0;
+			}
+			NZOM AABBCCDD 3 A_NTMChase;
+			Goto See + 1;
+		StartMissile:
+			NZOM E 10 A_FaceTarget();
+			NZOM FE 2 Bright
+			{
+				if (smgFail <= 30)
+				{
+					A_CustomBulletAttack(30, 0, 1, Random(1, 5) * 1, "BulletPuff", 0, CBAF_NoRandom);
+					smgFail += 0.5;
+				}
+				else
+					SetStateLabel("See");
+			}
+			NZOM F 0 A_CPosRefire;
+			Goto StartMissile + 1;
+		Duck:
+			NZOM S Random(10, 30)
+			{
+				painChance = 0;
+			}
+			NZOM T 10
+			{
+				if (Random(0, 1))
+					SetStateLabel("See");
+				A_FaceTarget();
+			}
+			NZOM FE 2 Bright
+			{
+				if (smgFail <= 30)
+				{
+					A_CustomBulletAttack(30, 0, 1, Random(1, 5) * 1, "BulletPuff", 0, CBAF_NoRandom);
+					smgFail += 0.5;
+				}
+				else
+					SetStateLabel("See");
+			}
+			NZOM F 0 A_MonsterRefire(40, "DuckEnd");
+			Goto Missile + 2;
+		DuckEnd:
+			NZOM T 0
+			{
+				painChance = default.painChance;
+			}
+			Goto See;
+		Death:
+			NZOM H 6;
+			NZOM I 6 A_Scream;
+			NZOM J 6 A_NTMFall;
+			NZOM K 6;
+			NZOM L 0;
+			#### # -1;
+			Stop;
+		XDeath:
+			NMGI A 5 A_XScream;
+			NMGI B 5 A_NTMFall;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+	}
+}
+class NTM_Imp : NTM_Humanoid replaces DoomImp
+{
+	Default
+	{
+		Health 60;
+		PainChance 200;
+		Speed 12;
+		SeeSound "imp/sight";
+		PainSound "imp/pain";
+		DeathSound "imp/death";
+		ActiveSound "imp/active";
+		HitObituary "$OB_IMPHIT";
+		Obituary "$OB_IMP";
+		Tag "$FN_IMP";
+		Species "DoomImp";
+		+DropOff
+	}
+	States
+	{
+		Spawn:
+			NIMP A 10 A_Look;
+			Loop;
+		See:
+			NIMP AABBCCDD 3 A_LeapChase();
+			Loop;
+		Leap:
+			NIMP Q 1 A_Leap;
+			Loop;
+		Melee:
+			NIMP A 0 A_Jump(127, 4);
+			NIMP EF 6 A_FaceTarget;
+			NIMP G 6 A_TroopAttack;
+			Goto See;
+			NIMP HI 6 A_FaceTarget;
+			NIMP J 6 A_TroopAttack;
+			Goto See;
+		Missile:
+			NIMP EF 6 A_FaceTarget;
+			NIMP G 6 A_TroopAttack;
+			Goto See;
+		Pain:
+			NIMP K 2;
+			NIMP K 2 A_Pain;
+			Goto See;
+		Death:
+			NIMP L 6;
+			NIMP M 6 A_Scream;
+			NIMP N 6;
+			NIMP O 6 A_NoBlocking;
+			NIMP P 0;
+			#### # -1;
+			Stop;
+		XDeath:
+			NMGI A 5 A_XScream;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		Raise:
+			NIMP PONML 6;
+			Goto See;
+	}
+}
+class NTM_ImpBall : DoomImpBall replaces DoomImpBall
+{
+	Default
+	{
+		+DontBlast
+	}
+	States
+	{
+		Death:
+			NEXP A 2 Bright
+			{
+				A_SetTranslation("RedTint");
+				scale.x = FRandomPick(-0.4, 0.4);
+				scale.y = 0.4;
+			}
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}
+class NTM_Demon : NTM_Monster replaces Demon
+{
+	Default
+	{
+		Health 150;
+		PainChance 180;
+		Speed 18;
+		Radius 30;
+		Height 56;
+		Mass 400;
+		SeeSound "demon/sight";
+		AttackSound "demon/melee";
+		PainSound "demon/pain";
+		DeathSound "demon/death";
+		ActiveSound "demon/active";
+		Obituary "$OB_DEMONHIT";
+		Tag "$FN_DEMON";
+		Species "Demon";
+		+DropOff
+	}
+	States
+	{
+		Spawn:
+			NDEM A 10 A_Look;
+			Loop;
+		See:
+			NDEM AABBCCDD 2 Fast A_LeapChase();
+			NDEM D 0 A_JumpIf((NTMAI.CanJump() && target && CheckSight(target) && Distance2D(target) <= 256 && !CheckPitBeforeTarget() && !random(0, 1) && ceilingZ > (pos.z + height + 32) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
+			Loop;
+		Jump:
+			NDEM N 0
+			{
+				A_PlaySound("demon/attack");
+				A_FaceTarget();
+				A_ChangeVelocity(vel.x, vel.y, 8);
+				A_Recoil(-15);
+				painChance = 0;
+			}
+			NDEM N 1 A_JumpIf(((pos.z <= floorZ || bOnMObj) && vel.z == 0), 3);
+			NDEM N 0 A_JumpIf(G_SkillPropertyInt(7) < 2, 1);
+			NDEM N 0 A_JumpIfTargetInsideMeleeRange("Melee");
+			Goto Jump + 1;
+			NDEM A 0
+			{
+				A_Stop();
+				painChance = default.painChance;
+			}
+			Goto See;
+		Leap:
+			NDEM N 1 A_Leap;
+			Loop;
+		Melee:
+			NDEM EF 7 Fast A_FaceTarget;
+			NDEM G 7 Fast A_SargAttack;
+			Goto See;
+		Pain:
+			NDEM H 2 Fast;
+			NDEM H 2 Fast A_Pain;
+			Goto See;
+		Death:
+			NDEM I 6;
+			NDEM J 6 A_Scream;
+			NDEM K 4;
+			NDEM L 4 A_NoBlocking;
+			NDEM M 0;
+			#### # -1;
+			Stop;
+		Raise:
+			NDEM MLKJI 5;
+			Goto See;
+	}
+}
+class NTM_Spectre : NTM_Demon replaces Spectre
+{
+	Default
+	{
+		+Shadow
+		RenderStyle "OptFuzzy";
+		Alpha 0.5;
+		SeeSound "spectre/sight";
+		AttackSound "spectre/melee";
+		PainSound "spectre/pain";
+		DeathSound "spectre/death";
+		ActiveSound "spectre/active";
+		Obituary "$OB_SPECTREHIT";
+		Tag "$FN_SPECTRE";
+		Translation "0:255=0:0";
+	}
+}
+class NTM_LostSoul : NTM_Monster replaces LostSoul
+{
+	Default
+	{
+		Health 100;
+		Radius 16;
+		Height 56;
+		Mass 50;
+		Speed 6;
+		Damage 3;
+		PainChance 256;
+		Monster;
+		+DontFall
+		+Float
+		-FloorClip
+		+NoBlood
+		+NoBloodDecals
+		+NoGravity
+		+NoIceDeath
+		+RetargetAfterSlam
+		AttackSound "skull/melee";
+		PainSound "skull/pain";
+		DeathSound "skull/death";
+		ActiveSound "skull/active";
+		Obituary "$OB_SKULL";
+		Tag "$FN_LOST";
+		Species "LostSoul";
+	}
+	States
+	{
+		Spawn:
+			NLOS AB 6 Bright A_Look;
+			Loop;
+		See:
+			NLOS AABB 3 Bright A_NTMChase;
+			Loop;
+		Missile:
+			NLOS CD 4 Bright A_FaceTarget;
+			NLOS C 2 Bright A_FaceTarget;
+			Goto Attack;
+		Attack:
+			NLOS C 2 Bright A_SkullAttack;
+			NLOS DC 4 Bright A_JumpIf((vel.xy.Length() < 5), "See");
+			Goto Attack + 1;
+		Pain:
+			NLOS E 3 Bright;
+			NLOS E 3 Bright A_Pain;
+			Goto See;
+		Death:
+			NLOS E 3 Bright;
+			NLOS E 0
+			{
+				A_Scream();
+				Actor boom = Spawn("NTM_Explosion", pos + (0, 0, 16));
+				if (boom != null)
+				{
+					boom.A_SetTranslation("RedTint");
+					boom.scale *= 0.6;
+				}
+				A_SpawnDebris("NTM_Debris", false, 1.5);
+			}
+			Stop;
+	}
+}
+class NTM_Cacodemon : NTM_Monster replaces Cacodemon
+{
+	Default
+	{
+		Health 400;
+		Radius 31;
+		Height 56;
+		Mass 400;
+		Speed 8;
+		PainChance 128;
+		BloodColor "Blue";
+		Monster;
+		+Float
+		-FloorClip
+		+NoGravity
+		SeeSound "caco/sight";
+		PainSound "caco/pain";
+		DeathSound "caco/death";
+		ActiveSound "caco/active";
+		Obituary "$OB_CACO";
+		HitObituary "$OB_CACOHIT";
+		Tag "$FN_CACO";
+		Species "Cacodemon";
+	}
+	States
+	{
+		Spawn:
+			NCAC A 10 A_Look;
+			Loop;
+		See:
+			NCAC A 3 A_NTMChase;
+			Loop;
+		Melee:
+		Missile:
+			NCAC B 5 A_FaceTarget;
+			NCAC C 5 A_FaceTarget;
+			NCAC D 5 Bright A_CustomComboAttack("NTM_CacodemonBall", 32, 10 * random(1, 6), "imp/melee");
+			Goto See;
+		Pain:
+			NCAC E 3;
+			NCAC F 9 A_Pain;
+			Goto See;
+		Death:
+			NCAC G 6;
+			NCAC H 6 A_Scream;
+			NCAC I 6;
+			NCAC I 1 A_JumpIf((pos.z <= floorZ || bOnMObj), 1);
+			Wait;
+			NCAC J 8 A_NoBlocking;
+			NCAC K 0;
+			#### # -1 A_SetFloorClip;
+			Stop;
+		Raise:
+			NCAC K 8 A_UnSetFloorClip;
+			NCAC JIHGF 8;
+			Goto See;
+	}
+}
+class NTM_CacodemonBall : CacodemonBall replaces CacodemonBall
+{
+	Default
+	{
+		+DontBlast
+	}
+	States
+	{
+		Death:
+			NEXP A 2 Bright
+			{
+				A_SetTranslation("RedTint");
+				scale.x = FRandomPick(-0.4, 0.4);
+				scale.y = 0.4;
+			}
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}
+class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight
+{
+	Default
+	{
+		Health 500;
+		Translation "16:47=48:79";
+		+MissileMore;
+		-BossDeath;
+		HitObituary "$OB_KNIGHTHIT";
+		Obituary "$OB_KNIGHT";
+		Tag "$FN_HELL";
+	}
+	States
+	{
+		See:
+			NBAR D 0 A_JumpIf((NTMAI.CanJump() && target && CheckSight(target) && Distance2D(target) <= 270 && !CheckPitBeforeTarget() && !random(0, 3) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
+			NBAR AABBCCDD 2 A_NTMChase;
+			Loop;
+		Melee:
+		Missile:
+			NBAR EF 6 A_FaceTarget;
+			NBAR G 6 A_BruisAttack;
+			Goto See;
+		Jump:
+			NBAR K 7
+			{
+				A_FaceTarget();
+				painChance = 0;
+			}
+			NBAR L 9 A_Recoil(-20);
+			NBAR M 5 A_CustomMeleeAttack(10 * random(1, 8), "baron/melee");
+			NBAR M 0
+			{
+				painChance = default.painChance;
+			}
+			Goto See;
+		Pain:
+			NBAR N 2;
+			NBAR N 2 A_Pain;
+			Goto See;
+		Death:
+			NBAR O 7;
+			NBAR P 7
+			{
+				A_Scream();
+				A_PlaySound("misc/gibbed", 5);
+				if (health >= GetGibHealth())
+				{
+					for (int i = 2; i < 4; i++)
+						A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+				}
+			}
+			NBAR Q 7;
+			NBAR R 7 A_NoBlocking;
+			NBAR S 0;
+			#### # -1;
+			Stop;
+		Raise:
+			NBAR SSSRQPO 8;
+			Goto See;
+	}
+}
+class NTM_BaronOfHell : NTM_Monster replaces BaronOfHell
+{
+	Default
+	{
+		Health 1000;
+		Radius 24;
+		Height 64;
+		Mass 1000;
+		Speed 12;
+		PainChance 50;
+		+BossDeath
+		SeeSound "baron/sight";
+		PainSound "baron/pain";
+		DeathSound "baron/death";
+		ActiveSound "baron/active";
+		Obituary "$OB_BARON";
+		HitObituary "$OB_BARONHIT";
+		Tag "$FN_BARON";
+		BloodColor "Green";
+		Species "BaronOfHell";
+	}
+	States
+	{
+		Spawn:
+			NBAR A 10 A_Look;
+			Loop;
+		See:
+			NBAR D 0 A_JumpIf((NTMAI.CanJump() && target && CheckSight(target) && Distance2D(target) <= 270 && !CheckPitBeforeTarget() && !random(0, 3) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
+			NBAR AABBCCDD 3 A_NTMChase;
+			Loop;
+		Jump:
+			NBAR K 7
+			{
+				A_FaceTarget();
+				painChance = 0;
+			}
+			NBAR L 9 A_Recoil(-20);
+			NBAR M 5 A_CustomMeleeAttack(10 * random(1, 8), "baron/melee");
+			NBAR M 0
+			{
+				painChance = default.painChance;
+			}
+			Goto See;
+		Melee:
+		Missile:
+			NBAR E 0 A_Jump(127, 4);
+			NBAR EF 6 A_FaceTarget;
+			NBAR G 6 A_BruisAttack;
+			Goto See;
+			NBAR HI 7 A_FaceTarget;
+			NBAR J 7
+			{
+				A_FatAttack3("NTM_BaronBall");
+				A_SpawnProjectile("NTM_BaronBall", 32);
+			}
+			Goto See;
+		Pain:
+			NBAR N 2;
+			NBAR N 2 A_Pain;
+			Goto See;
+		Death:
+			NBAR O 7;
+			NBAR P 7
+			{
+				A_Scream();
+				A_PlaySound("misc/gibbed", 5);
+				if (health >= GetGibHealth())
+				{
+					for (int i = 2; i < 4; i++)
+						A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+				}
+			}
+			NBAR Q 7;
+			NBAR R 7 A_NoBlocking;
+			NBAR S 21;
+			NBAR S 0;
+			#### # -1 A_BossDeath;
+			Stop;
+		Raise:
+			NBAR SSSRQPO 8;
+			Goto See;
+	}
+}
+class NTM_BaronBall : BaronBall replaces BaronBall
+{
+	Default
+	{
+		+DontBlast
+	}
+	States
+	{
+		Death:
+			NEXP A 2 Bright
+			{
+				A_SetTranslation("GreenTint");
+				scale.x = FRandomPick(-0.4, 0.4);
+				scale.y = 0.4;
+			}
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}
+class NTM_Arachnotron : NTM_Monster replaces Arachnotron
+{
+	Default
+	{
+		Health 500;
+		Radius 64;
+		Height 64;
+		Mass 600;
+		Speed 14;
+		PainChance 128;
+		+BossDeath
+		SeeSound "baby/sight";
+		PainSound "baby/pain";
+		DeathSound "baby/death";
+		ActiveSound "baby/active";
+		Obituary "$OB_BABY";
+		Tag "$FN_ARACH";
+		Species "Arachnotron";
+	}
+	States
+	{
+		Spawn:
+			NARA A 10 A_Look;
+			Loop;
+		See:
+			NARA A 20;
+			NARA A 3 A_BabyMetal;
+			NARA ABBCC 3 A_NTMChase;
+			NARA D 3 A_BabyMetal;
+			NARA DEEFF 3 A_NTMChase;
+			Goto See + 1;
+		Missile:
+			NARA A 15 A_FaceTarget;
+			NARA G 3 Bright
+			{
+				A_FaceTarget();
+				A_SpawnProjectile("NTM_PlasmaBall", 19);
+			}
+			NARA H 3 Bright;
+			NARA H 0 Bright A_SpidRefire;
+			Goto Missile + 1;
+		Pain:
+			NARA I 3;
+			NARA I 3 A_Pain;
+			Goto See+1;
+		Death:
+			NARA J 7 A_Scream;
+			NARA K 7 A_NoBlocking();
+			NARA L 7
+			{
+				if (health >= GetGibHealth())
+					A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 48, Random(-8, 8), Random(-8, 8), Random(4, 8));
+			}
+			NARA MNO 7;
+			NARA P 0;
+			#### # -1 A_BossDeath;
+			Stop;
+		Raise:
+			NARA PONMLKJ 5;
+			Goto See + 1;
+	}
+}
+class NTM_PainElemental : NTM_Monster replaces PainElemental
+{
+	Default
+	{
+		Health 400;
+		Radius 31;
+		Height 56;
+		Mass 400;
+		Speed 8;
+		PainChance 128;
+		Monster;
+		+Float
+		-FloorClip
+		+NoGravity
+		SeeSound "pain/sight";
+		PainSound "pain/pain";
+		DeathSound "pain/death";
+		ActiveSound "pain/active";
+		Tag "$FN_PAIN";
+		Species "PainElemental";
+	}
+	States
+	{
+		Spawn:
+			NPAI A 10 A_Look;
+			Loop;
+		See:
+			NPAI AABBCCBB 3 A_NTMChase;
+			Loop;
+		Melee:
+			NPAI DE 5 A_FaceTarget;
+			NPAI F 5 Bright A_CustomMeleeAttack(Random(1, 6) * 10, "imp/melee");
+		Missile:
+			NPAI A 0 A_PainCheck;
+			NPAI DE 5 A_FaceTarget;
+			NPAI F 5 Bright A_FaceTarget;
+			NPAI F 0 A_PainAttack;
+			Goto See;
+		Pain:
+			NPAI G 6;
+			NPAI G 6 A_Pain;
+			Goto See;
+		Death:
+			NPAI H 8 Bright A_Scream;
+			NPAI I 8 Bright;
+			NPAI I 0
+			{
+				A_SpawnItemEx("NTM_Explosion", 0, 0, 32);
+				A_PainDie();
+				A_PlaySound("misc/gibbed", 5);
+				if (health >= GetGibHealth())
+				{
+					for (int i = 2; i < 4; i++)
+						A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8));
+				}
+			}
+			Stop;
+		Raise:
+			PAIN M 8 A_SetScale(1, 1);
+			PAIN LKJ 8;
+			NPAI I 8 A_SetScale(0.625, 0.625);
+			NPAI H 8;
+			Goto See;
+	}
+	void A_PainCheck()
+	{
+		if (CVar.FindCVar("sv_ntm_monsterPainLimit").GetBool())
+		{
+			int count = 21;
+			ThinkerIterator it = ThinkerIterator.Create("NTM_LostSoul");
+			Thinker othink;
+			while ((othink = it.Next()))
+			{
+				if (--count == 0)
+					SetStateLabel("See");
+			}
+		}
+	}
+}
+class NTM_Revenant : NTM_Monster replaces Revenant
+{
+	int lastFlyTimer;
+    bool doStopFlying;
+	override void PostBeginPlay()
+    {
+        Super.PostBeginPlay();
+        lastFlyTimer = 0;
+        doStopFlying = false;
+    }
+	Default
+	{
+		Health 300;
+		Radius 20;
+		Height 56;
+		Mass 500;
+		Speed 13;
+		PainChance 100;
+		MeleeThreshold 196;
+		+MissileMore
+		+NoBlood
+		+NoBloodDecals
+		SeeSound "skeleton/sight";
+		PainSound "skeleton/pain";
+		DeathSound "skeleton/death";
+		ActiveSound "skeleton/active";
+		MeleeSound "skeleton/melee";
+		HitObituary "$OB_UNDEADHIT";
+		Obituary "$OB_UNDEAD";
+		Tag "$FN_REVEN";
+		Species "Revenant";
+	}
+	States
+	{
+		Spawn:
+			NREV A 10 A_Look;
+			Loop;
+		See:
+			NREV A 0 A_JumpIf((NTMAI.CanFly() && bNoGravity), "Fly");
+			NREV AABBCCDDEEFF 2 A_RevenantChase;
+			Loop;
+		Fly:
+			NREV R 2 Bright A_RevenantChase;
+			Loop;
+		Melee:
+			NREV G 0 A_FaceTarget;
+			NREV G 6 A_SkelWhoosh;
+			NREV H 6 A_FaceTarget;
+			NREV I 6 A_SkelFist;
+			Goto See;
+		Missile:
+			NREV J 5 Bright A_FaceTarget;
+			NREV J 5 Bright A_NTMSkelMissile;
+			NREV K 20 A_FaceTarget;
+			Goto See;
+		Pain:
+			NREV L 5;
+			NREV L 5 A_Pain;
+			Goto See;
+		Death:
+			NREV M 6
+			{
+				A_StopSound(5);
+				painChance = default.painChance;
+			}
+			NREV N 6 A_Scream;
+			NREV O 6 A_NoBlocking;
+			NREV P 6;
+			NREV Q -1 A_SetFloorClip;
+			Stop;
+		Raise:
+			NREV QPONM 5;
+			Goto See;
+	}
+	void A_RevenantChase()
+    {
+		if (NTMAI.CanFly())
+		{
+			if (!doStopFlying && level.time - lastFlyTimer > 175 && !Random(0, 32))
+			{
+				if (bNoGravity)
+				{
+					doStopFlying = true;
+					A_UnsetFloat();
+				}
+				else
+				{
+					A_PlaySound("revenant/fly", 5, 0.5, true);
+					lastFlyTimer = level.time;
+					bNoGravity = true;
+					A_SetFloat();
+					SetStateLabel("Fly");
+					vel.z += 4;
+					painChance = 0;
+				}
+			}
+			if (doStopFlying)
+			{
+				if (pos.z - GetGroundHeight() < MaxStepHeight)
+				{
+					A_StopSound(5);
+					bNoGravity = false;
+					lastFlyTimer = level.time;
+					doStopFlying = false;
+					SetStateLabel("See");
+					painChance = default.painChance;
+				}
+				else
+				{
+					SetOrigin(pos + (0, 0, -1) * speed, true);
+					return;
+				}
+			}
+		}
+        A_NTMChase();
+	}
+	void A_NTMSkelMissile()
+	{
+		if (target)
+		{
+			A_FaceTarget();
+			for (int i = -1; i < 3; i += 2)
+			{
+				Actor missile = SpawnMissile(target, "NTM_RevenantTracer");
+				if (missile)
+				{
+					missile.SetXYZ((pos.x + Cos(angle + (i * 90)) * 10, pos.y + Sin(angle + (i * 90)) * 10, pos.z + 56));
+					missile.tracer = target;
+					missile.angle += i * (fatSpread * 0.5);
+					missile.VelFromAngle();
+				}
+			}
+		}
+	}
+}
+class NTM_RevenantTracer : RevenantTracer replaces RevenantTracer
+{
+	Default
+	{
+		Damage 5;
+		+DontBlast
+	}
+	States
+	{
+		Spawn:
+			FATB AB 2 Bright A_NTMTracer;
+			Loop;
+		Death:
+			NEXP A 2 Bright
+			{
+				A_SetTranslation("RedTint");
+				scale.x = FRandomPick(-0.5, 0.5);
+				scale.y = 0.5;
+			}
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+	void A_NTMTracer()
+	{
+		Actor smoke = Spawn("NTM_RevenantTracerSmoke", Vec3Offset(-vel.x, -vel.y, 0));
+		if (smoke != null)
+		{
+			smoke.tics -= Random[tracer](0, 3);
+			if (smoke.tics < 1)
+				smoke.tics = 1;
+		}
+		A_Tracer2(4.21875);
+	}
+}
+class NTM_RevenantTracerSmoke : RocketSmokeTrail replaces RevenantTracerSmoke
+{
+	Default
+	{
+		Scale 0.5;
+		Alpha 0.4;
+	}
+}
+class NTM_Mancubus : NTM_Monster replaces Fatso
+{
+	Default
+	{
+		Health 600;
+		Radius 48;
+		Height 64;
+		Mass 1000;
+		Speed 8;
+		PainChance 80;
+		+BossDeath
+		SeeSound "fatso/sight";
+		PainSound "fatso/pain";
+		DeathSound "fatso/death";
+		ActiveSound "fatso/active";
+		Obituary "$OB_FATSO";
+		Tag "$FN_MANCU";
+		Species "Fatso";
+	}
+	States
+	{
+		Spawn:
+			NMAN A 15 A_Look;
+			Loop;
+		See:
+			NMAN AABBCCDDEEFF 4 A_NTMChase;
+			Loop;
+		Missile:
+			NMAN G 20 A_FatRaise;
+			NMAN H 5 Bright A_FatAttack1;
+			NMAN IGG 5 A_FaceTarget;
+			NMAN H 5 Bright A_FatAttack2;
+			NMAN IGG 5 A_FaceTarget;
+			NMAN H 5 Bright A_FatAttack3;
+			NMAN IGG 5 A_FaceTarget;
+			Goto See;
+		Pain:
+			NMAN J 3;
+			NMAN J 3 A_Pain;
+			Goto See;
+		Death:
+			NMAN K 6;
+			NMAN L 6 A_Scream;
+			NMAN M 6 A_NoBlocking;
+			NMAN NOPQ 6;
+			NMAN R 0;
+			#### # -1 A_BossDeath;
+			Stop;
+		Raise:
+			NMAN QPONMLK 5;
+			Goto See;
+	}
+}
+class NTM_FatShot : FatShot replaces FatShot
+{
+	Default
+	{
+		+DontBlast
+		DamageType "Fire";
+	}
+	States
+	{
+		Death:
+			NEXP A 2 Bright
+			{
+				A_SetTranslation("RedTint");
+				scale.x = FRandomPick(-1, 1);
+			}
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}
+class NTM_Archvile : NTM_Monster replaces Archvile
+{
+	Default
+	{
+		Health 700;
+		Radius 20;
+		Height 56;
+		Mass 500;
+		Speed 20;
+		PainChance 10;
+		MaxTargetRange 896;
+		+NoTarget
+		+QuickToRetaliate
+		SeeSound "vile/sight";
+		PainSound "vile/pain";
+		DeathSound "vile/death";
+		ActiveSound "vile/active";
+		MeleeSound "vile/stop";
+		Obituary "$OB_VILE";
+		Tag "$FN_ARCH";
+		Species "Archvile";
+	}
+	States
+	{
+		Spawn:
+			NARC A 10 A_Look;
+			Loop;
+		See:
+			NARC AABBCCDDEEFF 2 A_NTMChase;
+			Loop;
+		Missile:
+			NARC G 0 A_VileStart;
+			NARC G 8 Bright A_FaceTarget;
+			NARC H 8 Bright A_VileTarget;
+			NARC IJKLMN 8 Bright A_FaceTarget;
+			NARC O 8 Bright A_NTMVileAttack;
+			NARC P 20 Bright;
+			Goto See;
+		Heal:
+			NARC Z 30 Bright;
+			Goto See;
+		Pain:
+			NARC Q 5;
+			NARC Q 5 A_Pain;
+			Goto See;
+		Death:
+			NARC R 5;
+			NARC S 5 A_Scream;
+			NARC T 5 A_NoBlocking;
+			NARC UVWX 5;
+			NARC Y 0;
+			#### # -1;
+			Stop;
+	}
+	void A_NTMVileAttack()
+	{
+		Actor targ = target;
+		if (targ)
+		{
+			A_FaceTarget();
+			if (!CheckSight(targ))
+				return;
+			A_PlaySound("vile/stop", 1);
+			int newDam = targ.DamageMObj(self, self, 20, VAF_DmgTypeApplyToDirect ? "Fire" : "none");
+			targ.TraceBleed(newDam > 0 ? newDam : 20, self);
+			if (tracer)
+			{
+				tracer.SetOrigin(targ.Vec3Angle(-24, angle, 0), true);
+				tracer.A_Explode(70, 70, XF_NoSplash, false, 0, 0, 0, "BulletPuff", "Fire");
+				Actor boom = Spawn("NTM_Explosion", tracer.pos + (0, 0, 32));
+				if (boom && NTMAI.CanQuake())
+						boom.A_Quake(2, 10, 0, 400, "");
+			}
+			if (!targ.bDontThrust)
+				targ.vel.z = 1000 / Max(1, targ.mass);
+		}
+	}
+}
+class NTM_Boss : NTM_Monster
+{
+	Default
+	{
+		+Boss
+		+MissileMore
+		+FloorClip
+		+NoRadiusDmg
+		+DontMorph
+		+BossDeath
+	}
+	void A_BossExplode()
+	{
+		A_PlaySound("world/barrelx", 5, 1.0, 0, ATTN_NORM, false, frandom(0.8, 1.2));
+		Actor boom = Spawn("NTM_Explosion", pos + (Random(-32, 32), Random(-32, 32), Random(8, 64)));
+		if (boom)
+			boom.scale *= 0.5;
+		if (NTMAI.CanQuake())
+			A_Quake(2, 10, 0, 1600, "");
+	}
+}
+class NTM_Cyberdemon : NTM_Boss replaces Cyberdemon
+{
+	Default
+	{
+		Health 4000;
+		Radius 40;
+		Height 110;
+		Mass 1000;
+		PainChance 20;
+		MinMissileChance 160;
+		Speed 18;
+		SeeSound "cyber/sight";
+		DeathSound "cyber/death";
+		ActiveSound "cyber/active";
+		Obituary "$OB_CYBORG";
+		Tag "$FN_CYBER";
+		PainSound "baron/pain";
+		Species "Cyberdemon";
+	}
+	States
+	{
+		Spawn:
+			NCYB A 10 A_Look;
+			Loop;
+		See:
+			NCYB A 0 A_Metal;
+			NCYB AABB 3 A_NTMChase;
+			NCYB C 0 A_Metal;
+			NCYB CCDD 3 A_NTMChase;
+			Loop;
+		Missile:
+			NCYB E 6 A_FaceTarget;
+			NCYB F 8 Bright A_NTMCyberAttack;
+			NCYB E 12 A_FaceTarget;
+			NCYB F 8 Bright A_NTMCyberAttack;
+			NCYB E 12 A_FaceTarget;
+			NCYB F 8 Bright A_NTMCyberAttack;
+			NCYB E 2;
+			Goto See;
+		Pain:
+			NCYB G 10 A_Pain;
+			Goto See;
+		Death:
+			NCYB H 8;
+			NCYB H 8 A_Scream;
+			NCYB HHHHHIJKL 8 A_BossExplode;
+			NCYB M 8
+			{
+				A_BossExplode();
+				A_NoBlocking();
+			}
+			NCYB N 8 A_BossExplode;
+			NCYB O 8;
+			NCYB P 140;
+			NCYB P -1 A_BossDeath;
+			Stop;
+	}
+	void A_NTMCyberAttack()
+	{
+		if (target)
+		{
+			A_FaceTarget();
+			for (int i = -1; i < 3; i += 2)
+			{
+				Actor missile = SpawnMissile(target, "NTM_Rocket");
+				if (missile)
+				{
+					missile.SetXYZ((pos.x + Cos(angle + (i * 90)) * 16, pos.y + Sin(angle + (i * 90)) * 16, pos.z + 45));
+					missile.tracer = target;
+					missile.A_FaceTracer();
+					missile.VelFromAngle();
+				}
+			}
+		}
+		else
+			SetStateLabel("See");
+	}
+}
+class NTM_SpiderMastermind : NTM_Boss replaces SpiderMastermind
+{
+	Default
+	{
+		Health 3000;
+		Height 100;
+		Mass 1000;
+		PainChance 40;
+		Radius 96;
+		Speed 18;
+		SeeSound "spider/sight";
+		AttackSound "spider/attack";
+		PainSound "spider/pain";
+		DeathSound "spider/death";
+		ActiveSound "spider/active";
+		Obituary "$OB_SPIDER";
+		Tag "$FN_SPIDER";
+		Species "SpiderMastermind";
+	}
+	States
+	{
+		Spawn:
+			NSPI A 10 A_Look;
+			Loop;
+		See:
+			NSPI A 3 A_Metal;
+			NSPI ABBCC 3 A_NTMChase;
+			NSPI D 3 A_Metal;
+			NSPI DEEFF 3 A_NTMChase;
+			Loop;
+		Missile:
+			NSPI A 20 A_FaceTarget;
+			NSPI GH 3 Bright A_SPosAttackUseAtkSound;
+			NSPI H 0 A_SpidRefire;
+			Goto Missile + 1;
+		Pain:
+			NSPI I 3;
+			NSPI I 3 A_Pain;
+			Goto See;
+		Death:
+			NSPI I 15 A_Scream;
+			NSPI KKLLMMNN 8 A_BossExplode;
+			NSPI OOPP 4 A_BossExplode;
+			NSPI Q 4
+			{
+				A_BossExplode();
+				A_NoBlocking();
+			}
+			NSPI QRR 4 A_BossExplode;
+			NSPI S 140 A_BossExplode;
+			NSPI S -1 A_BossDeath;
+			Stop;
+	}
+}
