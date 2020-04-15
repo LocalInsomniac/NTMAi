@@ -1,0 +1,71 @@
+weapons/chngun DSCHNGUN
+chainguy/sight DSCGSIT
+chainguy/active DSCGACT
+chainguy/attack DSCHNGUN
+chainguy/pain DSCGPAIN
+chainguy/death DSCGDEAD
+imp/pain DSBGPAIN
+demon/attack DSSGTJMP
+skull/active DSSKLIDL
+skull/pain DSSKLPAI
+caco/active DSCACACT
+caco/pain DSCACPAI
+baron/active DSBRACT
+baron/pain DSBRPAIN
+baby/pain DSBSPPAI
+pain/active DSPEACT
+skeleton/pain DSSKEPAI
+fatso/active DSMANACT
+cyber/active DSCYBACT
+spider/attack DSCHNGUN
+spider/pain DSSPIPAI
+weapons/pistolo DSCLPOUT
+weapons/pistoli DSCLIPIN
+misc/k_pkup	DSKEYUP
+item/goggles DSGOGGLE
+item/suit DSSUIT
+misc/pancake DSPANCKE
+misc/bsplat DSBSPLAT
+$random misc/blood {0 misc/bsplat}
+misc/puff1 DSPUFF1
+misc/puff2 DSPUFF2
+misc/puff3 DSPUFF3
+misc/puff4 DSPUFF4
+$random misc/puff {misc/puff1 misc/puff2 misc/puff3}
+world/splash DSSPLASH
+world/lava DSLAVA
+weapons/shotcock dshtcock
+weapons/selgun dsselect
+$random menu/activate {weapons/shotgf world/barrelx menu/invalid misc/gibbed skeleton/swing weapons/chngun misc/spawn}
+menu/backup	dsmenbak
+menu/prompt	dsmenpik
+menu/cursor dsmencur
+menu/change	dsmenpik
+menu/invalid dsoof
+menu/dismiss dsmenbak
+menu/choose	dsmenpik
+menu/clear dsempty
+intro/mortar DSMORTAR
+$playersound player male *falling DSFALLIN
+player/taunt DSTAUNT
+misc/break DSGLASS
+revenant/fly DSJETPAC
+grenade/pin DSGRENAD
+grenade/bounce DSGRENAB
+rlauncher/homing DSHOMING
+prifle/railgun DSRAILGN
+misc/casing1 DSCASIN1
+misc/casing2 DSCASIN2
+misc/casing3 DSCASIN3
+$volume misc/casing3 0.5
+$random misc/casing {misc/casing1 misc/casing2}
+$volume misc/casing 0.5
+weapons/semi DSSEMI
+weapons/smg DSSMG
+weapons/bigclip DSBIGCLP
+weapons/rifleup DSRIFLEU
+weapons/glaunch DSGRELAU
+weapons/flamet DSFLAMET
+weapons/unmaker DSUNMAKR
+burn/zombie DSZOMBIF
+burn/imp DSIMPFIR

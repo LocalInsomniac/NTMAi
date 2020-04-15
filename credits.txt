@@ -1,0 +1,86 @@
+GRAPHICS:
+alandoguns
+Amuscaria
+BloodyAcid
+Blox
+Can't Sleep
+Captain J
+CeeJay
+David G
+DeathCold
+DenisBelmondo
+DoomNukem
+Eriance
+Gothic
+GRAU
+Hellfire
+hidfan
+Homie
+HorrorMovieGuy
+id Software
+IMX
+jdredalert
+Jekyll Grim Payne
+JoeyTD
+Kinsie
+Lobotomy Software
+MarphitimusBlackimus
+Mike12
+Minigunner
+mrtaterz
+Nash Muhandes
+Neccronixis
+Neoworm
+Raven Software
+raymoohawk
+Reikall
+Ringman
+RoastBeefo
+Rogue Entertainment
+Sgt Mark IV
+Sonik.o.Fan
+Team Hellspawn
+TheRailgunner
+Vostyok
+Z86
+zrrion the insect
+3D Realms
+
+SOUNDS:
+Aubrey Hodges
+Dynamo
+id Software
+Jaxxoon R
+Kinsie
+Lobotomy Software
+Nash Muhandes
+The Internet
+Valve Software
+YukesVonFaust
+3D Realms
+
+MUSIC:
+silentzora
+
+CODE:
+Ac!d
+Boondorl
+Can't Sleep
+Enjay
+Jekyll Grim Payne
+jewalky
+Kinsie
+Nash Muhandes
+PillowBlaster
+wildweasel
+Zombie
+
+GENERAL:
+BROS_ETT_311
+Captain J
+DIAMOND
+EddieMann
+mrtaterz
+-/Pin\-
+
+Let me know if there are some people missing!

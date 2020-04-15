@@ -1,0 +1,17 @@
+generator NTM_Pistol BulletChip
+generator NTM_Chainsaw BulletChip
+generator NTM_Shotgun BulletChip
+generator NTM_SuperShotgun BulletChip
+generator NTM_Chaingun BulletChip
+generator NTM_PlasmaBall PlasmaScorch
+generator NTM_Rocket Scorch
+generator NTM_BFGBall BFGLightning
+generator NTM_ZombieMan BulletChip
+generator NTM_ShotgunGuy BulletChip
+generator NTM_ChaingunGuy BulletChip
+generator NTM_SpiderMastermind BulletChip
+generator NTM_BaronBall	BaronScorch
+generator NTM_CacodemonBall	CacoScorch
+generator NTM_ImpBall DoomImpScorch
+generator NTM_FatShot Scorch
+generator NTM_RevenantTracer RevenantScorch

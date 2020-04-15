@@ -1,0 +1,47 @@
+GameInfo
+{
+	AddEventHandlers = "NTMAI"
+    PlayerClasses = "NTM_Player", "NTM_NewPlayer"
+	QuitSound = ""
+	BorderFlat = "AG128_1"
+}
+ClearSkills
+skill easy
+{
+    EasyBossBrain
+    SlowMonsters
+    SpawnFilter = Normal
+    DamageFactor = 0.5
+    MonsterHealth = 0.5
+	KickbackFactor = 0.5
+    Name = "Another Day In The Corps"
+    Key = "h"
+}
+skill normal
+{
+    SpawnFilter = Normal
+    Key = "h"
+    DamageFactor = 0.75
+    MonsterHealth = 0.75
+    KickbackFactor = 0.75
+    Name = "That's Pretty Tough"
+    DefaultSkill
+}
+skill hard
+{
+    SpawnFilter = Hard
+    NoInfighting
+    Aggressiveness = 0.5
+    Name = "I Am Ultra Violent"
+    Key = "u"
+}
+skill nightmare
+{
+    SpawnFilter = nightmare
+    DamageFactor = 2
+    KickbackFactor = 2
+    NoInfighting
+    Aggressiveness = 1.0
+    Name = "Your Worst Nightmare"
+    Key = "n"
+}

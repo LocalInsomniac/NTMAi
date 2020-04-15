@@ -1,0 +1,30 @@
+Model NTM_BloodSpot
+{
+	UseActorRoll
+	ZOffset 0.0001
+	Path "models"
+	Model 0 "BSPLAT.md3"
+	Skin 0 "BSPLAT"
+	FrameIndex NBLS A 0 0
+}
+Model NTM_BloodPool
+{
+	UseActorRoll
+	ZOffset 0.001
+	Path "models"
+	Model 0 "BPOOL.md3"
+	Skin 0 "BPOOL"
+	FrameIndex NBLP A 0 0
+	FrameIndex NBLP B 0 1
+}
+Model NTM_BloodyFootprint
+{
+	UseActorRoll
+	AngleOffset -90
+	ZOffset 0.0003
+	Scale 0.4 0.4 0.4
+	Path "models"
+	Model 0 "BFOOTP.md3"
+	Skin 0 "BFOOTP"
+	FrameIndex NBLF A 0 0
+}

@@ -1,0 +1,63 @@
+OptionValue "NTM_Options_BloodPools"
+{
+    0, "Off"
+    1, "On"
+	2, "On gib"
+}
+OptionValue "NTM_Options_Soulsphere"
+{
+	0, "No"
+	1, "Yes"
+	2, "Outside secrets"
+}
+OptionValue "NTM_Options_SecretItem"
+{
+	0, "No"
+	1, "Yes"
+	2, "Random"
+}
+OptionMenu "NTM_Options"
+{
+    Title "NTMAI Options"
+	StaticText "Changes will take full", "White"
+	StaticText "effect on level restart.", "White"
+	StaticText ""
+    StaticText "Movement options", "Yellow"
+	Option "New movement", "sv_ntm_move", "OnOff"
+	Option "Camera flinching", "cl_ntm_cameraFlinch", "OnOff"
+	Option "Camera quaking", "cl_ntm_cameraQuake", "OnOff"
+	Option "Camera tilt on death", "cl_ntm_cameraTilt", "OnOff"
+	Option "Head flies off when gibbed", "sv_ntm_cameraHead", "YesNo"
+	StaticText ""
+	StaticText "Visual options", "Yellow"
+	Option "Empty casings stay on floor", "cl_ntm_casing", "YesNo"
+	Option "Taunt after gibbing", "cl_ntm_taunt", "OnOff"
+	Option "Sprite shadows", "cl_ntm_shadows", "OnOff"
+	Slider "Max shadow distance", "cl_ntm_shadowDistance", 0, 10000, 100, 0
+	Slider "Flying blood frequency", "cl_ntm_bloodFrequency", 0.3, 1, 0.1
+	Option "Blood stays on floor", "cl_ntm_bloodDetail", "YesNo"
+	Option "Blood pools", "sv_ntm_bloodPools", "NTM_Options_BloodPools"
+	Option "Bloody footprints", "sv_ntm_bloodFootprints", "OnOff"
+	Option "Gibs stay on floor", "cl_ntm_gibDetail", "YesNo"
+	Option "Stretchy crushed gibs", "sv_ntm_bloodStretch", "OnOff"
+	Option "Blood-styled death animations (Experimental)", "sv_ntm_bloodDeath", "OnOff"
+	Option "Burning humanoids", "sv_ntm_burn", "OnOff"
+	Option "Voxels", "r_drawvoxels", "OnOff"
+	StaticText ""
+	StaticText "Gameplay options", "Yellow"
+	Option "Play keycard animation on locked doors", "sv_ntm_keycard", "YesNo"
+	Option "Auto-activate radiation suit on hazards", "cl_ntm_activate", "YesNo"
+	Option "Replace Soulspheres with Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
+	Option "Explosive Shells replace Shells in secrets", "sv_ntm_boomShell", "NTM_Options_SecretItem"
+	Option "Homing Rockets replace Rockets in secrets", "sv_ntm_homingRocket", "NTM_Options_SecretItem"
+	Option "Zombies throw grenades on hard difficulties", "sv_ntm_grenadiers", "YesNo"
+	Option "Monsters jump over pits (Experimental)", "sv_ntm_monsterLeap", "YesNo"
+	Option "Monsters jump at targets", "sv_ntm_monsterJump", "YesNo"
+	Option "Flying revenants", "sv_ntm_monsterFly", "OnOff"
+	Option "Better Pain Elemental limiting", "sv_ntm_monsterPainLimit", "OnOff"
+}
+AddOptionMenu "OptionsMenu"
+{
+    StaticText ""
+    Submenu "NTMAI Options", "NTM_Options"
+}
