@@ -39,7 +39,7 @@ StatusBar Normal
 		DrawNumber 3, NTMFONT, DarkGray, Ammo("RocketAmmo"), 168, 179;
 		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("RocketAmmo"), 185, 179;
 	}
-	InInventory NTM_PlasmaRifle || NTM_BFG9000 || NTM_Flamethrower || NTM_Unmaker
+	InInventory NTM_PlasmaRifle || NTM_BFG9000
 	{
 		DrawString NTMFONT, Yellow, "6-7:   /", 156, 187, 0, Alignment(Center);
 		DrawNumber 3, NTMFONT, Yellow, Ammo("Cell"), 168, 187;
