@@ -2,37 +2,21 @@ class NTMAI : EventHandler
 {
 	NTM_Thinker st;
 	static bool CanQuake()
-	{
-		return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());
-	}
+		{return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
 	static bool CanLeap()
-	{
-		return (CVar.FindCVar("sv_ntm_monsterLeap").GetBool());
-	}
+		{return (CVar.FindCVar("sv_ntm_monsterLeap").GetBool());}
 	static bool CanJump()
-	{
-		return (CVar.FindCVar("sv_ntm_monsterJump").GetBool());
-	}
+		{return (CVar.FindCVar("sv_ntm_monsterJump").GetBool());}
 	static bool CanFly()
-	{
-		return (CVar.FindCVar("sv_ntm_monsterFly").GetBool());
-	}
+		{return (CVar.FindCVar("sv_ntm_monsterFly").GetBool());}
 	static bool CanBloodDeath()
-	{
-		return (CVar.FindCVar("sv_ntm_bloodDeath").GetBool());
-	}
+		{return (CVar.FindCVar("sv_ntm_bloodDeath").GetBool());}
 	static bool CanGrenade()
-	{
-		return (CVar.FindCVar("sv_ntm_grenadiers").GetBool());
-	}
+		{return (CVar.FindCVar("sv_ntm_grenadiers").GetBool());}
 	static float Lerp(float firstFloat, float secondFloat, float by)
-	{
-		return (firstFloat * (1 - by) + secondFloat * by);
-	}
+		{return (firstFloat * (1 - by) + secondFloat * by);}
 	static int Sign(int number)
-	{
-		return (Round(Clamp(number, -1, 1)));
-	}
+		{return (Round(Clamp(number, -1, 1)));}
 	override void PlayerEntered(PlayerEvent e)
 	{
 		let pmo = players[e.playerNumber].mo;
@@ -47,33 +31,24 @@ class NTMAI : EventHandler
 			DoThingRevive(pmo);
 	}
 	override void WorldThingSpawned(WorldEvent e)
-	{
-		if (e.thing && e.thing.bIsMonster && !e.thing.CountInv("NTM_Actor"))
-			e.thing.A_GiveInventory("NTM_Actor", 1);
-	}
+		{if (e.thing && e.thing.bIsMonster && !e.thing.CountInv("NTM_Actor"))
+			e.thing.A_GiveInventory("NTM_Actor", 1);}
 	override void WorldThingDied(WorldEvent e)
-	{
-		if (e.thing.bIsMonster || e.thing is "PlayerPawn")
-			e.thing.scale.x *= FRandomPick(-1, 1);
-	}
+		{if (e.thing.bIsMonster || e.thing is "PlayerPawn")
+			e.thing.scale.x *= FRandomPick(-1, 1);}
 	override void WorldThingRevived(WorldEvent e)
-	{
-		DoThingRevive(e.thing);
-	}
+		{DoThingRevive(e.thing);}
 	override void WorldLoaded(WorldEvent e)
 	{
 		level.airControl = 0.55;
 		if (!st)
-			st = new("NTM_Thinker");
+			st = New("NTM_Thinker");
 	}
 	override void WorldUnloaded(WorldEvent e)
-	{
-		if (st)
-			st.DoDestroy();
-	}
+		{if (st)
+			st.DoDestroy();}
 	override void WorldLinePreActivated(WorldEvent e)
-	{
-		if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && CVar.FindCVar("sv_ntm_keycard").GetBool())
+		{if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && CVar.FindCVar("sv_ntm_keycard").GetBool())
 		{
 			e.shouldActivate = (NTM_Player(e.thing).curDoor != e.activatedLine) ? false : true;
 			if (NTM_Player(e.thing).curDoor != e.activatedLine)
@@ -117,8 +92,7 @@ class NTMAI : EventHandler
 					break;
 				}
 			}
-		}
-	}
+		}}
 	bool UseKey(WorldEvent e, Class<Key> keyItem, Class<NTM_OpenRed> keyAnim)
 	{
 		if (e.thing.CountInv(keyItem) && !e.thing.CountInv(keyAnim))
@@ -136,10 +110,8 @@ class NTMAI : EventHandler
 		return (false);
 	}
 	override void CheckReplacement(ReplaceEvent e)
-	{
-		if (e.replacee == "RealGibs")
-			e.replacement = "NTM_RealGibs";
-	}
+		{if (e.replacee == "RealGibs")
+			e.replacement = "NTM_RealGibs";}
 	void DoThingRevive(Actor mo)
 	{
 		if (mo.CountInv("NTM_CorpseGib"))
@@ -166,9 +138,7 @@ class NTM_System : Inventory
 			Fail;
 		Pickup:
 			TNT1 A 0
-			{
-				return true;
-			}
+				{return true;}
 			Stop;
 	}
 }

@@ -115,8 +115,7 @@ class NTM_Monster : Actor
 		return (false);
 	}
 	void A_NTMChase()
-	{
-		if (!CheckMove(pos.xy))
+		{if (!CheckMove(pos.xy))
 		{
 			A_Wander();
 			return;
@@ -142,8 +141,7 @@ class NTM_Monster : Actor
 				vel += posDif.Unit() * speed * 0.16;
 			bNoTeleport = beNoTeleport;
 			minMissileChance = bMinMissileChance;
-		}
-	}
+		}}
 	void A_LeapChase()
 	{
 		if (TryLeap(ResolveState("Leap"), JF_All))
@@ -151,15 +149,13 @@ class NTM_Monster : Actor
 		A_NTMChase();
 	}
 	void A_NTMFall(class<Actor> new = "NTM_SMG")
-	{
-		if (CheckClass("NTM_NewPlayer", AAPTR_Player1))
+		{if (CheckClass("NTM_NewPlayer", AAPTR_Player1))
 		{
 			A_DropItem(new);
 			A_NoBlocking(false);
 		}
 		else
-			A_NoBlocking();
-	}
+			A_NoBlocking();}
 }
 class NTM_Humanoid : NTM_Monster
 {
