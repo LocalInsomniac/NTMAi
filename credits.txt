@@ -1,21 +1,19 @@
 GRAPHICS:
-alandoguns
 Amuscaria
 BloodyAcid
 Blox
 Can't Sleep
 Captain J
 CeeJay
+CynicalDreamer
 David G
 DeathCold
 DenisBelmondo
-DoomNukem
 Eriance
 Gothic
 GRAU
 Hellfire
 hidfan
-Homie
 HorrorMovieGuy
 id Software
 IMX
@@ -32,7 +30,6 @@ Nash Muhandes
 Neccronixis
 Neoworm
 Raven Software
-raymoohawk
 Reikall
 Ringman
 RoastBeefo
@@ -40,7 +37,6 @@ Rogue Entertainment
 Sgt Mark IV
 Sonik.o.Fan
 Team Hellspawn
-TheRailgunner
 Vostyok
 Z86
 zrrion the insect
@@ -54,6 +50,7 @@ Jaxxoon R
 Kinsie
 Lobotomy Software
 Nash Muhandes
+REVENGE
 The Internet
 Valve Software
 YukesVonFaust
@@ -76,10 +73,11 @@ wildweasel
 Zombie
 
 GENERAL:
-BROS_ETT_311
 Captain J
+BROS_ETT_311
 DIAMOND
 EddieMann
+jankespro12
 mrtaterz
 -/Pin\-
 
