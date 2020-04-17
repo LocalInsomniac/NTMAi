@@ -4,7 +4,7 @@ Model NTM_BloodSpot
 	ZOffset 0.0001
 	Path "models"
 	Model 0 "BSPLAT.md3"
-	Skin 0 "BSPLAT"
+	Skin 0 "BSPLAT.lmp"
 	FrameIndex NBLS A 0 0
 }
 Model NTM_BloodPool
@@ -13,7 +13,7 @@ Model NTM_BloodPool
 	ZOffset 0.001
 	Path "models"
 	Model 0 "BPOOL.md3"
-	Skin 0 "BPOOL"
+	Skin 0 "BPOOL.lmp"
 	FrameIndex NBLP A 0 0
 	FrameIndex NBLP B 0 1
 }
@@ -25,6 +25,6 @@ Model NTM_BloodyFootprint
 	Scale 0.4 0.4 0.4
 	Path "models"
 	Model 0 "BFOOTP.md3"
-	Skin 0 "BFOOTP"
+	Skin 0 "BFOOTP.lmp"
 	FrameIndex NBLF A 0 0
 }
