@@ -47,7 +47,16 @@ menu/choose	dsmenpik
 menu/clear dsempty
 intro/mortar DSMORTAR
 $playersound player male *falling DSFALLIN
-player/taunt DSTAUNT
+$playersound player	male *pain100 DSPPA100
+$playersound player	male *pain75 DSPPAI75
+$playersound player	male *pain50 DSPPAI50
+$playersound player	male *pain25 DSPPAI25
+$playersound player	male *death	DSPDEATH
+$playersound player	male *xdeath DSPDHIGH
+player/taunt1 DSTAUNT1
+player/taunt2 DSTAUNT2
+player/taunt3 DSTAUNT3
+player/taunt {player/taunt1 player/taunt2 player/taunt3}
 misc/break DSGLASS
 revenant/fly DSJETPAC
 grenade/pin DSGRENAD
