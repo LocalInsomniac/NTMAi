@@ -56,7 +56,7 @@ $playersound player	male *xdeath DSPDHIGH
 player/taunt1 DSTAUNT1
 player/taunt2 DSTAUNT2
 player/taunt3 DSTAUNT3
-player/taunt {player/taunt1 player/taunt2 player/taunt3}
+$random player/taunt {player/taunt1 player/taunt2 player/taunt3}
 misc/break DSGLASS
 revenant/fly DSJETPAC
 grenade/pin DSGRENAD
