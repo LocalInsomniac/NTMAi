@@ -1357,7 +1357,7 @@ class NTM_GrenadeLauncher : NTM_RocketLauncher
 			NGLA B 3 Bright
 			{
 				A_WeaponOffset(16, 56, WOF_Interpolate);
-				A_FireProjectile("NTM_Boom2", 0, true, 0, 10);
+				A_FireProjectile("NTM_Boom2", 0, true, 5, -2);
 			}
 			NGLA C 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
 			NGLA D 3 Bright A_WeaponOffset(12, 50, WOF_Interpolate);

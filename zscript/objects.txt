@@ -35,9 +35,7 @@ class NTM_Column : NTM_Breakable replaces Column
 class NTM_TechLamp : NTM_Breakable replaces TechLamp
 {
 	Default
-	{
-		Height 80;
-	}
+		{Height 80;}
 	States
 	{
 		Spawn:
@@ -55,9 +53,7 @@ class NTM_TechLamp : NTM_Breakable replaces TechLamp
 class NTM_TechLamp2 : NTM_Breakable replaces TechLamp2
 {
 	Default
-	{
-		Height 60;
-	}
+		{Height 60;}
 	States
 	{
 		Spawn:
@@ -160,9 +156,7 @@ class NTM_LiveStick : NTM_DeadStick replaces LiveStick
 class NTM_Meat : NTM_HangNoGuts replaces Meat2
 {
 	Default
-	{
-		Health 60;
-	}
+		{Health 60;}
 	States
 	{
 		Spawn:
@@ -171,7 +165,7 @@ class NTM_Meat : NTM_HangNoGuts replaces Meat2
 		Death:
 			GOR2 A 0
 			{
-				A_PlaySound("misc/gibbed");
+				A_XScream();
 				A_SpawnItemEx("Meat4", -4, 0, 16);
 				A_SpawnItemEx("NTM_FlyingGib1", 0, 0, 4, Random(-2, 2), Random(-2, 2));
 				A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 16, Random(-2, 2), Random(-2, 2));
@@ -190,7 +184,7 @@ class NTM_Meat2 : NTM_Meat replaces Meat3
 		Death:
 			GOR3 A 0
 			{
-				A_PlaySound("misc/gibbed");
+				A_XScream();
 				A_SpawnItemEx("Meat5", -1, 0, 32);
 				A_SpawnItemEx("NTM_FlyingGib1", 0, 0, 4, Random(-2, 2), Random(-2, 2));
 				A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 16, Random(-2, 2), Random(-2, 2));
@@ -202,15 +196,13 @@ class NTM_Meat2 : NTM_Meat replaces Meat3
 class NTM_Meat3 : NTM_Meat replaces NonsolidMeat2
 {
 	Default
-	{
-		-Solid
-	}
+		{-Solid}
 	States
 	{
 		Death:
 			GOR2 A 0
 			{
-				A_PlaySound("misc/gibbed");
+				A_XScream();
 				A_SpawnItemEx("NonsolidMeat4", -4, 0, 16);
 				A_SpawnItemEx("NTM_FlyingGib1", 0, 0, 4, Random(-2, 2), Random(-2, 2));
 				A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 16, Random(-2, 2), Random(-2, 2));
@@ -229,7 +221,7 @@ class NTM_Meat4 : NTM_Meat3 replaces NonsolidMeat3
 		Death:
 			GOR3 A 0
 			{
-				A_PlaySound("misc/gibbed");
+				A_XScream();
 				A_SpawnItemEx("NonsolidMeat5", -1, 0, 32);
 				A_SpawnItemEx("NTM_FlyingGib1", 0, 0, 4, Random(-2, 2), Random(-2, 2));
 				A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 16, Random(-2, 2), Random(-2, 2));
