@@ -96,9 +96,7 @@ class NTM_Player : DoomPlayer
 		}
 	}
 	bool Cheater()
-	{
-		return (bNoClip || bFly || waterLevel > 0);
-	}
+		{return (bNoClip || bFly || waterLevel > 0);}
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
@@ -218,7 +216,7 @@ class NTM_NewPlayer : NTM_Player
 		Player.StartItem "Clip", 50;
 		Player.WeaponSlot 1, "NTM_Fist", "NTM_Mutilator";
 		Player.WeaponSlot 2, "NTM_Rifle";
-		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SawedOff";
+		Player.WeaponSlot 3, "NTM_AShotgun", "NTM_SawedOff";
 		Player.WeaponSlot 4, "NTM_SMG";
 		Player.WeaponSlot 5, "NTM_GrenadeLauncher";
 		Player.WeaponSlot 6, "NTM_Flamethrower";
@@ -608,6 +606,15 @@ class NTM_ChaingunSpawn : NTM_PistolSpawn replaces Chaingun
 			Stop;
 	}
 }
+class NTM_ShotSpawn : NTM_PistolSpawn replaces Shotgun
+{
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SpawnClass("NTM_Shotgun", "NTM_AShotgun");
+			Stop;
+	}
+}
 class NTM_SuperSpawn : NTM_PistolSpawn replaces SuperShotgun
 {
 	States
@@ -790,7 +797,7 @@ class NTM_PistolShots : Inventory
 			Fail;
 	}
 }
-class NTM_Shotgun : NTM_Weapon replaces Shotgun
+class NTM_Shotgun : NTM_Weapon
 {
 	Default
 	{
@@ -867,6 +874,67 @@ class NTM_Shotgun : NTM_Weapon replaces Shotgun
 			Goto LightDone;
 		Spawn:
 			SHOT A -1;
+			Stop;
+	}
+}
+class NTM_AShotgun : NTM_Shotgun
+{
+	States
+	{
+		Deselect:
+			NASH A 1 A_Lower(10);
+			Loop;
+		Select:
+			NASH A 1 A_Raise(10);
+			Loop;
+		Ready:
+			NASH A 1 A_WeaponReady();
+			Loop;
+		Fire:
+			NASH B 4 Bright
+			{
+				A_FireBullets(5.6, 0, 7, 5, "BulletPuff");
+				A_PlaySound("weapons/shotgf", 1);
+				A_GunFlash();
+				A_AlertMonsters();
+			}
+			NASH ACDE 4;
+			NASH F 4
+			{
+				A_SpawnItemEx("NTM_ShellCasing", -8, 16, 28, -4, 0, 4, 90);
+				A_PlaySound("weapons/shotcock");
+			}
+			NASH EDC 4;
+			NASH A 0 A_Refire;
+			Goto Ready;
+		AltFire:
+			NASH A 0 A_JumpIfInventory("NTM_ExplosiveShell", 1, 1);
+			Goto Ready;
+			NASH B 4 Bright
+			{
+				A_FireProjectile("NTM_BoomShell");
+				A_FireBullets(5.6, 0, 4, 5);
+				A_PlaySound("weapons/shotgf", 1);
+				A_GunFlash();
+				if (!sv_infiniteAmmo)
+					A_TakeInventory("NTM_ExplosiveShell", 1);
+				A_AlertMonsters();
+			}
+			NASH ACDE 4;
+			NASH F 4
+			{
+				A_SpawnItemEx("NTM_ShellCasing2", -8, 16, 28, -4, 0, 4, 90);
+				A_PlaySound("weapons/shotcock");
+			}
+			NASH EDC 4;
+			NASH A 0 A_Refire;
+			Goto Ready;
+		Flash:
+			TNT1 A 2 A_Light2;
+			TNT1 A 2 A_Light1;
+			Goto LightDone;
+		Spawn:
+			NASH G -1;
 			Stop;
 	}
 }

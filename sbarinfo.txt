@@ -15,18 +15,25 @@ StatusBar Normal
 	DrawString NTMFONT, Yellow, "2-4:   /", 102, 179, 0, Alignment(Center);
 	DrawNumber 3, NTMFONT, Yellow, Ammo("Clip"), 114, 179;
 	DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Clip"), 131, 179;	
-	InInventory NTM_Shotgun || NTM_SuperShotgun || NTM_SawedOff
+	InInventory NTM_AShotgun || NTM_SawedOff
 	{
 		DrawString NTMFONT, Yellow, "3:     /", 102, 187, 0, Alignment(Center);
 		DrawNumber 3, NTMFONT, Yellow, Ammo("Shell"), 114, 187;
 		DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Shell"), 131, 187;
 	}
 	else
-	{
-		DrawString NTMFONT, DarkGray, "3:     /", 102, 187, 0, Alignment(Center);
-		DrawNumber 3, NTMFONT, DarkGray, Ammo("Shell"), 114, 187;
-		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("Shell"), 131, 187;
-	}
+		InInventory NTM_Shotgun || NTM_SuperShotgun
+		{
+			DrawString NTMFONT, Yellow, "3:     /", 102, 187, 0, Alignment(Center);
+			DrawNumber 3, NTMFONT, Yellow, Ammo("Shell"), 114, 187;
+			DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Shell"), 131, 187;
+		}
+		else
+		{
+			DrawString NTMFONT, DarkGray, "3:     /", 102, 187, 0, Alignment(Center);
+			DrawNumber 3, NTMFONT, DarkGray, Ammo("Shell"), 114, 187;
+			DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("Shell"), 131, 187;
+		}
 	InInventory NTM_RocketLauncher || NTM_GrenadeLauncher
 	{
 		DrawString NTMFONT, Yellow, "5:     /", 156, 179, 0, Alignment(Center);
@@ -39,20 +46,32 @@ StatusBar Normal
 		DrawNumber 3, NTMFONT, DarkGray, Ammo("RocketAmmo"), 168, 179;
 		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("RocketAmmo"), 185, 179;
 	}
-	InInventory NTM_PlasmaRifle || NTM_BFG9000
+	InInventory NTM_Flamethrower || NTM_Unmaker
 	{
 		DrawString NTMFONT, Yellow, "6-7:   /", 156, 187, 0, Alignment(Center);
 		DrawNumber 3, NTMFONT, Yellow, Ammo("Cell"), 168, 187;
 		DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Cell"), 185, 187;
 	}
 	else
-	{
-		DrawString NTMFONT, DarkGray, "6-7:   /", 156, 187, 0, Alignment(Center);
-		DrawNumber 3, NTMFONT, DarkGray, Ammo("Cell"), 168, 187;
-		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("Cell"), 185, 187;
-	}
+		InInventory NTM_PlasmaRifle || NTM_BFG9000
+		{
+			DrawString NTMFONT, Yellow, "6-7:   /", 156, 187, 0, Alignment(Center);
+			DrawNumber 3, NTMFONT, Yellow, Ammo("Cell"), 168, 187;
+			DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Cell"), 185, 187;
+		}
+		else
+		{
+			DrawString NTMFONT, DarkGray, "6-7:   /", 156, 187, 0, Alignment(Center);
+			DrawNumber 3, NTMFONT, DarkGray, Ammo("Cell"), 168, 187;
+			DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("Cell"), 185, 187;
+		}
 	DrawSelectedInventory AlwaysShowCounter, NTM_Digit, 230, 171, 269, 183;
 	IsSelected NTM_Shotgun
+	{
+		DrawImage "NESHA0", 310, 152, CenterBottom;
+		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 311, 155;
+	}
+	IsSelected NTM_AShotgun
 	{
 		DrawImage "NESHA0", 310, 152, CenterBottom;
 		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 311, 155;
@@ -79,11 +98,18 @@ StatusBar FullScreen, ForceScaled, FullScreenOffsets
 	Else
 		DrawKeyBar 100, Vertical, ReverseRows, Auto, -10, 2, 0, 3, Auto;
 	IfCVarInt sv_ntm_boomShell, 1
+	{
 		IsSelected NTM_Shotgun
 		{
 			DrawImage "NESHA0", 162, -18, None;
 			DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
 		}
+		IsSelected NTM_AShotgun
+		{
+			DrawImage "NESHA0", 162, -18, None;
+			DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
+		}
+	}
 	IfCVarInt sv_ntm_homingRocket, 1
 		IsSelected NTM_RocketLauncher
 		{

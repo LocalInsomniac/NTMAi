@@ -1,123 +1,33 @@
-AMMOA = "NVAMMO"
-{
-	Scale = 0.9
-}
-CELLA = "NVCELL"
-{
-	Scale = 0.9
-}
-CELPA = "NVCELP"
-{
-	Scale = 0.9
-}
-CLIPA = "NVCLIP"
-{
-	Scale = 0.9
-}
-BROKA = "NVBROK"
-{
-	Scale = 0.9
-}
-ROCKA = "NVROCK"
-{
-	Scale = 0.9
-}
-SBOXA = "NVSBOX"
-{
-	Scale = 0.9
-}
-SHELA = "NVSHEL"
-{
-	Scale = 0.9
-}
-BON2A = "NVBON2A"
-{
-	Scale = 0.9
-}
-BON2B = "NVBON2B"
-{
-	Scale = 0.9
-}
-BON2C = "NVBON2C"
-{
-	Scale = 0.9
-}
-BON2D = "NVBON2D"
-{
-	Scale = 0.9
-}
-ARM1A = "NVARM1A"
-{
-	Scale = 0.9
-}
-ARM1B = "NVARM1B"
-{
-	Scale = 0.9
-}
-ARM2A = "NVARM2A"
-{
-	Scale = 0.9
-}
-ARM2B = "NVARM2B"
-{
-	Scale = 0.9
-}
-BPAKA = "NVBPAK"
-{
-	Scale = 0.9
-}
-PMAPA = "NVPMAPA"
-{
-	Scale = 0.9
-}
-PMAPB = "NVPMAPB"
-{
-	Scale = 0.9
-}
-PMAPC = "NVPMAPC"
-{
-	Scale = 0.9
-}
-PMAPD = "NVPMAPD"
-{
-	Scale = 0.9
-}
-BON1A = "NVBON1A"
-{
-	Scale = 0.9
-}
-BON1B = "NVBON1B"
-{
-	Scale = 0.9
-}
-BON1C = "NVBON1C"
-{
-	Scale = 0.9
-}
-BON1D = "NVBON1D"
-{
-	Scale = 0.9
-}
-MEDIA = "NVMEDI"
-{
-	Scale = 0.9
-}
-STIMA = "NVSTIM"
-{
-	Scale = 0.9
-}
-SUITA = "NVSUIT"
-{
-	Scale = 0.9
-}
-PVISA = "NVPVISA"
-{
-	Scale = 0.9
-}
-PVISB = "NVPVISB"
-{
-	Scale = 0.9
-}
+AMMOA = "NVAMMO" {Scale = 0.9}
+CELLA = "NVCELL" {Scale = 0.9}
+CELPA = "NVCELP" {Scale = 0.9}
+CLIPA = "NVCLIP" {Scale = 0.9}
+BROKA = "NVBROK" {Scale = 0.9}
+ROCKA = "NVROCK" {Scale = 0.9}
+SBOXA = "NVSBOX" {Scale = 0.9}
+SHELA = "NVSHEL" {Scale = 0.9}
+BON2A = "NVBON2A" {Scale = 0.9}
+BON2B = "NVBON2B" {Scale = 0.9}
+BON2C = "NVBON2C" {Scale = 0.9}
+BON2D = "NVBON2D" {Scale = 0.9}
+ARM1A = "NVARM1A" {Scale = 0.9}
+ARM1B = "NVARM1B" {Scale = 0.9}
+ARM2A = "NVARM2A" {Scale = 0.9}
+ARM2B = "NVARM2B" {Scale = 0.9}
+BPAKA = "NVBPAK" {Scale = 0.9}
+PMAPA = "NVPMAPA" {Scale = 0.9}
+PMAPB = "NVPMAPB" {Scale = 0.9}
+PMAPC = "NVPMAPC" {Scale = 0.9}
+PMAPD = "NVPMAPD" {Scale = 0.9}
+BON1A = "NVBON1A" {Scale = 0.9}
+BON1B = "NVBON1B" {Scale = 0.9}
+BON1C = "NVBON1C" {Scale = 0.9}
+BON1D = "NVBON1D" {Scale = 0.9}
+MEDIA = "NVMEDI" {Scale = 0.9}
+STIMA = "NVSTIM" {Scale = 0.9}
+SUITA = "NVSUIT" {Scale = 0.9}
+PVISA = "NVPVISA" {Scale = 0.9}
+PVISB = "NVPVISB" {Scale = 0.9}
 BKEYA = "NVBKEY"
 {
 	Scale = 0.9
@@ -178,79 +88,23 @@ YSKUB = "NVYSKU"
 	Scale = 0.9
 	Spin = 100
 }
-CSAWA = "NVCSAW"
-{
-	Scale = 0.9
-}
-PISTA = "NVPIST"
-{
-	Scale = 0.9
-}
-SHOTA = "NVSHOT"
-{
-	Scale = 0.9
-}
-SGN2A = "NVSGN2"
-{
-	Scale = 0.9
-}
-MGUNA = "NVMGUN"
-{
-	Scale = 0.9
-}
-NLAUA = "NVNLAU"
-{
-	Scale = 0.9
-}
-PLASA = "NVPLAS"
-{
-	Scale = 0.9
-}
-BFUGA = "NVBFUG"
-{
-	Scale = 0.9
-}
-NBBAA = "NVBAR1"
-{
-	Scale = 0.9
-}
-NBBAB = "NVBAR1"
-{
-	Scale = 0.9
-}
-NBBAC = "NVBAR1"
-{
-	Scale = 0.9
-}
-NPMKA = "NVNPMK"
-{
-	Scale = 0.9
-}
-NBERA = "NVNBER"
-{
-	Scale = 0.9
-}
-NSAWI = "NVNSAW"
-{
-	Scale = 0.9
-}
-NSARD = "NVNSAR"
-{
-	Scale = 0.9
-}
-NSMGG = "NVNSMG"
-{
-	Scale = 0.9
-}
-NDCSE = "NVNDCS"
-{
-	Scale = 0.9
-}
-NGLAE = "NVNGLA"
-{
-	Scale = 0.9
-}
-NFTHC = "NVNFTH"
-{
-	Scale = 0.9
-}
+CSAWA = "NVCSAW" {Scale = 0.9}
+PISTA = "NVPIST" {Scale = 0.9}
+SHOTA = "NVSHOT" {Scale = 0.9}
+SGN2A = "NVSGN2" {Scale = 0.9}
+MGUNA = "NVMGUN" {Scale = 0.9}
+NLAUA = "NVNLAU" {Scale = 0.9}
+PLASA = "NVPLAS" {Scale = 0.9}
+BFUGA = "NVBFUG" {Scale = 0.9}
+NBBAA = "NVBAR1" {Scale = 0.9}
+NBBAB = "NVBAR1" {Scale = 0.9}
+NBBAC = "NVBAR1" {Scale = 0.9}
+NPMKA = "NVNPMK" {Scale = 0.9}
+NBERA = "NVNBER" {Scale = 0.9}
+NSAWI = "NVNSAW" {Scale = 0.9}
+NSARD = "NVNSAR" {Scale = 0.9}
+NSMGG = "NVNSMG" {Scale = 0.9}
+NDCSE = "NVNDCS" {Scale = 0.9}
+NGLAE = "NVNGLA" {Scale = 0.9}
+NFTHC = "NVNFTH" {Scale = 0.9}
+NASHG = "NVNASH" {Scale = 0.9}

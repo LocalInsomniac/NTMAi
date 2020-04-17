@@ -160,9 +160,7 @@ class NTM_Monster : Actor
 class NTM_Humanoid : NTM_Monster
 {
 	Default
-	{
-		Height 56;
-	}
+		{Height 56;}
 	States
 	{
 		Death.Fire:
@@ -170,6 +168,13 @@ class NTM_Humanoid : NTM_Monster
 			{
 				if (CVar.FindCVar("sv_ntm_burn").GetBool())
 				{
+					if (self is "NTM_ShotgunGuy")
+						A_NTMFall("NTM_AShotgun");
+					else
+						if (self is "NTM_ChaingunGuy")
+							A_NTMFall("NTM_SMG");
+							else
+								A_NoBlocking();
 					NTM_Burn burn = NTM_Burn(Spawn("NTM_Burn", pos));
 					burn.original = GetClassName();
 					return (State(null));
@@ -237,10 +242,7 @@ class NTM_Zombieman : NTM_Humanoid replaces Zombieman
 			NZOM G 0 A_JumpIf((health <= 10 && Random(0, 1)), "Duck");
 			Goto See;
 		Duck:
-			NZOM S Random(10, 30)
-			{
-				painChance = 0;
-			}
+			NZOM S Random(10, 30) {painChance = 0;}
 			NZOM T 10
 			{
 				if (Random(0, 1))
@@ -253,10 +255,7 @@ class NTM_Zombieman : NTM_Humanoid replaces Zombieman
 			NZOM T 2 A_FaceTarget;
 			NZOM U 2 Bright A_NTMPosAttack;
 			NZOM T 8;
-			NZOM T 0
-			{
-				painChance = default.painChance;
-			}
+			NZOM T 0 {painChance = default.painChance;}
 			Goto See;
 		Death:
 			NZOM H 5;
@@ -290,9 +289,7 @@ class NTM_Zombieman : NTM_Humanoid replaces Zombieman
 			Goto See;
 	}
 	void A_NTMPosAttack()
-	{
-		A_CustomBulletAttack(30, 0, 1, Random(1,5), "BulletPuff", 0, CBAF_NORANDOM);
-	}
+		{A_CustomBulletAttack(30, 0, 1, Random(1,5), "BulletPuff", 0, CBAF_NoRandom);}
 }
 class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy
 {
@@ -320,10 +317,7 @@ class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy
 			NZOM E 10;
 			Goto See;
 		Duck:
-			NZOM S Random(10, 30)
-			{
-				painChance = 0;
-			}
+			NZOM S Random(10, 30) {painChance = 0;}
 			NZOM T 10
 			{
 				if (Random(0, 1))
@@ -332,11 +326,35 @@ class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy
 			}
 			NZOM U 8 Bright A_SPosAttackUseAtkSound;
 			NZOM T 10;
-			NZOM T 0
-			{
-				painChance = default.painChance;
-			}
+			NZOM T 0 {painChance = default.painChance;}
 			Goto See;
+		Death:
+			NZOM H 5;
+			NZOM I 5 A_Scream;
+			NZOM J 5 A_NTMFall("NTM_AShotgun");
+			NZOM K 5;
+			NZOM L 0;
+			#### # -1;
+			Stop;
+		Death.Saw:
+			NZOM MMMMM 10 A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 32, Random(-4, 4), Random(-4, 4), Random(0, 2));
+			NZOM N 7 A_Scream;
+			NZOM O 7 A_NTMFall("NTM_AShotgun");
+			NZOM PQ 7;
+			NZOM R 0;
+		Bleed:
+			#### # 0 A_Jump(96, 3);
+			#### ### 3 A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-3, 3), Random(-3, 3), Random(10, 5), failchance: 56);
+			#### # Random(35, 70) A_Jump(96, 1);
+			Goto Bleed + 1;
+			#### # -1;
+			Stop;
+		XDeath:
+			NMGI A 5 A_XScream;
+			NMGI B 5 A_NTMFall("NTM_AShotgun");
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
 	}
 }
 class NTM_ChaingunGuy : NTM_Humanoid replaces ChaingunGuy
@@ -365,10 +383,7 @@ class NTM_ChaingunGuy : NTM_Humanoid replaces ChaingunGuy
 			NCGZ A 10 A_Look;
 			Loop;
 		See:
-			NCGZ A 0
-			{
-				fired = false;
-			}
+			NCGZ A 0 {fired = false;}
 			NCGZ AABBCCDD 3 A_NTMChase;
 			Goto See + 1;
 		Missile:
@@ -385,7 +400,7 @@ class NTM_ChaingunGuy : NTM_Humanoid replaces ChaingunGuy
 			NCGZ G 3 A_Pain;
 			Goto See;
 		Death:
-			NCGZ H 6 A_JumpIf((fired && Random(0, 1)), "Death2");
+			NCGZ H 6 A_JumpIf(fired && Random(0, 1), "Death2");
 			NCGZ I 6 A_Scream;
 			NCGZ J 6;
 			NCGZ K 6;
