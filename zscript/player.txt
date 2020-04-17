@@ -86,15 +86,13 @@ class NTM_Player : DoomPlayer
 			Stop;
 	}
 	void A_PlayerJump()
-	{
-		if (!Cheater())
+		{if (!Cheater())
 		{
 			if (vel.z > 0)
 				SetStateLabel("Jump");
 			if (vel.z < 0)
 				SetStateLabel("Fall");
-		}
-	}
+		}}
 	bool Cheater()
 		{return (bNoClip || bFly || waterLevel > 0);}
 	override void PostBeginPlay()
@@ -247,9 +245,7 @@ class NTM_PlayerHead : PlayerChunk
 				player.attacker = null;
 			}
 			NHEA A 0
-			{
-				scale.x *= FRandomPick(-1, 1);
-			}
+				{scale.x *= FRandomPick(-1, 1);}
 			NHEA ABCD 3 A_JumpIf((pos.z <= floorZ && vel.z == 0), "Death");
 			Goto Spawn + 2;
 		Bounce.Floor:
@@ -264,9 +260,7 @@ class NTM_OpenRed : Weapon
 {
 	class<Weapon> prevWeapon;
 	Default
-	{
-		+Inventory.Undroppable
-	}
+		{+Inventory.Undroppable}
 	States
 	{
 		Select:
@@ -283,9 +277,7 @@ class NTM_OpenRed : Weapon
 			Stop;
 	}
 	action void A_SelectPrev()
-	{
-		A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
-	}
+		{A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);}
 }
 class NTM_OpenYellow : NTM_OpenRed
 {
@@ -1244,12 +1236,8 @@ class NTM_SMG : NTM_Chaingun
 	}
 }
 class NTM_SMGShots : NTM_PistolShots
-{
-	Default
-	{
-		Inventory.MaxAmount 30;
-	}
-}
+	{Default
+		{Inventory.MaxAmount 30;}}
 class NTM_RocketLauncher : NTM_Weapon
 {
 	Default
