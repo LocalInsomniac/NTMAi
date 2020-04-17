@@ -240,7 +240,7 @@ class NTM_Actor : NTM_System
 								owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
 							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 						}
-						if (owner.target is "NTM_Player" && !Random(0, 3) && CVar.FindCVar("cl_ntm_taunt").GetBool())
+						if (owner.target is "NTM_Player" && !Random(0, 5) && CVar.FindCVar("cl_ntm_taunt").GetBool())
 							owner.A_GiveToTarget("NTM_Taunt");
 						gibbed = true;
 					}
