@@ -649,6 +649,7 @@ class NTM_Demon : NTM_Monster replaces Demon
 			NDEM N 1 A_Leap;
 			Loop;
 		Melee:
+			NDEM E 0 {painChance = default.painChance;}
 			NDEM EF 7 Fast A_FaceTarget;
 			NDEM G 7 Fast A_SargAttack;
 			Goto See;
@@ -1211,7 +1212,6 @@ class NTM_Revenant : NTM_Monster replaces Revenant
 		if (NTMAI.CanFly())
 		{
 			if (!doStopFlying && level.time - lastFlyTimer > 175 && !Random(0, 32))
-			{
 				if (bNoGravity)
 				{
 					doStopFlying = true;
@@ -1227,9 +1227,7 @@ class NTM_Revenant : NTM_Monster replaces Revenant
 					vel.z += 4;
 					painChance = 0;
 				}
-			}
 			if (doStopFlying)
-			{
 				if (pos.z - GetGroundHeight() < MaxStepHeight)
 				{
 					A_StopSound(5);
@@ -1244,7 +1242,6 @@ class NTM_Revenant : NTM_Monster replaces Revenant
 					SetOrigin(pos + (0, 0, -1) * speed, true);
 					return;
 				}
-			}
 		}
         A_NTMChase();
 	}
