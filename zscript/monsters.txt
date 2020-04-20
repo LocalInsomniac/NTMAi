@@ -765,6 +765,12 @@ class NTM_LostSoul : NTM_Monster replaces LostSoul
 			}
 			Stop;
 	}
+	override bool Slam(Actor victim)
+	{
+		if (!victim || (!victim.bSolid && !victim.bShootable))
+			return (true);
+		return (super.Slam(victim));
+	}
 }
 class NTM_Cacodemon : NTM_Monster replaces Cacodemon
 {
