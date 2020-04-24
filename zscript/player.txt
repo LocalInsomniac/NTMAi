@@ -764,7 +764,7 @@ class NTM_Rifle : NTM_Pistol
 			NSAR A 5 A_WeaponOffset;
 			Goto Ready;
 		Crosshair:
-			NSAR C 700 Bright;
+			NSAR C 37 Bright;
 			Loop;
 		Flash:
 			TNT1 A 3 A_Light2;
@@ -1345,7 +1345,7 @@ class NTM_GrenadeLauncher : NTM_RocketLauncher
 			NGLA B 3 Bright
 			{
 				A_WeaponOffset(16, 56, WOF_Interpolate);
-				A_FireProjectile("NTM_Boom2", 0, true, 5, -2);
+				A_FireProjectile("NTM_Boom2", 0, true, 5, -2, pitch: -5);
 			}
 			NGLA C 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
 			NGLA D 3 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
@@ -1767,6 +1767,7 @@ class NTM_Boom2 : NTM_Boom
 		Scale 1;
 		Speed 25;
 		Gravity 0.3;
+		BounceFactor 0.4;
 	}
 	States
 	{
