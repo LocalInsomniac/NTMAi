@@ -280,7 +280,7 @@ class NTM_GibMeat : RealGibs
 	}
 	override void BeginPlay()
 	{
-		if (Abs(pos.z + ceilingZ) > 16)
+		if (Abs(ceilingZ - pos.z) > 16)
 		{
 			Destroy();
 			return;
