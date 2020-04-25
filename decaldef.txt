@@ -1,3 +1,11 @@
+Decal BulletChip
+{
+	Pic NBULLET
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+}
 generator NTM_Pistol BulletChip
 generator NTM_Chainsaw BulletChip
 generator NTM_Shotgun BulletChip
@@ -22,11 +30,3 @@ generator NTM_CacodemonBall	CacoScorch
 generator NTM_ImpBall DoomImpScorch
 generator NTM_FatShot Scorch
 generator NTM_RevenantTracer RevenantScorch
-Decal BulletChip
-{
-	Pic NBULLET
-	X-Scale 0.4
-	Y-Scale 0.4
-    RandomFlipX
-    RandomFlipY
-}

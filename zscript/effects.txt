@@ -62,9 +62,7 @@ class NTM_Shadow : Actor
 class NTM_Blood : Blood replaces Blood
 {
 	Default
-	{
-		+NotOnAutomap
-	}
+		{+NotOnAutomap}
 	States
 	{
 		Spawn:
