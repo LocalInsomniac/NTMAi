@@ -215,7 +215,7 @@ class NTM_NewPlayer : NTM_Player
 		Player.WeaponSlot 1, "NTM_Fist", "NTM_Mutilator";
 		Player.WeaponSlot 2, "NTM_Rifle";
 		Player.WeaponSlot 3, "NTM_AShotgun", "NTM_SawedOff";
-		Player.WeaponSlot 4, "NTM_SMG";
+		Player.WeaponSlot 4, "NTM_SMG", "NTM_SMGDual";
 		Player.WeaponSlot 5, "NTM_GrenadeLauncher";
 		Player.WeaponSlot 6, "NTM_Flamethrower";
 		Player.WeaponSlot 7, "NTM_Unmaker";
@@ -575,6 +575,8 @@ class NTM_ChainsawSpawn : NTM_PistolSpawn replaces Chainsaw
 }
 class NTM_PistolSpawn : Actor replaces Pistol
 {
+	Default
+		{+WeaponSpawn}
 	States
 	{
 		Spawn:
@@ -594,7 +596,7 @@ class NTM_ChaingunSpawn : NTM_PistolSpawn replaces Chaingun
 	States
 	{
 		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_Chaingun", "NTM_SMG");
+			TNT1 A 0 NoDelay A_SpawnClass("NTM_Chaingun", "NTM_SMGPickup");
 			Stop;
 	}
 }
@@ -1148,7 +1150,6 @@ class NTM_SMG : NTM_Chaingun
 {
 	Default
 	{
-		Inventory.PickupMessage "You got the Super SMG!";
 		Obituary "%k turned %o into swiss cheese.";
 		Tag "Super SMG";
 		Weapon.UpSound "weapons/bigclip";
@@ -1220,9 +1221,6 @@ class NTM_SMG : NTM_Chaingun
 		Flash:
 			TNT1 A 1 A_Light2;
 			Goto LightDone;
-		Spawn:
-			NSMG G -1;
-			Stop;
 	}
 	action void A_SMGFire()
 	{
@@ -1235,9 +1233,40 @@ class NTM_SMG : NTM_Chaingun
 		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
 	}
 }
+class NTM_SMGDual : NTM_SMG {}
 class NTM_SMGShots : NTM_PistolShots
 	{Default
 		{Inventory.MaxAmount 30;}}
+class NTM_SMGPickup : CustomInventory
+{
+	Default
+	{
+		Inventory.PickupMessage "You got a Super SMG!";
+		Inventory.PickupSound "misc/w_pkup";
+	}
+	States
+	{
+		Spawn:
+			NSMG G -1;
+			Stop;
+		Pickup:
+			TNT1 A 0
+			{
+				if (CountInv("NTM_SMGDual"))
+					A_GiveInventory("Clip", 20);
+				else
+					if (CountInv("NTM_SMG"))
+					{
+						A_TakeInventory("NTM_SMG");
+						A_GiveInventory("NTM_SMGDual");
+					}
+					else
+						A_GiveInventory("NTM_SMG");
+					
+			}
+			Stop;
+	}
+}
 class NTM_RocketLauncher : NTM_Weapon
 {
 	Default

@@ -148,7 +148,7 @@ class NTM_Monster : Actor
 			return;
 		A_NTMChase();
 	}
-	void A_NTMFall(class<Actor> new = "NTM_SMG")
+	void A_NTMFall(class<Actor> new = "NTM_SMGPickup")
 		{if (CheckClass("NTM_NewPlayer", AAPTR_Player1))
 		{
 			A_DropItem(new);
