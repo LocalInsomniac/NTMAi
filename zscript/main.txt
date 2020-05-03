@@ -289,7 +289,7 @@ class NTM_Thinker : Thinker
 		BlockThingsIterator it = BlockThingsIterator.Create(camera, shadowDist);
 		while (it.Next())
 		{
-			let other = it.Thing;
+			let other = it.thing;
 			if ((other.Distance3D(camera) - 1) < shadowDist)
 			{
 				if (!(other.bIsMonster || other is "PlayerPawn"))
@@ -321,8 +321,9 @@ class NTM_Thinker : Thinker
 				for (int j = 0; j < shadowCasters.Size(); j++)
 					if (shadowCasters[j] && shadowCasters[j].mo == other)
 					{
-						if (shadowCasters[j].shadow) shadowCasters[j].shadow.Destroy();
-							shadowCasters.Delete(j);
+						if (shadowCasters[j].shadow)
+							shadowCasters[j].shadow.Destroy();
+						shadowCasters.Delete(j);
 						break;
 					}
 			for (int k = 0; k < shadowCasters.Size(); k++)
@@ -339,7 +340,7 @@ class NTM_Thinker : Thinker
 			shadowCasters.Push(sc);
 		}
 	}
-	void DoDestroy(void)
+	void DoDestroy()
 	{
 		shadowCasters.Clear();
 		ThinkerIterator it = ThinkerIterator.Create("NTM_Shadow");

@@ -16,14 +16,15 @@ class NTM_Shadow : Actor
 		{
 			if (bInvisible = (caster is "PlayerPawn" && players[consolePlayer].camera && players[consolePlayer].camera == caster && !(caster.player.cheats & CF_CHASECAM)))
 				return;
+			bInvisible = caster.bCorpse;
 			sprite = caster.sprite;
 			frame = caster.frame;
 			angle = caster.angle;
 			alpha = caster.alpha * 0.5;
 			scale.x = caster.scale.x;
 			scale.y = caster.scale.y * 0.1;
-			double shadowPosZ = caster.FloorZ;
-			if (caster.Pos.Z > FloorZ)
+			double shadowPosZ = caster.floorZ;
+			if (caster.pos.z > floorZ)
 			{
 				Actor onmo = FindOnMobj(caster, 128);
 				if (onmo && onmo.pos.z + onmo.height > floorZ)
