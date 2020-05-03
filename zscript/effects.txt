@@ -593,8 +593,18 @@ class NTM_RailRed : NTM_Rail
 {
 	Default
 	{
+		+AlwaysPuff
 		Scale 0.5;
 		Translation "192:207=176:191", "4:4=176:176";
+	}
+}
+class NTM_RailRed2 : NTM_Rail
+{
+	States
+	{
+		Spawn:
+			NUNR ABC 3;
+			Stop;
 	}
 }
 class NTM_Burn : NTM_Monster

@@ -1705,7 +1705,8 @@ class NTM_Unmaker : NTM_BFG9000
 		Fire:
 			NUNM C 2 Bright
 			{
-				A_RailAttack(Random(1, 10) * 10, 5, true, "", "", RGF_Silent, 0, "", 0, 0, 0, 0, 64, 1, "NTM_RailRed", 0, 270, 1);
+				for (int i = -1; i < 2; i++)
+					A_RailAttack(Random(1, 10) * 3.3, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
 				A_PlaySound("weapons/unmaker", 1);
 				A_WeaponOffset(10, 42, WOF_Interpolate);
 			}
