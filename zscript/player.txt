@@ -1235,6 +1235,8 @@ class NTM_SMG : NTM_Chaingun
 }
 class NTM_SMGDual : NTM_SMG
 {
+	Default
+		{Tag "Dual Super SMGs";}
 	States
 	{
 		Deselect:
@@ -1317,7 +1319,7 @@ class NTM_SMGDual : NTM_SMG
 		A_AlertMonsters();
 		A_GiveInventory("NTM_SMGShots", 1);
 		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
-		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
+		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, -5, -2, 48);
 	}
 }
 class NTM_SMGShots : NTM_PistolShots
