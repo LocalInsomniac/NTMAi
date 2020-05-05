@@ -1233,7 +1233,93 @@ class NTM_SMG : NTM_Chaingun
 		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
 	}
 }
-class NTM_SMGDual : NTM_SMG {}
+class NTM_SMGDual : NTM_SMG
+{
+	States
+	{
+		Deselect:
+			NSMG H 1 A_Lower(10);
+			Loop;
+		Select:
+			NSMG H 1 A_Raise(10);
+			Loop;
+		Ready:
+			NSMG H 1 A_WeaponReady(WRF_AllowReload);
+			Loop;
+		Fire:
+			NSMG I 1 Bright A_DualSMGFire;
+			NSMG H 2;
+			NSMG J 1 Bright
+			{
+				A_DualSMGFire();
+				A_SpawnItemEx("NTM_BulletCasing", -8, 16, 38, -3, 0, 2, 90);
+				A_SpawnItemEx("NTM_BulletCasing", -8, -16, 38, -3, 0, 2, -90);
+			}
+			NSMG H 2;
+			NSMG H 0
+			{
+				A_SpawnItemEx("NTM_BulletCasing", -8, 16, 38, -3, 0, 2, 90);
+				A_SpawnItemEx("NTM_BulletCasing", -8, -16, 38, -3, 0, 2, -90);
+			}
+			NSMG H 0 A_JumpIfInventory("NTM_SMGShots", 30, "Reload");
+			NSMG H 0 A_Refire;
+			Goto Ready;
+		AltFire:
+		Reload:
+			NSMG B 0 A_JumpIfInventory("NTM_SMGShots", 1, 1);
+			Goto Ready;
+			NSMG D 3
+			{
+				A_Overlay(-1, "Reload2");
+				A_PlaySound("weapons/pistolo");
+			}
+			NSMG D 15;
+			NSMG D 12 A_PlaySound("weapons/bigclip");
+			NSMG DDDDDDDDDD 1 A_Lower(9);
+			NSMG H 3
+			{
+				A_WeaponOffset();
+				A_SetInventory("NTM_SMGShots", 0);
+			}
+			Goto Ready;
+		Reload2:
+			NSMG E 1 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -2, 10, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -4, 20, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -6, 30, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -8, 40, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -10, 50, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -12, 60, WOF_Interpolate);
+			NSMG E 0 A_OverlayOffset(-1, -40, 64);
+			TNT1 A 10;
+			NSMG E 1 A_OverlayOffset(-1, -40, 64, WOF_Interpolate);
+			NSMG E 1 A_OverlayOffset(-1, -35, 56, WOF_Interpolate);
+			NSMG F 1 A_OverlayOffset(-1, -30, 48, WOF_Interpolate);
+			NSMG F 1 A_OverlayOffset(-1, -25, 40, WOF_Interpolate);
+			NSMG F 1 A_OverlayOffset(-1, -20, 32, WOF_Interpolate);
+			NSMG F 1 A_OverlayOffset(-1, -15, 24, WOF_Interpolate);
+			NSMG F 1 A_OverlayOffset(-1, -10, 16, WOF_Interpolate);
+			NSMG F 1 A_OverlayOffset(-1, -5, 8, WOF_Interpolate);
+			NSMG F 5 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
+			NSMG F 5;
+			Goto LightDone;
+		Flash:
+			TNT1 A 1 A_Light2;
+			Goto LightDone;
+	}
+	action void A_DualSMGFire()
+	{
+		A_PlaySound("weapons/smg");
+		A_GunFlash();
+		for (int i = 0; i < 2; i++)
+			A_FireBullets(5.6, 0, 1, 4, "BulletPuff");
+		A_WeaponOffset(Random(-4,4), Random(32,34), WOF_Interpolate);
+		A_AlertMonsters();
+		A_GiveInventory("NTM_SMGShots", 1);
+		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
+		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
+	}
+}
 class NTM_SMGShots : NTM_PistolShots
 	{Default
 		{Inventory.MaxAmount 30;}}
@@ -1256,10 +1342,7 @@ class NTM_SMGPickup : CustomInventory
 					A_GiveInventory("Clip", 20);
 				else
 					if (CountInv("NTM_SMG"))
-					{
-						A_TakeInventory("NTM_SMG");
 						A_GiveInventory("NTM_SMGDual");
-					}
 					else
 						A_GiveInventory("NTM_SMG");
 					
@@ -1735,7 +1818,7 @@ class NTM_Unmaker : NTM_BFG9000
 			NUNM C 2 Bright
 			{
 				for (int i = -1; i < 2; i++)
-					A_RailAttack(Random(1, 10) * 3.3, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
+					A_RailAttack(Random(1, 10) * 4, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
 				A_PlaySound("weapons/unmaker", 1);
 				A_WeaponOffset(10, 42, WOF_Interpolate);
 			}
