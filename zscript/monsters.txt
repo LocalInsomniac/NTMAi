@@ -177,11 +177,11 @@ class NTM_Humanoid : NTM_Monster
 			{
 				if (CVar.FindCVar("sv_ntm_burn").GetBool())
 				{
-					if (self is "NTM_ShotgunGuy")
-						A_NTMFall("NTM_AShotgun");
+					if (self is "NTM_ChaingunGuy" || self is "NTM_SMGGuy")
+						A_NTMFall("NTM_ChaingunSpawn");
 					else
-						if (self is "NTM_ChaingunGuy")
-							A_NTMFall("NTM_SMG");
+						if (self is "NTM_ShotgunGuy")
+							A_NTMFall("NTM_ShotSpawn");
 							else
 								A_NoBlocking();
 					NTM_Burn burn = NTM_Burn(Spawn("NTM_Burn", pos));
