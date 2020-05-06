@@ -1582,7 +1582,7 @@ class NTM_Cyberdemon : NTM_Boss replaces Cyberdemon
 			}
 		}
 		else
-			SetStateLabel("See");
+			SetState(ResolveState("See"));
 	}
 }
 class NTM_SpiderMastermind : NTM_Boss replaces SpiderMastermind
