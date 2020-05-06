@@ -1,5 +1,6 @@
 class NTMAI : EventHandler
 {
+	bool airChange;
 	NTM_Thinker st;
 	static bool CanQuake()
 		{return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
@@ -13,6 +14,8 @@ class NTMAI : EventHandler
 		{return (CVar.FindCVar("sv_ntm_bloodDeath").GetBool());}
 	static bool CanGrenade()
 		{return (CVar.FindCVar("sv_ntm_grenadiers").GetBool());}
+	static bool CanMove()
+		{return (CVar.FindCVar("sv_ntm_move").GetBool());}
 	static float Lerp(float firstFloat, float secondFloat, float by)
 		{return (firstFloat * (1 - by) + secondFloat * by);}
 	static int Sign(int number)
@@ -40,10 +43,18 @@ class NTMAI : EventHandler
 		{DoThingRevive(e.thing);}
 	override void WorldLoaded(WorldEvent e)
 	{
-		level.airControl = 0.55;
+		if (CanMove())
+			level.airControl = 0.55;
+		airChange = CanMove();
 		if (!st)
 			st = New("NTM_Thinker");
 	}
+	override void WorldTick()
+		{if (airChange != CanMove())
+		{
+			level.airControl = CanMove() ? 0.55 : 0.00390625;
+			airChange = CanMove();
+		}}
 	override void WorldUnloaded(WorldEvent e)
 		{if (st)
 			st.DoDestroy();}

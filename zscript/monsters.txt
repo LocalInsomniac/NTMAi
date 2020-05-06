@@ -1,7 +1,7 @@
 class NTM_Monster : Actor
 {
 	int oldLeap, leapFail;
-	bool fullMod;
+	bool fullMod, dropChange;
 	double leapDistance;
 	Default
 	{
@@ -32,6 +32,15 @@ class NTM_Monster : Actor
 		Super.PostBeginPlay();
 		oldLeap = false;
 		fullMod = true;
+		dropChange = NTMAI.CanLeap();
+		if (default.bDropOff && !dropChange)
+			bDropOff = false;
+	}
+	override void Tick()
+	{
+		Super.Tick();
+		if (default.bDropOff && dropChange != NTMAI.CanLeap())
+			dropChange = bDropOff = NTMAI.CanLeap();
 	}
 	void A_Leap()
     {
