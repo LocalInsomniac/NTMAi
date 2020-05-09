@@ -2002,17 +2002,6 @@ class NTM_Remote : Weapon
 			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
 			NREM D 0 A_Overlay(10, "Bomb");
-			NREM D 0 A_OverlayOffset(10, 0, 128);
-			NREM D 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
-			Goto Ready;
-			NREM D 5;
-			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 48, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 24, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 8, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
 			Goto Ready;
 		Altfire:
 			NREM D 1 A_WeaponOffset(0, 40, WOF_Interpolate);
