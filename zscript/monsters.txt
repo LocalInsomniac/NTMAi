@@ -554,7 +554,7 @@ class NTM_Imp : NTM_Humanoid replaces DoomImp
 		Obituary "$OB_IMP";
 		Tag "$FN_IMP";
 		Species "DoomImp";
-		+DropOff
+		MaxDropOffHeight 128;
 	}
 	States
 	{
@@ -639,7 +639,7 @@ class NTM_Demon : NTM_Monster replaces Demon
 		Obituary "$OB_DEMONHIT";
 		Tag "$FN_DEMON";
 		Species "Demon";
-		+DropOff
+		MaxDropOffHeight 128;
 	}
 	States
 	{
