@@ -98,9 +98,15 @@ class NTM_Player : DoomPlayer
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		A_SetInventory("NTM_PistolShots", 0);
-		A_SetInventory("NTM_SMGShots", 0);
-		A_SetInventory("NTM_Bloody", 0);
+		A_TakeInventory("NTM_PistolShots");
+		A_TakeInventory("NTM_SMGShots");
+		A_TakeInventory("NTM_Bloody");
+		A_TakeInventory("NTM_OpenRed");
+		A_TakeInventory("NTM_OpenYellow");
+		A_TakeInventory("NTM_OpenBlue");
+		A_TakeInventory("NTM_SkullRed");
+		A_TakeInventory("NTM_SkullYellow");
+		A_TakeInventory("NTM_SkullBlue");
 	}
 	override void Tick()
 	{

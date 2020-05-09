@@ -19,6 +19,8 @@ generator NTM_Mutilator BulletChip
 generator NTM_AShotgun BulletChip
 generator NTM_SawedOff BulletChip
 generator NTM_SMG BulletChip
+generator NTM_SMGDual BulletChip
+generator NTM_Boom Scorch
 generator NTM_Boom2 Scorch
 generator NTM_Unmaker BulletChip
 generator NTM_ZombieMan BulletChip
