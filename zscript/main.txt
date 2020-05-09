@@ -24,8 +24,20 @@ class NTMAI : EventHandler
 	{
 		let pmo = players[e.playerNumber].mo;
 		if (pmo)
+		{
 			if (!pmo.CountInv("NTM_Actor"))
 				pmo.A_GiveInventory("NTM_Actor", 1);
+			pmo.A_TakeInventory("NTM_PistolShots");
+			pmo.A_TakeInventory("NTM_SMGShots");
+			pmo.A_TakeInventory("NTM_Bloody");
+			pmo.A_TakeInventory("NTM_OpenRed");
+			pmo.A_TakeInventory("NTM_OpenYellow");
+			pmo.A_TakeInventory("NTM_OpenBlue");
+			pmo.A_TakeInventory("NTM_SkullRed");
+			pmo.A_TakeInventory("NTM_SkullYellow");
+			pmo.A_TakeInventory("NTM_SkullBlue");
+			pmo.A_TakeInventory("NTM_StartBoom");
+		}
 	}
 	override void PlayerRespawned(PlayerEvent e)
 	{
