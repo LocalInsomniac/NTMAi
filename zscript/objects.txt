@@ -163,6 +163,7 @@ class NTM_Meat : NTM_HangNoGuts replaces Meat2
 			GOR2 A -1;
 			Stop;
 		Death:
+		XDeath:
 			GOR2 A 0
 			{
 				A_XScream();
@@ -182,6 +183,7 @@ class NTM_Meat2 : NTM_Meat replaces Meat3
 			GOR3 A -1;
 			Stop;
 		Death:
+		XDeath:
 			GOR3 A 0
 			{
 				A_XScream();
@@ -200,6 +202,7 @@ class NTM_Meat3 : NTM_Meat replaces NonsolidMeat2
 	States
 	{
 		Death:
+		XDeath:
 			GOR2 A 0
 			{
 				A_XScream();
@@ -219,6 +222,7 @@ class NTM_Meat4 : NTM_Meat3 replaces NonsolidMeat3
 			GOR3 A -1;
 			Stop;
 		Death:
+		XDeath:
 			GOR3 A 0
 			{
 				A_XScream();
