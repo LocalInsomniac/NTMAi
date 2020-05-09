@@ -107,6 +107,7 @@ class NTM_Player : DoomPlayer
 		A_TakeInventory("NTM_SkullRed");
 		A_TakeInventory("NTM_SkullYellow");
 		A_TakeInventory("NTM_SkullBlue");
+		A_TakeInventory("NTM_StartBoom");
 	}
 	override void Tick()
 	{
@@ -1972,35 +1973,45 @@ class NTM_Remote : Weapon
 			NREM D 0 A_OverlayOffset(10, 0, 0);
 			Loop;
 		Deselect:
+			NREM D 0 A_TakeInventory("NTM_StartBoom");
 			NREM D 0 A_OverlayOffset(10, 0, 128);
 			NREM D 1 A_Lower(10);
-			Goto Deselect + 1;
+			Goto Deselect + 2;
 		Fire:
 			NREM D 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
 			Goto Ready;
-			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 48, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 80, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 96, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 112, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 128, WOF_Interpolate);
 			NREM D 0
 			{
 				A_PlaySound("grenade/pin");
 				A_FireProjectile("NTM_C4", 0, true, flags: FPF_NoAutoaim, pitch: -18 * cos(pitch));
 			}
-			NREM A 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
+			NREM D 0 A_Overlay(10, "Throw");
+			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, -8, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, -12, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, -16, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, -12, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, -8, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
+			NREM D 0 A_Overlay(10, "Bomb");
+			NREM D 0 A_OverlayOffset(10, 0, 128);
+			NREM D 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
 			Goto Ready;
-			NREM D 1 A_OverlayOffset(10, 0, 128, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 112, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 96, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 80, WOF_Interpolate);
+			NREM D 5;
 			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 48, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 24, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
+			NREM D 1 A_OverlayOffset(10, 0, 8, WOF_Interpolate);
 			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
 			Goto Ready;
 		Altfire:
@@ -2021,6 +2032,9 @@ class NTM_Remote : Weapon
 		BombL:
 			NREM ABCB 3;
 			Loop;
+		Throw:
+			NREM E 15;
+			Stop;
 	}
 }
 class NTM_StartBoom : NTM_PistolShots
