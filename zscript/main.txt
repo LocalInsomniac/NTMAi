@@ -133,8 +133,71 @@ class NTMAI : EventHandler
 		return (false);
 	}
 	override void CheckReplacement(ReplaceEvent e)
-		{if (e.replacee == "RealGibs")
-			e.replacement = "NTM_RealGibs";}
+	{
+		if (CVar.FindCVar("sv_ntm_r_zombieman").GetBool() && e.replacee == "Zombieman")
+			e.replacement = "NTM_Zombieman";
+		if (CVar.FindCVar("sv_ntm_r_shotgunGuy").GetBool() && e.replacee == "ShotgunGuy")
+			e.replacement = "NTM_ShotgunGuy";
+		if (CVar.FindCVar("sv_ntm_r_heavyWeaponDude").GetBool() && e.replacee == "ChaingunGuy")
+			e.replacement = "NTM_ChaingunGuy";
+		if (CVar.FindCVar("sv_ntm_r_imp").GetBool())
+			if (e.replacee == "DoomImp")
+				e.replacement = "NTM_Imp";
+			else
+				if (e.replacee == "DoomImpBall")
+					e.replacement = "NTM_ImpBall";
+		if (CVar.FindCVar("sv_ntm_r_demon").GetBool() && e.replacee == "Demon")
+			e.replacement = "NTM_Demon";
+		if (CVar.FindCVar("sv_ntm_r_spectre").GetBool() && e.replacee == "Spectre")
+			e.replacement = "NTM_Spectre";
+		if (CVar.FindCVar("sv_ntm_r_lostSoul").GetBool() && e.replacee == "LostSoul")
+			e.replacement = "NTM_LostSoul";
+		if (CVar.FindCVar("sv_ntm_r_cacodemon").GetBool())
+			if (e.replacee == "Cacodemon")
+				e.replacement = "NTM_Cacodemon";
+			else
+				if (e.replacee == "CacodemonBall")
+					e.replacement = "NTM_CacodemonBall";
+		if ((CVar.FindCVar("sv_ntm_r_hellKnight").GetBool() || CVar.FindCVar("sv_ntm_r_baronOfHell").GetBool()) && e.replacee == "BaronBall")
+			e.replacement = "NTM_BaronBall";
+		if (CVar.FindCVar("sv_ntm_r_hellKnight").GetBool() && e.replacee == "HellKnight")
+			e.replacement = "NTM_HellKnight";
+		if (CVar.FindCVar("sv_ntm_r_baronOfHell").GetBool() && e.replacee == "BaronOfHell")
+			e.replacement = "NTM_BaronOfHell";
+		if (CVar.FindCVar("sv_ntm_r_arachnotron").GetBool())
+			if (e.replacee == "Arachnotron")
+				e.replacement = "NTM_Arachnotron";
+			else
+				if (e.replacee == "ArachnotronPlasma")
+					e.replacement = "NTM_PlasmaBall";
+		if (CVar.FindCVar("sv_ntm_r_painElemental").GetBool() && e.replacee == "PainElemental")
+			e.replacement = "NTM_PainElemental";
+		if (CVar.FindCVar("sv_ntm_r_revenant").GetBool())
+			if (e.replacee == "Revenant")
+				e.replacement = "NTM_Revenant";
+			else
+				if (e.replacee == "RevenantTracer")
+					e.replacement = "NTM_RevenantTracer";
+				else
+					if (e.replacee == "RevenantTracerSmoke")
+						e.replacement = "NTM_RevenantTracerSmoke";
+		if (CVar.FindCVar("sv_ntm_r_mancubus").GetBool())
+			if (e.replacee == "Fatso")
+				e.replacement = "NTM_Mancubus";
+			else
+				if (e.replacee == "FatShot")
+					e.replacement = "NTM_FatShot";
+		if (CVar.FindCVar("sv_ntm_r_archVile").GetBool() && e.replacee == "Archvile")
+			e.replacement = "NTM_Archvile";
+		if (CVar.FindCVar("sv_ntm_r_spiderMastermind").GetBool() && e.replacee == "SpiderMastermind")
+			e.replacement = "NTM_SpiderMastermind";
+		if (CVar.FindCVar("sv_ntm_r_cyberdemon").GetBool() && e.replacee == "Cyberdemon")
+			e.replacement = "NTM_Cyberdemon";
+		if (CVar.FindCVar("sv_ntm_r_ss").GetBool() && e.replacee == "WolfensteinSS")
+			e.replacement = "NTM_SSGuard";
+		if (e.replacee == "RealGibs")
+			e.replacement = "NTM_RealGibs";
+	}
 	void DoThingRevive(Actor mo)
 	{
 		if (mo.CountInv("NTM_CorpseGib"))

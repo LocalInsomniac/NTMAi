@@ -33,14 +33,17 @@ class NTM_Monster : Actor
 		oldLeap = false;
 		fullMod = true;
 		dropChange = NTMAI.CanLeap();
-		if (default.bDropOff && !dropChange)
-			bDropOff = false;
+		if (default.maxDropOffHeight == 128 && !dropChange)
+			maxDropOffHeight = 24;
 	}
 	override void Tick()
 	{
 		Super.Tick();
-		if (default.bDropOff && dropChange != NTMAI.CanLeap())
-			dropChange = bDropOff = NTMAI.CanLeap();
+		if (default.maxDropOffHeight == 128 && dropChange != NTMAI.CanLeap())
+		{
+			dropChange = NTMAI.CanLeap();
+			maxDropOffHeight = dropChange ? 128 : 24;
+		}
 	}
 	void A_Leap()
     {
@@ -193,7 +196,7 @@ class NTM_Humanoid : NTM_Monster
 			Stop;
 	}
 }
-class NTM_Zombieman : NTM_Humanoid replaces Zombieman
+class NTM_Zombieman : NTM_Humanoid
 {
 	Default
 	{
@@ -300,7 +303,7 @@ class NTM_Zombieman : NTM_Humanoid replaces Zombieman
 	void A_NTMPosAttack()
 		{A_CustomBulletAttack(30, 0, 1, Random(1,5), "BulletPuff", 0, CBAF_NoRandom);}
 }
-class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy
+class NTM_ShotgunGuy : NTM_Zombieman
 {
 	Default
 	{
@@ -366,7 +369,7 @@ class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy
 			Stop;
 	}
 }
-class NTM_ChaingunGuy : NTM_Humanoid replaces ChaingunGuy
+class NTM_ChaingunGuy : NTM_Humanoid
 {
 	bool fired;
 	Default
@@ -539,7 +542,7 @@ class NTM_SMGGuy : NTM_ShotgunGuy
 			Stop;
 	}
 }
-class NTM_Imp : NTM_Humanoid replaces DoomImp
+class NTM_Imp : NTM_Humanoid
 {
 	Default
 	{
@@ -602,7 +605,7 @@ class NTM_Imp : NTM_Humanoid replaces DoomImp
 			Goto See;
 	}
 }
-class NTM_ImpBall : DoomImpBall replaces DoomImpBall
+class NTM_ImpBall : DoomImpBall
 {
 	Default
 	{
@@ -621,7 +624,7 @@ class NTM_ImpBall : DoomImpBall replaces DoomImpBall
 			Stop;
 	}
 }
-class NTM_Demon : NTM_Monster replaces Demon
+class NTM_Demon : NTM_Monster
 {
 	Default
 	{
@@ -694,7 +697,7 @@ class NTM_Demon : NTM_Monster replaces Demon
 			Goto See;
 	}
 }
-class NTM_Spectre : NTM_Demon replaces Spectre
+class NTM_Spectre : NTM_Demon
 {
 	Default
 	{
@@ -711,7 +714,7 @@ class NTM_Spectre : NTM_Demon replaces Spectre
 		Translation "0:255=0:0";
 	}
 }
-class NTM_LostSoul : NTM_Monster replaces LostSoul
+class NTM_LostSoul : NTM_Monster
 {
 	Default
 	{
@@ -781,7 +784,7 @@ class NTM_LostSoul : NTM_Monster replaces LostSoul
 		return (super.Slam(victim));
 	}
 }
-class NTM_Cacodemon : NTM_Monster replaces Cacodemon
+class NTM_Cacodemon : NTM_Monster
 {
 	Default
 	{
@@ -839,7 +842,7 @@ class NTM_Cacodemon : NTM_Monster replaces Cacodemon
 			Goto See;
 	}
 }
-class NTM_CacodemonBall : CacodemonBall replaces CacodemonBall
+class NTM_CacodemonBall : CacodemonBall
 {
 	Default
 	{
@@ -858,7 +861,7 @@ class NTM_CacodemonBall : CacodemonBall replaces CacodemonBall
 			Stop;
 	}
 }
-class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight
+class NTM_HellKnight : NTM_BaronOfHell
 {
 	Default
 	{
@@ -920,7 +923,7 @@ class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight
 			Goto See;
 	}
 }
-class NTM_BaronOfHell : NTM_Monster replaces BaronOfHell
+class NTM_BaronOfHell : NTM_Monster
 {
 	Default
 	{
@@ -1003,7 +1006,7 @@ class NTM_BaronOfHell : NTM_Monster replaces BaronOfHell
 			Goto See;
 	}
 }
-class NTM_BaronBall : BaronBall replaces BaronBall
+class NTM_BaronBall : BaronBall
 {
 	Default
 	{
@@ -1022,7 +1025,7 @@ class NTM_BaronBall : BaronBall replaces BaronBall
 			Stop;
 	}
 }
-class NTM_Arachnotron : NTM_Monster replaces Arachnotron
+class NTM_Arachnotron : NTM_Monster
 {
 	Default
 	{
@@ -1084,7 +1087,7 @@ class NTM_Arachnotron : NTM_Monster replaces Arachnotron
 			Goto See + 1;
 	}
 }
-class NTM_PainElemental : NTM_Monster replaces PainElemental
+class NTM_PainElemental : NTM_Monster
 {
 	Default
 	{
@@ -1163,7 +1166,7 @@ class NTM_PainElemental : NTM_Monster replaces PainElemental
 		}
 	}
 }
-class NTM_Revenant : NTM_Monster replaces Revenant
+class NTM_Revenant : NTM_Monster
 {
 	int lastFlyTimer;
     bool doStopFlying;
@@ -1294,7 +1297,7 @@ class NTM_Revenant : NTM_Monster replaces Revenant
 		}
 	}
 }
-class NTM_RevenantTracer : RevenantTracer replaces RevenantTracer
+class NTM_RevenantTracer : RevenantTracer
 {
 	Default
 	{
@@ -1328,7 +1331,7 @@ class NTM_RevenantTracer : RevenantTracer replaces RevenantTracer
 		A_Tracer2(4.21875);
 	}
 }
-class NTM_RevenantTracerSmoke : RocketSmokeTrail replaces RevenantTracerSmoke
+class NTM_RevenantTracerSmoke : RocketSmokeTrail
 {
 	Default
 	{
@@ -1336,7 +1339,7 @@ class NTM_RevenantTracerSmoke : RocketSmokeTrail replaces RevenantTracerSmoke
 		Alpha 0.4;
 	}
 }
-class NTM_Mancubus : NTM_Monster replaces Fatso
+class NTM_Mancubus : NTM_Monster
 {
 	Default
 	{
@@ -1389,7 +1392,7 @@ class NTM_Mancubus : NTM_Monster replaces Fatso
 			Goto See;
 	}
 }
-class NTM_FatShot : FatShot replaces FatShot
+class NTM_FatShot : FatShot
 {
 	Default
 	{
@@ -1408,7 +1411,7 @@ class NTM_FatShot : FatShot replaces FatShot
 			Stop;
 	}
 }
-class NTM_Archvile : NTM_Monster replaces Archvile
+class NTM_Archvile : NTM_Monster
 {
 	Default
 	{
@@ -1507,7 +1510,7 @@ class NTM_Boss : NTM_Monster
 			A_Quake(2, 10, 0, 1600, "");
 	}
 }
-class NTM_Cyberdemon : NTM_Boss replaces Cyberdemon
+class NTM_Cyberdemon : NTM_Boss
 {
 	Default
 	{
@@ -1585,7 +1588,7 @@ class NTM_Cyberdemon : NTM_Boss replaces Cyberdemon
 			SetState(ResolveState("See"));
 	}
 }
-class NTM_SpiderMastermind : NTM_Boss replaces SpiderMastermind
+class NTM_SpiderMastermind : NTM_Boss
 {
 	Default
 	{
@@ -1626,16 +1629,87 @@ class NTM_SpiderMastermind : NTM_Boss replaces SpiderMastermind
 			Goto See;
 		Death:
 			NSPI I 15 A_Scream;
-			NSPI KKLLMMNN 8 A_BossExplode;
-			NSPI OOPP 4 A_BossExplode;
-			NSPI Q 4
+			NSPI KKLL 8 A_BossExplode;
+			NSPI MMNN 8 Bright A_BossExplode;
+			NSPI OOPP 4 Bright A_BossExplode;
+			NSPI Q 4 Bright
 			{
 				A_BossExplode();
 				A_NoBlocking();
 			}
-			NSPI QRR 4 A_BossExplode;
+			NSPI QRR 4 Bright A_BossExplode;
 			NSPI S 140 A_BossExplode;
 			NSPI S -1 A_BossDeath;
 			Stop;
+	}
+}
+class NTM_SSGuard : NTM_Zombieman
+{
+	Default
+	{
+		Health 50;
+		PainChance 170;
+		SeeSound "wolfss/sight";
+		ActiveSound "wolfss/active";
+		PainSound "wolfss/pain";
+		DeathSound "wolfss/death";
+		Obituary "$OB_WOLFSS";
+		Tag "$FN_WOLFSS";
+		Species "WolfensteinSS";
+	}
+	States
+	{
+		Spawn:
+			NSSN N 10 A_Look;
+			Loop;
+		See:
+			NSSN AABBCCDD 3 A_NTMChase;
+			Loop;
+		Missile:
+			NZOM E 0
+			{
+				int ran = Random(0, 256);
+				if (CVar.FindCVar("sv_ntm_grenadiers").GetBool())
+					if ((G_SkillPropertyInt(7) == 4 && ran <= 20) || (G_SkillPropertyInt(7) == 3 && ran <= 10))
+						return (FindState("Grenade"));
+				return (FindState("StartMissile"));
+			}
+			Stop;
+		StartMissile:
+			NSSN F 15 A_FaceTarget;
+			NSSN G 3 Bright A_SSAttack;
+			NSSN F 3 A_FaceTarget;
+			NSSN G 3 Bright A_SSAttack;
+			NSSN F 3 A_FaceTarget;
+			NSSN G 3 Bright A_SSAttack;
+			NSSN F 3 A_FaceTarget;
+			NSSN F 0 A_CPosRefire;
+			Goto StartMissile + 1;
+		Grenade:
+			NSSN E 0 A_JumpIfCloser(960, 1, true);
+			Goto Missile;
+			NSSN EOP 5 A_FaceTarget;
+			NSSN Q 5 A_ThrowGrenade("NTM_Boom", 25, 8, 4);
+			Goto See;
+		Pain:
+			NSSN H 3;
+			NSSN H 3 A_Pain;
+			Goto See;
+		Death:
+			NSSN I 5;
+			NSSN J 5 A_Scream;
+			NSSN K 5 A_NoBlocking;
+			NSSN L 5;
+			NSSN M 0;
+			#### # -1;
+			Stop;
+		Raise:
+			NSSN MLKJI 5;
+			Goto See;
+	}
+	void A_SSAttack()
+	{
+		A_PlaySound("weapons/pistol", Chan_Weapon);
+		A_CustomBulletAttack(36, 0, 1, random(1, 5) * 1.8, "BulletPuff", 0, CBAF_NoRandom);
 	}
 }

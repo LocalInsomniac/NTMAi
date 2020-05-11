@@ -126,6 +126,7 @@ class NTM_BloodTrail : NTM_FlyingBlood
 	{
 		Gravity 0.4;
 		Scale 0.625;
+		+DontSplash
 	}
 	States
 	{
@@ -143,6 +144,7 @@ class NTM_BloodSpot : Actor
 		Scale 0.625;
 		+MoveWithSector
 		+NotOnAutomap
+		+DontSplash
 		FloatBobPhase 0;
 	}
 	States
@@ -205,7 +207,10 @@ class NTM_BloodPool : NTM_BloodSpot
 class NTM_BloodyFootprint : NTM_BloodSpot
 {
 	Default
-		{Scale 0.625;}
+	{
+		+FloorClip
+		Scale 0.625;
+	}
 	States
 	{
 		Spawn:
@@ -298,6 +303,7 @@ class NTM_FlyingGib1 : NTM_FlyingBlood
 	{
 		Gravity 0.5;
 		Scale 0.5;
+		+FloorClip
 	}
 	States
 	{
@@ -411,6 +417,7 @@ class NTM_BulletCasing : Actor
 		Height 1;
 		Gravity 1;
 		+CanBounceWater
+		+DontSplash
 		+Missile
 		+UseBounceState
 		BounceSound "misc/casing";
@@ -520,6 +527,7 @@ class NTM_Tracer : FastProjectile
 		Speed 175;
 		Scale 0.5;
 		FloatBobPhase 0;
+		-ExplodeOnWater
 	}
 	States
 	{
@@ -665,10 +673,14 @@ class NTM_Burn : NTM_Monster
 		Super.PostBeginPlay();
 		if (original)
 		{
-			if (original is "NTM_Zombieman" || original is "NTM_ChaingunGuy")
-				A_PlaySound("burn/zombie");
-			if (original is "NTM_Imp")
-				A_PlaySound("burn/imp");
+			if (original is "NTM_SSGuard")
+				A_PlaySound("wolfss/burn");
+			else
+				if (original is "NTM_Zombieman" || original is "NTM_ChaingunGuy")
+					A_PlaySound("burn/zombie");
+				else
+					if (original is "NTM_Imp")
+						A_PlaySound("burn/imp");
 			deathSound = GetDefaultByType(original).deathSound;
 		}
 		else
