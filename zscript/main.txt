@@ -43,17 +43,17 @@ class NTMAI : EventHandler
 		{DoThingRevive(e.thing);}
 	override void WorldLoaded(WorldEvent e)
 	{
-		if (CanMove())
+		if (sv_ntm_move)
 			level.airControl = 0.55;
-		airChange = CanMove();
+		airChange = sv_ntm_move;
 		if (!st)
 			st = New("NTM_Thinker");
 	}
 	override void WorldTick()
-		{if (airChange != CanMove())
+		{if (airChange != sv_ntm_move)
 		{
-			level.airControl = CanMove() ? 0.55 : 0.00390625;
-			airChange = CanMove();
+			level.airControl = sv_ntm_move ? 0.55 : 0.00390625;
+			airChange = sv_ntm_move;
 		}}
 	override void WorldUnloaded(WorldEvent e)
 		{if (st)
@@ -333,7 +333,7 @@ class NTM_Actor : NTM_System
 			{
 				if (owner.pos.z <= owner.floorZ || owner.bOnMObj)
 				{
-					if (fallTics > 18 + (NTMAI.CanBloodDeath() * 3) && owner.waterLevel == 0)
+					if (fallTics > 18 + (sv_ntm_bloodDeath * 3) && owner.waterLevel == 0)
 					{
 						for (int i; i < Random(3, 6); i++)
 							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
