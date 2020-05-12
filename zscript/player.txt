@@ -77,7 +77,7 @@ class NTM_Player : DoomPlayer
 			NMGI A 1 A_XScream;
 			NMGI A 4
 			{
-				if (CVar.FindCVar("sv_ntm_cameraHead").GetBool())
+				if (sv_ntm_cameraHead)
 					A_SkullPop("NTM_PlayerHead");
 			}
 			NMGI B 5 A_NoBlocking;
@@ -118,7 +118,7 @@ class NTM_Player : DoomPlayer
 		}
 		else
 		{
-			if (CVar.FindCVar("sv_ntm_move").GetBool())
+			if (sv_ntm_move)
 			{
 				A_SetSpeed(2.2);
 				vel.xy *= 0.9;
@@ -211,8 +211,7 @@ class NTM_Player : DoomPlayer
 	}
 }
 class NTM_NewPlayer : NTM_Player
-{
-	Default
+	{Default
 	{
 		Player.DisplayName "Alternative";
 		Player.StartItem "NTM_Rifle";
@@ -227,8 +226,7 @@ class NTM_NewPlayer : NTM_Player
 		Player.WeaponSlot 6, "NTM_Flamethrower";
 		Player.WeaponSlot 7, "NTM_Unmaker";
 		Player.WeaponSlot 8, "NTM_Remote";
-	}
-}
+	}}
 class NTM_PlayerHead : PlayerChunk
 {
 	Default
@@ -572,14 +570,12 @@ class NTM_Mutilator : NTM_Chainsaw
 	}
 }
 class NTM_ChainsawSpawn : NTM_PistolSpawn replaces Chainsaw
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_Chainsaw", "NTM_Mutilator");
 			Stop;
-	}
-}
+	}}
 class NTM_PistolSpawn : Actor replaces Pistol
 {
 	Default
@@ -599,59 +595,47 @@ class NTM_PistolSpawn : Actor replaces Pistol
 	}
 }
 class NTM_ChaingunSpawn : NTM_PistolSpawn replaces Chaingun
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_Chaingun", "NTM_SMGPickup");
 			Stop;
-	}
-}
+	}}
 class NTM_ShotSpawn : NTM_PistolSpawn replaces Shotgun
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_Shotgun", "NTM_AShotgun");
 			Stop;
-	}
-}
+	}}
 class NTM_SuperSpawn : NTM_PistolSpawn replaces SuperShotgun
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_SuperShotgun", "NTM_SawedOff");
 			Stop;
-	}
-}
+	}}
 class NTM_RLSpawn : NTM_PistolSpawn replaces RocketLauncher
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_RocketLauncher", "NTM_GrenadeLauncher");
 			Stop;
-	}
-}
+	}}
 class NTM_PRSpawn : NTM_PistolSpawn replaces PlasmaRifle
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_PlasmaRifle", "NTM_Flamethrower");
 			Stop;
-	}
-}
+	}}
 class NTM_BFGSpawn : NTM_PistolSpawn replaces BFG9000
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_BFG9000", "NTM_Unmaker");
 			Stop;
-	}
-}
+	}}
 class NTM_Pistol : NTM_Weapon
 {
 	Default
@@ -963,10 +947,8 @@ class NTM_BoomShell : FastProjectile
 					boom.scale *= 0.6;
 			}
 			TNT1 A 10
-			{
-				if (NTMAI.CanQuake())
-					A_Quake(1, 10, 0, 400, "");
-			}
+				{if (NTMAI.CanQuake())
+					A_Quake(1, 10, 0, 400, "");}
 			Stop;
 	}
 }
@@ -1384,16 +1366,13 @@ class NTM_SMGPickup : CustomInventory
 			Stop;
 		Pickup:
 			TNT1 A 0
-			{
-				if (CountInv("NTM_SMGDual"))
+				{if (CountInv("NTM_SMGDual"))
 					A_GiveInventory("Clip", 20);
 				else
 					if (CountInv("NTM_SMG"))
 						A_GiveInventory("NTM_SMGDual");
 					else
-						A_GiveInventory("NTM_SMG");
-					
-			}
+						A_GiveInventory("NTM_SMG");}
 			Stop;
 	}
 }
@@ -1548,10 +1527,8 @@ class NTM_Rocket : Rocket replaces Rocket
 				A_SpawnItem("NTM_Explosion");
 			}
 			TNT1 A 10
-			{
-				if (NTMAI.CanQuake())
-					A_Quake(2, 10, 0, 400, "");
-			}
+				{if (NTMAI.CanQuake())
+					A_Quake(2, 10, 0, 400, "");}
 			Stop;
 	}
 }
@@ -1580,10 +1557,8 @@ class NTM_HomingRocket : NTM_Rocket
 					boom.scale *= 1.5;
 			}
 			TNT1 A 10
-			{
-				if (NTMAI.CanQuake())
-					A_Quake(2, 10, 0, 800, "");
-			}
+				{if (NTMAI.CanQuake())
+					A_Quake(2, 10, 0, 800, "");}
 			Stop;
 	}
 }
@@ -1716,9 +1691,7 @@ class NTM_Flamethrower : NTM_PlasmaRifle
 class NTM_PlasmaBall : PlasmaBall replaces PlasmaBall
 {
 	Default
-	{
-		+DontBlast
-	}
+		{+DontBlast}
 	States
 	{
 		Spawn:
@@ -1751,9 +1724,7 @@ class NTM_Fire : Actor
 	{
 		Spawn:
 			NFIR A 2 NoDelay
-			{
-				scale.x *= FRandomPick(-1, 1);
-			}
+				{scale.x *= FRandomPick(-1, 1);}
 			NFIR BCDE 2 Bright;
 			Stop;
 	}
@@ -1915,10 +1886,8 @@ class NTM_Boom : Actor
 				A_SpawnItem("NTM_Explosion");
 			}
 			TNT1 A 10
-			{
-				if (NTMAI.CanQuake())
-					A_Quake(2, 15, 0, 800, "");
-			}
+				{if (NTMAI.CanQuake())
+					A_Quake(2, 15, 0, 800, "");}
 			Stop;
 	}
 }
@@ -2027,12 +1996,8 @@ class NTM_Remote : Weapon
 	}
 }
 class NTM_StartBoom : NTM_PistolShots
-{
-	Default
-	{
-		Inventory.MaxAmount 1;
-	}
-}
+	{Default
+		{Inventory.MaxAmount 1;}}
 class NTM_C4 : Actor
 {
 	Default
@@ -2083,10 +2048,8 @@ class NTM_C4 : Actor
 				SetOrigin(pos + (0, 0, 128), false);
 			}
 			TNT1 A 10
-			{
-				if (NTMAI.CanQuake())
-					A_Quake(2, 10, 0, 1000, "");
-			}
+				{if (NTMAI.CanQuake())
+					A_Quake(2, 10, 0, 1000, "");}
 			Stop;
 	}
 }
