@@ -4,18 +4,6 @@ class NTMAI : EventHandler
 	NTM_Thinker st;
 	static bool CanQuake()
 		{return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
-	static bool CanLeap()
-		{return (CVar.FindCVar("sv_ntm_monsterLeap").GetBool());}
-	static bool CanJump()
-		{return (CVar.FindCVar("sv_ntm_monsterJump").GetBool());}
-	static bool CanFly()
-		{return (CVar.FindCVar("sv_ntm_monsterFly").GetBool());}
-	static bool CanBloodDeath()
-		{return (CVar.FindCVar("sv_ntm_bloodDeath").GetBool());}
-	static bool CanGrenade()
-		{return (CVar.FindCVar("sv_ntm_grenadiers").GetBool());}
-	static bool CanMove()
-		{return (CVar.FindCVar("sv_ntm_move").GetBool());}
 	static float Lerp(float firstFloat, float secondFloat, float by)
 		{return (firstFloat * (1 - by) + secondFloat * by);}
 	static int Sign(int number)
@@ -71,7 +59,7 @@ class NTMAI : EventHandler
 		{if (st)
 			st.DoDestroy();}
 	override void WorldLinePreActivated(WorldEvent e)
-		{if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && CVar.FindCVar("sv_ntm_keycard").GetBool())
+		{if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && sv_ntm_keycard)
 		{
 			e.shouldActivate = (NTM_Player(e.thing).curDoor != e.activatedLine) ? false : true;
 			if (NTM_Player(e.thing).curDoor != e.activatedLine)
@@ -133,70 +121,112 @@ class NTMAI : EventHandler
 		return (false);
 	}
 	override void CheckReplacement(ReplaceEvent e)
-	{
-		if (CVar.FindCVar("sv_ntm_r_zombieman").GetBool() && e.replacee == "Zombieman")
-			e.replacement = "NTM_Zombieman";
-		if (CVar.FindCVar("sv_ntm_r_shotgunGuy").GetBool() && e.replacee == "ShotgunGuy")
-			e.replacement = "NTM_ShotgunGuy";
-		if (CVar.FindCVar("sv_ntm_r_heavyWeaponDude").GetBool() && e.replacee == "ChaingunGuy")
-			e.replacement = "NTM_ChaingunGuy";
-		if (CVar.FindCVar("sv_ntm_r_imp").GetBool())
-			if (e.replacee == "DoomImp")
-				e.replacement = "NTM_Imp";
-			else
-				if (e.replacee == "DoomImpBall")
+		{switch (e.replacee.GetClassName())
+		{
+			case ('Zombieman'):
+				if (sv_ntm_r_zombieman)
+					e.replacement = "NTM_Zombieman";
+			break;
+			case ('ShotgunGuy'):
+				if (sv_ntm_r_shotgunGuy)
+					e.replacement = "NTM_ShotgunGuy";
+			break;
+			case ('ChaingunGuy'):
+				if (e.replacee == "ChaingunGuy")
+					e.replacement = "NTM_ChaingunGuy";
+			break;
+			case ('DoomImp'):
+				if (sv_ntm_r_imp)
+					e.replacement = "NTM_Imp";
+			break;
+			case ('DoomImpBall'):
+				if (sv_ntm_r_imp)
 					e.replacement = "NTM_ImpBall";
-		if (CVar.FindCVar("sv_ntm_r_demon").GetBool() && e.replacee == "Demon")
-			e.replacement = "NTM_Demon";
-		if (CVar.FindCVar("sv_ntm_r_spectre").GetBool() && e.replacee == "Spectre")
-			e.replacement = "NTM_Spectre";
-		if (CVar.FindCVar("sv_ntm_r_lostSoul").GetBool() && e.replacee == "LostSoul")
-			e.replacement = "NTM_LostSoul";
-		if (CVar.FindCVar("sv_ntm_r_cacodemon").GetBool())
-			if (e.replacee == "Cacodemon")
-				e.replacement = "NTM_Cacodemon";
-			else
-				if (e.replacee == "CacodemonBall")
+			break;
+			case ('Demon'):
+				if (sv_ntm_r_demon)
+					e.replacement = "NTM_Demon";
+			break;
+			case ('Spectre'):
+				if (sv_ntm_r_spectre)
+					e.replacement = "NTM_Spectre";
+			break;
+			case ('LostSoul'):
+				if (sv_ntm_r_lostSoul)
+					e.replacement = "NTM_LostSoul";
+			break;
+			case ('Cacodemon'):
+				if (sv_ntm_r_cacodemon)
+					e.replacement = "NTM_Cacodemon";
+			break;
+			case ('CacodemonBall'):
+				if (sv_ntm_r_cacodemon)
 					e.replacement = "NTM_CacodemonBall";
-		if ((CVar.FindCVar("sv_ntm_r_hellKnight").GetBool() || CVar.FindCVar("sv_ntm_r_baronOfHell").GetBool()) && e.replacee == "BaronBall")
-			e.replacement = "NTM_BaronBall";
-		if (CVar.FindCVar("sv_ntm_r_hellKnight").GetBool() && e.replacee == "HellKnight")
-			e.replacement = "NTM_HellKnight";
-		if (CVar.FindCVar("sv_ntm_r_baronOfHell").GetBool() && e.replacee == "BaronOfHell")
-			e.replacement = "NTM_BaronOfHell";
-		if (CVar.FindCVar("sv_ntm_r_arachnotron").GetBool())
-			if (e.replacee == "Arachnotron")
-				e.replacement = "NTM_Arachnotron";
-			else
-				if (e.replacee == "ArachnotronPlasma")
+			break;
+			case ('HellKnight'):
+				if (sv_ntm_r_hellKnight)
+					e.replacement = "NTM_HellKnight";
+			break;
+			case ('BaronOfHell'):
+				if (sv_ntm_r_baronOfHell)
+					e.replacement = "NTM_BaronOfHell";
+			break;
+			case ('BaronBall'):
+				if (sv_ntm_r_hellKnight || sv_ntm_r_baronOfHell)
+					e.replacement = "NTM_BaronBall";
+			break;
+			case ('Arachnotron'):
+				if (sv_ntm_r_arachnotron)
+					e.replacement = "NTM_Arachnotron";
+			break;
+			case ('ArachnotronPlasma'):
+				if (sv_ntm_r_arachnotron)
 					e.replacement = "NTM_PlasmaBall";
-		if (CVar.FindCVar("sv_ntm_r_painElemental").GetBool() && e.replacee == "PainElemental")
-			e.replacement = "NTM_PainElemental";
-		if (CVar.FindCVar("sv_ntm_r_revenant").GetBool())
-			if (e.replacee == "Revenant")
-				e.replacement = "NTM_Revenant";
-			else
-				if (e.replacee == "RevenantTracer")
+			break;
+			case ('PainElemental'):
+				if (sv_ntm_r_painElemental)
+					e.replacement = "NTM_PainElemental";
+			break;
+			case ('Revenant'):
+				if (sv_ntm_r_revenant)
+					e.replacement = "NTM_Revenant";
+			break;
+			case ('RevenantTracer'):
+				if (sv_ntm_r_revenant)
 					e.replacement = "NTM_RevenantTracer";
-				else
-					if (e.replacee == "RevenantTracerSmoke")
-						e.replacement = "NTM_RevenantTracerSmoke";
-		if (CVar.FindCVar("sv_ntm_r_mancubus").GetBool())
-			if (e.replacee == "Fatso")
-				e.replacement = "NTM_Mancubus";
-			else
-				if (e.replacee == "FatShot")
+			break;
+			case ('RevenantTracerSmoke'):
+				if (sv_ntm_r_revenant)
+					e.replacement = "NTM_RevenantTracerSmoke";
+			break;
+			case ('Fatso'):
+				if (sv_ntm_r_mancubus)
+					e.replacement = "NTM_Mancubus";
+			break;
+			case ('FatShot'):
+				if (sv_ntm_r_mancubus)
 					e.replacement = "NTM_FatShot";
-		if (CVar.FindCVar("sv_ntm_r_archVile").GetBool() && e.replacee == "Archvile")
-			e.replacement = "NTM_Archvile";
-		if (CVar.FindCVar("sv_ntm_r_spiderMastermind").GetBool() && e.replacee == "SpiderMastermind")
-			e.replacement = "NTM_SpiderMastermind";
-		if (CVar.FindCVar("sv_ntm_r_cyberdemon").GetBool() && e.replacee == "Cyberdemon")
-			e.replacement = "NTM_Cyberdemon";
-		if (CVar.FindCVar("sv_ntm_r_ss").GetBool() && e.replacee == "WolfensteinSS")
-			e.replacement = "NTM_SSGuard";
-		if (e.replacee == "RealGibs")
-			e.replacement = "NTM_RealGibs";
+			break;
+			case ('Archvile'):
+				if (sv_ntm_r_archVile)
+					e.replacement = "NTM_Archvile";
+			break;
+			case ('SpiderMastermind'):
+				if (sv_ntm_r_spiderMastermind)
+					e.replacement = "NTM_SpiderMastermind";
+			break;
+			case ('Cyberdemon'):
+				if (sv_ntm_r_cyberdemon)
+					e.replacement = "NTM_Cyberdemon";
+			break;
+			case ('WolfensteinSS'):
+				if (sv_ntm_r_ss)
+					e.replacement = "NTM_SSGuard";
+			break;
+			case ('RealGibs'):
+				e.replacement = "NTM_RealGibs";
+			break;
+		}
 	}
 	void DoThingRevive(Actor mo)
 	{
@@ -237,7 +267,7 @@ class NTM_Actor : NTM_System
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		cvPool = CVar.FindCVar("sv_ntm_bloodPools").GetInt();
+		cvPool = sv_ntm_bloodPools;
 		fpSide = 1;
 		Vector2 getOldHeight = TexMan.GetScaledSize(owner.FindState("Spawn").GetSpriteTexture(0));
 		oldHeight = getOldHeight.y;
@@ -247,8 +277,7 @@ class NTM_Actor : NTM_System
 		if (owner.target && owner.target is "PlayerPawn" && owner.target.bShadow && !owner.CountInv("NTM_CantSee"))
 			owner.A_GiveInventory("NTM_CantSee", 1);
 		if (owner.pos.z <= owner.floorZ || owner.bOnMObj)
-		{
-			if (CVar.FindCVar("sv_ntm_bloodFootprints").GetBool() && fpDuration > 0)
+			if (sv_ntm_bloodFootprints && fpDuration > 0)
 			{
 				if (owner.vel.Length() > 0)
 				{
@@ -271,7 +300,6 @@ class NTM_Actor : NTM_System
 				else
 					fpInterval = 0;
 			}
-		}
 		if (owner.health <= 0)
 		{
 			if (NTMAI.CanBloodDeath() && lastFrame != owner.curState.frame && owner.curState.frame != 0)
