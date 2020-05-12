@@ -239,8 +239,8 @@ class NTM_Shell : Shell replaces Shell
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		int soul = CVar.FindCVar("sv_ntm_boomShell").GetInt();
-		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.isSecret())
+		int soul = sv_ntm_boomShell;
+		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.IsSecret())
 		{
 			Spawn("NTM_ExplosiveShell", pos);
 			Destroy();
@@ -276,8 +276,8 @@ class NTM_RocketAmmo : RocketAmmo replaces RocketAmmo
 			Destroy();
 			return;
 		}
-		int soul = CVar.FindCVar("sv_ntm_homingRocket").GetInt();
-		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.isSecret())
+		int soul = sv_ntm_homingRocket;
+		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.IsSecret())
 		{
 			Spawn("NTM_HomingAmmo", pos);
 			Destroy();
@@ -418,8 +418,8 @@ class NTM_Soulsphere : CustomInventory replaces Soulsphere
 	}
 	override void PostBeginPlay()
 	{
-		int soul = CVar.FindCVar("sv_ntm_soulsphere").GetInt();
-		if (soul == 1 || (soul == 2 && curSector.flags & curSector.SECF_Secret == 0))
+		int soul = sv_ntm_soulsphere;
+		if (soul == 1 || (soul == 2 && !curSector.IsSecret()))
 		{
 			Spawn("NTM_PortableMedkit", pos);
 			Destroy();
@@ -660,13 +660,10 @@ class NTM_Grenade : CustomInventory
 			Fail;
 	}
 }
-
 class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
 {
 	Default
-	{
-		Height 28;
-	}
+		{Height 28;}
 	States
 	{
 		Spawn:
@@ -684,10 +681,8 @@ class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
 				A_Explode();
 			}
 			TNT1 A 10
-			{
-				if (CVar.FindCVar("cl_ntm_cameraQuake").GetBool())
-					A_Quake(2, 10, 0, 400, "");
-			}
+				{if (NTMAI.CanQuake())
+					A_Quake(2, 10, 0, 400, "");}
 			TNT1 A 1067 A_BarrelDestroy;
 			TNT1 A 5 A_Respawn;
 			Wait;
@@ -714,18 +709,12 @@ class NTM_DeadZombieman : NTM_Zombieman replaces DeadZombieman
 	}
 }
 class NTM_DeadShotgunGuy : NTM_DeadZombieman replaces DeadShotgunGuy
-{
-	Default
-	{
-		Translation "128:143=100:111", "144:151=104:111", "152:159=104:111", "112:127=96:111", "78:79=5:6", "1:2=6:7", "16:47=24:47";
-	}
-}
+	{Default
+		{Translation "128:143=100:111", "144:151=104:111", "152:159=104:111", "112:127=96:111", "78:79=5:6", "1:2=6:7", "16:47=24:47";}}
 class NTM_DeadImp : NTM_DeadZombieman replaces DeadDoomImp
 {
 	Default
-	{
-		DeathSound "";
-	}
+		{DeathSound "";}
 	States
 	{
 		Death:
@@ -734,20 +723,16 @@ class NTM_DeadImp : NTM_DeadZombieman replaces DeadDoomImp
 	}
 }
 class NTM_DeadDemon : NTM_DeadZombieman replaces DeadDemon
-{
-	States
+	{States
 	{
 		Death:
 			NDEM M -1;
 			Stop;
-	}
-}
+	}}
 class NTM_DeadCacodemon : NTM_DeadZombieman replaces DeadCacodemon
 {
 	Default
-	{
-		BloodColor "Blue";
-	}
+		{BloodColor "Blue";}
 	States
 	{
 		Death:
@@ -756,23 +741,19 @@ class NTM_DeadCacodemon : NTM_DeadZombieman replaces DeadCacodemon
 	}
 }
 class NTM_DeadMarine : NTM_DeadZombieman Replaces DeadMarine
-{
-	States
+	{States
 	{
 		Death:
 			NPLA L -1;
 			Stop;
-	}
-}
+	}}
 class NTM_GibbedMarine : GibbedMarine Replaces GibbedMarine
-{
-	States
+	{States
 	{
 		Spawn:
 			TNT1 A 0 NoDelay A_SpawnItemEx("NTM_BloodPool");
 			Goto Super::Spawn;
-	}
-}
+	}}
 class NTM_C4Ammo : Ammo
 {
 	Default
