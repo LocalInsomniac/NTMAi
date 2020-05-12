@@ -276,30 +276,27 @@ class NTM_Actor : NTM_System
 	{
 		if (owner.target && owner.target is "PlayerPawn" && owner.target.bShadow && !owner.CountInv("NTM_CantSee"))
 			owner.A_GiveInventory("NTM_CantSee", 1);
-		if (owner.pos.z <= owner.floorZ || owner.bOnMObj)
-			if (sv_ntm_bloodFootprints && fpDuration > 0)
+		if (owner.pos.z <= owner.floorZ && sv_ntm_bloodFootprints && fpDuration > 0)
+			if (owner.vel.Length() > 0)
 			{
-				if (owner.vel.Length() > 0)
+				fpDuration--;
+				fpInterval++;
+				if (fpInterval >= 8 && fpBlood != null)
 				{
-					fpDuration--;
-					fpInterval++;
-					if (fpInterval >= 8 && fpBlood != null)
+					bool result;
+					Actor footprint;
+					double ang = owner.angle;
+					[result, footprint] = fpBlood.A_SpawnItemEx("NTM_BloodyFootprint", angle: ang, flags: SXF_TransferTranslation | SXF_NoCheckPosition | SXF_AbsoluteAngle);
+					if (footprint)
 					{
-						bool result;
-						Actor footprint;
-						double ang = owner.angle;
-						[result, footprint] = fpBlood.A_SpawnItemEx("NTM_BloodyFootprint", angle: ang, flags: SXF_TransferTranslation | SXF_NoCheckPosition | SXF_AbsoluteAngle);
-						if (footprint)
-						{
-							fpSide *= -1;
-							footprint.SetOrigin((owner.pos.x + Cos(ang + (fpSide * 90)) * 5, owner.pos.y + Sin(ang + (fpSide * 90)) * 5, owner.pos.z), false);
-						}
-						fpInterval = 0;
+						fpSide *= -1;
+						footprint.SetOrigin((owner.pos.x + Cos(ang + (fpSide * 90)) * 5, owner.pos.y + Sin(ang + (fpSide * 90)) * 5, owner.pos.z), false);
 					}
-				}
-				else
 					fpInterval = 0;
+				}
 			}
+			else
+				fpInterval = 0;
 		if (owner.health <= 0)
 		{
 			if (sv_ntm_bloodDeath && lastFrame != owner.curState.frame && owner.curState.frame != 0)
