@@ -150,7 +150,7 @@ class NTM_BloodSpot : Actor
 	States
 	{
 		Spawn:
-			NBLS A 350 NoDelay A_JumpIf((!CVar.FindCVar("cl_ntm_bloodDetail").GetBool()), 1);
+			NBLS A 350 NoDelay A_JumpIf(!CVar.FindCVar("cl_ntm_bloodDetail").GetBool(), 1);
 			Stop;
 			NBLX ABCDEF 3;
 			Stop;
@@ -226,7 +226,7 @@ class NTM_RealGibs : RealGibs
 			TNT1 A 0 NoDelay
 			{
 				A_PlaySound("misc/gibbed");
-				if (CVar.FindCVar("sv_ntm_bloodStretch").GetBool())
+				if (sv_ntm_bloodStretch)
 					A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
 				Destroy();
 			}
@@ -329,7 +329,7 @@ class NTM_FlyingGib1 : NTM_FlyingBlood
 				A_PlaySound("misc/blood");
 				vel.xy *= 0;
 			}
-			#### E 700 A_JumpIf((!CVar.FindCVar("cl_ntm_gibDetail").GetBool()), 1);
+			#### E 700 A_JumpIf(!CVar.FindCVar("cl_ntm_gibDetail").GetBool(), 1);
 			Stop;
 			TNT1 A 0
 				{for (int i; i < Random(2, 3); i++)
@@ -673,14 +673,17 @@ class NTM_Burn : NTM_Monster
 		Super.PostBeginPlay();
 		if (original)
 		{
-			if (original is "NTM_SSGuard")
-				A_PlaySound("wolfss/burn");
-			else
-				if (original is "NTM_Zombieman" || original is "NTM_ChaingunGuy")
-					A_PlaySound("burn/zombie");
-				else
-					if (original is "NTM_Imp")
-						A_PlaySound("burn/imp");
+			string snd = "burn/zombie";
+			switch (Name(original.GetClassName()))
+			{
+				case ('NTM_SSGuard'):
+					snd = "wolfss/burn";
+				break;
+				case ('NTM_Imp'):
+					snd = "burn/imp";
+				break;
+			}
+			A_PlaySound(Sound(snd));
 			deathSound = GetDefaultByType(original).deathSound;
 		}
 		else
