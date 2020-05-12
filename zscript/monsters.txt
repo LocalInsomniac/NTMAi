@@ -32,16 +32,16 @@ class NTM_Monster : Actor
 		Super.PostBeginPlay();
 		oldLeap = false;
 		fullMod = true;
-		dropChange = NTMAI.CanLeap();
+		dropChange = sv_ntm_monsterLeap;
 		if (default.maxDropOffHeight == 128 && !dropChange)
 			maxDropOffHeight = 24;
 	}
 	override void Tick()
 	{
 		Super.Tick();
-		if (default.maxDropOffHeight == 128 && dropChange != NTMAI.CanLeap())
+		if (default.maxDropOffHeight == 128 && dropChange != sv_ntm_monsterLeap)
 		{
-			dropChange = NTMAI.CanLeap();
+			dropChange = sv_ntm_monsterLeap;
 			maxDropOffHeight = dropChange ? 128 : 24;
 		}
 	}
@@ -115,7 +115,7 @@ class NTM_Monster : Actor
 	}
 	bool TryLeap(State leapState, EJumpFlags flags)
     {
-        if (!target || !NTMAI.CanLeap())
+        if (!target || !sv_ntm_monsterLeap)
 			return (false);
         if (Abs(GetGroundHeight() - pos.z) < 1 && !Random(0, 16) && (((flags & JF_Up) && (Abs(target.pos.z - pos.z) > default.maxStepHeight)) || ((flags & JF_Forward) && CheckPitBeforeTarget())) && Distance2D(target) < GetJumpDistance())
 		{
@@ -223,7 +223,7 @@ class NTM_Zombieman : NTM_Humanoid
 		Missile:
 			NZOM E 0
 			{
-				if (NTMAI.CanGrenade())
+				if (sv_ntm_grenadiers)
 				{
 					int ran = Random(0, 256);
 					if ((G_SkillPropertyInt(7) == 4 && ran <= 20) || (G_SkillPropertyInt(7) == 3 && ran <= 10))
@@ -651,7 +651,7 @@ class NTM_Demon : NTM_Monster
 			Loop;
 		See:
 			NDEM AABBCCDD 2 Fast A_LeapChase();
-			NDEM D 0 A_JumpIf((NTMAI.CanJump() && target && CheckSight(target) && Distance2D(target) <= 256 && !CheckPitBeforeTarget() && !random(0, 1) && ceilingZ > (pos.z + height + 32) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
+			NDEM D 0 A_JumpIf((sv_ntm_monsterJump && target && CheckSight(target) && Distance2D(target) <= 256 && !CheckPitBeforeTarget() && !random(0, 1) && ceilingZ > (pos.z + height + 32) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
 			Loop;
 		Jump:
 			NDEM N 0
@@ -876,7 +876,7 @@ class NTM_HellKnight : NTM_BaronOfHell
 	States
 	{
 		See:
-			NBAR D 0 A_JumpIf((NTMAI.CanJump() && target && CheckSight(target) && Distance2D(target) <= 270 && !CheckPitBeforeTarget() && !random(0, 3) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
+			NBAR D 0 A_JumpIf((sv_ntm_monsterJump && target && CheckSight(target) && Distance2D(target) <= 270 && !CheckPitBeforeTarget() && !random(0, 3) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
 			NBAR AABBCCDD 2 A_NTMChase;
 			Loop;
 		Melee:
@@ -950,7 +950,7 @@ class NTM_BaronOfHell : NTM_Monster
 			NBAR A 10 A_Look;
 			Loop;
 		See:
-			NBAR D 0 A_JumpIf((NTMAI.CanJump() && target && CheckSight(target) && Distance2D(target) <= 270 && !CheckPitBeforeTarget() && !random(0, 3) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
+			NBAR D 0 A_JumpIf((sv_ntm_monsterJump && target && CheckSight(target) && Distance2D(target) <= 270 && !CheckPitBeforeTarget() && !random(0, 3) && (pos.z <= floorZ || bOnMObj) && vel.z == 0), "Jump");
 			NBAR AABBCCDD 3 A_NTMChase;
 			Loop;
 		Jump:
@@ -1204,7 +1204,7 @@ class NTM_Revenant : NTM_Monster
 			NREV A 10 A_Look;
 			Loop;
 		See:
-			NREV A 0 A_JumpIf((NTMAI.CanFly() && bNoGravity), "Fly");
+			NREV A 0 A_JumpIf((sv_ntm_monsterFly && bNoGravity), "Fly");
 			NREV AABBCCDDEEFF 2 A_RevenantChase;
 			Loop;
 		Fly:
@@ -1242,7 +1242,7 @@ class NTM_Revenant : NTM_Monster
 	}
 	void A_RevenantChase()
     {
-		if (NTMAI.CanFly())
+		if (sv_ntm_monsterFly)
 		{
 			if (!doStopFlying && level.time - lastFlyTimer > 175 && !Random(0, 32))
 				if (bNoGravity)
@@ -1669,7 +1669,7 @@ class NTM_SSGuard : NTM_Zombieman
 			NZOM E 0
 			{
 				int ran = Random(0, 256);
-				if (CVar.FindCVar("sv_ntm_grenadiers").GetBool())
+				if (sv_ntm_grenadiers)
 					if ((G_SkillPropertyInt(7) == 4 && ran <= 20) || (G_SkillPropertyInt(7) == 3 && ran <= 10))
 						return (FindState("Grenade"));
 				return (FindState("StartMissile"));

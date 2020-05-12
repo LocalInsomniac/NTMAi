@@ -302,7 +302,7 @@ class NTM_Actor : NTM_System
 			}
 		if (owner.health <= 0)
 		{
-			if (NTMAI.CanBloodDeath() && lastFrame != owner.curState.frame && owner.curState.frame != 0)
+			if (sv_ntm_bloodDeath && lastFrame != owner.curState.frame && owner.curState.frame != 0)
 			{
 				Vector2 getSize = TexMan.GetScaledSize(owner.curState.GetSpriteTexture(0));
 				float getHeight = getSize.y;
