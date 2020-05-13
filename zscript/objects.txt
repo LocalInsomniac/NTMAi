@@ -318,9 +318,7 @@ class NTM_HomingAmmo : Ammo
 class NTM_RocketBox : CustomInventory replaces RocketBox
 {
 	Default
-	{
-		Inventory.PickUpMessage "Picked up an explosives pack.";
-	}
+		{Inventory.PickUpMessage "Picked up an explosives pack.";}
 	States
 	{
 		Spawn:

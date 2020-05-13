@@ -132,7 +132,7 @@ class NTMAI : EventHandler
 					e.replacement = "NTM_ShotgunGuy";
 			break;
 			case ('ChaingunGuy'):
-				if (e.replacee == "ChaingunGuy")
+				if (sv_ntm_r_heavyWeaponDude)
 					e.replacement = "NTM_ChaingunGuy";
 			break;
 			case ('DoomImp'):
@@ -226,8 +226,107 @@ class NTMAI : EventHandler
 			case ('RealGibs'):
 				e.replacement = "NTM_RealGibs";
 			break;
-		}
-	}
+		}}
+	override void CheckReplacee(ReplacedEvent e)
+		{switch (e.replacement.GetClassName())
+		{
+			case ('NTM_Zombieman'):
+				if (sv_ntm_r_zombieman)
+					e.replacee = "Zombieman";
+			break;
+			case ('NTM_ShotgunGuy'):
+				if (sv_ntm_r_shotgunGuy)
+					e.replacee = "ShotgunGuy";
+			break;
+			case ('NTM_ChaingunGuy'):
+				if (sv_ntm_r_heavyWeaponDude)
+					e.replacee = "ChaingunGuy";
+			break;
+			case ('NTM_Imp'):
+				if (sv_ntm_r_imp)
+					e.replacee = "DoomImp";
+			break;
+			case ('NTM_ImpBall'):
+				if (sv_ntm_r_imp)
+					e.replacee = "DoomImpBall";
+			break;
+			case ('NTM_Demon'):
+				if (sv_ntm_r_demon)
+					e.replacee = "Demon";
+			break;
+			case ('NTM_Spectre'):
+				if (sv_ntm_r_spectre)
+					e.replacee = "Spectre";
+			break;
+			case ('NTM_LostSoul'):
+				if (sv_ntm_r_lostSoul)
+					e.replacee = "LostSoul";
+			break;
+			case ('NTM_Cacodemon'):
+				if (sv_ntm_r_cacodemon)
+					e.replacee = "Cacodemon";
+			break;
+			case ('NTM_CacodemonBall'):
+				if (sv_ntm_r_cacodemon)
+					e.replacee = "CacodemonBall";
+			break;
+			case ('NTM_HellKnight'):
+				if (sv_ntm_r_hellKnight)
+					e.replacee = "HellKnight";
+			break;
+			case ('NTM_BaronOfHell'):
+				if (sv_ntm_r_baronOfHell)
+					e.replacee = "BaronOfHell";
+			break;
+			case ('NTM_BaronBall'):
+				if (sv_ntm_r_hellKnight || sv_ntm_r_baronOfHell)
+					e.replacee = "BaronBall";
+			break;
+			case ('NTM_Arachnotron'):
+				if (sv_ntm_r_arachnotron)
+					e.replacee = "Arachnotron";
+			break;
+			case ('NTM_PainElemental'):
+				if (sv_ntm_r_painElemental)
+					e.replacee = "PainElemental";
+			break;
+			case ('NTM_Revenant'):
+				if (sv_ntm_r_revenant)
+					e.replacee = "Revenant";
+			break;
+			case ('NTM_RevenantTracer'):
+				if (sv_ntm_r_revenant)
+					e.replacee = "RevenantTracer";
+			break;
+			case ('NTM_RevenantTracerSmoke'):
+				if (sv_ntm_r_revenant)
+					e.replacee = "RevenantTracerSmoke";
+			break;
+			case ('NTM_Mancubus'):
+				if (sv_ntm_r_mancubus)
+					e.replacee = "Fatso";
+			break;
+			case ('NTM_FatShot'):
+				if (sv_ntm_r_mancubus)
+					e.replacee = "FatShot";
+			break;
+			case ('NTM_Archvile'):
+				if (sv_ntm_r_archVile)
+					e.replacee = "Archvile";
+			break;
+			case ('NTM_SpiderMastermind'):
+				if (sv_ntm_r_spiderMastermind)
+					e.replacee = "SpiderMastermind";
+			break;
+			case ('NTM_Cyberdemon'):
+				if (sv_ntm_r_cyberdemon)
+					e.replacee = "Cyberdemon";
+			break;
+			case ('NTM_SSGuard'):
+				if (sv_ntm_r_ss)
+					e.replacee = "WolfensteinSS";
+			break;
+		}}
 	void DoThingRevive(Actor mo)
 	{
 		if (mo.CountInv("NTM_CorpseGib"))
