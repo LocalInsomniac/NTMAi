@@ -4,10 +4,8 @@ A Build Engine-styled mod for GZDoom.
 # Join our Discord!
 https://discord.gg/PwNBFRW
 
-# Downloads:
-RELEASE: https://www.mediafire.com/file/2lwu7khu94uo6ur/ntmai.zip/file
-
-DEV BUILD (frequent updates, unstable): https://www.dropbox.com/s/02fav9gpmka3jfc/ntmai.zip?dl=1
+# Download:
+https://github.com/LocalInsomniac/NTMAi/releases
 
 # SUMMARY
 Here's a mod of mine that's been the works since summer 2019. This is a mod that takes the charm of Build Engine games such as Duke Nukem 3D, Shadow Warrior and Blood and attempts to do the same principles for Doom. I've even gone so far to replace most of the object sprites to 1.5x upscaled sprites based on hidfan's Neural Upscaled sprites, and ensuring that there are no more than only 5 rotations for every monster sprite. Right now this mod is in a version below 1.0, so it's pretty barebones, although I'd consider it pretty much complete for a first release.
@@ -26,4 +24,4 @@ What's a Doom mod gotta do to be Build-styled? Here's a list:
 	-Blood-styled movement for monsters
 	-New monster abilities: jumping over pits, jumping at enemies, charging at the player, added missing melee states...
 
-And other things I forgot about! Some of these things like camera moves, weapon functions & jumping monsters can be adjusted through NTMAI Options.
+And other things I forgot about! Some of these things like camera moves, weapon functions & jumping monsters can be adjusted through NTMAi Options.
