@@ -110,7 +110,7 @@ class NTM_FlyingBlood : Actor
 			Loop;
 		Crash:
 			TNT1 A 0 A_Jump(127, 1);
-			TNT1 A 0 A_PlaySound("misc/blood");
+			TNT1 A 0 A_StartSound("misc/blood");
 			TNT1 A 0 A_SpawnItem("NTM_BloodSpot", 0, 0, 0, true);
 			Stop;
 	}
@@ -225,7 +225,7 @@ class NTM_RealGibs : RealGibs
 		Spawn:
 			TNT1 A 0 NoDelay
 			{
-				A_PlaySound("misc/gibbed");
+				A_XScream();
 				if (sv_ntm_bloodStretch)
 					A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
 				Destroy();
@@ -326,7 +326,7 @@ class NTM_FlyingGib1 : NTM_FlyingBlood
 		Crash:
 			#### E 0
 			{
-				A_PlaySound("misc/blood");
+				A_StartSound("misc/blood");
 				vel.xy *= 0;
 			}
 			#### E 700 A_JumpIf(!CVar.FindCVar("cl_ntm_gibDetail").GetBool(), 1);
@@ -683,7 +683,7 @@ class NTM_Burn : NTM_Monster
 					snd = "burn/imp";
 				break;
 			}
-			A_PlaySound(Sound(snd));
+			A_StartSound(Sound(snd));
 			deathSound = GetDefaultByType(original).deathSound;
 		}
 		else

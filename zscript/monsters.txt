@@ -161,7 +161,7 @@ class NTM_Monster : Actor
 		A_NTMChase();
 	}
 	void A_NTMFall(class<Actor> new = "NTM_SMGPickup")
-		{if (CheckClass("NTM_NewPlayer", AAPTR_Player1))
+		{if (players[consolePlayer].mo is "NTM_NewPlayer")
 		{
 			A_DropItem(new);
 			A_NoBlocking(false);
@@ -423,17 +423,17 @@ class NTM_ChaingunGuy : NTM_Humanoid
 			NCGZ M 3;
 			NCGZ N 3 Bright
 			{
-				A_PlaySound("chainguy/attack", Chan_Weapon);
+				A_StartSound("chainguy/attack", 1);
 				A_CustomBulletAttack(22.5, 0, 1, Random(1, 5) * 3, "BulletPuff", 0, CBAF_NoRandom | CBAF_AimFacing);
 			}
 			NCGZ H 3 A_Scream;
-			NCGZ O 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ O 3 Bright A_StartSound("chainguy/attack", 1);
 			NCGZ I 3;
-			NCGZ P 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ P 3 Bright A_StartSound("chainguy/attack", 1);
 			NCGZ J 3;
-			NCGZ Q 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ Q 3 Bright A_StartSound("chainguy/attack", 1);
 			NCGZ K 3;
-			NCGZ R 3 Bright A_PlaySound("chainguy/attack", Chan_Weapon);
+			NCGZ R 3 Bright A_StartSound("chainguy/attack", 1);
 			NCGZ L 0 A_NTMFall;
 			#### # -1;
 			Stop;
@@ -450,7 +450,7 @@ class NTM_ChaingunGuy : NTM_Humanoid
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!(self is "NTM_SMGGuy") && CheckClass("NTM_NewPlayer", AAPTR_Player1))
+		if (!(self is "NTM_SMGGuy") && players[consolePlayer].mo is "NTM_NewPlayer")
 		{
 			Actor guy = Spawn("NTM_SMGGuy", pos);
 			guy.angle = angle;
@@ -656,7 +656,7 @@ class NTM_Demon : NTM_Monster
 		Jump:
 			NDEM N 0
 			{
-				A_PlaySound("demon/attack");
+				A_StartSound("demon/attack");
 				A_FaceTarget();
 				A_ChangeVelocity(vel.x, vel.y, 8);
 				A_Recoil(-15);
@@ -906,7 +906,7 @@ class NTM_HellKnight : NTM_BaronOfHell
 			NBAR P 7
 			{
 				A_Scream();
-				A_PlaySound("misc/gibbed", 5);
+				A_StartSound("misc/gibbed", 5);
 				if (health >= GetGibHealth())
 				{
 					for (int i = 2; i < 4; i++)
@@ -988,7 +988,7 @@ class NTM_BaronOfHell : NTM_Monster
 			NBAR P 7
 			{
 				A_Scream();
-				A_PlaySound("misc/gibbed", 5);
+				A_StartSound("misc/gibbed", 5);
 				if (health >= GetGibHealth())
 				{
 					for (int i = 2; i < 4; i++)
@@ -1136,7 +1136,7 @@ class NTM_PainElemental : NTM_Monster
 			{
 				A_SpawnItemEx("NTM_Explosion", 0, 0, 32);
 				A_PainDie();
-				A_PlaySound("misc/gibbed", 5);
+				A_StartSound("misc/gibbed", 5);
 				if (health >= GetGibHealth())
 				{
 					for (int i = 2; i < 4; i++)
@@ -1252,7 +1252,7 @@ class NTM_Revenant : NTM_Monster
 				}
 				else
 				{
-					A_PlaySound("revenant/fly", 5, 0.5, true);
+					A_StartSound("revenant/fly", 5, ChanF_Loop, 0.5);
 					lastFlyTimer = level.time;
 					bNoGravity = true;
 					A_SetFloat();
@@ -1473,7 +1473,7 @@ class NTM_Archvile : NTM_Monster
 			A_FaceTarget();
 			if (!CheckSight(targ))
 				return;
-			A_PlaySound("vile/stop", 1);
+			A_StartSound("vile/stop", 1);
 			int newDam = targ.DamageMObj(self, self, 20, VAF_DmgTypeApplyToDirect ? "Fire" : "none");
 			targ.TraceBleed(newDam > 0 ? newDam : 20, self);
 			if (tracer)
@@ -1502,7 +1502,7 @@ class NTM_Boss : NTM_Monster
 	}
 	void A_BossExplode()
 	{
-		A_PlaySound("world/barrelx", 5, 1.0, 0, ATTN_NORM, false, frandom(0.8, 1.2));
+		A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
 		Actor boom = Spawn("NTM_Explosion", pos + (Random(-32, 32), Random(-32, 32), Random(8, 64)));
 		if (boom)
 			boom.scale *= 0.5;
@@ -1709,7 +1709,7 @@ class NTM_SSGuard : NTM_Zombieman
 	}
 	void A_SSAttack()
 	{
-		A_PlaySound("weapons/pistol", Chan_Weapon);
-		A_CustomBulletAttack(36, 0, 1, random(1, 5) * 1.8, "BulletPuff", 0, CBAF_NoRandom);
+		A_StartSound("weapons/pistol", 1);
+		A_CustomBulletAttack(36, 0, 1, Random(1, 5) * 1.8, "BulletPuff", 0, CBAF_NoRandom);
 	}
 }

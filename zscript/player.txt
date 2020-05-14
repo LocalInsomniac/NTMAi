@@ -272,7 +272,7 @@ class NTM_OpenRed : Weapon
 			NRKE A 1 A_Raise(10);
 			Loop;
 		Ready:
-			NRKE B 0 A_PlaySound("misc/k_pkup");
+			NRKE B 0 A_StartSound("misc/k_pkup");
 			NRKE BBBBBBBBB 1 A_WeaponReady;
 		Fire:
 		Deselect:
@@ -292,7 +292,7 @@ class NTM_OpenYellow : NTM_OpenRed
 			NYKE A 1 A_Raise(10);
 			Loop;
 		Ready:
-			NYKE B 0 A_PlaySound("misc/k_pkup");
+			NYKE B 0 A_StartSound("misc/k_pkup");
 			NYKE BBBBBBBBB 1 A_WeaponReady;
 		Fire:
 		Deselect:
@@ -310,7 +310,7 @@ class NTM_OpenBlue : NTM_OpenRed
 			NBKE A 1 A_Raise(10);
 			Loop;
 		Ready:
-			NBKE B 0 A_PlaySound("misc/k_pkup");
+			NBKE B 0 A_StartSound("misc/k_pkup");
 			NBKE BBBBBBBBB 1 A_WeaponReady;
 		Fire:
 		Deselect:
@@ -328,7 +328,7 @@ class NTM_SkullRed : NTM_OpenRed
 			NRSK A 1 A_Raise(10);
 			Loop;
 		Ready:
-			NRSK B 0 A_PlaySound("misc/k_pkup");
+			NRSK B 0 A_StartSound("misc/k_pkup");
 			NRSK BBBBBBBBB 1 A_WeaponReady;
 		Fire:
 		Deselect:
@@ -346,7 +346,7 @@ class NTM_SkullYellow : NTM_OpenRed
 			NYSK A 1 A_Raise(10);
 			Loop;
 		Ready:
-			NYSK B 0 A_PlaySound("misc/k_pkup");
+			NYSK B 0 A_StartSound("misc/k_pkup");
 			NYSK BBBBBBBBB 1 A_WeaponReady;
 		Fire:
 		Deselect:
@@ -364,7 +364,7 @@ class NTM_SkullBlue : NTM_OpenRed
 			NBSK A 1 A_Raise(10);
 			Loop;
 		Ready:
-			NBSK B 0 A_PlaySound("misc/k_pkup");
+			NBSK B 0 A_StartSound("misc/k_pkup");
 			NBSK BBBBBBBBB 1 A_WeaponReady;
 			NBSK AAAAAAAAA 1 A_Lower(9);
 		Fire:
@@ -389,7 +389,7 @@ class NTM_Weapon : Weapon
 			#### AAAAAAAA 1 A_Lower(10);
 			NGRG AAAAAAAA 1 A_Raise(9);
 			NGRG ABCD 2;
-			NGRG E 2 A_PlaySound("grenade/pin", Chan_Weapon);
+			NGRG E 2 A_StartSound("grenade/pin", 1);
 			NGRG FG 2;
 			TNT1 A 2;
 			TNT1 A 10
@@ -486,7 +486,7 @@ class NTM_Chainsaw : NTM_Weapon
 			NCSB A 1 A_Lower(10);
 			Goto Deselect + 2;
 		Ready:
-			NCSA A 0 A_PlaySound("weapons/sawidle", 1);
+			NCSA A 0 A_StartSound("weapons/sawidle", 1);
 			NCSA A 0 A_JumpIfInventory("NTM_Bloody", 1, 3);
 			NCSA AB 4 A_NTMIdle;
 			Loop;
@@ -539,7 +539,7 @@ class NTM_Mutilator : NTM_Chainsaw
 			NDCB A 1 A_Lower(10);
 			Goto Deselect + 2;
 		Ready:
-			NDCS A 0 A_PlaySound("weapons/sawidle", 1);
+			NDCS A 0 A_StartSound("weapons/sawidle", 1);
 			NDCS A 0 A_JumpIfInventory("NTM_Bloody", 1, 3);
 			NDCS AB 4 A_NTMIdle2;
 			Loop;
@@ -588,7 +588,7 @@ class NTM_PistolSpawn : Actor replaces Pistol
 	}
 	void A_SpawnClass(class<Actor> old, class<Actor> new)
 	{
-		if (CheckClass("NTM_NewPlayer", AAPTR_Player1))
+		if (players[consolePlayer].mo is "NTM_NewPlayer")
 			A_SpawnItemEx(new);
 		else
 			A_SpawnItemEx(old);
@@ -669,7 +669,7 @@ class NTM_Pistol : NTM_Weapon
 			{
 				A_GunFlash();
 				A_FireBullets(2.5, 0, 1, 4, "BulletPuff");
-				A_PlaySound("weapons/pistol");
+				A_StartSound("weapons/pistol");
 				A_GiveInventory("NTM_PistolShots", 1);
 			}
 			NPIS C 3 A_SpawnItemEx("NTM_BulletCasing", -4, 16, 36, -3, 0, 2, 90);
@@ -682,12 +682,12 @@ class NTM_Pistol : NTM_Weapon
 		Reload:
 			NPIS B 0 A_JumpIfInventory("NTM_PistolShots", 1, 1);
 			Goto Ready;
-			NPIS E 3 A_PlaySound("weapons/pistolo");
+			NPIS E 3 A_StartSound("weapons/pistolo");
 			NPIS EE 3 A_WeaponOffset(17, 19, WOF_Interpolate);
 			NPIS GH 3 A_WeaponOffset();
 			NPIS E 12
 			{
-				A_PlaySound("weapons/pistoli");
+				A_StartSound("weapons/pistoli");
 				A_WeaponOffset(17, 19);
 			}
 			NPIS IJK 3 A_WeaponOffset();
@@ -701,6 +701,9 @@ class NTM_Pistol : NTM_Weapon
 		Flash:
 			TNT1 A 3 A_Light1;
 			Goto LightDone;
+		Spawn:
+			PIST A -1;
+			Stop;
 	}
 }
 class NTM_Rifle : NTM_Pistol
@@ -730,7 +733,7 @@ class NTM_Rifle : NTM_Pistol
 			{
 				A_GunFlash();
 				A_FireBullets(1.25, 0, 1, 8, "BulletPuff");
-				A_PlaySound("weapons/semi");
+				A_StartSound("weapons/semi");
 				A_GiveInventory("NTM_PistolShots", 1);
 				A_WeaponOffset(16, 40, WOF_Interpolate);
 				A_AlertMonsters();
@@ -748,10 +751,10 @@ class NTM_Rifle : NTM_Pistol
 		Reload:
 			NSAR B 0 A_JumpIfInventory("NTM_PistolShots", 1, 1);
 			Goto Ready;
-			NSAR A 3 A_PlaySound("weapons/pistolo");
+			NSAR A 3 A_StartSound("weapons/pistolo");
 			NSAR AAAAAA 1 A_Lower(10);
 			NSAR A 5;
-			NSAR A 10 A_PlaySound("weapons/bigclip");
+			NSAR A 10 A_StartSound("weapons/bigclip");
 			NSAR A 3 A_SetInventory("NTM_PistolShots", 0);
 			NSAR AAAAA 1 A_Raise(11);
 			NSAR A 5 A_WeaponOffset;
@@ -812,7 +815,7 @@ class NTM_Shotgun : NTM_Weapon
 			NSHO B 2 Bright
 			{
 				A_FireBullets(5.6, 0, 7, 5, "BulletPuff");
-				A_PlaySound("weapons/shotgf", 1);
+				A_StartSound("weapons/shotgf", 1);
 				A_GunFlash();
 				A_AlertMonsters();
 				A_WeaponOffset(6, 42, WOF_Interpolate);
@@ -823,7 +826,7 @@ class NTM_Shotgun : NTM_Weapon
 			NSHO G 4
 			{
 				A_SpawnItemEx("NTM_ShellCasing", -8, 16, 28, -4, 0, 4, 90);
-				A_PlaySound("weapons/shotcock");
+				A_StartSound("weapons/shotcock");
 			}
 			NSHO FED 4;
 			NSHO A 0 A_Refire;
@@ -835,7 +838,7 @@ class NTM_Shotgun : NTM_Weapon
 			{
 				A_FireProjectile("NTM_BoomShell");
 				A_FireBullets(5.6, 0, 4, 5);
-				A_PlaySound("weapons/shotgf", 1);
+				A_StartSound("weapons/shotgf", 1);
 				A_GunFlash();
 				if (!sv_infiniteAmmo)
 					A_TakeInventory("NTM_ExplosiveShell", 1);
@@ -848,7 +851,7 @@ class NTM_Shotgun : NTM_Weapon
 			NSHO G 4
 			{
 				A_SpawnItemEx("NTM_ShellCasing2", -8, 16, 28, -4, 0, 4, 90);
-				A_PlaySound("weapons/shotcock");
+				A_StartSound("weapons/shotcock");
 			}
 			NSHO FED 4;
 			NSHO A 0 A_Refire;
@@ -879,7 +882,7 @@ class NTM_AShotgun : NTM_Shotgun
 			NASH B 4 Bright
 			{
 				A_FireBullets(5.6, 0, 7, 5, "BulletPuff");
-				A_PlaySound("weapons/shotgf", 1);
+				A_StartSound("weapons/shotgf", 1);
 				A_GunFlash();
 				A_AlertMonsters();
 			}
@@ -887,7 +890,7 @@ class NTM_AShotgun : NTM_Shotgun
 			NASH F 4
 			{
 				A_SpawnItemEx("NTM_ShellCasing", -8, 16, 28, -4, 0, 4, 90);
-				A_PlaySound("weapons/shotcock");
+				A_StartSound("weapons/shotcock");
 			}
 			NASH EDC 4;
 			NASH A 0 A_Refire;
@@ -899,7 +902,7 @@ class NTM_AShotgun : NTM_Shotgun
 			{
 				A_FireProjectile("NTM_BoomShell");
 				A_FireBullets(5.6, 0, 4, 5);
-				A_PlaySound("weapons/shotgf", 1);
+				A_StartSound("weapons/shotgf", 1);
 				A_GunFlash();
 				if (!sv_infiniteAmmo)
 					A_TakeInventory("NTM_ExplosiveShell", 1);
@@ -909,7 +912,7 @@ class NTM_AShotgun : NTM_Shotgun
 			NASH F 4
 			{
 				A_SpawnItemEx("NTM_ShellCasing2", -8, 16, 28, -4, 0, 4, 90);
-				A_PlaySound("weapons/shotcock");
+				A_StartSound("weapons/shotcock");
 			}
 			NASH EDC 4;
 			NASH A 0 A_Refire;
@@ -941,7 +944,7 @@ class NTM_BoomShell : FastProjectile
 			{
 				A_Explode(Random(1, 3) * 10 + Random(3, 6) * 6, 48);
 				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
-				A_PlaySound("world/barrelx", Chan_5, 1.0, 0, Attn_Norm, false, FRandom(0.8, 1.2));
+				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
 				Actor boom = Spawn("NTM_Explosion", pos + (0, 0, 16));
 				if (boom)
 					boom.scale *= 0.6;
@@ -981,7 +984,7 @@ class NTM_SuperShotgun : NTM_Weapon
 			{
 				A_WeaponOffset(6, 56, WOF_Interpolate);
 				A_FireBullets(11.2, 7.1, 20, 5, "NTM_SSGPuff");
-				A_PlaySound("weapons/sshotf", 1);
+				A_StartSound("weapons/sshotf", 1);
 				A_GunFlash();
 			}
 			NSUP C 2 Bright A_WeaponOffset(9, 64, WOF_Interpolate);
@@ -991,16 +994,16 @@ class NTM_SuperShotgun : NTM_Weapon
 			NSUP A 7 A_WeaponOffset(flags: WOF_Interpolate);
 			NSUP D 4 A_CheckReload;
 			NSUP E 3;
-			NSUP F 3 A_PlaySound("weapons/sshoto");
+			NSUP F 3 A_StartSound("weapons/sshoto");
 			NSUP G 4
 			{
 				A_SpawnItemEx("NTM_ShellCasing", -2, 16, 32, -3, 0, Random(2, 4), 90);
 				A_SpawnItemEx("NTM_ShellCasing", -5, 16, 32, -3, 0, Random(2, 4), 90);
 			}
 			NSUP H 4;
-			NSUP I 4 A_PlaySound("weapons/sshotl");
+			NSUP I 4 A_StartSound("weapons/sshotl");
 			NSUP JK 3;
-			NSUP E 3 A_PlaySound("weapons/sshotc");
+			NSUP E 3 A_StartSound("weapons/sshotc");
 			NSUP D 5;
 			NSUP A 5 A_Refire;
 			Goto Ready;
@@ -1038,7 +1041,7 @@ class NTM_SawedOff : NTM_SuperShotgun
 			{
 				A_WeaponOffset(6, 56, WOF_Interpolate);
 				A_FireBullets(20, 7.1, 24, 4, "NTM_SawedPuff");
-				A_PlaySound("weapons/sshotf", 1);
+				A_StartSound("weapons/sshotf", 1);
 				A_GunFlash();
 			}
 			NSAW C 2 Bright A_WeaponOffset(9, 64, WOF_Interpolate);
@@ -1047,16 +1050,16 @@ class NTM_SawedOff : NTM_SuperShotgun
 			NSAW A 2 A_WeaponOffset(3, 48, WOF_Interpolate);
 			NSAW A 6 A_WeaponOffset(flags: WOF_Interpolate);
 			NSAW D 3 A_CheckReload;
-			NSAW E 3 A_PlaySound("weapons/sshoto");
+			NSAW E 3 A_StartSound("weapons/sshoto");
 			NSAW F 3
 			{
 				A_SpawnItemEx("NTM_ShellCasing", -2, 16, 32, -3, 0, Random(2, 4), 90);
 				A_SpawnItemEx("NTM_ShellCasing", -5, 16, 32, -3, 0, Random(2, 4), 90);
 			}
 			NSAW F 8 A_Overlay(100, "Load");
-			NSAW H 2 A_PlaySound("weapons/sshotl");
+			NSAW H 2 A_StartSound("weapons/sshotl");
 			NSAW E 3;
-			NSAW D 3 A_PlaySound("weapons/sshotc");
+			NSAW D 3 A_StartSound("weapons/sshotc");
 			NSAW A 3;
 			NSAW A 0 A_Refire;
 			Goto Ready;
@@ -1103,7 +1106,7 @@ class NTM_Chaingun : NTM_Weapon
 		Fire:
 			NCHA E 1 Bright
 			{
-				A_PlaySound("weapons/chngun", 1);
+				A_StartSound("weapons/chngun", 1);
 				A_GunFlash();
 				A_FireBullets(5.6, 0, 1, 5, "BulletPuff");
 			}
@@ -1174,7 +1177,7 @@ class NTM_SMG : NTM_Chaingun
 			Goto Ready;
 			NSMG D 3 A_SMGReload;
 			NSMG D 15;
-			NSMG D 12 A_PlaySound("weapons/bigclip");
+			NSMG D 12 A_StartSound("weapons/bigclip");
 			NSMG DDDDD 1 A_Lower(10);
 			NSMG A 3 A_SMGDone;
 			Goto Ready;
@@ -1205,7 +1208,7 @@ class NTM_SMG : NTM_Chaingun
 	}
 	action void A_SMGFire()
 	{
-		A_PlaySound("weapons/smg");
+		A_StartSound("weapons/smg");
 		A_GunFlash();
 		A_FireBullets(5.6, 0, 1, 4, "BulletPuff");
 		A_WeaponOffset(Random(-4,4), Random(32,34), WOF_Interpolate);
@@ -1216,7 +1219,7 @@ class NTM_SMG : NTM_Chaingun
 	action void A_SMGReload()
 	{
 		A_Overlay(-1, "Reload2");
-		A_PlaySound("weapons/pistolo");
+		A_StartSound("weapons/pistolo");
 	}
 	action void A_SMGDone()
 	{
@@ -1263,7 +1266,7 @@ class NTM_SMGDual : NTM_SMG
 			Goto Ready;
 			NSMG D 3 A_SMGReload;
 			NSMG D 15;
-			NSMG D 12 A_PlaySound("weapons/bigclip");
+			NSMG D 12 A_StartSound("weapons/bigclip");
 			NSMG DDDDDDDDDD 1 A_Lower(9);
 			NSMG NNNNNNNNN 1 A_Raise(9);
 			NSMG N 1;
@@ -1271,10 +1274,10 @@ class NTM_SMGDual : NTM_SMG
 			{
 				A_WeaponOffset();
 				A_Overlay(-1, "Reload3");
-				A_PlaySound("weapons/pistolo");
+				A_StartSound("weapons/pistolo");
 			}
 			NSMG K 15;
-			NSMG K 12 A_PlaySound("weapons/bigclip");
+			NSMG K 12 A_StartSound("weapons/bigclip");
 			NSMG K 4;
 			NSMG N 5
 			{
@@ -1338,7 +1341,7 @@ class NTM_SMGDual : NTM_SMG
 	}
 	action void A_DualSMGFire()
 	{
-		A_PlaySound("weapons/smg");
+		A_StartSound("weapons/smg");
 		A_GunFlash();
 		for (int i = 0; i < 2; i++)
 			A_FireBullets(5.6, 0, 1, 4, "BulletPuff");
@@ -1365,7 +1368,13 @@ class NTM_SMGPickup : CustomInventory
 			NSMG G -1;
 			Stop;
 		Pickup:
-			TNT1 A 0 A_JumpIfInventory("Clip", 0, 2);
+			TNT1 A 0
+			{
+				if (CountInv("NTM_SMGDual"))
+					return (A_JumpIfInventory("Clip", 0, 3));
+				return (A_Jump(256, 1));
+			}
+			TNT1 A 0;
 			TNT1 A 0
 				{if (CountInv("NTM_SMGDual"))
 					A_GiveInventory("Clip", 20);
@@ -1434,7 +1443,7 @@ class NTM_RocketLauncher : NTM_Weapon
 			}
 			NROC B 4 Bright
 			{
-				A_PlaySound("rlauncher/homing", Chan_Weapon);
+				A_StartSound("rlauncher/homing", 1);
 				A_FireProjectile("NTM_HomingRocket", 0, true, 5, -2);
 				if (!sv_infiniteAmmo)
 					A_TakeInventory("NTM_HomingAmmo", 1);
@@ -1480,7 +1489,7 @@ class NTM_GrenadeLauncher : NTM_RocketLauncher
 		Fire:
 			NGLA A 3 Bright
 			{
-				A_PlaySound("weapons/glaunch", 1);
+				A_StartSound("weapons/glaunch", 1);
 				A_AlertMonsters();
 				A_WeaponOffset(12, 50, WOF_Interpolate);
 			}
@@ -1526,7 +1535,7 @@ class NTM_Rocket : Rocket replaces Rocket
 			{
 				A_Explode();
 				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
-				A_PlaySound("world/barrelx", Chan_5, 1.0, 0, Attn_Norm, false, FRandom(0.5, 1.5));
+				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.5));
 				A_SpawnItem("NTM_Explosion");
 			}
 			TNT1 A 10
@@ -1554,7 +1563,7 @@ class NTM_HomingRocket : NTM_Rocket
 				A_Blast(BF_DontWarn, 255, 150, 10);
 				A_Explode(Random(1, 8) * 40, 200);
 				A_RadiusGive("NTM_CorpseGib", 160, RGF_Corpses, 1);
-				A_PlaySound("world/barrelx", Chan_5, 1.0, 0, Attn_Norm, false, FRandom(0.5, 1.5));
+				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.5));
 				Actor boom = Spawn("NTM_Explosion", pos);
 				if (boom)
 					boom.scale *= 1.5;
@@ -1608,7 +1617,7 @@ class NTM_PlasmaRifle : NTM_Weapon
 			NPLS C 2 Bright
 			{
 				A_RailAttack(Random(4, 8) * 20, 5, false, "", "", RGF_Silent, 0, "", 0, 0, 0, 0, 64, 1, "NTM_Rail");
-				A_PlaySound("prifle/railgun", 1);
+				A_StartSound("prifle/railgun", 1);
 				if (!sv_infiniteAmmo)
 					A_TakeInventory("Cell", 20);
 				A_AlertMonsters();
@@ -1654,7 +1663,7 @@ class NTM_Flamethrower : NTM_PlasmaRifle
 			{
 				A_AlertMonsters();
 				A_FireProjectile("NTM_Fire", 0, true, 5, -2);
-				A_PlaySound("weapons/flamet", 1);
+				A_StartSound("weapons/flamet", 1);
 				A_GunFlash();
 				A_WeaponOffset(Random(-2, 2), Random(32, 36), WOF_Interpolate);
 			}
@@ -1670,7 +1679,7 @@ class NTM_Flamethrower : NTM_PlasmaRifle
 				A_AlertMonsters();
 				A_FireProjectile("NTM_FatShot", -3, true, 5, -2);
 				A_FireProjectile("NTM_FatShot", 3, true, 5, -2);
-				A_PlaySound("weapons/glaunch", 1);
+				A_StartSound("weapons/glaunch", 1);
 				A_GunFlash();
 				A_WeaponOffset(6, 38, WOF_Interpolate);
 				A_TakeInventory("Cell", 10);
@@ -1840,7 +1849,7 @@ class NTM_Unmaker : NTM_BFG9000
 			{
 				for (int i = -1; i < 2; i++)
 					A_RailAttack(Random(1, 10) * 4, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
-				A_PlaySound("weapons/unmaker", 1);
+				A_StartSound("weapons/unmaker", 1);
 				A_WeaponOffset(10, 42, WOF_Interpolate);
 			}
 			NUNM B 2 A_WeaponOffset(7, 39, WOF_Interpolate);
@@ -1885,7 +1894,7 @@ class NTM_Boom : Actor
 				A_Blast(BF_DontWarn, 255, 100, 5);
 				A_Explode();
 				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
-				A_PlaySound("world/barrelx", Chan_5, 1.0, 0, Attn_Norm, false, FRandom(0.8, 1.2));
+				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
 				A_SpawnItem("NTM_Explosion");
 			}
 			TNT1 A 10
@@ -1959,7 +1968,7 @@ class NTM_Remote : Weapon
 			NREM D 1 A_OverlayOffset(10, 0, 128, WOF_Interpolate);
 			NREM D 0
 			{
-				A_PlaySound("grenade/pin");
+				A_StartSound("grenade/pin");
 				A_FireProjectile("NTM_C4", 0, true, flags: FPF_NoAutoaim, pitch: -18 * cos(pitch));
 			}
 			NREM D 0 A_Overlay(10, "Throw");
@@ -1985,7 +1994,7 @@ class NTM_Remote : Weapon
 			Goto Ready;
 		Altfire:
 			NREM D 1 A_WeaponOffset(0, 40, WOF_Interpolate);
-			NREM D 2 A_PlaySound("grenade/bounce");
+			NREM D 2 A_StartSound("grenade/bounce");
 			NREM D 1 A_GiveInventory("NTM_StartBoom", 1);
 			NREM D 0 A_TakeInventory("NTM_StartBoom");
 			NREM D 1 A_WeaponOffset(flags: WOF_Interpolate);
@@ -2051,7 +2060,7 @@ class NTM_C4 : Actor
 				A_Blast(BF_DontWarn, 255, 125, 10);
 				A_Explode(Random(1, 8) * 40, 175);
 				A_RadiusGive("NTM_CorpseGib", 135, RGF_Corpses, 1);
-				A_PlaySound("world/barrelx", Chan_5, 1.0, 0, Attn_Norm, false, FRandom(0.5, 1.5));
+				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.5));
 				Actor boom = Spawn("NTM_Explosion", pos);
 				if (boom)
 					boom.scale *= 1.25;

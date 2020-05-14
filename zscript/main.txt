@@ -61,47 +61,63 @@ class NTMAI : EventHandler
 	override void WorldLinePreActivated(WorldEvent e)
 		{if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && sv_ntm_keycard)
 		{
-			e.shouldActivate = (NTM_Player(e.thing).curDoor != e.activatedLine) ? false : true;
+			bool lock = false;
 			if (NTM_Player(e.thing).curDoor != e.activatedLine)
 			{
-				NTM_Player(e.thing).doorTics = 25;
 				NTM_Player(e.thing).curDoor = e.activatedLine;
 				switch (e.activatedLine.args[3])
 				{
 					case (1):
-						UseKey(e, "RedCard", "NTM_OpenRed");
+						if (UseKey(e, "RedCard", "NTM_OpenRed"))
+							lock = true;
 					break;
 					case (2):
-						UseKey(e, "BlueCard", "NTM_OpenBlue");
+						if (UseKey(e, "BlueCard", "NTM_OpenBlue"))
+							lock = true;
 					break;
 					case (3):
-						UseKey(e, "YellowCard", "NTM_OpenYellow");
+						if (UseKey(e, "YellowCard", "NTM_OpenYellow"))
+							lock = true;
 					break;
 					case (4):
-						UseKey(e, "RedSkull", "NTM_SkullRed");
+						if (UseKey(e, "RedSkull", "NTM_SkullRed"))
+							lock = true;
 					break;
 					case (5):
-						UseKey(e, "BlueSkull", "NTM_SkullBlue");
+						if (UseKey(e, "BlueSkull", "NTM_SkullBlue"))
+							lock = true;
 					break;
 					case (6):
-						UseKey(e, "YellowSkull", "NTM_SkullYellow");
+						if (UseKey(e, "YellowSkull", "NTM_SkullYellow"))
+							lock = true;
 					break;
 					case (129):
-						if (UseKey(e, "RedCard", "NTM_OpenRed")) {}
+						if (UseKey(e, "RedCard", "NTM_OpenRed"))
+							lock = true;
 						else
-							if (UseKey(e, "RedSkull", "NTM_SkullRed")) {}
+							if (UseKey(e, "RedSkull", "NTM_SkullRed"))
+								lock = true;
 					break;
 					case (130):
-						if (UseKey(e, "BlueCard", "NTM_OpenBlue")) {}
+						if (UseKey(e, "BlueCard", "NTM_OpenBlue"))
+							lock = true;
 						else
-							if (UseKey(e, "BlueSkull", "NTM_SkullBlue")) {}
+							if (UseKey(e, "BlueSkull", "NTM_SkullBlue"))
+								lock = true;
 					break;
 					case (131):
-						if (UseKey(e, "YellowCard", "NTM_OpenYellow")) {}
+						if (UseKey(e, "YellowCard", "NTM_OpenYellow"))
+							lock = true;
 						else
-							if (UseKey(e, "YellowSkull", "NTM_SkullYellow")) {}
+							if (UseKey(e, "YellowSkull", "NTM_SkullYellow"))
+								lock = true;
 					break;
 				}
+			}
+			if (lock)
+			{
+				NTM_Player(e.thing).doorTics = 25;
+				e.shouldActivate = false;
 			}
 		}}
 	bool UseKey(WorldEvent e, Class<Key> keyItem, Class<NTM_OpenRed> keyAnim)
@@ -433,7 +449,7 @@ class NTM_Actor : NTM_System
 					{
 						for (int i; i < Random(3, 6); i++)
 							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
-						owner.A_PlaySound("misc/pancake");
+						owner.A_StartSound("misc/pancake");
 					}
 					fallTics = 0;
 				}
@@ -574,7 +590,7 @@ class NTM_CorpseGib : NTM_System
 			return;
 		if (owner.health >= owner.GetGibHealth() && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss && !(owner is "RealGibs"))
 		{
-			owner.A_PlaySound("misc/gibbed");
+			owner.A_StartSound("misc/gibbed");
 			owner.sprite = GetSpriteIndex("NMGI");
 			owner.frame = 7;
 			owner.scale = (0.625, 0.625);
@@ -597,7 +613,7 @@ class NTM_Taunt : NTM_System
 		Super.AttachToOwner(user);
         if (!owner || owner.health <= 0)
             return;
-		owner.A_PlaySound("player/taunt", 2);
+		owner.A_StartSound("player/taunt", 2);
 		DepleteOrDestroy();
 	}
 }
