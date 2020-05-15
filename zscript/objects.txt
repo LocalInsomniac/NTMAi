@@ -317,7 +317,7 @@ class NTM_ClusterGrenade : Ammo
 	States
 	{
 		Spawn:
-			NHRO A -1;
+			NSBP A -1;
 			Stop;
 	}
 }

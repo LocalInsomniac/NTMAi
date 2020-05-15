@@ -81,6 +81,11 @@ StatusBar Normal
 		DrawImage "NHROA0", 310, 152, CenterBottom;
 		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 311, 155;
 	}
+	IsSelected NTM_GrenadeLauncher
+	{
+		DrawImage "NSBPA0", 310, 152, CenterBottom;
+		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 311, 155;
+	}
 }
 StatusBar FullScreen, ForceScaled, FullScreenOffsets
 {
@@ -90,6 +95,26 @@ StatusBar FullScreen, ForceScaled, FullScreenOffsets
 	DrawNumber 3, NTM_Digit, Untranslated, Armor, DrawShadow, 65, -18;
 	DrawImage "NTMAMMO", 86, -2, CenterBottom;
 	DrawNumber 3, NTM_Digit, Untranslated, Ammo1, DrawShadow, 98, -18;
+	IsSelected NTM_Shotgun
+	{
+		DrawImage "NESHA0", 162, -18, None;
+		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
+	}
+	IsSelected NTM_AShotgun
+	{
+		DrawImage "NESHA0", 162, -18, None;
+		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
+	}
+	IsSelected NTM_RocketLauncher
+	{
+		DrawImage "NHROA0", 162, -18, None;
+		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
+	}
+	IsSelected NTM_GrenadeLauncher
+	{
+		DrawImage "NSBPA0", 162, -18, None;
+		DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
+	}
 	DrawSelectedInventory AlternateOnEmpty | AlwaysShowCounter, NTM_Digit, 108, -32, 149, -21 {}
 	Else
 		DrawImage "NTMITEM", 127, -2, CenterBottom;
@@ -97,23 +122,4 @@ StatusBar FullScreen, ForceScaled, FullScreenOffsets
 		DrawNumber 3, NTM_Digit, Untranslated, Frags, DrawShadow, -3, 1;
 	Else
 		DrawKeyBar 100, Vertical, ReverseRows, Auto, -10, 2, 0, 3, Auto;
-	IfCVarInt sv_ntm_boomShell, 1
-	{
-		IsSelected NTM_Shotgun
-		{
-			DrawImage "NESHA0", 162, -18, None;
-			DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
-		}
-		IsSelected NTM_AShotgun
-		{
-			DrawImage "NESHA0", 162, -18, None;
-			DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
-		}
-	}
-	IfCVarInt sv_ntm_homingRocket, 1
-		IsSelected NTM_RocketLauncher
-		{
-			DrawImage "NHROA0", 162, -18, None;
-			DrawNumber 3, NTM_Digit, Untranslated, Ammo2, Alignment(Center), 162, -15;
-		}
 }

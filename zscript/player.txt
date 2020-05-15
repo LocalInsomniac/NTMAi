@@ -1469,7 +1469,7 @@ class NTM_GrenadeLauncher : NTM_RocketLauncher
 {
 	Default
 	{
-		Weapon.AmmoType2 "";
+		Weapon.AmmoType2 "NTM_ClusterGrenade";
 		Inventory.PickupMessage "You got the Grenade Launcher!";
 		Tag "Grenade Launcher";
 		Obituary "%k demolished %o.";
@@ -1505,7 +1505,27 @@ class NTM_GrenadeLauncher : NTM_RocketLauncher
 			NGLA A 0 A_Refire;
 			Goto Ready;
 		Altfire:
-			NGLA A 0;
+			NGLA A 0 A_JumpIfInventory("NTM_ClusterGrenade", 1, 1);
+			Goto Ready;
+			NGLA A 3 Bright
+			{
+				A_StartSound("weapons/glaunch", 1);
+				A_AlertMonsters();
+				A_WeaponOffset(12, 50, WOF_Interpolate);
+			}
+			NGLA B 3 Bright
+			{
+				A_WeaponOffset(16, 56, WOF_Interpolate);
+				A_FireSTGrenade("NTM_Boom3");
+				if (!sv_infiniteAmmo)
+					A_TakeInventory("NTM_ClusterGrenade", 1);
+			}
+			NGLA C 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
+			NGLA D 3 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
+			NGLA A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
+			NGLA A 4 A_WeaponOffset(flags: WOF_Interpolate);
+			NGLA A 5;
+			NGLA A 0 A_Refire;
 			Goto Ready;
 		Spawn:
 			NGLA E -1;
@@ -1895,7 +1915,7 @@ class NTM_Boom : Actor
 				A_Explode();
 				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
 				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
-				A_SpawnItem("NTM_Explosion");
+				A_SpawnItemEx("NTM_Explosion");
 			}
 			TNT1 A 10
 				{if (NTMAI.CanQuake())
@@ -1909,7 +1929,6 @@ class NTM_Boom2 : NTM_Boom replaces Grenade
 	{
 		Radius 8;
 		Height 8;
-		Speed 25;
 		Damage 20;
 		+Randomize
 		+DehExplosion
@@ -1927,6 +1946,53 @@ class NTM_Boom2 : NTM_Boom replaces Grenade
 		Spawn:
 			NGRS AAAAAAAAAA 5 Bright A_SpawnItemEx("NTM_RevenantTracerSmoke");
 			Goto Death;
+	}
+}
+class NTM_Boom3 : NTM_Boom2
+{
+	Default
+		{Obituary "%o was annihilated by %k.";}
+	States
+	{
+		Spawn:
+			NCLU AAAAAAAAAA 5 Bright A_SpawnItemEx("NTM_RevenantTracerSmoke");
+			Goto Death;
+		Death:
+			NCLU A 0 A_Mushroom("NTM_Boom4", 4, 0, 4, 0.5);
+			Goto Super::Death;
+	}
+}
+class NTM_Boom4 : NTM_Boom2
+{
+	Default
+	{
+		Scale 0.5;
+		Speed 12.5;
+		+ThruActors
+	}
+	States
+	{
+		Spawn:
+			NGRS A 5 Bright;
+			NGRS A 5 Bright
+				{bThruActors = false;}
+			NGRS AAAAAAAA 5 Bright;
+			Goto Death;
+		Death:
+			NGRE G 0
+			{
+				A_Blast(BF_DontWarn, 127.5, 50, 2.5);
+				A_Explode();
+				A_RadiusGive("NTM_CorpseGib", 64, RGF_Corpses, 1);
+				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
+				Actor boom = Spawn("NTM_Explosion", pos);
+				if (boom != null)
+					boom.scale *= 0.5;
+			}
+			TNT1 A 10
+				{if (NTMAI.CanQuake())
+					A_Quake(1, 15, 0, 800, "");}
+			Stop;
 	}
 }
 class NTM_Remote : Weapon
