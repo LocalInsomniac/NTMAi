@@ -256,7 +256,6 @@ class NTM_ExplosiveShell : Ammo
 		Inventory.MaxAmount 10;
 		Ammo.BackpackAmount 2;
 		Ammo.BackpackMaxAmount 20;
-		Translation "168:191=192:207";
 	}
 	States
 	{
@@ -287,13 +286,38 @@ class NTM_RocketAmmo : RocketAmmo replaces RocketAmmo
 class NTM_GrenadeAmmo : RocketAmmo
 {
 	Default
-	{
-		Inventory.PickUpMessage "Picked up a grenade.";
-	}
+		{Inventory.PickUpMessage "Picked up a grenade.";}
 	States
 	{
 		Spawn:
 			NGBA A -1;
+			Stop;
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		int soul = sv_ntm_clusterGrenade;
+		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.IsSecret())
+		{
+			Spawn("NTM_ClusterGrenade", pos);
+			Destroy();
+		}
+	}
+}
+class NTM_ClusterGrenade : Ammo
+{
+	Default
+	{
+		Inventory.PickUpMessage "Picked up a cluster grenade.";
+		Inventory.Amount 1;
+		Inventory.MaxAmount 10;
+		Ammo.BackpackAmount 1;
+		Ammo.BackpackMaxAmount 20;
+	}
+	States
+	{
+		Spawn:
+			NHRO A -1;
 			Stop;
 	}
 }
@@ -306,7 +330,6 @@ class NTM_HomingAmmo : Ammo
 		Inventory.MaxAmount 10;
 		Ammo.BackpackAmount 1;
 		Ammo.BackpackMaxAmount 20;
-		Translation "168:191=192:207";
 	}
 	States
 	{
