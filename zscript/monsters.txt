@@ -178,7 +178,7 @@ class NTM_Humanoid : NTM_Monster
 		Death.Fire:
 			TNT1 A 0
 			{
-				if (CVar.FindCVar("sv_ntm_burn").GetBool())
+				if (sv_ntm_burn)
 				{
 					if (self is "NTM_ChaingunGuy" || self is "NTM_SMGGuy")
 						A_NTMFall("NTM_ChaingunSpawn");
@@ -1153,12 +1153,12 @@ class NTM_PainElemental : NTM_Monster
 	}
 	void A_PainCheck()
 	{
-		if (CVar.FindCVar("sv_ntm_monsterPainLimit").GetBool())
+		if (sv_ntm_monsterPainLimit)
 		{
 			int count = 21;
 			ThinkerIterator it = ThinkerIterator.Create("NTM_LostSoul");
 			Thinker othink;
-			while ((othink = it.Next()))
+			while (othink = it.Next())
 			{
 				if (--count == 0)
 					SetStateLabel("See");
