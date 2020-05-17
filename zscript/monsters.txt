@@ -1568,8 +1568,7 @@ class NTM_Cyberdemon : NTM_Boss
 			Stop;
 	}
 	void A_NTMCyberAttack()
-	{
-		if (target)
+		{if (target)
 		{
 			A_FaceTarget();
 			for (int i = -1; i < 3; i += 2)
@@ -1583,10 +1582,7 @@ class NTM_Cyberdemon : NTM_Boss
 					missile.VelFromAngle();
 				}
 			}
-		}
-		else
-			SetState(ResolveState("See"));
-	}
+		}}
 }
 class NTM_SpiderMastermind : NTM_Boss
 {
