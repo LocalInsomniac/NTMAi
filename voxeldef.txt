@@ -102,7 +102,6 @@ NBBAC = "NVBAR1" {Scale = 0.9}
 NPMKA = "NVNPMK" {Scale = 0.9}
 NBERA = "NVNBER" {Scale = 0.9}
 NSAWI = "NVNSAW" {Scale = 0.9}
-NSARD = "NVNSAR" {Scale = 0.9}
 NSMGG = "NVNSMG" {Scale = 0.9}
 NDCSE = "NVNDCS" {Scale = 0.9}
 NGLAE = "NVNGLA" {Scale = 0.9}
