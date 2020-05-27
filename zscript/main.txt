@@ -1,6 +1,5 @@
 class NTMAI : EventHandler
 {
-	bool airChange;
 	NTM_Thinker st;
 	static bool CanQuake()
 		{return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
@@ -42,19 +41,8 @@ class NTMAI : EventHandler
 	override void WorldThingRevived(WorldEvent e)
 		{DoThingRevive(e.thing);}
 	override void WorldLoaded(WorldEvent e)
-	{
-		if (sv_ntm_move)
-			level.airControl = 0.55;
-		airChange = sv_ntm_move;
-		if (!st)
-			st = New("NTM_Thinker");
-	}
-	override void WorldTick()
-		{if (airChange != sv_ntm_move)
-		{
-			level.airControl = sv_ntm_move ? 0.55 : 0.00390625;
-			airChange = sv_ntm_move;
-		}}
+		{if (!st)
+			st = New("NTM_Thinker");}
 	override void WorldUnloaded(WorldEvent e)
 		{if (st)
 			st.DoDestroy();}

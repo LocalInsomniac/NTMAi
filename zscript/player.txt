@@ -64,10 +64,8 @@ class NTM_Player : DoomPlayer
 		Death:
 		Death1:
 			NPLA H 7
-			{
-				if (CVar.FindCVar("cl_ntm_cameraTilt").GetBool())
-					A_SetRoll(Random(0, 359));
-			}
+				{if (CVar.FindCVar("cl_ntm_cameraTilt").GetBool())
+					A_SetRoll(Random(0, 359));}
 			NPLA I 7 A_PlayerScream;
 			NPLA J 7 A_NoBlocking;
 			NPLA K 7;
@@ -76,10 +74,8 @@ class NTM_Player : DoomPlayer
 		XDeath:
 			NMGI A 1 A_XScream;
 			NMGI A 4
-			{
-				if (sv_ntm_cameraHead)
-					A_SkullPop("NTM_PlayerHead");
-			}
+				{if (sv_ntm_cameraHead)
+					A_SkullPop("NTM_PlayerHead");}
 			NMGI B 5 A_NoBlocking;
 			NMGI CDEFG 5;
 			NMGI H -1;
@@ -118,14 +114,18 @@ class NTM_Player : DoomPlayer
 		}
 		else
 		{
-			if (sv_ntm_move)
+			if (sv_ntm_move && curSector && !(curSector.flags & 16))
 			{
+				level.airControl = 0.55;
 				A_SetSpeed(2.2);
 				vel.xy *= 0.9;
 				viewBob = 0.9;
 			}
 			else
+			{
+				level.airControl = 0.00390625;
 				A_SetSpeed(1);
+			}
 			if (doorTics != -1)
 			{
 				doorTics = -1;
