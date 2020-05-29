@@ -3,6 +3,8 @@ class NTMAI : EventHandler
 	NTM_Thinker st;
 	static bool CanQuake()
 		{return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
+	static bool CanSpin()
+		{return (CVar.FindCVar("cl_ntm_voxelSpin").GetBool());}
 	static float Lerp(float firstFloat, float secondFloat, float by)
 		{return (firstFloat * (1 - by) + secondFloat * by);}
 	static int Sign(int number)

@@ -408,6 +408,12 @@ class NTM_Weapon : Weapon
 			return (true);
 		return (false);
 	}
+	override void Tick()
+	{
+		if (r_drawvoxels && NTMAI.CanSpin())
+			A_SetAngle(angle + 3, SPF_Interpolate);
+		Super.Tick();
+	}
 }
 class NTM_Fist : NTM_Weapon
 {
@@ -587,12 +593,10 @@ class NTM_PistolSpawn : Actor replaces Pistol
 			Stop;
 	}
 	void A_SpawnClass(class<Actor> old, class<Actor> new)
-	{
-		if (players[consolePlayer].mo is "NTM_NewPlayer")
+		{if (players[consolePlayer].mo is "NTM_NewPlayer")
 			A_SpawnItemEx(new);
 		else
-			A_SpawnItemEx(old);
-	}
+			A_SpawnItemEx(old);}
 }
 class NTM_ChaingunSpawn : NTM_PistolSpawn replaces Chaingun
 	{States
@@ -1384,6 +1388,12 @@ class NTM_SMGPickup : CustomInventory
 			Stop;
 			TNT1 A 0;
 			Fail;
+	}
+	override void Tick()
+	{
+		if (r_drawvoxels && NTMAI.CanSpin())
+			A_SetAngle(angle + 3, SPF_Interpolate);
+		Super.Tick();
 	}
 }
 class NTM_RocketLauncher : NTM_Weapon
