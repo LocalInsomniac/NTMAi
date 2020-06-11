@@ -1,10 +1,91 @@
-Decal BulletChip
+decal BulletChip
 {
 	Pic NBULLET
 	X-Scale 0.4
 	Y-Scale 0.4
     RandomFlipX
     RandomFlipY
+}
+slider NBloodSlide
+{
+	DistY -10
+	SlideTime 8
+}
+stretcher NBloodStretch
+{
+	GoalY 0.8
+	StretchTime 8
+}
+combiner NBloodSmear
+{
+	NBloodSlide
+	NBloodStretch
+}
+decal BloodSplat1
+{
+	Pic NBLOOD1
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+}
+decal BloodSplat2
+{
+	Pic NBLOOD2
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+}
+decal BloodSplat3
+{
+	Pic NBLOOD3
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+}
+decal BloodSplat4
+{
+	Pic NBLOOD1
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+	Animator NBloodSmear
+}
+decal BloodSplat5
+{
+	Pic NBLOOD2
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+	Animator NBloodSmear
+}
+decal BloodSplat6
+{
+	Pic NBLOOD3
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+	Animator NBloodSmear
+}
+decalGroup BloodSplat
+{
+	BloodSplat1 3
+	BloodSplat2 3
+	BloodSplat3 3
+	BloodSplat4 1
+	BloodSplat5 1
+	BloodSplat6 1
 }
 generator NTM_Pistol BulletChip
 generator NTM_Chainsaw BulletChip
