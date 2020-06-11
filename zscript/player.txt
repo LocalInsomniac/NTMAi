@@ -62,7 +62,6 @@ class NTM_Player : DoomPlayer
 			NPLA G 4 A_Pain;
 			Goto Spawn;
 		Death:
-		Death1:
 			NPLA H 7
 				{if (CVar.FindCVar("cl_ntm_cameraTilt").GetBool())
 					A_SetRoll(Random(0, 359));}
