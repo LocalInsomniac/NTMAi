@@ -1709,12 +1709,13 @@ class NTM_Flamethrower : NTM_PlasmaRifle
 				A_StartSound("weapons/glaunch", 1);
 				A_GunFlash();
 				A_WeaponOffset(6, 38, WOF_Interpolate);
-				A_TakeInventory("Cell", 10);
+				if (!sv_infiniteammo)
+					A_TakeInventory("Cell", 10);
 			}
-			NFTH B 2 A_WeaponOffset(12, 44, WOF_Interpolate);
-			NFTH A 2 A_WeaponOffset(20, 52, WOF_Interpolate);
+			NFTH B 2 A_WeaponOffset(13, 45, WOF_Interpolate);
 			NFTH A 2 A_WeaponOffset(22, 54, WOF_Interpolate);
-			NFTH A 2 A_WeaponOffset(10, 42, WOF_Interpolate);
+			NFTH A 2 A_WeaponOffset(24, 56, WOF_Interpolate);
+			NFTH A 2 A_WeaponOffset(11, 43, WOF_Interpolate);
 			NFTH A 2 A_WeaponOffset(3, 35, WOF_Interpolate);
 			NFTH A 15 A_WeaponOffset(flags: WOF_Interpolate);
 			Goto Ready;
@@ -1762,9 +1763,13 @@ class NTM_Fire : Actor
 	States
 	{
 		Spawn:
-			NFIR A 2 NoDelay
-				{scale.x *= FRandomPick(-1, 1);}
-			NFIR BCDE 2 Bright;
+			NFIR A 3 Bright NoDelay
+			{
+				scale.x *= FRandomPick(-1, 1);
+				SetDamage(FRandomPick(1, 2));
+			}
+			NFIR B 3 Bright;
+			NFIR CDE 2 Bright;
 			Stop;
 	}
 }
