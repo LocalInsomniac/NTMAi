@@ -1861,7 +1861,7 @@ class NTM_Unmaker : NTM_BFG9000
 	Default
 	{
 		Weapon.AmmoUse 1;
-		Inventory.PickupMessage "What the !@#% is this!";
+		Inventory.PickupMessage "What the !@#% is this?";
 		Tag "???";
 		Obituary "%k gibbed %o.";
 	}
