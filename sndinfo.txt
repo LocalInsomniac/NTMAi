@@ -32,7 +32,7 @@ misc/puff2 DSPUFF2
 misc/puff3 DSPUFF3
 misc/puff4 DSPUFF4
 $random misc/puff {misc/puff1 misc/puff2 misc/puff3}
-$volume misc/puff 0.5
+$volume misc/puff 0.38
 world/splash DSSPLASH
 world/lava DSLAVA
 weapons/shotcock dshtcock
@@ -67,9 +67,9 @@ prifle/railgun DSRAILGN
 misc/casing1 DSCASIN1
 misc/casing2 DSCASIN2
 misc/casing3 DSCASIN3
-$volume misc/casing3 0.5
+$volume misc/casing3 0.4
 $random misc/casing {misc/casing1 misc/casing2}
-$volume misc/casing 0.5
+$volume misc/casing 0.4
 weapons/semi DSSEMI
 weapons/smg DSSMG
 weapons/bigclip DSBIGCLP
