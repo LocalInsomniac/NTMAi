@@ -1860,7 +1860,7 @@ class NTM_Unmaker : NTM_BFG9000
 {
 	Default
 	{
-		Weapon.AmmoUse 1;
+		Weapon.AmmoUse 2;
 		Inventory.PickupMessage "What the !@#% is this?";
 		Tag "???";
 		Obituary "%k gibbed %o.";
@@ -1880,7 +1880,7 @@ class NTM_Unmaker : NTM_BFG9000
 			NUNM C 2 Bright
 			{
 				for (int i = -1; i < 2; i++)
-					A_RailAttack(Random(3, 10) * 4, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
+					A_RailAttack(FRandom(2.5, 10) * 4, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
 				A_StartSound("weapons/unmaker", 1);
 				A_WeaponOffset(10, 42, WOF_Interpolate);
 			}
