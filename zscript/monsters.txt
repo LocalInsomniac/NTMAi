@@ -127,33 +127,40 @@ class NTM_Monster : Actor
 		return (false);
 	}
 	void A_NTMChase()
-		{if (!CheckMove(pos.xy))
-		{
-			A_Wander();
-			return;
-		}
+	{
+		if (sv_ntm_monsterSmooth) //If smooth monster movement is enabled, use this part of the code. This feature can get unstable, however.
+			if (!CheckMove(pos.xy))
+			{
+				A_Wander();
+				return;
+			}
+			else
+			{
+				bool beNoTeleport = bNoTeleport;
+				int bMinMissileChance = minMissileChance;
+				Vector3 oldPos = pos;
+				minMissileChance <<= 1;
+				bNoTeleport = true;
+				DoChase();
+				Vector3 posDif = pos - oldPos;
+				A_Warp(AAPTR_Default, oldPos.x, oldPos.y, oldPos.z, flags: WARPF_AbsolutePosition | WARPF_Interpolate);
+				if (bFloat && bNoGravity)
+					vel *= 0.6;
+				else
+					vel.xy *= 0.7;
+				if (posDif != (0, 0, 0))
+					vel += posDif.Unit() * speed * 0.16;
+				bNoTeleport = beNoTeleport;
+				minMissileChance = bMinMissileChance;
+			}
 		else
-		{
-			bool beNoTeleport = bNoTeleport;
-			int bMinMissileChance = minMissileChance;
-			Vector3 oldPos = pos;
-			minMissileChance <<= 1;
-			bNoTeleport = true;
-			if (self is "NTM_Archvile")
-				A_VileChase();
-			else
-				A_Chase();
-			Vector3 posDif = pos - oldPos;
-			A_Warp(AAPTR_Default, oldPos.x, oldPos.y, oldPos.z, flags: WARPF_AbsolutePosition | WARPF_Interpolate);
-			if (bFloat && bNoGravity)
-				vel *= 0.6;
-			else
-				vel.xy *= 0.7;
-			if (posDif != (0, 0, 0))
-				vel += posDif.Unit() * speed * 0.16;
-			bNoTeleport = beNoTeleport;
-			minMissileChance = bMinMissileChance;
-		}}
+			DoChase(); //Otherwise, use vanilla monster movement.
+	}
+	void DoChase()
+		{if (self is "NTM_Archvile")
+			A_VileChase();
+		else
+			A_Chase();}
 	void A_LeapChase()
 	{
 		if (TryLeap(ResolveState("Leap"), JF_All))

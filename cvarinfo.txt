@@ -22,6 +22,7 @@ server int sv_ntm_soulsphere = 2;
 server int sv_ntm_boomShell = 2;
 server int sv_ntm_homingRocket = 2;
 server int sv_ntm_clusterGrenade = 2;
+server bool sv_ntm_monsterSmooth = true;
 server bool sv_ntm_grenadiers = true;
 server bool sv_ntm_monsterLeap = true;
 server bool sv_ntm_monsterJump = true;
