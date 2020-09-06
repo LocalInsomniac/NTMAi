@@ -1,14 +1,10 @@
 class NTMAI : EventHandler
 {
 	NTM_Thinker st;
-	static bool CanQuake()
-		{return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
-	static bool CanSpin()
-		{return (CVar.FindCVar("cl_ntm_voxelSpin").GetBool());}
-	static float Lerp(float firstFloat, float secondFloat, float by)
-		{return (firstFloat * (1 - by) + secondFloat * by);}
-	static int Sign(int number)
-		{return (Round(Clamp(number, -1, 1)));}
+	static bool CanQuake() {return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
+	static bool CanSpin() {return (CVar.FindCVar("cl_ntm_voxelSpin").GetBool());}
+	static float Lerp(float firstFloat, float secondFloat, float by) {return (firstFloat * (1 - by) + secondFloat * by);}
+	static int Sign(int number) {return (Round(Clamp(number, -1, 1)));}
 	override void PlayerEntered(PlayerEvent e)
 	{
 		let pmo = players[e.playerNumber].mo;
@@ -40,8 +36,7 @@ class NTMAI : EventHandler
 	override void WorldThingDied(WorldEvent e)
 		{if (e.thing.bIsMonster || e.thing is "PlayerPawn")
 			e.thing.scale.x *= FRandomPick(-1, 1);}
-	override void WorldThingRevived(WorldEvent e)
-		{DoThingRevive(e.thing);}
+	override void WorldThingRevived(WorldEvent e) {DoThingRevive(e.thing);}
 	override void WorldLoaded(WorldEvent e)
 		{if (!st)
 			st = New("NTM_Thinker");}
