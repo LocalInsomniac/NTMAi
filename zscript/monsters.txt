@@ -219,8 +219,8 @@ class NTM_Zombieman : NTM_Humanoid
 			{
 				if (sv_ntm_grenadiers)
 				{
-					int ran = Random(0, 256);
-					if ((G_SkillPropertyInt(7) == 4 && ran <= 30) || (G_SkillPropertyInt(7) == 3 && ran <= 15)) return (FindState("Grenade"));
+					int skill = G_SkillPropertyInt(7), ran = Random(0, 256);
+					if ((skill == 4 && ran <= 30) || (skill == 2 && ran <= 15)) return (FindState("Grenade"));
 				}
 				return (FindState("StartMissile"));
 			}
@@ -1598,8 +1598,8 @@ class NTM_SSGuard : NTM_Zombieman
 			{
 				if (sv_ntm_grenadiers)
 				{
-					int ran = Random(0, 256);
-					if ((G_SkillPropertyInt(7) == 4 && ran <= 30) || (G_SkillPropertyInt(7) == 3 && ran <= 15)) return (FindState("Grenade"));
+					int skill = G_SkillPropertyInt(7), ran = Random(0, 256);
+					if ((skill == 4 && ran <= 30) || (skill == 2 && ran <= 15)) return (FindState("Grenade"));
 				}
 				return (FindState("StartMissile"));
 			}

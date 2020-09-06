@@ -15,12 +15,12 @@ skill easy
     MonsterHealth = 0.5
 	KickbackFactor = 0.5
     Name = "Another Day In The Corps"
-    Key = "h"
+    Key = "a"
 }
 skill normal
 {
     SpawnFilter = Normal
-    Key = "h"
+    Key = "t"
     DamageFactor = 0.75
     MonsterHealth = 0.75
     KickbackFactor = 0.75
@@ -36,7 +36,7 @@ skill hard
 }
 skill nightmare
 {
-    SpawnFilter = nightmare
+    SpawnFilter = Nightmare
     DamageFactor = 2
     KickbackFactor = 2
     Aggressiveness = 1.0
