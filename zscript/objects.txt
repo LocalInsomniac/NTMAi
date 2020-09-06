@@ -1,6 +1,5 @@
 class NTM_Breakable : Actor
-{
-	Default
+	{Default
 	{
 		Health 1;
 		DeathSound "misc/break";
@@ -14,11 +13,9 @@ class NTM_Breakable : Actor
 		+NotAutoaimed
 		+Shootable
 		+Solid
-	}
-}
+	}}
 class NTM_Column : NTM_Breakable replaces Column
-{
-	States
+	{States
 	{
 		Spawn:
 			COLU A -1 Bright;
@@ -30,12 +27,10 @@ class NTM_Column : NTM_Breakable replaces Column
 				A_SetSize(16, 48);
 			}
 			Stop;
-	}
-}
+	}}
 class NTM_TechLamp : NTM_Breakable replaces TechLamp
 {
-	Default
-		{Height 80;}
+	Default {Height 80;}
 	States
 	{
 		Spawn:
@@ -52,8 +47,7 @@ class NTM_TechLamp : NTM_Breakable replaces TechLamp
 }
 class NTM_TechLamp2 : NTM_Breakable replaces TechLamp2
 {
-	Default
-		{Height 60;}
+	Default {Height 60;}
 	States
 	{
 		Spawn:
@@ -85,15 +79,13 @@ class NTM_BloodyTwitch : BloodyTwitch replaces BloodyTwitch
 	}
 }
 class NTM_DeadStick : DeadStick replaces DeadStick
-{
-	Default
+	{Default
 	{
 		+DontThrust
 		+NoDamage
 		+NotAutoaimed
 		+Shootable
-	}
-}
+	}}
 class NTM_HangNoGuts : HangNoGuts replaces HangNoGuts
 {
 	Default
@@ -119,8 +111,7 @@ class NTM_HangNoGuts : HangNoGuts replaces HangNoGuts
 	}
 }
 class NTM_HangBNoBrain : NTM_HangNoGuts replaces HangBNoBrain
-{
-	States
+	{States
 	{
 		Spawn:
 			HDB2 A -1;
@@ -134,8 +125,7 @@ class NTM_HangBNoBrain : NTM_HangNoGuts replaces HangBNoBrain
 				A_SpawnItemEx("NTM_FlyingGib3", 0, 0, 16, Random(-2, 2), Random(-2, 2));
 			}
 			Stop;
-	}
-}
+	}}
 class NTM_LiveStick : NTM_DeadStick replaces LiveStick
 {
 	Default
@@ -155,8 +145,7 @@ class NTM_LiveStick : NTM_DeadStick replaces LiveStick
 }
 class NTM_Meat : NTM_HangNoGuts replaces Meat2
 {
-	Default
-		{Health 60;}
+	Default {Health 60;}
 	States
 	{
 		Spawn:
@@ -176,8 +165,7 @@ class NTM_Meat : NTM_HangNoGuts replaces Meat2
 	}
 }
 class NTM_Meat2 : NTM_Meat replaces Meat3
-{
-	States
+	{States
 	{
 		Spawn:
 			GOR3 A -1;
@@ -193,12 +181,10 @@ class NTM_Meat2 : NTM_Meat replaces Meat3
 				A_SpawnItemEx("NTM_FlyingGib3", 0, 0, 16, Random(-2, 2), Random(-2, 2));
 			}
 			Stop;
-	}
-}
+	}}
 class NTM_Meat3 : NTM_Meat replaces NonsolidMeat2
 {
-	Default
-		{-Solid}
+	Default {-Solid}
 	States
 	{
 		Death:
@@ -235,8 +221,7 @@ class NTM_Meat4 : NTM_Meat3 replaces NonsolidMeat3
 	}
 }
 class NTM_Shell : Shell replaces Shell
-{
-	override void PostBeginPlay()
+	{override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		int soul = sv_ntm_boomShell;
@@ -245,8 +230,7 @@ class NTM_Shell : Shell replaces Shell
 			Spawn("NTM_ExplosiveShell", pos);
 			Destroy();
 		}
-	}
-}
+	}}
 class NTM_ExplosiveShell : Ammo
 {
 	Default
@@ -265,8 +249,7 @@ class NTM_ExplosiveShell : Ammo
 	}
 }
 class NTM_RocketAmmo : RocketAmmo replaces RocketAmmo
-{
-	override void PostBeginPlay()
+	{override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		if (players[consolePlayer].mo is "NTM_NewPlayer")
@@ -281,12 +264,10 @@ class NTM_RocketAmmo : RocketAmmo replaces RocketAmmo
 			Spawn("NTM_HomingAmmo", pos);
 			Destroy();
 		}
-	}
-}
+	}}
 class NTM_GrenadeAmmo : RocketAmmo
 {
-	Default
-		{Inventory.PickUpMessage "Picked up a grenade.";}
+	Default {Inventory.PickUpMessage "Picked up a grenade.";}
 	States
 	{
 		Spawn:
@@ -340,8 +321,7 @@ class NTM_HomingAmmo : Ammo
 }
 class NTM_RocketBox : CustomInventory replaces RocketBox
 {
-	Default
-		{Inventory.PickUpMessage "Picked up an explosives pack.";}
+	Default {Inventory.PickUpMessage "Picked up an explosives pack.";}
 	States
 	{
 		Spawn:
@@ -448,20 +428,15 @@ class NTM_Soulsphere : CustomInventory replaces Soulsphere
 	}
 }
 class NTM_SoulsphereHealth : Health
-{
-	Default
+	{Default
 	{
 		Inventory.Amount 100;
 		Inventory.MaxAmount 200;
 		+Inventory.AlwaysPickup
-	}
-}
+	}}
 class NTM_Megasphere : Megasphere replaces Megasphere
 {
-	Default
-	{
-		Inventory.PickupSound "";
-	}
+	Default {Inventory.PickupSound "";}
 	States
 	{
 		Pickup:
@@ -563,13 +538,11 @@ class NTM_Berserk : CustomInventory replaces Berserk
 	}
 }
 class NTM_PowerBerserk : PowerSpeed
-{
-	Default
+	{Default
 	{
 		Powerup.Duration 0x7FFFFFFF;
 		Powerup.Color "Red";
-	}
-}
+	}}
 class NTM_RadSuit : CustomInventory replaces RadSuit
 {
 	Default
@@ -609,8 +582,7 @@ class NTM_RadSuit : CustomInventory replaces RadSuit
 	}
 }
 class NTM_PowerRadSuit : PowerProtection
-{
-	Default
+	{Default
 	{
 		Powerup.Duration 0x7FFFFFFF;
 		Powerup.Color "";
@@ -619,8 +591,7 @@ class NTM_PowerRadSuit : PowerProtection
 		DamageFactor "Slime", 0;
 		DamageFactor "Fire", 0.5;
 		DamageFactor "Ice", 0.5;
-	}
-}
+	}}
 class NTM_Infrared : CustomInventory replaces Infrared
 {
 	Default
@@ -653,13 +624,11 @@ class NTM_Infrared : CustomInventory replaces Infrared
 	}
 }
 class NTM_PowerInfrared : PowerLightAmp
-{
-	Default
+	{Default
 	{
 		Powerup.Duration 0x7FFFFFFF;
 		Powerup.ColorMap 0.0, 0.0, 0.0, 0.2, 1.0, 0.2;
-	}
-}
+	}}
 class NTM_Grenade : CustomInventory
 {
 	Default
@@ -683,8 +652,7 @@ class NTM_Grenade : CustomInventory
 }
 class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
 {
-	Default
-		{Height 28;}
+	Default {Height 28;}
 	States
 	{
 		Spawn:
@@ -709,10 +677,12 @@ class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
 			Wait;
 	}
 }
-class NTM_DeadZombieman : NTM_Zombieman replaces DeadZombieman
+class NTM_DeadZombieman : Actor replaces DeadZombieman
 {
 	Default
 	{
+		Scale 0.625;
+		Monster;
 		-Solid
 		-CountKill
 		+NotAutoaimed
@@ -721,7 +691,6 @@ class NTM_DeadZombieman : NTM_Zombieman replaces DeadZombieman
 	States
 	{
 		Spawn:
-		Raise:
 			TNT1 A 0 A_Die;
 			Wait;
 		Death:
@@ -729,13 +698,10 @@ class NTM_DeadZombieman : NTM_Zombieman replaces DeadZombieman
 			Stop;
 	}
 }
-class NTM_DeadShotgunGuy : NTM_DeadZombieman replaces DeadShotgunGuy
-	{Default
-		{Translation "128:143=100:111", "144:151=104:111", "152:159=104:111", "112:127=96:111", "78:79=5:6", "1:2=6:7", "16:47=24:47";}}
+class NTM_DeadShotgunGuy : NTM_DeadZombieman replaces DeadShotgunGuy {Default {Translation "128:143=100:111", "144:151=104:111", "152:159=104:111", "112:127=96:111", "78:79=5:6", "1:2=6:7", "16:47=24:47";}}
 class NTM_DeadImp : NTM_DeadZombieman replaces DeadDoomImp
 {
-	Default
-		{DeathSound "";}
+	Default {DeathSound "";}
 	States
 	{
 		Death:
@@ -752,8 +718,7 @@ class NTM_DeadDemon : NTM_DeadZombieman replaces DeadDemon
 	}}
 class NTM_DeadCacodemon : NTM_DeadZombieman replaces DeadCacodemon
 {
-	Default
-		{BloodColor "Blue";}
+	Default {BloodColor "Blue";}
 	States
 	{
 		Death:
