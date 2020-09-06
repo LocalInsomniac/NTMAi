@@ -22,8 +22,7 @@ class NTM_Monster : Actor
 		bool ok;
 		Actor pOnMObj;
 		[ok, pOnMObj] = TestMObjZ(true);
-		if (!pOnMObj)
-			return _floorZ;
+		if (!pOnMObj) return _floorZ;
 		double _actorZ = pOnMObj.pos.z + pOnMObj.height;
 		return (Max(_floorZ, _actorZ));
 	}
@@ -33,8 +32,7 @@ class NTM_Monster : Actor
 		oldLeap = false;
 		fullMod = true;
 		dropChange = sv_ntm_monsterLeap;
-		if (default.maxDropOffHeight == 128 && !dropChange)
-			maxDropOffHeight = 24;
+		if (default.maxDropOffHeight == 128 && !dropChange) maxDropOffHeight = 24;
 	}
 	override void Tick()
 	{
@@ -54,12 +52,10 @@ class NTM_Monster : Actor
 				painChance = 0;
 				A_FaceTarget();
 				double vertical = 10;
-				if (target.pos.z - pos.z > 64 && ceilingZ - pos.z > 128)
-					double vertical = 15;
+				if (target.pos.z - pos.z > 64 && ceilingZ - pos.z > 128) vertical = 15;
 				double horizontalMult = leapDistance / 2048;
 				double horizontal = 1;
-				for (int i; i < 4; i++)
-					horizontal *= horizontalMult;
+				for (int i; i < 4; i++) horizontal *= horizontalMult;
 				vel += (Cos(angle) * horizontal, Sin(angle) * horizontal, vertical);
 				oldLeap = frame;
 			}
@@ -67,8 +63,7 @@ class NTM_Monster : Actor
 				LeapEnd();
 		}
 		else
-			if (vel.z > 0)
-				vel += (Cos(angle) * 1.5, Sin(angle) * 1.5, 0);
+			if (vel.z > 0) vel += (Cos(angle) * 1.5, Sin(angle) * 1.5, 0);
 		if (leapFail > 35)
 			LeapEnd();
 		else
@@ -88,14 +83,12 @@ class NTM_Monster : Actor
 	double GetJumpDistance()
 	{
 		double dst = 2048;
-		if (ceilingZ - pos.z > 128)
-			dst *= 2;
+		if (ceilingZ - pos.z > 128) dst *= 2;
 		return (dst);
 	}
 	bool CheckPitBeforeTarget()
 	{
-		if (!CheckSight(target) || ceilingZ < (pos.z + height + 32))
-			return (false);
+		if (!CheckSight(target) || ceilingZ < (pos.z + height + 32)) return (false);
 		int step = int(radius * 0.5);
 		Vector3 checkDirection = (target.pos - pos).Unit() * step;
 		int steps = min(Distance2D(target), GetJumpDistance()) / step;
@@ -115,8 +108,7 @@ class NTM_Monster : Actor
 	}
 	bool TryLeap(State leapState, EJumpFlags flags)
     {
-        if (!target || !sv_ntm_monsterLeap)
-			return (false);
+        if (!target || !sv_ntm_monsterLeap) return (false);
         if (Abs(GetGroundHeight() - pos.z) < 1 && !Random(0, 16) && (((flags & JF_Up) && (Abs(target.pos.z - pos.z) > default.maxStepHeight)) || ((flags & JF_Forward) && CheckPitBeforeTarget())) && Distance2D(target) < GetJumpDistance())
 		{
 			oldLeap = 0;
@@ -127,8 +119,7 @@ class NTM_Monster : Actor
 		return (false);
 	}
 	void A_NTMChase()
-	{
-		if (sv_ntm_monsterSmooth) //If smooth monster movement is enabled, use this part of the code. This feature can get unstable, however.
+		{if (sv_ntm_monsterSmooth)
 			if (!CheckMove(pos.xy))
 			{
 				A_Wander();
@@ -148,14 +139,12 @@ class NTM_Monster : Actor
 					vel *= 0.6;
 				else
 					vel.xy *= 0.7;
-				if (posDif != (0, 0, 0))
-					vel += posDif.Unit() * speed * 0.16;
+				if (posDif != (0, 0, 0)) vel += posDif.Unit() * speed * 0.16;
 				bNoTeleport = beNoTeleport;
 				minMissileChance = bMinMissileChance;
 			}
 		else
-			DoChase(); //Otherwise, use vanilla monster movement.
-	}
+			DoChase();}
 	void DoChase()
 		{if (self is "NTM_Archvile")
 			A_VileChase();
@@ -163,8 +152,7 @@ class NTM_Monster : Actor
 			A_Chase();}
 	void A_LeapChase()
 	{
-		if (TryLeap(ResolveState("Leap"), JF_All))
-			return;
+		if (TryLeap(ResolveState("Leap"), JF_All)) return;
 		A_NTMChase();
 	}
 	void A_NTMFall(class<Actor> new = "NTM_SMGPickup")
@@ -178,8 +166,7 @@ class NTM_Monster : Actor
 }
 class NTM_Humanoid : NTM_Monster
 {
-	Default
-		{Height 56;}
+	Default {Height 56;}
 	States
 	{
 		Death.Fire:
@@ -233,8 +220,7 @@ class NTM_Zombieman : NTM_Humanoid
 				if (sv_ntm_grenadiers)
 				{
 					int ran = Random(0, 256);
-					if ((G_SkillPropertyInt(7) == 4 && ran <= 20) || (G_SkillPropertyInt(7) == 3 && ran <= 10))
-						return (FindState("Grenade"));
+					if ((G_SkillPropertyInt(7) == 4 && ran <= 30) || (G_SkillPropertyInt(7) == 3 && ran <= 15)) return (FindState("Grenade"));
 				}
 				return (FindState("StartMissile"));
 			}
@@ -264,8 +250,7 @@ class NTM_Zombieman : NTM_Humanoid
 			NZOM S Random(10, 30) {painChance = 0;}
 			NZOM T 10
 			{
-				if (Random(0, 1))
-					SetStateLabel("See");
+				if (Random(0, 1)) SetStateLabel("See");
 				A_FaceTarget();
 			}
 			NZOM U 2 Bright A_NTMPosAttack;
@@ -339,8 +324,7 @@ class NTM_ShotgunGuy : NTM_Zombieman
 			NZOM S Random(10, 30) {painChance = 0;}
 			NZOM T 10
 			{
-				if (Random(0, 1))
-					SetStateLabel("See");
+				if (Random(0, 1)) SetStateLabel("See");
 				A_FaceTarget();
 			}
 			NZOM U 8 Bright A_SPosAttackUseAtkSound;
@@ -484,54 +468,40 @@ class NTM_SMGGuy : NTM_ShotgunGuy
 	States
 	{
 		See:
-			NZOM A 0
-			{
-				smgFail = 0;
-			}
+			NZOM A 0 {smgFail = 0;}
 			NZOM AABBCCDD 3 A_NTMChase;
 			Goto See + 1;
 		StartMissile:
 			NZOM E 10 A_FaceTarget();
 			NZOM FE 2 Bright
-			{
-				if (smgFail <= 30)
+				{if (smgFail <= 30)
 				{
 					A_CustomBulletAttack(30, 0, 1, Random(1, 5) * 1, "BulletPuff", 0, CBAF_NoRandom);
 					smgFail += 0.5;
 				}
 				else
-					SetStateLabel("See");
-			}
+					SetStateLabel("See");}
 			NZOM F 0 A_CPosRefire;
 			Goto StartMissile + 1;
 		Duck:
-			NZOM S Random(10, 30)
-			{
-				painChance = 0;
-			}
+			NZOM S Random(10, 30) {painChance = 0;}
 			NZOM T 10
 			{
-				if (Random(0, 1))
-					SetStateLabel("See");
+				if (Random(0, 1)) SetStateLabel("See");
 				A_FaceTarget();
 			}
 			NZOM FE 2 Bright
-			{
-				if (smgFail <= 30)
+				{if (smgFail <= 30)
 				{
 					A_CustomBulletAttack(30, 0, 1, Random(1, 5) * 1, "BulletPuff", 0, CBAF_NoRandom);
 					smgFail += 0.5;
 				}
 				else
-					SetStateLabel("See");
-			}
+					SetStateLabel("See");}
 			NZOM F 0 A_MonsterRefire(40, "DuckEnd");
 			Goto Missile + 2;
 		DuckEnd:
-			NZOM T 0
-			{
-				painChance = default.painChance;
-			}
+			NZOM T 0 {painChance = default.painChance;}
 			Goto See;
 		Death:
 			NZOM H 6;
@@ -614,10 +584,7 @@ class NTM_Imp : NTM_Humanoid
 }
 class NTM_ImpBall : DoomImpBall
 {
-	Default
-	{
-		+DontBlast
-	}
+	Default {+DontBlast}
 	States
 	{
 		Death:
@@ -705,8 +672,7 @@ class NTM_Demon : NTM_Monster
 	}
 }
 class NTM_Spectre : NTM_Demon
-{
-	Default
+	{Default
 	{
 		+Shadow
 		RenderStyle "OptFuzzy";
@@ -719,8 +685,7 @@ class NTM_Spectre : NTM_Demon
 		Obituary "$OB_SPECTREHIT";
 		Tag "$FN_SPECTRE";
 		Translation "0:255=0:0";
-	}
-}
+	}}
 class NTM_LostSoul : NTM_Monster
 {
 	Default
@@ -786,8 +751,7 @@ class NTM_LostSoul : NTM_Monster
 	}
 	override bool Slam(Actor victim)
 	{
-		if (!victim || (!victim.bSolid && !victim.bShootable))
-			return (true);
+		if (!victim || (!victim.bSolid && !victim.bShootable)) return (true);
 		return (super.Slam(victim));
 	}
 }
@@ -851,10 +815,7 @@ class NTM_Cacodemon : NTM_Monster
 }
 class NTM_CacodemonBall : CacodemonBall
 {
-	Default
-	{
-		+DontBlast
-	}
+	Default {+DontBlast}
 	States
 	{
 		Death:
@@ -899,10 +860,7 @@ class NTM_HellKnight : NTM_BaronOfHell
 			}
 			NBAR L 9 A_Recoil(-20);
 			NBAR M 5 A_CustomMeleeAttack(10 * random(1, 8), "baron/melee");
-			NBAR M 0
-			{
-				painChance = default.painChance;
-			}
+			NBAR M 0 {painChance = default.painChance;}
 			Goto See;
 		Pain:
 			NBAR N 2;
@@ -914,11 +872,7 @@ class NTM_HellKnight : NTM_BaronOfHell
 			{
 				A_Scream();
 				A_StartSound("misc/gibbed", 5);
-				if (health >= GetGibHealth())
-				{
-					for (int i = 2; i < 4; i++)
-						A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
-				}
+				if (health >= GetGibHealth()) for (int i = 2; i < 4; i++) A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 			}
 			NBAR Q 7;
 			NBAR R 7 A_NoBlocking;
@@ -968,10 +922,7 @@ class NTM_BaronOfHell : NTM_Monster
 			}
 			NBAR L 9 A_Recoil(-20);
 			NBAR M 5 A_CustomMeleeAttack(10 * random(1, 8), "baron/melee");
-			NBAR M 0
-			{
-				painChance = default.painChance;
-			}
+			NBAR M 0 {painChance = default.painChance;}
 			Goto See;
 		Melee:
 		Missile:
@@ -996,11 +947,7 @@ class NTM_BaronOfHell : NTM_Monster
 			{
 				A_Scream();
 				A_StartSound("misc/gibbed", 5);
-				if (health >= GetGibHealth())
-				{
-					for (int i = 2; i < 4; i++)
-						A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
-				}
+				if (health >= GetGibHealth()) for (int i = 2; i < 4; i++) A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 			}
 			NBAR Q 7;
 			NBAR R 7 A_NoBlocking;
@@ -1080,11 +1027,7 @@ class NTM_Arachnotron : NTM_Monster
 		Death:
 			NARA J 7 A_Scream;
 			NARA K 7 A_NoBlocking();
-			NARA L 7
-			{
-				if (health >= GetGibHealth())
-					A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 48, Random(-8, 8), Random(-8, 8), Random(4, 8));
-			}
+			NARA L 7 {if (health >= GetGibHealth()) A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 48, Random(-8, 8), Random(-8, 8), Random(4, 8));}
 			NARA MNO 7;
 			NARA P 0;
 			#### # -1 A_BossDeath;
@@ -1144,11 +1087,7 @@ class NTM_PainElemental : NTM_Monster
 				A_SpawnItemEx("NTM_Explosion", 0, 0, 32);
 				A_PainDie();
 				A_StartSound("misc/gibbed", 5);
-				if (health >= GetGibHealth())
-				{
-					for (int i = 2; i < 4; i++)
-						A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8));
-				}
+				if (health >= GetGibHealth()) for (int i = 2; i < 4; i++) A_SpawnItemEx("NTM_FlyingGib"..i, 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8));
 			}
 			Stop;
 		Raise:
@@ -1165,11 +1104,7 @@ class NTM_PainElemental : NTM_Monster
 			int count = 21;
 			ThinkerIterator it = ThinkerIterator.Create("NTM_LostSoul");
 			Thinker othink;
-			while (othink = it.Next())
-			{
-				if (--count == 0)
-					SetStateLabel("See");
-			}
+			while (othink = it.Next()) if (--count == 0) SetStateLabel("See");
 		}
 	}
 }
@@ -1286,8 +1221,7 @@ class NTM_Revenant : NTM_Monster
         A_NTMChase();
 	}
 	void A_NTMSkelMissile()
-	{
-		if (target)
+		{if (target)
 		{
 			A_FaceTarget();
 			for (int i = -1; i < 3; i += 2)
@@ -1301,8 +1235,7 @@ class NTM_Revenant : NTM_Monster
 					missile.VelFromAngle();
 				}
 			}
-		}
-	}
+		}}
 }
 class NTM_RevenantTracer : RevenantTracer
 {
@@ -1332,20 +1265,17 @@ class NTM_RevenantTracer : RevenantTracer
 		if (smoke != null)
 		{
 			smoke.tics -= Random[tracer](0, 3);
-			if (smoke.tics < 1)
-				smoke.tics = 1;
+			if (smoke.tics < 1) smoke.tics = 1;
 		}
 		A_Tracer2(4.21875);
 	}
 }
 class NTM_RevenantTracerSmoke : RocketSmokeTrail
-{
-	Default
+	{Default
 	{
 		Scale 0.5;
 		Alpha 0.4;
-	}
-}
+	}}
 class NTM_Mancubus : NTM_Monster
 {
 	Default
@@ -1478,8 +1408,7 @@ class NTM_Archvile : NTM_Monster
 		if (targ)
 		{
 			A_FaceTarget();
-			if (!CheckSight(targ))
-				return;
+			if (!CheckSight(targ)) return;
 			A_StartSound("vile/stop", 1);
 			int newDam = targ.DamageMObj(self, self, 20, VAF_DmgTypeApplyToDirect ? "Fire" : "none");
 			targ.TraceBleed(newDam > 0 ? newDam : 20, self);
@@ -1488,11 +1417,9 @@ class NTM_Archvile : NTM_Monster
 				tracer.SetOrigin(targ.Vec3Angle(-24, angle, 0), true);
 				tracer.A_Explode(70, 70, XF_NoSplash, false, 0, 0, 0, "BulletPuff", "Fire");
 				Actor boom = Spawn("NTM_Explosion", tracer.pos + (0, 0, 32));
-				if (boom && NTMAI.CanQuake())
-						boom.A_Quake(2, 10, 0, 400, "");
+				if (boom && NTMAI.CanQuake()) boom.A_Quake(2, 10, 0, 400, "");
 			}
-			if (!targ.bDontThrust)
-				targ.vel.z = 1000 / Max(1, targ.mass);
+			if (!targ.bDontThrust) targ.vel.z = 1000 / Max(1, targ.mass);
 		}
 	}
 }
@@ -1511,10 +1438,8 @@ class NTM_Boss : NTM_Monster
 	{
 		A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
 		Actor boom = Spawn("NTM_Explosion", pos + (Random(-32, 32), Random(-32, 32), Random(8, 64)));
-		if (boom)
-			boom.scale *= 0.5;
-		if (NTMAI.CanQuake())
-			A_Quake(2, 10, 0, 1600, "");
+		if (boom) boom.scale *= 0.5;
+		if (NTMAI.CanQuake()) A_Quake(2, 10, 0, 1600, "");
 	}
 }
 class NTM_Cyberdemon : NTM_Boss
@@ -1671,10 +1596,11 @@ class NTM_SSGuard : NTM_Zombieman
 		Missile:
 			NZOM E 0
 			{
-				int ran = Random(0, 256);
 				if (sv_ntm_grenadiers)
-					if ((G_SkillPropertyInt(7) == 4 && ran <= 20) || (G_SkillPropertyInt(7) == 3 && ran <= 10))
-						return (FindState("Grenade"));
+				{
+					int ran = Random(0, 256);
+					if ((G_SkillPropertyInt(7) == 4 && ran <= 30) || (G_SkillPropertyInt(7) == 3 && ran <= 15)) return (FindState("Grenade"));
+				}
 				return (FindState("StartMissile"));
 			}
 			Stop;
