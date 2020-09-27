@@ -474,6 +474,7 @@ class NTM_PortableMedkit : CustomInventory
 {
 	Default
 	{
+		+Inventory.BigPowerup
 		+Inventory.IsHealth
 		+Inventory.InvBar
 		Inventory.Amount 100;
