@@ -591,11 +591,7 @@ class NTM_PistolSpawn : Actor replaces Pistol
 			TNT1 A 0 NoDelay A_SpawnClass("NTM_Pistol", "NTM_Rifle");
 			Stop;
 	}
-	void A_SpawnClass(class<Actor> old, class<Actor> new)
-		{if (players[consolePlayer].mo is "NTM_NewPlayer")
-			A_SpawnItemEx(new);
-		else
-			A_SpawnItemEx(old);}
+	void A_SpawnClass(class<Actor> old, class<Actor> new) {if (NTMAI.ReplaceClass(self, new)) {} else NTMAI.DoReplaceActor(self, old);}
 }
 class NTM_ChaingunSpawn : NTM_PistolSpawn replaces Chaingun
 	{States

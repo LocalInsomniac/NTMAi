@@ -224,12 +224,7 @@ class NTM_Shell : Shell replaces Shell
 	{override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		int soul = sv_ntm_boomShell;
-		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.IsSecret())
-		{
-			Spawn("NTM_ExplosiveShell", pos);
-			Destroy();
-		}
+		NTMAI.ReplaceSecret(self, "NTM_ExplosiveShell", sv_ntm_boomShell);
 	}}
 class NTM_ExplosiveShell : Ammo
 {
@@ -252,18 +247,8 @@ class NTM_RocketAmmo : RocketAmmo replaces RocketAmmo
 	{override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (players[consolePlayer].mo is "NTM_NewPlayer")
-		{
-			Spawn("NTM_GrenadeAmmo", pos);
-			Destroy();
-			return;
-		}
-		int soul = sv_ntm_homingRocket;
-		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.IsSecret())
-		{
-			Spawn("NTM_HomingAmmo", pos);
-			Destroy();
-		}
+		if (NTMAI.ReplaceClass(self, "NTM_GrenadeAmmo")) return;
+		NTMAI.ReplaceSecret(self, "NTM_HomingAmmo", sv_ntm_homingRocket);
 	}}
 class NTM_GrenadeAmmo : RocketAmmo
 {
@@ -277,12 +262,7 @@ class NTM_GrenadeAmmo : RocketAmmo
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		int soul = sv_ntm_clusterGrenade;
-		if ((soul == 1 || (soul == 2 && Random(0, 1))) && curSector.IsSecret())
-		{
-			Spawn("NTM_ClusterGrenade", pos);
-			Destroy();
-		}
+		NTMAI.ReplaceSecret(self, "NTM_ClusterGrenade", sv_ntm_clusterGrenade);
 	}
 }
 class NTM_ClusterGrenade : Ammo
@@ -419,12 +399,8 @@ class NTM_Soulsphere : CustomInventory replaces Soulsphere
 	}
 	override void PostBeginPlay()
 	{
-		int soul = sv_ntm_soulsphere;
-		if (soul == 1 || (soul == 2 && !curSector.IsSecret()))
-		{
-			Spawn("NTM_PortableMedkit", pos);
-			Destroy();
-		}
+		Super.PostBeginPlay();
+		NTMAI.ReplaceSecret(self, "NTM_PortableMedkit", sv_ntm_soulsphere);
 	}
 }
 class NTM_SoulsphereHealth : Health

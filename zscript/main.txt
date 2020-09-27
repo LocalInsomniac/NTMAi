@@ -5,6 +5,26 @@ class NTMAI : EventHandler
 	static bool CanSpin() {return (CVar.FindCVar("cl_ntm_voxelSpin").GetBool());}
 	static float Lerp(float firstFloat, float secondFloat, float by) {return (firstFloat * (1 - by) + secondFloat * by);}
 	static int Sign(int number) {return (Round(Clamp(number, -1, 1)));}
+	static void DoReplaceActor(Actor og, class<Actor> new)
+	{
+		Actor na = og.Spawn(rep, og.pos);
+		if (na)
+		{
+			na.A_SetSpecial(og.special, og.args[0], og.args[1], og.args[2], og.args[3], og.args[4]);
+			na.bDropped = false;
+		}
+		og.Destroy();
+	}
+	static void ReplaceSecret(Actor og, class<Actor> rep, int option) {if ((option == 1 || (option == 2 && Random(0, 1))) && og.curSector.IsSecret()) DoReplaceActor(og, rep);}
+	static bool ReplaceClass(Actor og, class<Actor> rep)
+	{
+		if (players[consolePlayer].mo is "NTM_NewPlayer")
+		{
+			DoReplaceActor(og, rep);
+			return true;
+		}
+		return false;
+	}
 	override void PlayerEntered(PlayerEvent e)
 	{
 		let pmo = players[e.playerNumber].mo;
