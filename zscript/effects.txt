@@ -14,8 +14,7 @@ class NTM_Shadow : Actor
 	override void Tick(void)
 		{if (caster)
 		{
-			if (bInvisible = (caster is "PlayerPawn" && players[consolePlayer].camera && players[consolePlayer].camera == caster && !(caster.player.cheats & CF_CHASECAM)))
-				return;
+			if (bInvisible = (caster is "PlayerPawn" && players[consolePlayer].camera && players[consolePlayer].camera == caster && !(caster.player.cheats & CF_Chasecam))) return;
 			bInvisible = caster.bCorpse;
 			sprite = caster.sprite;
 			frame = caster.frame;
@@ -27,8 +26,7 @@ class NTM_Shadow : Actor
 			if (caster.pos.z > floorZ)
 			{
 				Actor onmo = FindOnMobj(caster, 128);
-				if (onmo && onmo.pos.z + onmo.height > floorZ)
-					shadowPosZ = onmo.pos.z + onmo.height;
+				if (onmo && onmo.pos.z + onmo.height > floorZ) shadowPosZ = onmo.pos.z + onmo.height;
 			}
 			Vector3 sPos = (caster.pos.x, caster.pos.y, shadowPosZ);
 			if (players[consolePlayer].camera)
@@ -52,25 +50,20 @@ class NTM_Shadow : Actor
 		while (it.Next())
 		{
 			let mo = it.thing;
-			if (mo == self || !mo.bSolid || mo.bIsMonster || Abs(mo.pos.x - origin.pos.y) > origin.radius + mo.radius || abs(mo.pos.y - origin.pos.y) > origin.radius + mo.radius)
-				continue;
-			if (origin.pos.z >= mo.pos.z + mo.height && origin.pos.z <= mo.pos.z + mo.height + range)
-				return mo;
+			if (mo == self || !mo.bSolid || mo.bIsMonster || Abs(mo.pos.x - origin.pos.y) > origin.radius + mo.radius || abs(mo.pos.y - origin.pos.y) > origin.radius + mo.radius) continue;
+			if (origin.pos.z >= mo.pos.z + mo.height && origin.pos.z <= mo.pos.z + mo.height + range) return mo;
 		}
 		return (null);
 	}
 }
 class NTM_Blood : Blood replaces Blood
 {
-	Default
-		{+NotOnAutomap}
+	Default {+NotOnAutomap}
 	States
 	{
 		Spawn:
 			BLUD C 8;
-			BLUD B 8
-				{if (!Random(0, 1 - CVar.FindCVar("cl_ntm_bloodFrequency").GetInt()))
-					A_SpawnDebris("NTM_FlyingBlood", true, 1, 0.5);}
+			BLUD B 8 {if (!Random(0, 1 - CVar.FindCVar("cl_ntm_bloodFrequency").GetInt())) A_SpawnDebris("NTM_FlyingBlood", true, 1, 0.5);}
 			BLUD A 8;
 			Stop;
 	}
@@ -157,10 +150,8 @@ class NTM_BloodSpot : Actor
 	}
 	override void PostBeginPlay()
 	{
-		if (!(self is "NTM_BloodPool"))
-			bNoInteraction = true;
-		if (!(self is "NTM_BloodyFootprint"))
-			angle = RandomPick(0, 90, 180, 270);
+		if (!(self is "NTM_BloodPool")) bNoInteraction = true;
+		if (!(self is "NTM_BloodyFootprint")) angle = RandomPick(0, 90, 180, 270);
 		Super.PostBeginPlay();
 	}
 }
@@ -193,15 +184,13 @@ class NTM_BloodPool : NTM_BloodSpot
 					A_SetSize(radius - 0.28);
 					A_SetScale(scale.x - 0.01);
 				}
-				if (scale.x < 0.01)
-					end = true;
+				if (scale.x < 0.01) end = true;
 			}
 		}}
 	override void Tick()
 	{
 		Super.Tick();
-		if (!target || end)
-			Destroy();
+		if (!target || end) Destroy();
 	}
 }
 class NTM_BloodyFootprint : NTM_BloodSpot
@@ -226,8 +215,7 @@ class NTM_RealGibs : RealGibs
 			TNT1 A 0 NoDelay
 			{
 				A_XScream();
-				if (sv_ntm_bloodStretch)
-					A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
+				if (sv_ntm_bloodStretch) A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
 				Destroy();
 			}
 			Goto Super::Spawn;
@@ -249,8 +237,7 @@ class NTM_SmallGibs : RealGibs
 }
 class NTM_MediumGibs : NTM_SmallGibs
 {
-	Default
-		{Radius 32;}
+	Default {Radius 32;}
 	States
 	{
 		Spawn:
@@ -260,8 +247,7 @@ class NTM_MediumGibs : NTM_SmallGibs
 }
 class NTM_BigGibs : NTM_SmallGibs
 {
-	Default
-		{Radius 44;}
+	Default {Radius 44;}
 	States
 	{
 		Spawn:
@@ -331,30 +317,24 @@ class NTM_FlyingGib1 : NTM_FlyingBlood
 			}
 			#### E 700 A_JumpIf(!CVar.FindCVar("cl_ntm_gibDetail").GetBool(), 1);
 			Stop;
-			TNT1 A 0
-				{for (int i; i < Random(2, 3); i++)
-					A_SpawnDebris("NTM_FlyingBlood", true, 0.75, 0.5);}
+			TNT1 A 0 {for (int i; i < Random(2, 3); i++) A_SpawnDebris("NTM_FlyingBlood", true, 0.75, 0.5);}
 			Stop;
 	}
 }
 class NTM_FlyingGib2 : NTM_FlyingGib1
-{
-	States
+	{States
 	{
 		Spawn:
 			NGI2 A 0;
 			Goto Spawn2;
-	}
-}
+	}}
 class NTM_FlyingGib3 : NTM_FlyingGib1
-{
-	States
+	{States
 	{
 		Spawn:
 			NGI3 A 0;
 			Goto Spawn2;
-	}
-}
+	}}
 class NTM_Explosion : Actor
 {
 	Default
@@ -369,8 +349,7 @@ class NTM_Explosion : Actor
 	States
 	{
 		Spawn:
-			NEXP A 3 NoDelay Bright
-				{scale.x *= FRandomPick(-1, 1);}
+			NEXP A 3 NoDelay Bright {scale.x *= FRandomPick(-1, 1);}
 			NEXP BCDEFGHIJ 3 Bright;
 			Stop;
 	}
@@ -447,8 +426,7 @@ class NTM_BulletCasing : Actor
 }
 class NTM_ShellCasing : NTM_BulletCasing
 {
-	Default
-		{BounceSound "misc/casing3";}
+	Default {BounceSound "misc/casing3";}
 	States
 	{
 		Spawn:
@@ -456,11 +434,7 @@ class NTM_ShellCasing : NTM_BulletCasing
 			Goto Roll;
 	}
 }
-class NTM_ShellCasing2 : NTM_ShellCasing
-{
-	Default
-		{Translation "168:191=192:207", "32:47=240:247";}
-}
+class NTM_ShellCasing2 : NTM_ShellCasing {Default {Translation "168:191=192:207", "32:47=240:247";}}
 class NTM_WaterSplash : Actor
 {
 	Default
@@ -476,16 +450,8 @@ class NTM_WaterSplash : Actor
 			Stop;
 	}
 }
-class NTM_BloodSplash : NTM_WaterSplash
-{
-	Default
-		{Translation "192:207=176:191";}
-}
-class NTM_LavaSplash : NTM_WaterSplash
-{
-	Default
-		{Translation "192:199=160:163", "200:207=175:191";}
-}
+class NTM_BloodSplash : NTM_WaterSplash {Default {Translation "192:207=176:191";}}
+class NTM_LavaSplash : NTM_WaterSplash {Default {Translation "192:199=160:163", "200:207=175:191";}}
 class NTM_LavaSmoke : Actor
 {
 	Default
@@ -503,21 +469,9 @@ class NTM_LavaSmoke : Actor
 			Stop;
 	}
 }
-class NTM_NukeSplash : NTM_WaterSplash
-{
-	Default
-		{Translation "192:207=112:127";}
-}
-class NTM_NukeSmoke : NTM_LavaSmoke
-{
-	Default
-		{Scale 0.7;}
-}
-class NTM_SlimeSplash : NTM_WaterSplash
-{
-	Default
-		{Translation "192:207=61:79";}
-}
+class NTM_NukeSplash : NTM_WaterSplash {Default {Translation "192:207=112:127";}}
+class NTM_NukeSmoke : NTM_LavaSmoke {Default {Scale 0.7;}}
+class NTM_SlimeSplash : NTM_WaterSplash {Default {Translation "192:207=61:79";}}
 class NTM_Tracer : FastProjectile
 {
 	Default
@@ -537,47 +491,23 @@ class NTM_Tracer : FastProjectile
 			Stop;
 	}
 }
-class NTM_BulletPuff : BulletPuff replaces BulletPuff
-{
-	Default
-		{AttackSound "misc/puff";}
-}
-class NTM_FistPuff : BulletPuff
-{
-	Default
-		{AttackSound "player/male/fist";}
-}
-class NTM_BerserkPuff : NTM_FistPuff
-{
-	Default
-		{DamageType "Berserk";}
-}
+class NTM_BulletPuff : BulletPuff replaces BulletPuff {Default {AttackSound "misc/puff";}}
+class NTM_FistPuff : BulletPuff {Default {AttackSound "player/male/fist";}}
+class NTM_BerserkPuff : NTM_FistPuff {Default {DamageType "Berserk";}}
 class NTM_SawPuff : BulletPuff
-{
-	Default
+	{Default
 	{
 		DamageType "Saw";
 		AttackSound "misc/puff4";
-	}
-}
+	}}
 class NTM_SawPuff2 : NTM_SawPuff
-{
-	Default
+	{Default
 	{
 		DamageType "Saw2";
 		+ExtremeDeath
-	}
-}
-class NTM_SSGPuff : NTM_BulletPuff
-{
-	Default
-		{DamageType "SSG";}
-}
-class NTM_SawedPuff : NTM_BulletPuff
-{
-	Default
-		{DamageType "Sawed";}
-}
+	}}
+class NTM_SSGPuff : NTM_BulletPuff {Default {DamageType "SSG";}}
+class NTM_SawedPuff : NTM_BulletPuff {Default {DamageType "Sawed";}}
 class NTM_Rail : Actor
 {
 	Default
@@ -589,32 +519,25 @@ class NTM_Rail : Actor
 	States
 	{
 		Spawn:
-			NRAI A 2 NoDelay
-			{
-				scale.x *= FRandomPick(-1, 1);
-			}
+			NRAI A 2 NoDelay {scale.x *= FRandomPick(-1, 1);}
 			NRAI BCDE 2;
 			Stop;
 	}
 }
 class NTM_RailRed : NTM_Rail
-{
-	Default
+	{Default
 	{
 		+AlwaysPuff
 		Scale 0.5;
 		Translation "192:207=176:191", "4:4=176:176";
-	}
-}
+	}}
 class NTM_RailRed2 : NTM_Rail
-{
-	States
+	{States
 	{
 		Spawn:
 			NUNR ABC 3;
 			Stop;
-	}
-}
+	}}
 class NTM_Burn : NTM_Monster
 {
 	class<Actor> original;
@@ -676,17 +599,12 @@ class NTM_Burn : NTM_Monster
 			string snd = "burn/zombie";
 			switch (Name(original.GetClassName()))
 			{
-				case ('NTM_SSGuard'):
-					snd = "wolfss/burn";
-				break;
-				case ('NTM_Imp'):
-					snd = "burn/imp";
-				break;
+				case ('NTM_SSGuard'): snd = "wolfss/burn"; break;
+				case ('NTM_Imp'): snd = "burn/imp"; break;
 			}
 			A_StartSound(Sound(snd));
 			deathSound = GetDefaultByType(original).deathSound;
 		}
-		else
-			Destroy();
+		else Destroy();
 	}
 }

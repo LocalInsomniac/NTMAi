@@ -30,8 +30,7 @@ class NTMAI : EventHandler
 		let pmo = players[e.playerNumber].mo;
 		if (pmo)
 		{
-			if (!pmo.CountInv("NTM_Actor"))
-				pmo.A_GiveInventory("NTM_Actor", 1);
+			if (!pmo.CountInv("NTM_Actor")) pmo.A_GiveInventory("NTM_Actor", 1);
 			pmo.A_TakeInventory("NTM_PistolShots");
 			pmo.A_TakeInventory("NTM_SMGShots");
 			pmo.A_TakeInventory("NTM_Bloody");
@@ -47,22 +46,13 @@ class NTMAI : EventHandler
 	override void PlayerRespawned(PlayerEvent e)
 	{
 		let pmo = players[e.playerNumber].mo;
-		if (pmo)
-			DoThingRevive(pmo);
+		if (pmo) DoThingRevive(pmo);
 	}
-	override void WorldThingSpawned(WorldEvent e)
-		{if (e.thing && e.thing.bIsMonster && !e.thing.CountInv("NTM_Actor"))
-			e.thing.A_GiveInventory("NTM_Actor", 1);}
-	override void WorldThingDied(WorldEvent e)
-		{if (e.thing.bIsMonster || e.thing is "PlayerPawn")
-			e.thing.scale.x *= FRandomPick(-1, 1);}
+	override void WorldThingSpawned(WorldEvent e) {if (e.thing && e.thing.bIsMonster && !e.thing.CountInv("NTM_Actor")) e.thing.A_GiveInventory("NTM_Actor", 1);}
+	override void WorldThingDied(WorldEvent e) {if (e.thing.bIsMonster || e.thing is "PlayerPawn") e.thing.scale.x *= FRandomPick(-1, 1);}
 	override void WorldThingRevived(WorldEvent e) {DoThingRevive(e.thing);}
-	override void WorldLoaded(WorldEvent e)
-		{if (!st)
-			st = New("NTM_Thinker");}
-	override void WorldUnloaded(WorldEvent e)
-		{if (st)
-			st.DoDestroy();}
+	override void WorldLoaded(WorldEvent e) {if (!st) st = New("NTM_Thinker");}
+	override void WorldUnloaded(WorldEvent e) {if (st) st.DoDestroy();}
 	override void WorldLinePreActivated(WorldEvent e)
 		{if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && sv_ntm_keycard)
 		{
@@ -72,51 +62,15 @@ class NTMAI : EventHandler
 				NTM_Player(e.thing).curDoor = e.activatedLine;
 				switch (e.activatedLine.args[3])
 				{
-					case (1):
-						if (UseKey(e, "RedCard", "NTM_OpenRed"))
-							lock = true;
-					break;
-					case (2):
-						if (UseKey(e, "BlueCard", "NTM_OpenBlue"))
-							lock = true;
-					break;
-					case (3):
-						if (UseKey(e, "YellowCard", "NTM_OpenYellow"))
-							lock = true;
-					break;
-					case (4):
-						if (UseKey(e, "RedSkull", "NTM_SkullRed"))
-							lock = true;
-					break;
-					case (5):
-						if (UseKey(e, "BlueSkull", "NTM_SkullBlue"))
-							lock = true;
-					break;
-					case (6):
-						if (UseKey(e, "YellowSkull", "NTM_SkullYellow"))
-							lock = true;
-					break;
-					case (129):
-						if (UseKey(e, "RedCard", "NTM_OpenRed"))
-							lock = true;
-						else
-							if (UseKey(e, "RedSkull", "NTM_SkullRed"))
-								lock = true;
-					break;
-					case (130):
-						if (UseKey(e, "BlueCard", "NTM_OpenBlue"))
-							lock = true;
-						else
-							if (UseKey(e, "BlueSkull", "NTM_SkullBlue"))
-								lock = true;
-					break;
-					case (131):
-						if (UseKey(e, "YellowCard", "NTM_OpenYellow"))
-							lock = true;
-						else
-							if (UseKey(e, "YellowSkull", "NTM_SkullYellow"))
-								lock = true;
-					break;
+					case (1): if (UseKey(e, "RedCard", "NTM_OpenRed")) lock = true; break;
+					case (2): if (UseKey(e, "BlueCard", "NTM_OpenBlue")) lock = true; break;
+					case (3): if (UseKey(e, "YellowCard", "NTM_OpenYellow")) lock = true; break;
+					case (4): if (UseKey(e, "RedSkull", "NTM_SkullRed")) lock = true; break;
+					case (5): if (UseKey(e, "BlueSkull", "NTM_SkullBlue")) lock = true; break;
+					case (6): if (UseKey(e, "YellowSkull", "NTM_SkullYellow")) lock = true; break;
+					case (129): if (UseKey(e, "RedCard", "NTM_OpenRed")) lock = true; else if (UseKey(e, "RedSkull", "NTM_SkullRed")) lock = true; break;
+					case (130): if (UseKey(e, "BlueCard", "NTM_OpenBlue")) lock = true; else if (UseKey(e, "BlueSkull", "NTM_SkullBlue")) lock = true; break;
+					case (131): if (UseKey(e, "YellowCard", "NTM_OpenYellow")) lock = true; else if (UseKey(e, "YellowSkull", "NTM_SkullYellow")) lock = true; break;
 				}
 			}
 			if (lock)
@@ -145,217 +99,66 @@ class NTMAI : EventHandler
 	override void CheckReplacement(ReplaceEvent e)
 		{switch (e.replacee.GetClassName())
 		{
-			case ('Zombieman'):
-				if (sv_ntm_r_zombieman)
-					e.replacement = "NTM_Zombieman";
-			break;
-			case ('ShotgunGuy'):
-				if (sv_ntm_r_shotgunGuy)
-					e.replacement = "NTM_ShotgunGuy";
-			break;
-			case ('ChaingunGuy'):
-				if (sv_ntm_r_heavyWeaponDude)
-					e.replacement = "NTM_ChaingunGuy";
-			break;
-			case ('DoomImp'):
-				if (sv_ntm_r_imp)
-					e.replacement = "NTM_Imp";
-			break;
-			case ('DoomImpBall'):
-				if (sv_ntm_r_imp)
-					e.replacement = "NTM_ImpBall";
-			break;
-			case ('Demon'):
-				if (sv_ntm_r_demon)
-					e.replacement = "NTM_Demon";
-			break;
-			case ('Spectre'):
-				if (sv_ntm_r_spectre)
-					e.replacement = "NTM_Spectre";
-			break;
-			case ('LostSoul'):
-				if (sv_ntm_r_lostSoul)
-					e.replacement = "NTM_LostSoul";
-			break;
-			case ('Cacodemon'):
-				if (sv_ntm_r_cacodemon)
-					e.replacement = "NTM_Cacodemon";
-			break;
-			case ('CacodemonBall'):
-				if (sv_ntm_r_cacodemon)
-					e.replacement = "NTM_CacodemonBall";
-			break;
-			case ('HellKnight'):
-				if (sv_ntm_r_hellKnight)
-					e.replacement = "NTM_HellKnight";
-			break;
-			case ('BaronOfHell'):
-				if (sv_ntm_r_baronOfHell)
-					e.replacement = "NTM_BaronOfHell";
-			break;
-			case ('BaronBall'):
-				if (sv_ntm_r_hellKnight || sv_ntm_r_baronOfHell)
-					e.replacement = "NTM_BaronBall";
-			break;
-			case ('Arachnotron'):
-				if (sv_ntm_r_arachnotron)
-					e.replacement = "NTM_Arachnotron";
-			break;
-			case ('ArachnotronPlasma'):
-				if (sv_ntm_r_arachnotron)
-					e.replacement = "NTM_PlasmaBall";
-			break;
-			case ('PainElemental'):
-				if (sv_ntm_r_painElemental)
-					e.replacement = "NTM_PainElemental";
-			break;
-			case ('Revenant'):
-				if (sv_ntm_r_revenant)
-					e.replacement = "NTM_Revenant";
-			break;
-			case ('RevenantTracer'):
-				if (sv_ntm_r_revenant)
-					e.replacement = "NTM_RevenantTracer";
-			break;
-			case ('RevenantTracerSmoke'):
-				if (sv_ntm_r_revenant)
-					e.replacement = "NTM_RevenantTracerSmoke";
-			break;
-			case ('Fatso'):
-				if (sv_ntm_r_mancubus)
-					e.replacement = "NTM_Mancubus";
-			break;
-			case ('FatShot'):
-				if (sv_ntm_r_mancubus)
-					e.replacement = "NTM_FatShot";
-			break;
-			case ('Archvile'):
-				if (sv_ntm_r_archVile)
-					e.replacement = "NTM_Archvile";
-			break;
-			case ('SpiderMastermind'):
-				if (sv_ntm_r_spiderMastermind)
-					e.replacement = "NTM_SpiderMastermind";
-			break;
-			case ('Cyberdemon'):
-				if (sv_ntm_r_cyberdemon)
-					e.replacement = "NTM_Cyberdemon";
-			break;
-			case ('WolfensteinSS'):
-				if (sv_ntm_r_ss)
-					e.replacement = "NTM_SSGuard";
-			break;
-			case ('RealGibs'):
-				e.replacement = "NTM_RealGibs";
-			break;
+			case ('Zombieman'): if (sv_ntm_r_zombieman) e.replacement = "NTM_Zombieman"; break;
+			case ('ShotgunGuy'): if (sv_ntm_r_shotgunGuy) e.replacement = "NTM_ShotgunGuy"; break;
+			case ('ChaingunGuy'): if (sv_ntm_r_heavyWeaponDude) e.replacement = "NTM_ChaingunGuy"; break;
+			case ('DoomImp'): if (sv_ntm_r_imp) e.replacement = "NTM_Imp"; break;
+			case ('DoomImpBall'): if (sv_ntm_r_imp) e.replacement = "NTM_ImpBall"; break;
+			case ('Demon'): if (sv_ntm_r_demon) e.replacement = "NTM_Demon"; break;
+			case ('Spectre'): if (sv_ntm_r_spectre) e.replacement = "NTM_Spectre"; break;
+			case ('LostSoul'): if (sv_ntm_r_lostSoul) e.replacement = "NTM_LostSoul"; break;
+			case ('Cacodemon'): if (sv_ntm_r_cacodemon) e.replacement = "NTM_Cacodemon"; break;
+			case ('CacodemonBall'): if (sv_ntm_r_cacodemon) e.replacement = "NTM_CacodemonBall"; break;
+			case ('HellKnight'): if (sv_ntm_r_hellKnight) e.replacement = "NTM_HellKnight"; break;
+			case ('BaronOfHell'): if (sv_ntm_r_baronOfHell) e.replacement = "NTM_BaronOfHell"; break;
+			case ('BaronBall'): if (sv_ntm_r_hellKnight || sv_ntm_r_baronOfHell) e.replacement = "NTM_BaronBall"; break;
+			case ('Arachnotron'): if (sv_ntm_r_arachnotron) e.replacement = "NTM_Arachnotron"; break;
+			case ('ArachnotronPlasma'): if (sv_ntm_r_arachnotron) e.replacement = "NTM_PlasmaBall"; break;
+			case ('PainElemental'): if (sv_ntm_r_painElemental) e.replacement = "NTM_PainElemental"; break;
+			case ('Revenant'): if (sv_ntm_r_revenant) e.replacement = "NTM_Revenant"; break;
+			case ('RevenantTracer'): if (sv_ntm_r_revenant) e.replacement = "NTM_RevenantTracer"; break;
+			case ('RevenantTracerSmoke'): if (sv_ntm_r_revenant) e.replacement = "NTM_RevenantTracerSmoke"; break;
+			case ('Fatso'): if (sv_ntm_r_mancubus) e.replacement = "NTM_Mancubus"; break;
+			case ('FatShot'): if (sv_ntm_r_mancubus) e.replacement = "NTM_FatShot"; break;
+			case ('Archvile'): if (sv_ntm_r_archVile) e.replacement = "NTM_Archvile"; break;
+			case ('SpiderMastermind'): if (sv_ntm_r_spiderMastermind) e.replacement = "NTM_SpiderMastermind"; break;
+			case ('Cyberdemon'): if (sv_ntm_r_cyberdemon) e.replacement = "NTM_Cyberdemon"; break;
+			case ('WolfensteinSS'): if (sv_ntm_r_ss) e.replacement = "NTM_SSGuard"; break;
+			case ('RealGibs'): e.replacement = "NTM_RealGibs"; break;
 		}}
 	override void CheckReplacee(ReplacedEvent e)
 		{switch (e.replacement.GetClassName())
 		{
-			case ('NTM_Zombieman'):
-				if (sv_ntm_r_zombieman)
-					e.replacee = "Zombieman";
-			break;
-			case ('NTM_ShotgunGuy'):
-				if (sv_ntm_r_shotgunGuy)
-					e.replacee = "ShotgunGuy";
-			break;
-			case ('NTM_ChaingunGuy'):
-				if (sv_ntm_r_heavyWeaponDude)
-					e.replacee = "ChaingunGuy";
-			break;
-			case ('NTM_Imp'):
-				if (sv_ntm_r_imp)
-					e.replacee = "DoomImp";
-			break;
-			case ('NTM_ImpBall'):
-				if (sv_ntm_r_imp)
-					e.replacee = "DoomImpBall";
-			break;
-			case ('NTM_Demon'):
-				if (sv_ntm_r_demon)
-					e.replacee = "Demon";
-			break;
-			case ('NTM_Spectre'):
-				if (sv_ntm_r_spectre)
-					e.replacee = "Spectre";
-			break;
-			case ('NTM_LostSoul'):
-				if (sv_ntm_r_lostSoul)
-					e.replacee = "LostSoul";
-			break;
-			case ('NTM_Cacodemon'):
-				if (sv_ntm_r_cacodemon)
-					e.replacee = "Cacodemon";
-			break;
-			case ('NTM_CacodemonBall'):
-				if (sv_ntm_r_cacodemon)
-					e.replacee = "CacodemonBall";
-			break;
-			case ('NTM_HellKnight'):
-				if (sv_ntm_r_hellKnight)
-					e.replacee = "HellKnight";
-			break;
-			case ('NTM_BaronOfHell'):
-				if (sv_ntm_r_baronOfHell)
-					e.replacee = "BaronOfHell";
-			break;
-			case ('NTM_BaronBall'):
-				if (sv_ntm_r_hellKnight || sv_ntm_r_baronOfHell)
-					e.replacee = "BaronBall";
-			break;
-			case ('NTM_Arachnotron'):
-				if (sv_ntm_r_arachnotron)
-					e.replacee = "Arachnotron";
-			break;
-			case ('NTM_PainElemental'):
-				if (sv_ntm_r_painElemental)
-					e.replacee = "PainElemental";
-			break;
-			case ('NTM_Revenant'):
-				if (sv_ntm_r_revenant)
-					e.replacee = "Revenant";
-			break;
-			case ('NTM_RevenantTracer'):
-				if (sv_ntm_r_revenant)
-					e.replacee = "RevenantTracer";
-			break;
-			case ('NTM_RevenantTracerSmoke'):
-				if (sv_ntm_r_revenant)
-					e.replacee = "RevenantTracerSmoke";
-			break;
-			case ('NTM_Mancubus'):
-				if (sv_ntm_r_mancubus)
-					e.replacee = "Fatso";
-			break;
-			case ('NTM_FatShot'):
-				if (sv_ntm_r_mancubus)
-					e.replacee = "FatShot";
-			break;
-			case ('NTM_Archvile'):
-				if (sv_ntm_r_archVile)
-					e.replacee = "Archvile";
-			break;
-			case ('NTM_SpiderMastermind'):
-				if (sv_ntm_r_spiderMastermind)
-					e.replacee = "SpiderMastermind";
-			break;
-			case ('NTM_Cyberdemon'):
-				if (sv_ntm_r_cyberdemon)
-					e.replacee = "Cyberdemon";
-			break;
-			case ('NTM_SSGuard'):
-				if (sv_ntm_r_ss)
-					e.replacee = "WolfensteinSS";
-			break;
+			case ('NTM_Zombieman'): if (sv_ntm_r_zombieman) e.replacee = "Zombieman"; break;
+			case ('NTM_ShotgunGuy'): if (sv_ntm_r_shotgunGuy) e.replacee = "ShotgunGuy"; break;
+			case ('NTM_ChaingunGuy'): if (sv_ntm_r_heavyWeaponDude) e.replacee = "ChaingunGuy"; break;
+			case ('NTM_Imp'): if (sv_ntm_r_imp) e.replacee = "DoomImp"; break;
+			case ('NTM_ImpBall'): if (sv_ntm_r_imp) e.replacee = "DoomImpBall"; break;
+			case ('NTM_Demon'): if (sv_ntm_r_demon) e.replacee = "Demon"; break;
+			case ('NTM_Spectre'): if (sv_ntm_r_spectre) e.replacee = "Spectre"; break;
+			case ('NTM_LostSoul'): if (sv_ntm_r_lostSoul) e.replacee = "LostSoul"; break;
+			case ('NTM_Cacodemon'): if (sv_ntm_r_cacodemon) e.replacee = "Cacodemon"; break;
+			case ('NTM_CacodemonBall'): if (sv_ntm_r_cacodemon) e.replacee = "CacodemonBall"; break;
+			case ('NTM_HellKnight'): if (sv_ntm_r_hellKnight) e.replacee = "HellKnight"; break;
+			case ('NTM_BaronOfHell'): if (sv_ntm_r_baronOfHell) e.replacee = "BaronOfHell"; break;
+			case ('NTM_BaronBall'): if (sv_ntm_r_hellKnight || sv_ntm_r_baronOfHell) e.replacee = "BaronBall"; break;
+			case ('NTM_Arachnotron'): if (sv_ntm_r_arachnotron) e.replacee = "Arachnotron"; break;
+			case ('NTM_PainElemental'): if (sv_ntm_r_painElemental) e.replacee = "PainElemental"; break;
+			case ('NTM_Revenant'): if (sv_ntm_r_revenant) e.replacee = "Revenant"; break;
+			case ('NTM_RevenantTracer'): if (sv_ntm_r_revenant) e.replacee = "RevenantTracer"; break;
+			case ('NTM_RevenantTracerSmoke'): if (sv_ntm_r_revenant) e.replacee = "RevenantTracerSmoke"; break;
+			case ('NTM_Mancubus'): if (sv_ntm_r_mancubus) e.replacee = "Fatso"; break;
+			case ('NTM_FatShot'): if (sv_ntm_r_mancubus) e.replacee = "FatShot"; break;
+			case ('NTM_Archvile'): if (sv_ntm_r_archVile) e.replacee = "Archvile"; break;
+			case ('NTM_SpiderMastermind'): if (sv_ntm_r_spiderMastermind) e.replacee = "SpiderMastermind"; break;
+			case ('NTM_Cyberdemon'): if (sv_ntm_r_cyberdemon)e.replacee = "Cyberdemon"; break;
+			case ('NTM_SSGuard'): if (sv_ntm_r_ss) e.replacee = "WolfensteinSS"; break;
 		}}
 	void DoThingRevive(Actor mo)
 	{
-		if (mo.CountInv("NTM_CorpseGib"))
-			mo.RemoveInventory(mo.FindInventory("NTM_CorpseGib"));
+		if (mo.CountInv("NTM_CorpseGib")) mo.RemoveInventory(mo.FindInventory("NTM_CorpseGib"));
 		mo.scale = mo.default.scale;
-		if (!(mo is "PlayerPawn"))
-			mo.translation = mo.default.translation;
+		if (!(mo is "PlayerPawn")) mo.translation = mo.default.translation;
 	}
 }
 class NTM_System : Inventory
@@ -374,8 +177,7 @@ class NTM_System : Inventory
 			TNT1 A 0;
 			Fail;
 		Pickup:
-			TNT1 A 0
-				{return true;}
+			TNT1 A 0 {return true;}
 			Stop;
 	}
 }
@@ -395,8 +197,7 @@ class NTM_Actor : NTM_System
 	}
 	override void Tick()
 	{
-		if (owner.target && owner.target is "PlayerPawn" && owner.target.bShadow && !owner.CountInv("NTM_CantSee"))
-			owner.A_GiveInventory("NTM_CantSee", 1);
+		if (owner.target && owner.target is "PlayerPawn" && owner.target.bShadow && !owner.CountInv("NTM_CantSee")) owner.A_GiveInventory("NTM_CantSee", 1);
 		if (owner.pos.z <= owner.floorZ && sv_ntm_bloodFootprints && fpDuration > 0)
 			if (owner.vel.Length() > 0)
 			{
@@ -416,8 +217,7 @@ class NTM_Actor : NTM_System
 					fpInterval = 0;
 				}
 			}
-			else
-				fpInterval = 0;
+			else fpInterval = 0;
 		if (owner.health <= 0)
 		{
 			if (sv_ntm_bloodDeath && lastFrame != owner.curState.frame && owner.curState.frame != 0)
@@ -438,8 +238,7 @@ class NTM_Actor : NTM_System
 					owner.A_Recoil(force);
 					owner.A_ChangeVelocity(vel.x, vel.y, force);
 				}
-				if (owner.damageTypeReceived == "Saw" || owner.damageTypeReceived == "Saw2")
-					owner.A_GiveToTarget("NTM_Bloody", 1);
+				if (owner.damageTypeReceived == "Saw" || owner.damageTypeReceived == "Saw2") owner.A_GiveToTarget("NTM_Bloody", 1);
 				if (owner.damageTypeReceived == "Sawed")
 				{
 					owner.A_FaceTarget();
@@ -453,27 +252,22 @@ class NTM_Actor : NTM_System
 				{
 					if (fallTics > 18 + (sv_ntm_bloodDeath * 3) && owner.waterLevel == 0)
 					{
-						for (int i; i < Random(3, 6); i++)
-							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+						for (int i; i < Random(3, 6); i++) owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 						owner.A_StartSound("misc/pancake");
 					}
 					fallTics = 0;
 				}
-				else
-					if (!(owner is "PlayerChunk"))
-						fallTics++;
+				else if (!(owner is "PlayerChunk")) fallTics++;
 				if (!dead)
 				{
 					if (owner.health < owner.GetGibHealth() && !gibbed)
 					{
 						for (int i; i < Random(5, 8); i++)
 						{
-							if (i >= 0 && i <= 2)
-								owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+							if (i >= 0 && i <= 2) owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
 							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 						}
-						if (owner.target is "NTM_Player" && !Random(0, 5) && CVar.FindCVar("cl_ntm_taunt").GetBool())
-							owner.A_GiveToTarget("NTM_Taunt");
+						if (owner.target is "NTM_Player" && !Random(0, 5) && CVar.FindCVar("cl_ntm_taunt").GetBool()) owner.A_GiveToTarget("NTM_Taunt");
 						gibbed = true;
 					}
 					dead = true;
@@ -483,19 +277,12 @@ class NTM_Actor : NTM_System
 					bool result;
 					Actor bloodP;
 					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
-					if (bloodP)
-						bloodP.target = owner;
+					if (bloodP) bloodP.target = owner;
 					bPool = true;
 				}
 				if (!crushed && owner.pos.z <= owner.floorZ && owner.ceilingZ <= ((owner.pos.z + owner.height) + owner.GetDeathHeight()))
 				{
-					if (owner.radius > 31)
-						owner.A_SpawnItemEx("NTM_BigGibs", flags: SXF_UseBloodColor);
-					else
-						if (owner.radius > 23)
-							owner.A_SpawnItemEx("NTM_MediumGibs", flags: SXF_UseBloodColor);
-						else
-							owner.A_SpawnItemEx("NTM_SmallGibs", flags: SXF_UseBloodColor);
+					if (owner.radius > 31) owner.A_SpawnItemEx("NTM_BigGibs", flags: SXF_UseBloodColor); else if (owner.radius > 23) owner.A_SpawnItemEx("NTM_MediumGibs", flags: SXF_UseBloodColor); else owner.A_SpawnItemEx("NTM_SmallGibs", flags: SXF_UseBloodColor);
 					crushed = true;
 				}
 			}
@@ -516,16 +303,14 @@ class NTM_Thinker : Thinker
 	{
 		float shadowDist = CVar.FindCVar("cl_ntm_shadowDistance").GetFloat();
 		Actor camera = players[consolePlayer].camera;
-		if (!camera)
-			return;
+		if (!camera) return;
 		BlockThingsIterator it = BlockThingsIterator.Create(camera, shadowDist);
 		while (it.Next())
 		{
 			let other = it.thing;
 			if ((other.Distance3D(camera) - 1) < shadowDist)
 			{
-				if (!(other.bIsMonster || other is "PlayerPawn"))
-					continue;
+				if (!(other.bIsMonster || other is "PlayerPawn")) continue;
 				bool isDuplicate = false;
 				int i = 0;
 				for (i; i < shadowCasters.Size(); i++)
@@ -549,18 +334,14 @@ class NTM_Thinker : Thinker
 					}
 				}
 			}
-			else
-				for (int j = 0; j < shadowCasters.Size(); j++)
+			else for (int j = 0; j < shadowCasters.Size(); j++)
 					if (shadowCasters[j] && shadowCasters[j].mo == other)
 					{
-						if (shadowCasters[j].shadow)
-							shadowCasters[j].shadow.Destroy();
+						if (shadowCasters[j].shadow) shadowCasters[j].shadow.Destroy();
 						shadowCasters.Delete(j);
 						break;
 					}
-			for (int k = 0; k < shadowCasters.Size(); k++)
-				if (shadowCasters[k] && !shadowCasters[k].shadow)
-					shadowCasters.Delete(k);
+			for (int k = 0; k < shadowCasters.Size(); k++) if (shadowCasters[k] && !shadowCasters[k].shadow) shadowCasters.Delete(k);
 		}
 	}
 	void AddShadowCaster(Actor mo)
@@ -577,8 +358,7 @@ class NTM_Thinker : Thinker
 		shadowCasters.Clear();
 		ThinkerIterator it = ThinkerIterator.Create("NTM_Shadow");
 		NTM_Shadow shadow;
-		while (shadow = NTM_Shadow(it.Next()))
-			shadow.Destroy();
+		while (shadow = NTM_Shadow(it.Next())) shadow.Destroy();
 		Destroy();
 	}
 }
@@ -587,13 +367,10 @@ class NTM_CorpseGib : NTM_System
 	override void AttachToOwner(Actor user)
 	{
 		Super.AttachToOwner(user);
-        if (!owner)
-            return;
+        if (!owner) return;
 		let find = NTM_Actor(owner.FindInventory("NTM_Actor"));
-		if (!find)
-			return;
-		if (find.gibbed)
-			return;
+		if (!find) return;
+		if (find.gibbed) return;
 		if (owner.health >= owner.GetGibHealth() && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss && !(owner is "RealGibs"))
 		{
 			owner.A_StartSound("misc/gibbed");
@@ -604,8 +381,7 @@ class NTM_CorpseGib : NTM_System
 			owner.translation = owner.bloodTranslation;
 			for (int i; i < Random(5, 8); i++)
 			{
-				if (i >= 0 && i <= 2)
-					owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+				if (i >= 0 && i <= 2) owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
 				owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 			}
 		}
@@ -613,16 +389,13 @@ class NTM_CorpseGib : NTM_System
 	}
 }
 class NTM_Taunt : NTM_System
-{
-	override void AttachToOwner(Actor user)
+	{override void AttachToOwner(Actor user)
 	{
 		Super.AttachToOwner(user);
-        if (!owner || owner.health <= 0)
-            return;
+        if (!owner || owner.health <= 0) return;
 		owner.A_StartSound("player/taunt", 2);
 		DepleteOrDestroy();
-	}
-}
+	}}
 class NTM_CantSee : NTM_System
 {
 	override void AttachToOwner(Actor user)
@@ -632,16 +405,14 @@ class NTM_CantSee : NTM_System
 	}
     override void DoEffect()
     {
-        if (!owner)
-			return;
+        if (!owner) return;
 		let targ = owner.target;
 		if (!targ || targ.health <= 0 || owner.health <= 0 || !targ.bShadow)
 		{
 			DepleteOrDestroy();
 			return;
 		}
-		if (!owner.InStateSequence(owner.curState, owner.FindState("See")))
-			return;
+		if (!owner.InStateSequence(owner.curState, owner.FindState("See"))) return;
 		if (level.mapTime % owner.curState.tics)
 		{
 			Vector3 oldPos = owner.pos;

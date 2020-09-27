@@ -59,15 +59,11 @@ class NTM_Monster : Actor
 				vel += (Cos(angle) * horizontal, Sin(angle) * horizontal, vertical);
 				oldLeap = frame;
 			}
-			else
-				LeapEnd();
+			else LeapEnd();
 		}
-		else
-			if (vel.z > 0) vel += (Cos(angle) * 1.5, Sin(angle) * 1.5, 0);
-		if (leapFail > 35)
-			LeapEnd();
-		else
-			leapFail++;
+		else if (vel.z > 0) vel += (Cos(angle) * 1.5, Sin(angle) * 1.5, 0);
+		if (leapFail > 35) LeapEnd();
+		else leapFail++;
 	}
 	void LeapEnd()
 	{
@@ -135,21 +131,14 @@ class NTM_Monster : Actor
 				DoChase();
 				Vector3 posDif = pos - oldPos;
 				A_Warp(AAPTR_Default, oldPos.x, oldPos.y, oldPos.z, flags: WARPF_AbsolutePosition | WARPF_Interpolate);
-				if (bFloat && bNoGravity)
-					vel *= 0.6;
-				else
-					vel.xy *= 0.7;
+				if (bFloat && bNoGravity) vel *= 0.6; else vel.xy *= 0.7;
 				if (posDif != (0, 0, 0)) vel += posDif.Unit() * speed * 0.16;
 				bNoTeleport = beNoTeleport;
 				minMissileChance = bMinMissileChance;
 			}
 		else
 			DoChase();}
-	void DoChase()
-		{if (self is "NTM_Archvile")
-			A_VileChase();
-		else
-			A_Chase();}
+	void DoChase() {if (self is "NTM_Archvile") A_VileChase(); else A_Chase();}
 	void A_LeapChase()
 	{
 		if (TryLeap(ResolveState("Leap"), JF_All)) return;
@@ -161,8 +150,7 @@ class NTM_Monster : Actor
 			A_DropItem(new);
 			A_NoBlocking(false);
 		}
-		else
-			A_NoBlocking();}
+		else A_NoBlocking();}
 }
 class NTM_Humanoid : NTM_Monster
 {
@@ -174,13 +162,7 @@ class NTM_Humanoid : NTM_Monster
 			{
 				if (sv_ntm_burn)
 				{
-					if (self is "NTM_ChaingunGuy" || self is "NTM_SMGGuy")
-						A_NTMFall("NTM_ChaingunSpawn");
-					else
-						if (self is "NTM_ShotgunGuy")
-							A_NTMFall("NTM_ShotSpawn");
-							else
-								A_NoBlocking();
+					if (self is "NTM_ChaingunGuy" || self is "NTM_SMGGuy") A_NTMFall("NTM_ChaingunSpawn"); else if (self is "NTM_ShotgunGuy") A_NTMFall("NTM_ShotSpawn"); else A_NoBlocking();
 					NTM_Burn burn = NTM_Burn(Spawn("NTM_Burn", pos));
 					burn.original = GetClassName();
 					return (State(null));
@@ -292,8 +274,7 @@ class NTM_Zombieman : NTM_Humanoid
 			NZOM LKJIH 5;
 			Goto See;
 	}
-	void A_NTMPosAttack()
-		{A_CustomBulletAttack(30, 0, 1, Random(1,5), "BulletPuff", 0, CBAF_NoRandom);}
+	void A_NTMPosAttack() {A_CustomBulletAttack(30, 0, 1, Random(1,5), "BulletPuff", 0, CBAF_NoRandom);}
 }
 class NTM_ShotgunGuy : NTM_Zombieman
 {
@@ -479,8 +460,7 @@ class NTM_SMGGuy : NTM_ShotgunGuy
 					A_CustomBulletAttack(30, 0, 1, Random(1, 5) * 1, "BulletPuff", 0, CBAF_NoRandom);
 					smgFail += 0.5;
 				}
-				else
-					SetStateLabel("See");}
+				else SetStateLabel("See");}
 			NZOM F 0 A_CPosRefire;
 			Goto StartMissile + 1;
 		Duck:
@@ -751,8 +731,8 @@ class NTM_LostSoul : NTM_Monster
 	}
 	override bool Slam(Actor victim)
 	{
-		if (!victim || (!victim.bSolid && !victim.bShootable)) return (true);
-		return (super.Slam(victim));
+		if (!victim || (!victim.bSolid && !victim.bShootable)) return true;
+		return super.Slam(victim);
 	}
 }
 class NTM_Cacodemon : NTM_Monster
@@ -962,10 +942,7 @@ class NTM_BaronOfHell : NTM_Monster
 }
 class NTM_BaronBall : BaronBall
 {
-	Default
-	{
-		+DontBlast
-	}
+	Default {+DontBlast}
 	States
 	{
 		Death:
@@ -1098,15 +1075,13 @@ class NTM_PainElemental : NTM_Monster
 			Goto See;
 	}
 	void A_PainCheck()
-	{
-		if (sv_ntm_monsterPainLimit)
+		{if (sv_ntm_monsterPainLimit)
 		{
 			int count = 21;
 			ThinkerIterator it = ThinkerIterator.Create("NTM_LostSoul");
 			Thinker othink;
 			while (othink = it.Next()) if (--count == 0) SetStateLabel("See");
-		}
-	}
+		}}
 }
 class NTM_Revenant : NTM_Monster
 {
