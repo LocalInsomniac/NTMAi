@@ -7,7 +7,7 @@ class NTMAI : EventHandler
 	static int Sign(int number) {return (Round(Clamp(number, -1, 1)));}
 	static void DoReplaceActor(Actor og, class<Actor> new)
 	{
-		Actor na = og.Spawn(rep, og.pos);
+		Actor na = og.Spawn(new, og.pos);
 		if (na)
 		{
 			na.A_SetSpecial(og.special, og.args[0], og.args[1], og.args[2], og.args[3], og.args[4]);
@@ -238,7 +238,7 @@ class NTM_Actor : NTM_System
 					owner.A_Recoil(force);
 					owner.A_ChangeVelocity(vel.x, vel.y, force);
 				}
-				if (owner.damageTypeReceived == "Saw" || owner.damageTypeReceived == "Saw2") owner.A_GiveToTarget("NTM_Bloody", 1);
+				if (!owner.bNoBlood && (owner.damageTypeReceived == "Saw" || owner.damageTypeReceived == "Saw2")) owner.A_GiveToTarget("NTM_Bloody", 1);
 				if (owner.damageTypeReceived == "Sawed")
 				{
 					owner.A_FaceTarget();

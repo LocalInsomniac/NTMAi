@@ -27,11 +27,7 @@ class NTM_Player : DoomPlayer
 			NPLA A 1
 			{
 				A_SetRoll(0);
-				if (!Cheater())
-				{
-					if (vel.z > 0) SetStateLabel("Jump");
-					if (vel.z < 0) SetStateLabel("Fall");
-				}
+				A_PlayerJump();
 			}
 			Loop;
 		See:
@@ -76,6 +72,12 @@ class NTM_Player : DoomPlayer
 			NMGI H -1;
 			Stop;
 	}
+	void A_PlayerJump()
+		{if (!Cheater())
+		{
+			if (vel.z > 0) SetStateLabel("Jump");
+			if (vel.z < 0) SetStateLabel("Fall");
+		}}
 	bool Cheater() {return (bNoClip || bFly || waterLevel > 0);}
 	override void PostBeginPlay()
 	{
@@ -363,6 +365,11 @@ class NTM_Weapon : Weapon
 		Grenade:
 			TNT1 A 0 A_Lower;
 			Loop;
+	}
+	override bool ShouldStay()
+	{
+		if (multiplayer && !deathmatch && sv_weaponStay && !bDropped) return (true);
+		return (false);
 	}
 	override void Tick()
 	{
@@ -1735,7 +1742,7 @@ class NTM_BFG9000 : NTM_Weapon
 			NBFG F 2 Bright
 			{
 				A_FireBFG();
-				A_Recoil(cos(pitch) * Random(20, 30));
+				A_Recoil(cos(pitch) * 10);
 				A_WeaponOffset(15, 68, WOF_Interpolate);
 			}
 			NBFG F 3 Bright A_WeaponOffset(18, 72, WOF_Interpolate);
