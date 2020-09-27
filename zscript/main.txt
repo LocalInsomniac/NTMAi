@@ -107,15 +107,16 @@ class NTMAI : EventHandler
 		}}
 	bool UseKey(WorldEvent e, Class<Key> keyItem, Class<NTM_OpenRed> keyAnim)
 	{
-		if (e.thing.CountInv(keyItem) && !e.thing.CountInv(keyAnim))
+		Actor p = e.thing;
+		if (p.CountInv(keyItem) && !p.CountInv(keyAnim))
 		{
-			let prevWeapon = e.thing.player.readyWeapon;
-            e.thing.A_GiveInventory(keyAnim, 1);
-            let keycard = NTM_OpenRed(e.thing.FindInventory(keyAnim));
+			let prevWeapon = p.player.readyWeapon;
+            p.A_GiveInventory(keyAnim, 1);
+            let keycard = NTM_OpenRed(p.FindInventory(keyAnim));
             if (keycard)
 			{
                 keycard.prevWeapon = prevWeapon.GetClassName();
-                e.thing.player.pendingWeapon = keycard;
+                p.player.pendingWeapon = keycard;
             }
 			return (true);
 		}
