@@ -190,7 +190,6 @@ class NTM_Actor : NTM_System
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		cvPool = sv_ntm_bloodPools;
 		fpSide = 1;
 		Vector2 getOldHeight = TexMan.GetScaledSize(owner.FindState("Spawn").GetSpriteTexture(0));
 		oldHeight = getOldHeight.y;
@@ -272,7 +271,7 @@ class NTM_Actor : NTM_System
 					}
 					dead = true;
 				}
-				if ((cvPool == 1 || (cvPool == 2 && gibbed)) && !(owner is "NTM_PlayerHead") && owner.vel ~== (0, 0, 0) && !bPool)
+				if ((sv_ntm_bloodPools == 1 || (sv_ntm_bloodPools == 2 && gibbed)) && !(owner is "NTM_PlayerHead") && owner.vel ~== (0, 0, 0) && !bPool)
 				{
 					bool result;
 					Actor bloodP;
