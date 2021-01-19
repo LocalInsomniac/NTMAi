@@ -105,7 +105,7 @@ class NTM_Monster : Actor
 	bool TryLeap(State leapState, EJumpFlags flags)
     {
         if (!target || !sv_ntm_monsterLeap) return (false);
-        if (Abs(GetGroundHeight() - pos.z) < 1 && !Random(0, 16) && (((flags & JF_Up) && (Abs(target.pos.z - pos.z) > default.maxStepHeight)) || ((flags & JF_Forward) && CheckPitBeforeTarget())) && Distance2D(target) < GetJumpDistance())
+        if (Abs(GetGroundHeight() - pos.z) < 1 && !Random(0, 32) && (((flags & JF_Up) && (Abs(target.pos.z - pos.z) > default.maxStepHeight)) || ((flags & JF_Forward) && CheckPitBeforeTarget())) && Distance3D(target) < GetJumpDistance())
 		{
 			oldLeap = 0;
 			leapDistance = Distance2D(target);
