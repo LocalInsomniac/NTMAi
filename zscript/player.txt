@@ -412,12 +412,12 @@ class NTM_Fist : NTM_Weapon
 		Berserk:
 			NFIS G 2;
 			NFIS HI 2;
-			NFIS E 2 A_CustomPunch(20, false, 0, "NTM_BerserkPuff", 0, 0, 0, "", "player/male/fist");
+			NFIS E 2 A_CustomPunch(20, false, 0, "NTM_BerserkPuff", 0, 0.2, 100, "", "player/male/fist");
 			NFIS F 2;
 			NFIS IHG 2;
 			NFIS J 2;
 			NFIS KL 2;
-			NFIS M 2 A_CustomPunch(20, false, 0, "NTM_BerserkPuff", 0, 0, 0, "", "player/male/fist");
+			NFIS M 2 A_CustomPunch(20, false, 0, "NTM_BerserkPuff", 0, 0.2, 100, "", "player/male/fist");
 			NFIS N 2;
 			NFIS LKJ 2;
 			NFIS A 0 A_JumpIfInventory("NTM_PowerBerserk", 1, 9);
