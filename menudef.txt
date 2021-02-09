@@ -15,6 +15,7 @@ OptionValue "NTM_Options_SecretItem"
 	0, "No"
 	1, "Yes"
 	2, "Random"
+	3, "Randomly appear outside secrets"
 }
 OptionValue "NTM_ActorOptions_Toggle"
 {
