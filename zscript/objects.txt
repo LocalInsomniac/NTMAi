@@ -221,11 +221,19 @@ class NTM_Meat4 : NTM_Meat3 replaces NonsolidMeat3
 	}
 }
 class NTM_Shell : Shell replaces Shell
-	{override void PostBeginPlay()
+{
+	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		NTMAI.ReplaceSecret(self, "NTM_ExplosiveShell", sv_ntm_boomShell);
-	}}
+	}
+	States
+	{
+		Spawn:
+			NSLA A -1;
+			Stop;
+	}
+}
 class NTM_ExplosiveShell : Ammo
 {
 	Default

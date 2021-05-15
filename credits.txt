@@ -1,6 +1,8 @@
 GRAPHICS:
+Ac!d
 alandoguns
 Amuscaria
+BigDaveHasSomeToo
 BloodyAcid
 Blox
 Can't Sleep

@@ -5,7 +5,8 @@ CLIPA = "NVCLIP" {Scale = 0.9}
 BROKA = "NVBROK" {Scale = 0.9}
 ROCKA = "NVROCK" {Scale = 0.9}
 SBOXA = "NVSBOX" {Scale = 0.9}
-SHELA = "NVSHEL" {Scale = 0.9}
+NSLAA = "NVNSLA" {Scale = 0.9}
+NESHA = "NVNESH" {Scale = 0.9}
 BON2A = "NVBON2A" {Scale = 0.9}
 BON2B = "NVBON2B" {Scale = 0.9}
 BON2C = "NVBON2C" {Scale = 0.9}
