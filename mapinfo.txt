@@ -4,6 +4,7 @@ GameInfo
     PlayerClasses = "NTM_Player", "NTM_NewPlayer"
 	QuitSound = ""
 	BorderFlat = "AG128_1"
+	StatusBarClass = "NTM_StatusBar"
 }
 ClearSkills
 skill easy
