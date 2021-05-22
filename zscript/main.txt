@@ -1,6 +1,5 @@
 class NTMAI : EventHandler
 {
-	NTM_Thinker st;
 	static bool CanQuake() {return (CVar.FindCVar("cl_ntm_cameraQuake").GetBool());}
 	static bool CanSpin() {return (CVar.FindCVar("cl_ntm_voxelSpin").GetBool());}
 	static float Lerp(float firstFloat, float secondFloat, float by) {return (firstFloat * (1 - by) + secondFloat * by);}
@@ -287,78 +286,6 @@ class NTM_Actor : NTM_System
 			}
 		}
 		Super.Tick();
-	}
-}
-class NTM_ShadowCaster
-{
-	Actor mo;
-	Actor shadow;
-	bool hasShadow;
-}
-class NTM_Thinker : Thinker
-{
-	Array<NTM_ShadowCaster> shadowCasters;
-	override void Tick(void)
-	{
-		float shadowDist = CVar.FindCVar("cl_ntm_shadowDistance").GetFloat();
-		Actor camera = players[consolePlayer].camera;
-		if (!camera) return;
-		BlockThingsIterator it = BlockThingsIterator.Create(camera, shadowDist);
-		while (it.Next())
-		{
-			let other = it.thing;
-			if ((other.Distance3D(camera) - 1) < shadowDist)
-			{
-				if (!(other.bIsMonster || other is "PlayerPawn")) continue;
-				bool isDuplicate = false;
-				int i = 0;
-				for (i; i < shadowCasters.Size(); i++)
-					if (shadowCasters[i] && shadowCasters[i].mo == other)
-					{
-						isDuplicate = true;
-						break;
-					}
-				if (!isDuplicate)
-				{
-					AddShadowCaster(other);
-					if (!shadowCasters[i].hasShadow)
-					{
-						let shadow = NTM_Shadow(Actor.Spawn("NTM_Shadow", shadowCasters[i].mo.pos, No_Replace));
-						if (shadow)
-						{
-							shadow.caster = shadowCasters[i].mo;
-							shadowCasters[i].shadow = shadow;
-							shadowCasters[i].hasShadow = true;
-						}
-					}
-				}
-			}
-			else for (int j = 0; j < shadowCasters.Size(); j++)
-					if (shadowCasters[j] && shadowCasters[j].mo == other)
-					{
-						if (shadowCasters[j].shadow) shadowCasters[j].shadow.Destroy();
-						shadowCasters.Delete(j);
-						break;
-					}
-			for (int k = 0; k < shadowCasters.Size(); k++) if (shadowCasters[k] && !shadowCasters[k].shadow) shadowCasters.Delete(k);
-		}
-	}
-	void AddShadowCaster(Actor mo)
-	{
-		let sc = new("NTM_ShadowCaster");
-		if (sc)
-		{
-			sc.mo = mo;
-			shadowCasters.Push(sc);
-		}
-	}
-	void DoDestroy()
-	{
-		shadowCasters.Clear();
-		ThinkerIterator it = ThinkerIterator.Create("NTM_Shadow");
-		NTM_Shadow shadow;
-		while (shadow = NTM_Shadow(it.Next())) shadow.Destroy();
-		Destroy();
 	}
 }
 class NTM_CorpseGib : NTM_System
