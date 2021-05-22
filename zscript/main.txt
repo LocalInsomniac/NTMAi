@@ -50,8 +50,6 @@ class NTMAI : EventHandler
 	override void WorldThingSpawned(WorldEvent e) {if (e.thing && e.thing.bIsMonster && !e.thing.CountInv("NTM_Actor")) e.thing.A_GiveInventory("NTM_Actor", 1);}
 	override void WorldThingDied(WorldEvent e) {if (e.thing.bIsMonster || e.thing is "PlayerPawn") e.thing.scale.x *= FRandomPick(-1, 1);}
 	override void WorldThingRevived(WorldEvent e) {DoThingRevive(e.thing);}
-	override void WorldLoaded(WorldEvent e) {if (!st) st = New("NTM_Thinker");}
-	override void WorldUnloaded(WorldEvent e) {if (st) st.DoDestroy();}
 	override void WorldLinePreActivated(WorldEvent e)
 		{if (e.thing is "NTM_Player" && e.activatedLine.special == 13 && sv_ntm_keycard)
 		{
