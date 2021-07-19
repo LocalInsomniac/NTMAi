@@ -612,8 +612,7 @@ class NTM_Demon : NTM_Monster
 			{
 				A_StartSound("demon/attack");
 				A_FaceTarget();
-				A_ChangeVelocity(vel.x, vel.y, 8);
-				A_Recoil(-15);
+				A_ChangeVelocity(15, 0, 8, CVF_Relative | CVF_Replace);
 				painChance = 0;
 			}
 			NDEM N 1 A_JumpIf(((pos.z <= floorZ || bOnMObj) && vel.z == 0), 3);
