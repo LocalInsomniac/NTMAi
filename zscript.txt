@@ -1,6 +1,5 @@
-version "4.3.3"
+version "4.8"
 #include "zscript/main.txt"
 #include "zscript/player.txt"
 #include "zscript/objects.txt"
-#include "zscript/monsters.txt"
 #include "zscript/effects.txt"

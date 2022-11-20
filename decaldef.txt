@@ -1,85 +1,84 @@
-decal BulletChip
-{
+decal BulletChip {
 	Pic NBULLET
 	X-Scale 0.4
 	Y-Scale 0.4
     RandomFlipX
     RandomFlipY
 }
-slider NBloodSlide
-{
+
+slider NTM_BloodSlide {
 	DistY -10
 	SlideTime 8
 }
-stretcher NBloodStretch
-{
+
+stretcher NTM_BloodStretch {
 	GoalY 0.8
 	StretchTime 8
 }
-combiner NBloodSmear
-{
-	NBloodSlide
-	NBloodStretch
+
+combiner NTM_BloodSmear {
+	NTM_BloodSlide
+	NTM_BloodStretch
 }
-decal BloodSplat1
-{
+
+decal BloodSplat1 {
 	Pic NBLOOD1
-	X-Scale 0.4
-	Y-Scale 0.4
+	X-Scale 0.45
+	Y-Scale 0.45
     RandomFlipX
     RandomFlipY
 	OpaqueBlood
 }
-decal BloodSplat2
-{
+
+decal BloodSplat2 {
 	Pic NBLOOD2
-	X-Scale 0.4
-	Y-Scale 0.4
+	X-Scale 0.45
+	Y-Scale 0.45
     RandomFlipX
     RandomFlipY
 	OpaqueBlood
 }
-decal BloodSplat3
-{
+
+decal BloodSplat3 {
 	Pic NBLOOD3
-	X-Scale 0.4
-	Y-Scale 0.4
+	X-Scale 0.45
+	Y-Scale 0.45
     RandomFlipX
     RandomFlipY
 	OpaqueBlood
 }
-decal BloodSplat4
-{
+
+decal BloodSplat4 {
 	Pic NBLOOD1
-	X-Scale 0.4
-	Y-Scale 0.4
+	X-Scale 0.45
+	Y-Scale 0.45
     RandomFlipX
     RandomFlipY
 	OpaqueBlood
-	Animator NBloodSmear
+	Animator NTM_BloodSmear
 }
-decal BloodSplat5
-{
+
+decal BloodSplat5 {
 	Pic NBLOOD2
-	X-Scale 0.4
-	Y-Scale 0.4
+	X-Scale 0.45
+	Y-Scale 0.45
     RandomFlipX
     RandomFlipY
 	OpaqueBlood
-	Animator NBloodSmear
+	Animator NTM_BloodSmear
 }
-decal BloodSplat6
-{
+
+decal BloodSplat6 {
 	Pic NBLOOD3
-	X-Scale 0.4
-	Y-Scale 0.4
+	X-Scale 0.45
+	Y-Scale 0.45
     RandomFlipX
     RandomFlipY
 	OpaqueBlood
-	Animator NBloodSmear
+	Animator NTM_BloodSmear
 }
-decalGroup BloodSplat
-{
+
+decalGroup BloodSplat {
 	BloodSplat1 3
 	BloodSplat2 3
 	BloodSplat3 3
@@ -87,29 +86,3 @@ decalGroup BloodSplat
 	BloodSplat5 1
 	BloodSplat6 1
 }
-generator NTM_Pistol BulletChip
-generator NTM_Chainsaw BulletChip
-generator NTM_Shotgun BulletChip
-generator NTM_SuperShotgun BulletChip
-generator NTM_Chaingun BulletChip
-generator NTM_PlasmaBall PlasmaScorch
-generator NTM_Rocket Scorch
-generator NTM_BFGBall BFGLightning
-generator NTM_Rifle BulletChip
-generator NTM_Mutilator BulletChip
-generator NTM_AShotgun BulletChip
-generator NTM_SawedOff BulletChip
-generator NTM_SMG BulletChip
-generator NTM_SMGDual BulletChip
-generator NTM_Boom Scorch
-generator NTM_Boom2 Scorch
-generator NTM_Unmaker BulletChip
-generator NTM_ZombieMan BulletChip
-generator NTM_ShotgunGuy BulletChip
-generator NTM_ChaingunGuy BulletChip
-generator NTM_SpiderMastermind BulletChip
-generator NTM_BaronBall	BaronScorch
-generator NTM_CacodemonBall	CacoScorch
-generator NTM_ImpBall DoomImpScorch
-generator NTM_FatShot Scorch
-generator NTM_RevenantTracer RevenantScorch

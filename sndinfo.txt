@@ -1,86 +1,77 @@
-weapons/chngun DSCHNGUN
-chainguy/sight DSCGSIT
-chainguy/active DSCGACT
-chainguy/attack DSCHNGUN
-chainguy/pain DSCGPAIN
-chainguy/death DSCGDEAD
-imp/pain DSBGPAIN
-demon/attack DSSGTJMP
-skull/active DSSKLIDL
-skull/pain DSSKLPAI
-caco/active DSCACACT
-caco/pain DSCACPAI
-baron/active DSBRACT
-baron/pain DSBRPAIN
-baby/pain DSBSPPAI
-pain/active DSPEACT
-skeleton/pain DSSKEPAI
-fatso/active DSMANACT
-cyber/active DSCYBACT
-spider/attack DSCHNGUN
-spider/pain DSSPIPAI
-weapons/pistolo DSCLPOUT
-weapons/pistoli DSCLIPIN
+$attenuation weapons/rocklx 0.666
+$attenuation world/barrelx 0.666
+
 misc/k_pkup	DSKEYUP
-item/goggles DSGOGGLE
-item/suit DSSUIT
-misc/pancake DSPANCKE
-misc/bsplat DSBSPLAT
-$random misc/blood {0 misc/bsplat}
-misc/puff1 DSPUFF1
-misc/puff2 DSPUFF2
-misc/puff3 DSPUFF3
-misc/puff4 DSPUFF4
-$random misc/puff {misc/puff1 misc/puff2 misc/puff3}
-$volume misc/puff 0.38
-world/splash DSSPLASH
-world/lava DSLAVA
-weapons/shotcock dshtcock
-weapons/selgun dsselect
-$random menu/activate {weapons/shotgf world/barrelx menu/invalid misc/gibbed skeleton/swing weapons/chngun misc/spawn}
-menu/backup	dsmenbak
-menu/prompt	dsmenpik
-menu/cursor dsmencur
-menu/change	dsmenpik
-menu/invalid dsoof
-menu/dismiss dsmenbak
-menu/choose	dsmenpik
-menu/clear dsempty
-intro/mortar DSMORTAR
-$playersound player male *falling DSFALLIN
-$playersound player	male *pain100 DSPPA100
-$playersound player	male *pain75 DSPPAI75
-$playersound player	male *pain50 DSPPAI50
-$playersound player	male *pain25 DSPPAI25
-$playersound player	male *death	DSPDEATH
-$playersound player	male *xdeath DSPDHIGH
-player/taunt1 DSTAUNT1
-player/taunt2 DSTAUNT2
-player/taunt3 DSTAUNT3
-$random player/taunt {player/taunt1 player/taunt2 player/taunt3}
-misc/break DSGLASS
-revenant/fly DSJETPAC
-grenade/pin DSGRENAD
-grenade/bounce DSGRENAB
-rlauncher/homing DSHOMING
-prifle/railgun DSRAILGN
-misc/casing1 DSCASIN1
-misc/casing2 DSCASIN2
-misc/casing3 DSCASIN3
-$volume misc/casing3 0.4
-$random misc/casing {misc/casing1 misc/casing2}
-$volume misc/casing 0.4
-weapons/semi DSSEMI
-weapons/smg DSSMG
-weapons/bigclip DSBIGCLP
-weapons/rifleup DSRIFLEU
-weapons/glaunch DSGRELAU
-weapons/flamet DSFLAMET
-weapons/unmaker DSUNMAKR
-burn/zombie DSZOMBIF
-burn/imp DSIMPFIR
-wolfss/a DSSSACT
-$random wolfss/active {0 0 0 wolfss/a}
-wolfss/p DSSSPAIN
-$random wolfss/pain {0 wolfss/p}
-wolfss/burn DSFALLIN
+
+$random menu/activate {
+	weapons/shotgf
+	world/barrelx
+	menu/invalid
+	misc/gibbed
+	skeleton/swing
+	weapons/chngun
+	misc/spawn
+}
+
+menu/backup	NSMENBAK
+menu/prompt	NSMENPIK
+menu/cursor NSMENCUR
+menu/change	NSMENPIK
+menu/invalid DSOOF
+menu/dismiss NSMENBAK
+menu/choose	NSMENPIK
+menu/clear DSEMPTY
+
+/* =============
+   CUSTOM SOUNDS
+   ============= */
+
+NTM_World/splash NSSPLASH
+NTM_World/lava NSLAVA
+NTM_World/sizzle NSSIZZLE
+   
+$playersound player male *falling NSFALLIN
+$playersound player	male *pain100 NSPPA100
+$playersound player	male *pain75 NSPPAI75
+$playersound player	male *pain50 NSPPAI50
+$playersound player	male *pain25 NSPPAI25
+$playersound player	male *death	NSPDEATH
+$playersound player	male *xdeath NSPDHIGH
+player/taunt1 NSTAUNT1
+player/taunt2 NSTAUNT2
+player/taunt3 NSTAUNT3
+
+$random player/taunt {
+	player/taunt1
+	player/taunt2
+	player/taunt3
+}
+
+NTM_BulletPuff/miss1 NSPUFF1
+NTM_BulletPuff/miss2 NSPUFF2
+NTM_BulletPuff/miss3 NSPUFF3
+
+$random NTM_BulletPuff/miss {
+	NTM_BulletPuff/miss1
+	NTM_BulletPuff/miss2
+	NTM_BulletPuff/miss3
+}
+
+$volume NTM_BulletPuff/miss 0.38
+NTM_ChainsawPuff/clang NSCLANG
+NTM_BulletPuff/hit NSBULHIT
+$volume NTM_BulletPuff/hit 0.5
+
+NTM_FlyingBlood/splat NSBSPLAT
+$volume NTM_FlyingBlood/splat 0.75
+NTM_FlyingGib/splat1 NSGSPLAT
+NTM_FlyingGib/splat2 NSGSPLA2
+
+$random NTM_FlyingGib/splat {
+	NTM_FlyingGib/splat1
+	NTM_FlyingGib/splat2
+}
+
+$volume NTM_FlyingGib/splat 0.75
+
+NTM_System_Actor/pancake NSPANCKE

@@ -1,80 +1,80 @@
-splash NTM_Blood
-{
+splash NTM_Blood {
 	BaseClass NTM_BloodSplash
-	Sound world/splash
+	Sound NTM_World/splash
 	NoAlert
 }
-splash NTM_Water
-{
+
+splash NTM_Water {
 	BaseClass NTM_WaterSplash
-	Sound world/splash
+	Sound NTM_World/splash
 	NoAlert
 }
-splash NTM_Lava
-{
+
+splash NTM_Lava {
 	BaseClass NTM_LavaSplash
 	ChunkClass NTM_LavaSmoke
 	ChunkZVelShift 1
-	Sound world/lava
+	Sound NTM_World/lava
 	NoAlert
 }
-splash NTM_Nuke
-{
+
+splash NTM_Nuke {
 	BaseClass NTM_NukeSplash
 	ChunkClass NTM_NukeSmoke
 	ChunkZVelShift 1
-	Sound world/lava
+	Sound NTM_World/lava
 	NoAlert
 }
-splash NTM_LavaSmoke
-{
+
+splash NTM_LavaSmoke {
 	ChunkClass NTM_LavaSmoke
 	ChunkBaseZVel 1
-	Sound world/lava
+	Sound NTM_World/sizzle
 	NoAlert
 }
-splash NTM_Slime
-{
+
+splash NTM_Slime {
 	BaseClass NTM_SlimeSplash
-	Sound world/splash
+	Sound NTM_World/splash
 	NoAlert
 }
-terrain NTM_Blood
-{
+
+terrain NTM_Blood {
 	Splash NTM_Blood
 	FootClip 10
 	Liquid
 }
-terrain NTM_Water
-{
+
+terrain NTM_Water {
 	Splash NTM_Water
 	FootClip 10
 	Liquid
 }
-terrain NTM_Lava
-{
+
+terrain NTM_Lava {
 	Splash NTM_Lava
 	FootClip 10
 	Liquid
 }
-terrain NTM_Nuke
-{
+
+terrain NTM_Nuke {
 	Splash NTM_Nuke
 	FootClip 10
 	Liquid
 }
-terrain NTM_LavaSmoke
-{
+
+terrain NTM_LavaSmoke {
 	Splash NTM_LavaSmoke
 	FootClip 0
 	Liquid
 }
-terrain NTM_Slime
-{
+
+terrain NTM_Slime {
 	Splash NTM_Slime
 	FootClip 10
 	Liquid
 }
+
 floor BLOOD1 NTM_Blood
 floor BLOOD2 NTM_Blood
 floor BLOOD3 NTM_Blood

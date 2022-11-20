@@ -1,0 +1,592 @@
+// BLOOD
+flat optional BLOOD1
+	pic NBLOOD01 tics 4
+	pic NBLOOD02 tics 4
+	pic NBLOOD03 tics 4
+	pic NBLOOD04 tics 4
+	pic NBLOOD05 tics 4
+	pic NBLOOD06 tics 4
+	pic NBLOOD07 tics 4
+	pic NBLOOD08 tics 4
+	pic NBLOOD09 tics 4
+
+flat optional BLOOD2
+	pic NBLOOD01 tics 4
+	pic NBLOOD02 tics 4
+	pic NBLOOD03 tics 4
+	pic NBLOOD04 tics 4
+	pic NBLOOD05 tics 4
+	pic NBLOOD06 tics 4
+	pic NBLOOD07 tics 4
+	pic NBLOOD08 tics 4
+	pic NBLOOD09 tics 4
+
+flat optional BLOOD3
+	pic NBLOOD01 tics 4
+	pic NBLOOD02 tics 4
+	pic NBLOOD03 tics 4
+	pic NBLOOD04 tics 4
+	pic NBLOOD05 tics 4
+	pic NBLOOD06 tics 4
+	pic NBLOOD07 tics 4
+	pic NBLOOD08 tics 4
+	pic NBLOOD09 tics 4
+	
+// LAVA
+flat optional LAVA1
+	pic NLAVA01 tics 4
+	pic NLAVA02 tics 4
+	pic NLAVA03 tics 4
+	pic NLAVA04 tics 4
+	pic NLAVA05 tics 4
+	pic NLAVA06 tics 4
+	pic NLAVA07 tics 4
+	pic NLAVA08 tics 4
+	pic NLAVA09 tics 4
+	pic NLAVA10 tics 4
+	pic NLAVA11 tics 4
+	pic NLAVA12 tics 4
+	pic NLAVA13 tics 4
+	pic NLAVA14 tics 4
+	pic NLAVA15 tics 4
+	pic NLAVA16 tics 4
+
+flat optional LAVA2
+	pic NLAVA01 tics 4
+	pic NLAVA02 tics 4
+	pic NLAVA03 tics 4
+	pic NLAVA04 tics 4
+	pic NLAVA05 tics 4
+	pic NLAVA06 tics 4
+	pic NLAVA07 tics 4
+	pic NLAVA08 tics 4
+	pic NLAVA09 tics 4
+	pic NLAVA10 tics 4
+	pic NLAVA11 tics 4
+	pic NLAVA12 tics 4
+	pic NLAVA13 tics 4
+	pic NLAVA14 tics 4
+	pic NLAVA15 tics 4
+	pic NLAVA16 tics 4
+
+flat optional LAVA3
+	pic NLAVA01 tics 4
+	pic NLAVA02 tics 4
+	pic NLAVA03 tics 4
+	pic NLAVA04 tics 4
+	pic NLAVA05 tics 4
+	pic NLAVA06 tics 4
+	pic NLAVA07 tics 4
+	pic NLAVA08 tics 4
+	pic NLAVA09 tics 4
+	pic NLAVA10 tics 4
+	pic NLAVA11 tics 4
+	pic NLAVA12 tics 4
+	pic NLAVA13 tics 4
+	pic NLAVA14 tics 4
+	pic NLAVA15 tics 4
+	pic NLAVA16 tics 4
+
+flat optional LAVA4
+	pic NLAVA01 tics 4
+	pic NLAVA02 tics 4
+	pic NLAVA03 tics 4
+	pic NLAVA04 tics 4
+	pic NLAVA05 tics 4
+	pic NLAVA06 tics 4
+	pic NLAVA07 tics 4
+	pic NLAVA08 tics 4
+	pic NLAVA09 tics 4
+	pic NLAVA10 tics 4
+	pic NLAVA11 tics 4
+	pic NLAVA12 tics 4
+	pic NLAVA13 tics 4
+	pic NLAVA14 tics 4
+	pic NLAVA15 tics 4
+	pic NLAVA16 tics 4
+
+// NUKAGE
+flat optional NUKAGE1
+	pic NNUKAG01 tics 5
+	pic NNUKAG02 tics 5
+	pic NNUKAG03 tics 5
+	pic NNUKAG04 tics 5
+	pic NNUKAG05 tics 5
+	pic NNUKAG06 tics 5
+	pic NNUKAG07 tics 5
+	pic NNUKAG08 tics 5
+	pic NNUKAG09 tics 5
+
+flat optional NUKAGE2
+	pic NNUKAG01 tics 5
+	pic NNUKAG02 tics 5
+	pic NNUKAG03 tics 5
+	pic NNUKAG04 tics 5
+	pic NNUKAG05 tics 5
+	pic NNUKAG06 tics 5
+	pic NNUKAG07 tics 5
+	pic NNUKAG08 tics 5
+	pic NNUKAG09 tics 5
+
+flat optional NUKAGE3
+	pic NNUKAG01 tics 5
+	pic NNUKAG02 tics 5
+	pic NNUKAG03 tics 5
+	pic NNUKAG04 tics 5
+	pic NNUKAG05 tics 5
+	pic NNUKAG06 tics 5
+	pic NNUKAG07 tics 5
+	pic NNUKAG08 tics 5
+	pic NNUKAG09 tics 5
+
+// RROCK
+flat optional RROCK05
+	pic NRROCK01 tics 4
+	pic NRROCK02 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK10 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK02 tics 4
+
+flat optional RROCK06
+	pic NRROCK01 tics 4
+	pic NRROCK02 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK10 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK02 tics 4
+
+flat optional RROCK07
+	pic NRROCK01 tics 4
+	pic NRROCK02 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK10 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK02 tics 4
+
+flat optional RROCK08
+	pic NRROCK01 tics 4
+	pic NRROCK02 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK10 tics 4
+	pic NRROCK09 tics 4
+	pic NRROCK08 tics 4
+	pic NRROCK07 tics 4
+	pic NRROCK06 tics 4
+	pic NRROCK05 tics 4
+	pic NRROCK04 tics 4
+	pic NRROCK03 tics 4
+	pic NRROCK02 tics 4
+
+// SLIME01
+flat optional SLIME01
+	pic NSLIME01 tics 4
+	pic NSLIME02 tics 4
+	pic NSLIME03 tics 4
+	pic NSLIME04 tics 4
+	pic NSLIME05 tics 4
+	pic NSLIME06 tics 4
+	pic NSLIME07 tics 4
+	pic NSLIME08 tics 4
+	pic NSLIME09 tics 4
+	pic NSLIME10 tics 4
+	pic NSLIME11 tics 4
+	pic NSLIME12 tics 4
+	pic NSLIME13 tics 4
+	pic NSLIME14 tics 4
+	pic NSLIME15 tics 4
+	pic NSLIME16 tics 4
+
+flat optional SLIME02
+	pic NSLIME01 tics 4
+	pic NSLIME02 tics 4
+	pic NSLIME03 tics 4
+	pic NSLIME04 tics 4
+	pic NSLIME05 tics 4
+	pic NSLIME06 tics 4
+	pic NSLIME07 tics 4
+	pic NSLIME08 tics 4
+	pic NSLIME09 tics 4
+	pic NSLIME10 tics 4
+	pic NSLIME11 tics 4
+	pic NSLIME12 tics 4
+	pic NSLIME13 tics 4
+	pic NSLIME14 tics 4
+	pic NSLIME15 tics 4
+	pic NSLIME16 tics 4
+
+flat optional SLIME03
+	pic NSLIME01 tics 4
+	pic NSLIME02 tics 4
+	pic NSLIME03 tics 4
+	pic NSLIME04 tics 4
+	pic NSLIME05 tics 4
+	pic NSLIME06 tics 4
+	pic NSLIME07 tics 4
+	pic NSLIME08 tics 4
+	pic NSLIME09 tics 4
+	pic NSLIME10 tics 4
+	pic NSLIME11 tics 4
+	pic NSLIME12 tics 4
+	pic NSLIME13 tics 4
+	pic NSLIME14 tics 4
+	pic NSLIME15 tics 4
+	pic NSLIME16 tics 4
+
+flat optional SLIME04
+	pic NSLIME01 tics 4
+	pic NSLIME02 tics 4
+	pic NSLIME03 tics 4
+	pic NSLIME04 tics 4
+	pic NSLIME05 tics 4
+	pic NSLIME06 tics 4
+	pic NSLIME07 tics 4
+	pic NSLIME08 tics 4
+	pic NSLIME09 tics 4
+	pic NSLIME10 tics 4
+	pic NSLIME11 tics 4
+	pic NSLIME12 tics 4
+	pic NSLIME13 tics 4
+	pic NSLIME14 tics 4
+	pic NSLIME15 tics 4
+	pic NSLIME16 tics 4
+
+// SLIME05
+flat optional SLIME05
+	pic NSLIM201 tics 4
+	pic NSLIM202 tics 4
+	pic NSLIM203 tics 4
+	pic NSLIM204 tics 4
+	pic NSLIM205 tics 4
+	pic NSLIM206 tics 4
+	pic NSLIM207 tics 4
+	pic NSLIM208 tics 4
+	pic NSLIM209 tics 4
+	pic NSLIM210 tics 4
+	pic NSLIM211 tics 4
+	pic NSLIM212 tics 4
+	pic NSLIM213 tics 4
+	pic NSLIM214 tics 4
+	pic NSLIM215 tics 4
+	pic NSLIM216 tics 4
+
+flat optional SLIME06
+	pic NSLIM201 tics 4
+	pic NSLIM202 tics 4
+	pic NSLIM203 tics 4
+	pic NSLIM204 tics 4
+	pic NSLIM205 tics 4
+	pic NSLIM206 tics 4
+	pic NSLIM207 tics 4
+	pic NSLIM208 tics 4
+	pic NSLIM209 tics 4
+	pic NSLIM210 tics 4
+	pic NSLIM211 tics 4
+	pic NSLIM212 tics 4
+	pic NSLIM213 tics 4
+	pic NSLIM214 tics 4
+	pic NSLIM215 tics 4
+	pic NSLIM216 tics 4
+
+flat optional SLIME07
+	pic NSLIM201 tics 4
+	pic NSLIM202 tics 4
+	pic NSLIM203 tics 4
+	pic NSLIM204 tics 4
+	pic NSLIM205 tics 4
+	pic NSLIM206 tics 4
+	pic NSLIM207 tics 4
+	pic NSLIM208 tics 4
+	pic NSLIM209 tics 4
+	pic NSLIM210 tics 4
+	pic NSLIM211 tics 4
+	pic NSLIM212 tics 4
+	pic NSLIM213 tics 4
+	pic NSLIM214 tics 4
+	pic NSLIM215 tics 4
+	pic NSLIM216 tics 4
+
+flat optional SLIME08
+	pic NSLIM201 tics 4
+	pic NSLIM202 tics 4
+	pic NSLIM203 tics 4
+	pic NSLIM204 tics 4
+	pic NSLIM205 tics 4
+	pic NSLIM206 tics 4
+	pic NSLIM207 tics 4
+	pic NSLIM208 tics 4
+	pic NSLIM209 tics 4
+	pic NSLIM210 tics 4
+	pic NSLIM211 tics 4
+	pic NSLIM212 tics 4
+	pic NSLIM213 tics 4
+	pic NSLIM214 tics 4
+	pic NSLIM215 tics 4
+	pic NSLIM216 tics 4
+
+// SLIME09
+flat optional SLIME09
+	pic NSLIM301 tics 4
+	pic NSLIM302 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM310 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM302 tics 4
+
+flat optional SLIME10
+	pic NSLIM301 tics 4
+	pic NSLIM302 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM310 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM302 tics 4
+
+flat optional SLIME11
+	pic NSLIM301 tics 4
+	pic NSLIM302 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM310 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM302 tics 4
+
+flat optional SLIME12
+	pic NSLIM301 tics 4
+	pic NSLIM302 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM310 tics 4
+	pic NSLIM309 tics 4
+	pic NSLIM308 tics 4
+	pic NSLIM307 tics 4
+	pic NSLIM306 tics 4
+	pic NSLIM305 tics 4
+	pic NSLIM304 tics 4
+	pic NSLIM303 tics 4
+	pic NSLIM302 tics 4
+
+// FIREWALL
+texture optional FIREWALA
+	pic NFIREW01 tics 3
+	pic NFIREW02 tics 3
+	pic NFIREW03 tics 3
+	pic NFIREW04 tics 3
+	pic NFIREW05 tics 3
+	pic NFIREW06 tics 3
+	pic NFIREW07 tics 3
+	pic NFIREW08 tics 3
+	pic NFIREW09 tics 3
+
+texture optional FIREWALB
+	pic NFIREW01 tics 3
+	pic NFIREW02 tics 3
+	pic NFIREW03 tics 3
+	pic NFIREW04 tics 3
+	pic NFIREW05 tics 3
+	pic NFIREW06 tics 3
+	pic NFIREW07 tics 3
+	pic NFIREW08 tics 3
+	pic NFIREW09 tics 3
+
+texture optional FIREWALL
+	pic NFIREW01 tics 3
+	pic NFIREW02 tics 3
+	pic NFIREW03 tics 3
+	pic NFIREW04 tics 3
+	pic NFIREW05 tics 3
+	pic NFIREW06 tics 3
+	pic NFIREW07 tics 3
+	pic NFIREW08 tics 3
+	pic NFIREW09 tics 3
+
+// FIRELAVA
+texture optional FIRELAV3
+	pic NFIREL01 tics 3
+	pic NFIREL02 tics 3
+	pic NFIREL03 tics 3
+	pic NFIREL04 tics 3
+	pic NFIREL05 tics 3
+	pic NFIREL04 tics 3
+	pic NFIREL03 tics 3
+	pic NFIREL02 tics 3
+
+texture optional FIRELAVA
+	pic NFIREL01 tics 3
+	pic NFIREL02 tics 3
+	pic NFIREL03 tics 3
+	pic NFIREL04 tics 3
+	pic NFIREL05 tics 3
+	pic NFIREL04 tics 3
+	pic NFIREL03 tics 3
+	pic NFIREL02 tics 3
+
+// FIREMAG
+texture optional FIREMAG1
+	pic NFIREM01 tics 3
+	pic NFIREM02 tics 3
+	pic NFIREM03 tics 3
+	pic NFIREM04 tics 3
+	pic NFIREM05 tics 3
+	pic NFIREM06 tics 3
+	pic NFIREM07 tics 3
+	pic NFIREM08 tics 3
+	pic NFIREM09 tics 3
+
+texture optional FIREMAG2
+	pic NFIREM01 tics 3
+	pic NFIREM02 tics 3
+	pic NFIREM03 tics 3
+	pic NFIREM04 tics 3
+	pic NFIREM05 tics 3
+	pic NFIREM06 tics 3
+	pic NFIREM07 tics 3
+	pic NFIREM08 tics 3
+	pic NFIREM09 tics 3
+
+texture optional FIREMAG3
+	pic NFIREM01 tics 3
+	pic NFIREM02 tics 3
+	pic NFIREM03 tics 3
+	pic NFIREM04 tics 3
+	pic NFIREM05 tics 3
+	pic NFIREM06 tics 3
+	pic NFIREM07 tics 3
+	pic NFIREM08 tics 3
+	pic NFIREM09 tics 3
+
+// FIREBLU
+texture optional FIREBLU1
+	pic NFIREB01 tics 4
+	pic NFIREB02 tics 4
+	pic NFIREB03 tics 4
+	pic NFIREB04 tics 4
+	pic NFIREB05 tics 4
+	pic NFIREB04 tics 4
+	pic NFIREB03 tics 4
+	pic NFIREB02 tics 4
+
+texture optional FIREBLU2
+	pic NFIREB01 tics 4
+	pic NFIREB02 tics 4
+	pic NFIREB03 tics 4
+	pic NFIREB04 tics 4
+	pic NFIREB05 tics 4
+	pic NFIREB04 tics 4
+	pic NFIREB03 tics 4
+	pic NFIREB02 tics 4
+
+// ROCKRED
+texture optional ROCKRED1
+	pic NROCKR01 tics 4
+	pic NROCKR02 tics 4
+	pic NROCKR03 tics 4
+	pic NROCKR04 tics 4
+	pic NROCKR05 tics 4
+	pic NROCKR06 tics 4
+	pic NROCKR07 tics 4
+	pic NROCKR08 tics 4
+	pic NROCKR09 tics 4
+
+texture optional ROCKRED2
+	pic NROCKR01 tics 4
+	pic NROCKR02 tics 4
+	pic NROCKR03 tics 4
+	pic NROCKR04 tics 4
+	pic NROCKR05 tics 4
+	pic NROCKR06 tics 4
+	pic NROCKR07 tics 4
+	pic NROCKR08 tics 4
+	pic NROCKR09 tics 4
+
+texture optional ROCKRED3
+	pic NROCKR01 tics 4
+	pic NROCKR02 tics 4
+	pic NROCKR03 tics 4
+	pic NROCKR04 tics 4
+	pic NROCKR05 tics 4
+	pic NROCKR06 tics 4
+	pic NROCKR07 tics 4
+	pic NROCKR08 tics 4
+	pic NROCKR09 tics 4

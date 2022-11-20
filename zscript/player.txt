@@ -1,2066 +1,221 @@
-class NTM_Player : DoomPlayer
-{
-	int fallTics, fallAnim, doorTics;
-	float ogPitch;
+class NTM_Player : DoomPlayer {
+	int spawnTics, fallState, fallTics, fallTics2;
 	double hNewAngle;
-	bool suitAct;
-	Line curDoor;
-	Default
-	{
-		Player.StartItem "NTM_Pistol";
-		Player.StartItem "NTM_Fist";
+	
+	Default {
+		Player.StartItem "Pistol";
+		Player.StartItem "Fist";
 		Player.StartItem "Clip", 50;
-		Player.WeaponSlot 1, "NTM_Fist", "NTM_Chainsaw";
-		Player.WeaponSlot 2, "NTM_Pistol";
-		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
-		Player.WeaponSlot 4, "NTM_Chaingun";
-		Player.WeaponSlot 5, "NTM_RocketLauncher";
-		Player.WeaponSlot 6, "NTM_PlasmaRifle";
-		Player.WeaponSlot 7, "NTM_BFG9000";
+		Player.WeaponSlot 1, "Fist", "Chainsaw";
+		Player.WeaponSlot 2, "Pistol";
+		Player.WeaponSlot 3, "Shotgun", "SuperShotgun";
+		Player.WeaponSlot 4, "Chaingun";
+		Player.WeaponSlot 5, "RocketLauncher";
+		Player.WeaponSlot 6, "PlasmaRifle";
+		Player.WeaponSlot 7, "BFG9000";
 		Player.CrouchSprite "NPLC";
-		Player.DisplayName "Classic";
-		Scale 0.625;
+		Scale 0.666;
 	}
-	States
-	{
+	
+	States {
 		Spawn:
-			NPLA A 1
-			{
-				A_SetRoll(0);
-				A_PlayerJump();
-			}
+			NPLA A 1 A_PlayerJump;
 			Loop;
+		
 		See:
 			NPLA ABCD 4 A_PlayerJump;
 			Loop;
+		
 		Jump:
-			NPLA M 1
-			{
-				if (Cheater()) SetStateLabel("Spawn");
-				if (vel.z < 0) SetStateLabel("Fall");
+			NPLA M 1 {
+				if (CantJump()) {
+					SetStateLabel("Spawn");
+				}
+				
+				if (vel.z <= 0) {
+					SetStateLabel("Fall");
+				}
 			}
+			
 			Loop;
+		
 		Fall:
-			NPLA N 1
-			{
-				if (pos.z <= floorZ || bOnMObj || Cheater()) SetStateLabel("Spawn");
-				if (vel.z > 0) SetStateLabel("Jump");
+			NPLA N 1 {
+				if (pos.z <= floorZ || bOnMObj || CantJump()) {
+					SetStateLabel("Spawn");
+				}
+				
+				if (vel.z > 0) {
+					SetStateLabel("Jump");
+				}
 			}
+			
 			Loop;
+		
 		Missile:
 			NPLA E 12;
 			Goto Spawn;
+		
 		Melee:
 			NPLA F 6 Bright;
 			Goto Missile;
+		
 		Pain:
 			NPLA G 4;
 			NPLA G 4 A_Pain;
 			Goto Spawn;
+		
 		Death:
-			NPLA H 7 {if (CVar.FindCVar("cl_ntm_cameraTilt").GetBool()) A_SetRoll(Random(0, 359));}
+			NPLA H 7;
 			NPLA I 7 A_PlayerScream;
 			NPLA J 7 A_NoBlocking;
 			NPLA K 7;
 			NPLA L -1;
 			Stop;
+		
 		XDeath:
 			NMGI A 1 A_XScream;
-			NMGI A 4 {if (sv_ntm_cameraHead) A_SkullPop("NTM_PlayerHead");}
+			NMGI A 4 A_SkullPop("NTM_PlayerHead");
 			NMGI B 5 A_NoBlocking;
 			NMGI CDEFG 5;
 			NMGI H -1;
 			Stop;
 	}
-	void A_PlayerJump()
-		{if (!Cheater())
-		{
-			if (vel.z > 0) SetStateLabel("Jump");
-			if (vel.z < 0) SetStateLabel("Fall");
-		}}
-	bool Cheater() {return (bNoClip || bFly || waterLevel > 0);}
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-		A_SetInventory("NTM_PistolShots", 0);
-		A_SetInventory("NTM_SMGShots", 0);
-		A_SetInventory("NTM_Bloody", 0);
-		A_SetInventory("NTM_OpenRed", 0);
-		A_SetInventory("NTM_OpenYellow", 0);
-		A_SetInventory("NTM_OpenBlue", 0);
-		A_SetInventory("NTM_SkullRed", 0);
-		A_SetInventory("NTM_SkullYellow", 0);
-		A_SetInventory("NTM_SkullBlue", 0);
-		A_SetInventory("NTM_StartBoom", 0);
+	
+	void A_PlayerJump() {
+		if (!CantJump()) {
+			double velZ = vel.z;
+			
+			if (velZ > 0) {
+				SetStateLabel("Jump");
+			}
+			
+			if (velZ < 0) {
+				SetStateLabel("Fall");
+			}
+		}
 	}
-	override void Tick()
-	{
-		if (doorTics > 0)
-		{
-			A_SetSpeed(0);
-			doorTics--;
+	
+	bool CantJump() {
+		return (bNoClip || bFly || waterLevel > 0);
+	}
+	
+	override void Tick() {
+		// Less slippery movement
+		if (!multiplayer && curSector && !(curSector.flags & 16)) {
+			level.airControl = 0.53777778;
+			A_SetSpeed(2.24);
+			vel.xy *= 0.88;
+			viewBob = 0.88;
+		} else {
+			level.airControl = 0.00390625;
+			A_SetSpeed(1);
 		}
-		else
-		{
-			if (sv_ntm_move && curSector && !(curSector.flags & 16))
-			{
-				level.airControl = 0.55;
-				A_SetSpeed(2.2);
-				vel.xy *= 0.9;
-				viewBob = 0.9;
-			}
-			else
-			{
-				level.airControl = 0.00390625;
-				A_SetSpeed(1);
-			}
-			if (doorTics != -1)
-			{
-				doorTics = -1;
-				if (curDoor) curDoor.Activate(self, 1, SPAC_Use);
-			}
-		}
-		if (CVar.FindCVar("cl_ntm_cameraFlinch").GetBool() && !waterLevel && !bFly)
-			switch (fallAnim)
-			{
-				case (0):
-					if (vel.z < 0)
-					{
-						if (fallTics < 10) fallTics++; else fallAnim = 1;
-						ogPitch = pitch;
+		
+		// Flinch when falling
+		if (!waterLevel && !bFly && spawnTics-- <= 0) {
+			switch (fallState) {
+				case (0): // Falling
+					if (vel.z < 0) {
+						if (fallTics < 11) {
+							++fallTics;
+						} else {
+							fallState = 1;
+						}
+					} else {
+						fallTics = 0;
 					}
-					else fallTics = 0;
 				break;
-				case (1): if (pos.z <= floorZ || bOnMObj) fallAnim = 2; break;
-				case (2):
-					if (fallTics > 0)
-					{
-						float curPitch = Round(NTMAI.Lerp(ogPitch + 1.5 * fallTics, ogPitch, 1 - (0.1 * fallTics)));
-						A_SetPitch(curPitch, SPF_Interpolate);
-						fallTics--;
+				
+				case (1): // Thud
+					if (pos.z <= floorZ || bOnMObj) {
+						A_SetPitch(pitch + 15, SPF_Interpolate);
+						fallState = 2;
+						fallTics = 0;
+						fallTics2 += 10;
 					}
-					else fallAnim = 0;
 				break;
-			}
-		if (CVar.FindCVar("cl_ntm_activate").GetBool())
-		{
-			let suit = FindInventory("NTM_RadSuit");
-			if (curSector.damageType)
-			{
-				if (!suitAct && suit)
-				{
-					UseInventory(suit);
-					suitAct = true;
-				}
-				if (suitAct && !suit) suitAct = false;
-			}
-			else if (suitAct && suit)
-			{
-				UseInventory(suit);
-				suitAct = false;
+				
+				case (2): // Flinch
+					if (fallTics2 > 0) {
+						A_SetPitch(pitch - 1.5, SPF_Interpolate);
+						--fallTics2;
+					} else {
+						fallState = 0;
+					}
+				break;
 			}
 		}
+		
 		Super.Tick();
 	}
-	override Vector2 BobWeapon(double ticFrac)
-	{
-		if (multiplayer)
-		{
-			Super.BobWeapon(ticFrac);
-			return (0, 0);
+	
+	override Vector2 BobWeapon(double ticFrac) {
+		if (multiplayer) {
+			return Super.BobWeapon(ticFrac);
 		}
+		
 		Vector2 p[2];
 		Weapon w = player ? player.readyWeapon : null;
-		if (!w || w.bDontBob)
+		
+		if (!w || w.bDontBob) {
 			return (0, 0);
-		for (int i = 0; i < 2; i++)
-		{
+		}
+		
+		for (int i = 0; i < 2; i++) {
 			p[i] = (0, 0);
-			let angle = w.bobSpeed * 128 * player.GetWBobSpeed() * (level.mapTime - 1 + i) * 360 / 8192;
+			
+			let angle = w.bobSpeed * 128 * player.GetWBobSpeed() * (level.mapTime - 1 + i) * 360 * 0.0001220703125;
 			double hAngle = (player.vel.Length() > 0) ? (3, 3) dot (3, 3) : 0;
+			
 			hNewAngle = NTMAI.Lerp(hNewAngle, hAngle, 0.1);
 			p[i].x = Round(hNewAngle * w.bobRangeX * viewBob);
-			p[i].y = Round(player.bob * ((hAngle / 16) * w.bobRangeY * viewBob));
+			p[i].y = Round(player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob));
 			p[i].x *= Cos(angle);
 			p[i].y *= Abs(Sin(angle));
 		}
+		
 		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
 	}
 }
-class NTM_NewPlayer : NTM_Player
-	{Default
-	{
-		Player.DisplayName "Alternative";
-		Player.StartItem "NTM_Rifle";
-		Player.StartItem "NTM_Remote";
-		Player.StartItem "NTM_Fist";
-		Player.StartItem "Clip", 50;
-		Player.WeaponSlot 1, "NTM_Fist", "NTM_Mutilator";
-		Player.WeaponSlot 2, "NTM_Rifle";
-		Player.WeaponSlot 3, "NTM_AShotgun", "NTM_SawedOff";
-		Player.WeaponSlot 4, "NTM_SMG", "NTM_SMGDual";
-		Player.WeaponSlot 5, "NTM_GrenadeLauncher";
-		Player.WeaponSlot 6, "NTM_Flamethrower";
-		Player.WeaponSlot 7, "NTM_Unmaker";
-		Player.WeaponSlot 8, "NTM_Remote";
-	}}
-class NTM_PlayerHead : PlayerChunk
-{
-	Default
-	{
+
+class NTM_PlayerHead : PlayerChunk {
+	Default {
 		Scale 0.625;
+		Gravity 0.3;
+		BounceType "Doom";
+		Radius 4;
+		Height 4;
+		
 		+CanBounceWater
 		+Missile
 		+UseBounceState
-		Gravity 0.3;
-		BounceType "Doom";
-		BounceSound "misc/blood";
-		Radius 4;
-		Height 4;
 	}
-	States
-	{
+	
+	States {
 		Spawn:
-			NHEA A 0 NoDelay
-			{
+			NHEA A 0 NoDelay {
 				viewBob = 0;
 				player.attacker = null;
+				scale.x *= FRandomPick(-1, 1);
 			}
-			NHEA A 0
-				{scale.x *= FRandomPick(-1, 1);}
-			NHEA ABCD 3 A_JumpIf((pos.z <= floorZ && vel.z == 0), "Death");
+			
+			NHEA ABCD 3 A_JumpIf(pos.z <= floorZ && vel.z == 0, "Death");
 			Goto Spawn + 2;
+		
 		Bounce.Floor:
-			NHEA A 0 A_SpawnItem("NTM_FlyingBlood");
+			NHEA A 0 {
+				A_SpawnItem("NTM_FlyingBlood");
+				
+				if (Abs(vel.z) >= 3) {
+					A_StartSound("NTM_FlyingGib/splat");
+				}
+			}
+			
 			Goto Spawn + 1;
+		
 		Death:
 			NHEA E 16 A_CheckPlayerDone;
 			Wait;
-	}
-}
-class NTM_OpenRed : Weapon
-{
-	class<Weapon> prevWeapon;
-	Default {+Inventory.Undroppable}
-	States
-	{
-		Select:
-			NRKE A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NRKE B 0 A_StartSound("misc/k_pkup");
-			NRKE BBBBBBBBB 1 A_WeaponReady;
-		Fire:
-		Deselect:
-			NRKE BBBBBBBB 1 A_Lower(9);
-			NRKE A 0 A_SelectPrev;
-			NRKE A 0 A_TakeInventory("NTM_OpenRed");
-			Stop;
-	}
-	action void A_SelectPrev() {A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);}
-}
-class NTM_OpenYellow : NTM_OpenRed
-	{States
-	{
-		Select:
-			NYKE A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NYKE B 0 A_StartSound("misc/k_pkup");
-			NYKE BBBBBBBBB 1 A_WeaponReady;
-		Fire:
-		Deselect:
-			NYKE BBBBBBBB 1 A_Lower(9);
-			NYKE A 0 A_SelectPrev;
-			NYKE A 0 A_TakeInventory("NTM_OpenYellow");
-			Stop;
-	}}
-class NTM_OpenBlue : NTM_OpenRed
-	{States
-	{
-		Select:
-			NBKE A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NBKE B 0 A_StartSound("misc/k_pkup");
-			NBKE BBBBBBBBB 1 A_WeaponReady;
-		Fire:
-		Deselect:
-			NBKE BBBBBBBB 1 A_Lower(9);
-			NBKE A 0 A_SelectPrev;
-			NBKE A 0 A_TakeInventory("NTM_OpenBlue");
-			Stop;
-	}}
-class NTM_SkullRed : NTM_OpenRed
-	{States
-	{
-		Select:
-			NRSK A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NRSK B 0 A_StartSound("misc/k_pkup");
-			NRSK BBBBBBBBB 1 A_WeaponReady;
-		Fire:
-		Deselect:
-			NRSK BBBBBBBB 1 A_Lower(9);
-			NRSK A 0 A_SelectPrev;
-			NRSK A 0 A_TakeInventory("NTM_SkullRed");
-			Stop;
-	}}
-class NTM_SkullYellow : NTM_OpenRed
-	{States
-	{
-		Select:
-			NYSK A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NYSK B 0 A_StartSound("misc/k_pkup");
-			NYSK BBBBBBBBB 1 A_WeaponReady;
-		Fire:
-		Deselect:
-			NYSK BBBBBBBB 1 A_Lower(9);
-			NYSK A 0 A_SelectPrev;
-			NYSK A 0 A_TakeInventory("NTM_SkullYellow");
-			Stop;
-	}}
-class NTM_SkullBlue : NTM_OpenRed
-	{States
-	{
-		Select:
-			NBSK A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NBSK B 0 A_StartSound("misc/k_pkup");
-			NBSK BBBBBBBBB 1 A_WeaponReady;
-			NBSK AAAAAAAAA 1 A_Lower(9);
-		Fire:
-		Deselect:
-			NBSK A 0 A_TakeInventory("NTM_SkullBlue");
-			Stop;
-	}}
-class NTM_Weapon : Weapon
-{
-	States
-	{
-		Select:
-		Deselect:
-		Ready:
-		Fire:
-			#### A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		User1:
-			#### A 0 A_JumpIfInventory("NTM_Grenade", 1, 1);
-			Goto Ready;
-			#### AAAAAAAA 1 A_Lower(10);
-			NGRG AAAAAAAA 1 A_Raise(9);
-			NGRG ABCD 2;
-			NGRG E 2 A_StartSound("grenade/pin", 1);
-			NGRG FG 2;
-			TNT1 A 2;
-			TNT1 A 10
-			{
-				if (!sv_infiniteAmmo) A_TakeInventory("NTM_Grenade", 1);
-				A_FireProjectile("NTM_Boom", 0, false, flags: FPF_NoAutoaim, pitch: -18 * cos(pitch));
-			}
-		Grenade:
-			TNT1 A 0 A_Lower;
-			Loop;
-	}
-	override bool ShouldStay()
-	{
-		if (multiplayer && !deathmatch && sv_weaponStay && !bDropped) return (true);
-		return (false);
-	}
-	override void Tick()
-	{
-		if (r_drawvoxels && NTMAI.CanSpin()) A_SetAngle(angle + 3, SPF_Interpolate);
-		Super.Tick();
-	}
-}
-class NTM_Fist : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 3700;
-		Obituary "$OB_MPFIST";
-		Tag "$TAG_FIST";
-		+Weapon.MeleeWeapon
-		+Weapon.NoAlert
-		+Weapon.Wimpy_Weapon
-	}
-	States
-	{
-		Ready:
-			NFIS A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Deselect:
-			NFIS A 1 A_Lower(10);
-			Loop;
-		Select:
-			NFIS A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NFIS B 2 A_JumpIfInventory("NTM_PowerBerserk", 1, "Fire2");
-			NFIS CD 2;
-			NFIS E 2 A_CustomPunch(2, false, 0, "NTM_FistPuff", 0, 0, 0, "", "player/male/fist");
-			NFIS FDCBA 2;
-			NFIS A 0 A_Refire;
-			Goto Ready;
-		Fire2:
-			NFIS AAAA 1 A_Lower(20);
-			NFIS GGGGGGGG 0 A_Raise(9);
-		Berserk:
-			NFIS G 2;
-			NFIS HI 2;
-			NFIS E 2 A_CustomPunch(20, false, 0, "NTM_BerserkPuff", 0, 0.2, 100, "", "player/male/fist");
-			NFIS F 2;
-			NFIS IHG 2;
-			NFIS J 2;
-			NFIS KL 2;
-			NFIS M 2 A_CustomPunch(20, false, 0, "NTM_BerserkPuff", 0, 0.2, 100, "", "player/male/fist");
-			NFIS N 2;
-			NFIS LKJ 2;
-			NFIS A 0 A_JumpIfInventory("NTM_PowerBerserk", 1, 9);
-			NFIS JJJJJJJJ 0 A_Lower(10);
-			NFIS A 0 A_Refire("Berserk");
-			Goto Select;
-	}
-}
-class NTM_Bloody : NTM_PistolShots {}
-class NTM_Chainsaw : NTM_Weapon
-{
-	Default
-	{
-		Weapon.Kickback 0;
-		Weapon.SelectionOrder 2200;
-		Weapon.UpSound "weapons/sawup";
-		Inventory.PickupMessage "$GOTCHAINSAW";
-		Obituary "$OB_MPCHAINSAW";
-		Tag "$TAG_CHAINSAW";
-		+Weapon.MeleeWeapon
-	}
-	States
-	{
-		Select:
-			NCSA A 0 A_JumpIfInventory("NTM_Bloody", 1, 2);
-			NCSA A 1 A_Raise;
-			Loop;
-			NCSB A 1 A_Raise;
-			Goto Select + 2;
-		Deselect:
-			NCSA A 0 A_JumpIfInventory("NTM_Bloody", 1, 2);
-			NCSA A 1 A_Lower(10);
-			Loop;
-			NCSB A 1 A_Lower(10);
-			Goto Deselect + 2;
-		Ready:
-			NCSA A 0 A_StartSound("weapons/sawidle", 1);
-			NCSA A 0 A_JumpIfInventory("NTM_Bloody", 1, 3);
-			NCSA AB 4 A_NTMIdle;
-			Loop;
-			NCSB AB 4 A_NTMIdle;
-			Loop;
-		Fire:
-			NCSA C 0 A_JumpIfInventory("NTM_Bloody", 1, "Fire2");
-			NCSA CD 3 A_NTMSaw;
-			NCSA B 0 A_Refire;
-			Goto Ready;
-		Fire2:
-			NCSB CD 3 A_NTMSaw;
-			NCSB B 0 A_Refire("Fire2");
-			Goto Ready;
-		Spawn:
-			CSAW A -1;
-			Stop;
-	}
-	action void A_NTMIdle()
-	{
-		A_WeaponReady(WRF_AllowUser1);
-		A_WeaponOffset(0, Random(32,34), WOF_Interpolate);
-	}
-	action void A_NTMSaw()
-	{
-		A_Saw("weapons/sawfull", "weapons/sawhit", 3, "NTM_SawPuff");
-		A_WeaponOffset(Random(-1,1), Random(32,35), WOF_Interpolate);
-	}
-}
-class NTM_Mutilator : NTM_Chainsaw
-{
-	Default
-	{
-		Inventory.PickupMessage "You got the Mutilator!";
-		Obituary "%k mutilated %o.";
-		Tag "Mutilator";
-	}
-	States
-	{
-		Select:
-			NDCS A 0 A_JumpIfInventory("NTM_Bloody", 1, 2);
-			NDCS A 1 A_Raise;
-			Loop;
-			NDCB A 1 A_Raise;
-			Goto Select + 2;
-		Deselect:
-			NDCS A 0 A_JumpIfInventory("NTM_Bloody", 1, 2);
-			NDCS A 1 A_Lower(10);
-			Loop;
-			NDCB A 1 A_Lower(10);
-			Goto Deselect + 2;
-		Ready:
-			NDCS A 0 A_StartSound("weapons/sawidle", 1);
-			NDCS A 0 A_JumpIfInventory("NTM_Bloody", 1, 3);
-			NDCS AB 4 A_NTMIdle2;
-			Loop;
-			NDCB AB 4 A_NTMIdle2;
-			Loop;
-		Fire:
-			NDCS C 0 A_JumpIfInventory("NTM_Bloody", 1, "Fire2");
-			NDCS CD 3 A_NTMSaw2;
-			NDCS B 0 A_Refire;
-			Goto Ready;
-		Fire2:
-			NDCB CD 3 A_NTMSaw2;
-			NDCB B 0 A_Refire("Fire2");
-			Goto Ready;
-		Spawn:
-			NDCS E -1;
-			Stop;
-	}
-	action void A_NTMIdle2()
-	{
-		A_WeaponReady();
-		A_WeaponOffset(0, Random(32,34), WOF_Interpolate);
-	}
-	action void A_NTMSaw2()
-	{
-		A_Saw("weapons/sawfull", "weapons/sawhit", 3, "NTM_SawPuff2");
-		A_WeaponOffset(Random(-1,1), Random(32,35), WOF_Interpolate);
-	}
-}
-class NTM_ChainsawSpawn : NTM_PistolSpawn replaces Chainsaw
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_Chainsaw", "NTM_Mutilator");
-			Stop;
-	}}
-class NTM_PistolSpawn : Actor replaces Pistol
-{
-	Default {+WeaponSpawn}
-	States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_Pistol", "NTM_Rifle");
-			Stop;
-	}
-	void A_SpawnClass(class<Actor> old, class<Actor> new) {if (NTMAI.ReplaceClass(self, new)) {} else NTMAI.DoReplaceActor(self, old);}
-}
-class NTM_ChaingunSpawn : NTM_PistolSpawn replaces Chaingun
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_Chaingun", "NTM_SMGPickup");
-			Stop;
-	}}
-class NTM_ShotSpawn : NTM_PistolSpawn replaces Shotgun
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_Shotgun", "NTM_AShotgun");
-			Stop;
-	}}
-class NTM_SuperSpawn : NTM_PistolSpawn replaces SuperShotgun
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_SuperShotgun", "NTM_SawedOff");
-			Stop;
-	}}
-class NTM_RLSpawn : NTM_PistolSpawn replaces RocketLauncher
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_RocketLauncher", "NTM_GrenadeLauncher");
-			Stop;
-	}}
-class NTM_PRSpawn : NTM_PistolSpawn replaces PlasmaRifle
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_PlasmaRifle", "NTM_Flamethrower");
-			Stop;
-	}}
-class NTM_BFGSpawn : NTM_PistolSpawn replaces BFG9000
-	{States
-	{
-		Spawn:
-			TNT1 A 0 NoDelay A_SpawnClass("NTM_BFG9000", "NTM_Unmaker");
-			Stop;
-	}}
-class NTM_Pistol : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 1900;
-		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 20;
-		Weapon.AmmoType "Clip";
-		Obituary "$OB_MPPISTOL";
-		+Weapon.Wimpy_Weapon
-		Inventory.PickupMessage "$PICKUP_PISTOL_DROPPED";
-		Tag "$TAG_PISTOL";
-		Weapon.UpSound "weapons/pistoli";
-		+Weapon.NoAlert
-	}
-	States
-	{
-		Deselect:
-			NPIS A 1 A_Lower(10);
-			Loop;
-		Select:
-			NPIS A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NPIS A 1 A_WeaponReady(WRF_AllowUser1 | WRF_AllowReload);
-			Loop;
-		Fire:
-			NPIS A 2 A_AlertMonsters;
-		Hold:
-			NPIS B 3 Bright
-			{
-				A_GunFlash();
-				A_FireBullets(2.5, 0, 1, 4, "BulletPuff");
-				A_StartSound("weapons/pistol");
-				A_GiveInventory("NTM_PistolShots", 1);
-			}
-			NPIS C 3 A_SpawnItemEx("NTM_BulletCasing", -4, 16, 36, -3, 0, 2, 90);
-			NPIS D 3;
-			NPIS B 0 A_JumpIfInventory("NTM_PistolShots", 10, "Reload");
-			NPIS B 0 A_Refire;
-			Goto Ready;
-		
-		AltFire:
-		Reload:
-			NPIS B 0 A_JumpIfInventory("NTM_PistolShots", 1, 1);
-			Goto Ready;
-			NPIS E 3 A_StartSound("weapons/pistolo");
-			NPIS EE 3 A_WeaponOffset(17, 19, WOF_Interpolate);
-			NPIS GH 3 A_WeaponOffset();
-			NPIS E 12
-			{
-				A_StartSound("weapons/pistoli");
-				A_WeaponOffset(17, 19);
-			}
-			NPIS IJK 3 A_WeaponOffset();
-			NPIS E 0 A_WeaponOffset(17, 19);
-			NPIS E 3
-			{
-				A_WeaponOffset(flags: WOF_Interpolate);
-				A_SetInventory("NTM_PistolShots", 0);
-			}
-			Goto Ready;
-		Flash:
-			TNT1 A 3 A_Light1;
-			Goto LightDone;
-		Spawn:
-			PIST A -1;
-			Stop;
-	}
-}
-class NTM_Rifle : NTM_Pistol
-{
-	Default
-	{
-		Obituary "%k sniped %o.";
-		Inventory.PickupMessage "Picked up a Semi Rifle.";
-		Tag "Semi Rifle";
-		Weapon.UpSound "weapons/rifleup";
-	}
-	States
-	{
-		Deselect:
-			NSAR A 1 A_Lower(10);
-			Loop;
-		Select:
-			NSAR A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NSAR A 1 A_WeaponReady(WRF_AllowReload);
-			Loop;
-		Fire:
-		Hold:
-			NSAR B 1 Bright
-			{
-				A_GunFlash();
-				A_FireBullets(1.25, 0, 1, 8, "BulletPuff");
-				A_StartSound("weapons/semi");
-				A_GiveInventory("NTM_PistolShots", 1);
-				A_WeaponOffset(6, 44, WOF_Interpolate);
-				A_AlertMonsters();
-			}
-			NSAR C 1 A_WeaponOffset(7, 46, WOF_Interpolate);
-			NSAR A 2
-			{
-				A_SpawnItemEx("NTM_BulletCasing", -4, 16, 32, -3, 0, 2, 90);
-				A_WeaponOffset(8, 48, WOF_Interpolate);
-			}
-			NSAR A 2 A_WeaponOffset(4, 40, WOF_Interpolate);
-			NSAR A 8 A_WeaponOffset(flags: WOF_Interpolate);
-			NSAR A 0 A_JumpIfInventory("NTM_PistolShots", 7, "Reload");
-			NSAR A 0 A_Refire;
-			Goto Ready;
-		AltFire:
-		Reload:
-			NSAR B 0 A_JumpIfInventory("NTM_PistolShots", 1, 1);
-			Goto Ready;
-			NSAR A 3 A_StartSound("weapons/pistolo");
-			NSAR AAAAAA 1 A_Lower(10);
-			NSAR A 5;
-			NSAR A 10 A_StartSound("weapons/bigclip");
-			NSAR A 3 A_SetInventory("NTM_PistolShots", 0);
-			NSAR AAAAA 1 A_Raise(11);
-			NSAR A 5 A_WeaponOffset;
-			Goto Ready;
-		Flash:
-			TNT1 A 3 A_Light2;
-			Goto LightDone;
-		Spawn:
-			NSAR D -1;
-			Stop;
-	}
-}
-class NTM_PistolShots : Inventory
-{
-	Default
-	{
-		+Inventory.Undroppable
-		+Inventory.Untossable
-		Inventory.MaxAmount 10;
-	}
-	States
-	{
-		Spawn:
-			TNT1 A 0;
-			Fail;
-	}
-}
-class NTM_Shotgun : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 1300;
-		Weapon.AmmoUse1 1;
-		Weapon.AmmoGive1 8;
-		Weapon.AmmoType1 "Shell";
-		Weapon.AmmoType2 "NTM_ExplosiveShell";
-		Inventory.PickupMessage "$GOTSHOTGUN";
-		Obituary "$OB_MPSHOTGUN";
-		Tag "$TAG_SHOTGUN";
-		Weapon.UpSound "weapons/shotcock";
-		+Weapon.NoAlert
-	}
-	States
-	{
-		Deselect:
-			NSHO A 1 A_Lower(10);
-			Loop;
-		Select:
-			NSHO A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NSHO A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Fire:
-			NSHO B 2 Bright
-			{
-				A_FireBullets(5.6, 0, 7, 5, "BulletPuff");
-				A_StartSound("weapons/shotgf", 1);
-				A_GunFlash();
-				A_AlertMonsters();
-				A_WeaponOffset(6, 42, WOF_Interpolate);
-			}
-			NSHO C 2 Bright A_WeaponOffset(3, 37, WOF_Interpolate);
-			NSHO A 4 A_WeaponOffset(flags: WOF_Interpolate);
-			NSHO DEF 4;
-			NSHO G 4
-			{
-				A_SpawnItemEx("NTM_ShellCasing", -8, 16, 28, -4, 0, 4, 90);
-				A_StartSound("weapons/shotcock");
-			}
-			NSHO FED 4;
-			NSHO A 0 A_Refire;
-			Goto Ready;
-		AltFire:
-			NSHO A 0 A_JumpIfInventory("NTM_ExplosiveShell", 1, 1);
-			Goto Ready;
-			NSHO B 2 Bright
-			{
-				A_FireProjectile("NTM_BoomShell");
-				A_FireBullets(5.6, 0, 4, 5);
-				A_StartSound("weapons/shotgf", 1);
-				A_GunFlash();
-				if (!sv_infiniteAmmo)
-					A_TakeInventory("NTM_ExplosiveShell", 1);
-				A_AlertMonsters();
-				A_WeaponOffset(3, 42, WOF_Interpolate);
-			}
-			NSHO C 2 Bright A_WeaponOffset(1, 35, WOF_Interpolate);
-			NSHO A 4 A_WeaponOffset(flags: WOF_Interpolate);
-			NSHO DEF 4;
-			NSHO G 4
-			{
-				A_SpawnItemEx("NTM_ShellCasing2", -8, 16, 28, -4, 0, 4, 90);
-				A_StartSound("weapons/shotcock");
-			}
-			NSHO FED 4;
-			NSHO A 0 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 2 A_Light2;
-			TNT1 A 2 A_Light1;
-			Goto LightDone;
-		Spawn:
-			SHOT A -1;
-			Stop;
-	}
-}
-class NTM_AShotgun : NTM_Shotgun
-	{States
-	{
-		Deselect:
-			NASH A 1 A_Lower(10);
-			Loop;
-		Select:
-			NASH A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NASH A 1 A_WeaponReady();
-			Loop;
-		Fire:
-			NASH B 4 Bright
-			{
-				A_FireBullets(5.6, 0, 7, 5, "BulletPuff");
-				A_StartSound("weapons/shotgf", 1);
-				A_GunFlash();
-				A_AlertMonsters();
-			}
-			NASH ACDE 4;
-			NASH F 4
-			{
-				A_SpawnItemEx("NTM_ShellCasing", -8, 16, 28, -4, 0, 4, 90);
-				A_StartSound("weapons/shotcock");
-			}
-			NASH EDC 4;
-			NASH A 0 A_Refire;
-			Goto Ready;
-		AltFire:
-			NASH A 0 A_JumpIfInventory("NTM_ExplosiveShell", 1, 1);
-			Goto Ready;
-			NASH B 4 Bright
-			{
-				A_FireProjectile("NTM_BoomShell");
-				A_FireBullets(5.6, 0, 4, 5);
-				A_StartSound("weapons/shotgf", 1);
-				A_GunFlash();
-				if (!sv_infiniteAmmo)
-					A_TakeInventory("NTM_ExplosiveShell", 1);
-				A_AlertMonsters();
-			}
-			NASH ACDE 4;
-			NASH F 4
-			{
-				A_SpawnItemEx("NTM_ShellCasing2", -8, 16, 28, -4, 0, 4, 90);
-				A_StartSound("weapons/shotcock");
-			}
-			NASH EDC 4;
-			NASH A 0 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 2 A_Light2;
-			TNT1 A 2 A_Light1;
-			Goto LightDone;
-		Spawn:
-			NASH G -1;
-			Stop;
-	}}
-class NTM_BoomShell : FastProjectile
-{
-	Default
-	{
-		Radius 1;
-		Height 1;
-		Speed 1000;
-	}
-	States
-	{
-		Spawn:
-			TNT1 A 1;
-			Loop;
-		Death:
-			TNT1 A 0
-			{
-				A_Explode(FRandom(1.5, 4) * 10 + Random(3, 6) * 6, 64);
-				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
-				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
-				Actor boom = Spawn("NTM_Explosion", pos + (0, 0, 16));
-				if (boom) boom.scale *= 0.6;
-			}
-			TNT1 A 10 {if (NTMAI.CanQuake()) A_Quake(1, 10, 0, 400, "");}
-			Stop;
-	}
-}
-class NTM_SuperShotgun : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 400;
-		Weapon.AmmoUse 2;
-		Weapon.AmmoGive 8;
-		Weapon.AmmoType "Shell";
-		Inventory.PickupMessage "$GOTSHOTGUN2";
-		Obituary "$OB_MPSSHOTGUN";
-		Tag "$TAG_SUPERSHOTGUN";
-		Weapon.UpSound "weapons/sshotc";
-	}
-	States
-	{
-		Ready:
-			NSUP A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Deselect:
-			NSUP A 1 A_Lower(10);
-			Loop;
-		Select:
-			NSUP A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NSUP B 2 Bright
-			{
-				A_WeaponOffset(6, 56, WOF_Interpolate);
-				A_FireBullets(11.2, 7.1, 20, 5, "NTM_SSGPuff");
-				A_StartSound("weapons/sshotf", 1);
-				A_GunFlash();
-			}
-			NSUP C 2 Bright A_WeaponOffset(9, 64, WOF_Interpolate);
-			NSUP A 2 A_WeaponOffset(10, 72, WOF_Interpolate);
-			NSUP A 2 A_WeaponOffset(6, 56, WOF_Interpolate);
-			NSUP A 2 A_WeaponOffset(3, 48, WOF_Interpolate);
-			NSUP A 7 A_WeaponOffset(flags: WOF_Interpolate);
-			NSUP D 4 A_CheckReload;
-			NSUP E 3;
-			NSUP F 3 A_StartSound("weapons/sshoto");
-			NSUP G 4
-			{
-				A_SpawnItemEx("NTM_ShellCasing", -2, 16, 32, -3, 0, Random(2, 4), 90);
-				A_SpawnItemEx("NTM_ShellCasing", -5, 16, 32, -3, 0, Random(2, 4), 90);
-			}
-			NSUP H 4;
-			NSUP I 4 A_StartSound("weapons/sshotl");
-			NSUP JK 3;
-			NSUP E 3 A_StartSound("weapons/sshotc");
-			NSUP D 5;
-			NSUP A 5 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 2 A_Light1;
-			TNT1 A 2 A_Light2;
-			TNT1 A 2 A_Light1;
-			Goto LightDone;
-		Spawn:
-			SGN2 A -1;
-			Stop;
-	}
-}
-class NTM_SawedOff : NTM_SuperShotgun
-{
-	Default
-	{
-		Inventory.PickupMessage "You got the Sawed-Off Shotgun!";
-		Obituary "%k blasted %o to the moon.";
-		Tag "Sawed-Off Shotgun";
-	}
-	States
-	{
-		Ready:
-			NSAW A 1 A_WeaponReady;
-			Loop;
-		Deselect:
-			NSAW A 1 A_Lower(10);
-			Loop;
-		Select:
-			NSAW A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NSAW B 2 Bright
-			{
-				A_WeaponOffset(6, 56, WOF_Interpolate);
-				A_FireBullets(20, 7.1, 24, 4, "NTM_SawedPuff");
-				A_StartSound("weapons/sshotf", 1);
-				A_GunFlash();
-			}
-			NSAW C 2 Bright A_WeaponOffset(9, 64, WOF_Interpolate);
-			NSAW A 2 A_WeaponOffset(10, 72, WOF_Interpolate);
-			NSAW A 2 A_WeaponOffset(6, 56, WOF_Interpolate);
-			NSAW A 2 A_WeaponOffset(3, 48, WOF_Interpolate);
-			NSAW A 6 A_WeaponOffset(flags: WOF_Interpolate);
-			NSAW D 3 A_CheckReload;
-			NSAW E 3 A_StartSound("weapons/sshoto");
-			NSAW F 3
-			{
-				A_SpawnItemEx("NTM_ShellCasing", -2, 16, 32, -3, 0, Random(2, 4), 90);
-				A_SpawnItemEx("NTM_ShellCasing", -5, 16, 32, -3, 0, Random(2, 4), 90);
-			}
-			NSAW F 8 A_Overlay(100, "Load");
-			NSAW H 2 A_StartSound("weapons/sshotl");
-			NSAW E 3;
-			NSAW D 3 A_StartSound("weapons/sshotc");
-			NSAW A 3;
-			NSAW A 0 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 2 A_Light1;
-			TNT1 A 2 A_Light2;
-			TNT1 A 2 A_Light1;
-			Goto LightDone;
-		Load:
-			NSAW G 2 A_OverlayOffset(100, 32, 48, WOF_Interpolate);
-			NSAW G 2 A_OverlayOffset(100, 0, 32, WOF_Interpolate);
-			NSAW G 2 A_OverlayOffset(100, -32, 16, WOF_Interpolate);
-			NSAW G 2 A_OverlayOffset(100, -64, 24, WOF_Interpolate);
-			Goto LightDone;
-		Spawn:
-			NSAW I -1;
-			Stop;
-	}
-}
-class NTM_Chaingun : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 700;
-		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 20;
-		Weapon.AmmoType "Clip";
-		Inventory.PickupMessage "$GOTCHAINGUN";
-		Obituary "$OB_MPCHAINGUN";
-		Tag "$TAG_CHAINGUN";
-		Weapon.UpSound "weapons/selgun";
-	}
-	States
-	{
-		Deselect:
-			NCHA A 1 A_Lower(10);
-			Loop;
-		Select:
-			NCHA A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NCHA A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Fire:
-			NCHA E 1 Bright
-			{
-				A_StartSound("weapons/chngun", 1);
-				A_GunFlash();
-				A_FireBullets(5.6, 0, 1, 5, "BulletPuff");
-			}
-			NCHA B 1
-			{
-				A_SpawnItemEx("NTM_BulletCasing", 0, 16, 24, -3, 0, Random(4, 5), 90);
-				A_WeaponOffset(Random(-4,4), Random(32,34), WOF_Interpolate);
-			}
-			NCHA CD 1 A_WeaponOffset(Random(-4,4), Random(32,34), WOF_Interpolate);
-			NCHA A 2 A_Refire;
-			NCHA B 3
-			{
-				A_WeaponOffset(0, 32, WOF_Interpolate);
-				A_Refire("Refire");
-			}
-			NCHA C 4 A_Refire("Refire2");
-			NCHA D 5 A_Refire;
-			Goto Ready;
-		Refire:
-			NCHA B 1;
-		Refire2:
-			NCHA CD 1;
-			Goto Fire;
-		Flash:
-			TNT1 A 1 A_Light2;
-			Goto LightDone;
-		Spawn:
-			MGUN A -1;
-			Stop;
-	}
-}
-class NTM_SMG : NTM_Chaingun
-{
-	Default
-	{
-		Obituary "%k turned %o into swiss cheese.";
-		Tag "Super SMG";
-		Weapon.UpSound "weapons/bigclip";
-		+Weapon.NoAlert
-	}
-	States
-	{
-		Deselect:
-			NSMG A 1 A_Lower(10);
-			Loop;
-		Select:
-			NSMG A 1 A_Raise(10);
-			Loop;
-		Ready:
-			NSMG A 1 A_WeaponReady(WRF_AllowReload);
-			Loop;
-		Fire:
-			NSMG B 1 Bright A_SMGFire;
-			NSMG A 2;
-			NSMG C 1 Bright
-			{
-				A_SMGFire();
-				A_SpawnItemEx("NTM_BulletCasing", -8, 16, 38, -3, 0, 2, 90);
-			}
-			NSMG A 2;
-			NSMG A 0 A_SpawnItemEx("NTM_BulletCasing", -8, 16, 38, -3, 0, 2, 90);
-			NSMG A 0 A_JumpIfInventory("NTM_SMGShots", 30, "Reload");
-			NSMG A 0 A_Refire;
-			Goto Ready;
-		AltFire:
-		Reload:
-			NSMG B 0 A_JumpIfInventory("NTM_SMGShots", 1, 1);
-			Goto Ready;
-			NSMG D 3 A_SMGReload;
-			NSMG D 15;
-			NSMG D 12 A_StartSound("weapons/bigclip");
-			NSMG DDDDD 1 A_Lower(10);
-			NSMG A 3 A_SMGDone;
-			Goto Ready;
-		Reload2:
-			NSMG E 1 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -2, 10, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -4, 20, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -6, 30, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -8, 40, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -10, 50, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -12, 60, WOF_Interpolate);
-			NSMG E 0 A_OverlayOffset(-1, -40, 64);
-			TNT1 A 10;
-			NSMG E 1 A_OverlayOffset(-1, -40, 64, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -35, 56, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -30, 48, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -25, 40, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -20, 32, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -15, 24, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -10, 16, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -5, 8, WOF_Interpolate);
-			NSMG F 5 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			NSMG F 5;
-			Goto LightDone;
-		Flash:
-			TNT1 A 1 A_Light2;
-			Goto LightDone;
-	}
-	action void A_SMGFire()
-	{
-		A_StartSound("weapons/smg");
-		A_GunFlash();
-		A_FireBullets(5.6, 0, 1, 4, "BulletPuff");
-		A_WeaponOffset(Random(-4,4), Random(32,34), WOF_Interpolate);
-		A_AlertMonsters();
-		A_GiveInventory("NTM_SMGShots", 1);
-		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
-	}
-	action void A_SMGReload()
-	{
-		A_Overlay(-1, "Reload2");
-		A_StartSound("weapons/pistolo");
-	}
-	action void A_SMGDone()
-	{
-		A_WeaponOffset();
-		A_SetInventory("NTM_SMGShots", 0);
-	}
-}
-class NTM_SMGDual : NTM_SMG
-{
-	Default {Tag "Dual Super SMGs";}
-	States
-	{
-		Deselect:
-			NSMG H 1 A_Lower(10);
-			Loop;
-		Select:
-			NSMG H 1 A_Raise(10);
-			Loop;
-		Ready:
-			NSMG H 1 A_WeaponReady(WRF_AllowReload);
-			Loop;
-		Fire:
-			NSMG I 1 Bright A_DualSMGFire;
-			NSMG H 2;
-			NSMG J 1 Bright
-			{
-				A_DualSMGFire();
-				A_SpawnItemEx("NTM_BulletCasing", -8, 16, 38, -3, 0, 2, 90);
-				A_SpawnItemEx("NTM_BulletCasing", -8, -16, 38, -3, 0, 2, -90);
-			}
-			NSMG H 2;
-			NSMG H 0
-			{
-				A_SpawnItemEx("NTM_BulletCasing", -8, 16, 38, -3, 0, 2, 90);
-				A_SpawnItemEx("NTM_BulletCasing", -8, -16, 38, -3, 0, 2, -90);
-			}
-			NSMG H 0 A_JumpIfInventory("NTM_SMGShots", 30, "Reload");
-			NSMG H 0 A_Refire;
-			Goto Ready;
-		AltFire:
-		Reload:
-			NSMG B 0 A_JumpIfInventory("NTM_SMGShots", 1, 1);
-			Goto Ready;
-			NSMG D 3 A_SMGReload;
-			NSMG D 15;
-			NSMG D 12 A_StartSound("weapons/bigclip");
-			NSMG DDDDDDDDDD 1 A_Lower(9);
-			NSMG NNNNNNNNN 1 A_Raise(9);
-			NSMG N 1;
-			NSMG K 3
-			{
-				A_WeaponOffset();
-				A_Overlay(-1, "Reload3");
-				A_StartSound("weapons/pistolo");
-			}
-			NSMG K 15;
-			NSMG K 12 A_StartSound("weapons/bigclip");
-			NSMG K 4;
-			NSMG N 5
-			{
-				A_SMGDone();
-				A_Overlay(-1, "Reload4");
-			}
-			Goto Ready;
-		Reload2:
-			NSMG E 1 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -2, 10, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -4, 20, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -6, 30, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -8, 40, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -10, 50, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -12, 60, WOF_Interpolate);
-			NSMG E 0 A_OverlayOffset(-1, -40, 64);
-			TNT1 A 10;
-			NSMG E 1 A_OverlayOffset(-1, -40, 64, WOF_Interpolate);
-			NSMG E 1 A_OverlayOffset(-1, -35, 56, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -30, 48, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -25, 40, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -20, 32, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -15, 24, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -10, 16, WOF_Interpolate);
-			NSMG F 1 A_OverlayOffset(-1, -5, 8, WOF_Interpolate);
-			NSMG F 5 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			NSMG F 5;
-			Goto LightDone;
-		Reload3:
-			NSMG L 1 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 2, 10, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 4, 20, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 6, 30, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 8, 40, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 10, 50, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 12, 60, WOF_Interpolate);
-			NSMG L 0 A_OverlayOffset(-1, 40, 64);
-			TNT1 A 10;
-			NSMG L 1 A_OverlayOffset(-1, 40, 64, WOF_Interpolate);
-			NSMG L 1 A_OverlayOffset(-1, 35, 56, WOF_Interpolate);
-			NSMG M 1 A_OverlayOffset(-1, 30, 48, WOF_Interpolate);
-			NSMG M 1 A_OverlayOffset(-1, 25, 40, WOF_Interpolate);
-			NSMG M 1 A_OverlayOffset(-1, 20, 32, WOF_Interpolate);
-			NSMG M 1 A_OverlayOffset(-1, 15, 24, WOF_Interpolate);
-			NSMG M 1 A_OverlayOffset(-1, 10, 16, WOF_Interpolate);
-			NSMG M 1 A_OverlayOffset(-1, 5, 8, WOF_Interpolate);
-			NSMG M 5 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			NSMG M 5;
-			Goto LightDone;
-		Reload4:
-			NSMG A 0 A_OverlayOffset(-1, 0, 64);
-			NSMG A 1 A_OverlayOffset(-1, 0, 64, WOF_Interpolate);
-			NSMG A 1 A_OverlayOffset(-1, 0, 48, WOF_Interpolate);
-			NSMG A 1 A_OverlayOffset(-1, 0, 32, WOF_Interpolate);
-			NSMG A 1 A_OverlayOffset(-1, 0, 16, WOF_Interpolate);
-			NSMG A 1 A_OverlayOffset(-1, 0, 0, WOF_Interpolate);
-			Goto LightDone;
-		Flash:
-			TNT1 A 1 A_Light2;
-			Goto LightDone;
-	}
-	action void A_DualSMGFire()
-	{
-		A_StartSound("weapons/smg");
-		A_GunFlash();
-		for (int i = 0; i < 2; i++) A_FireBullets(5.6, 0, 1, 4, "BulletPuff");
-		A_WeaponOffset(Random(-4,4), Random(32,34), WOF_Interpolate);
-		A_AlertMonsters();
-		A_GiveInventory("NTM_SMGShots", 1);
-		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, 5, -2, 48);
-		A_FireProjectile("NTM_Tracer", Random(-4, 4), false, -5, -2, 48);
-	}
-}
-class NTM_SMGShots : NTM_PistolShots {Default {Inventory.MaxAmount 30;}}
-class NTM_SMGPickup : CustomInventory
-{
-	Default
-	{
-		Inventory.PickupMessage "You got a Super SMG!";
-		Inventory.PickupSound "misc/w_pkup";
-	}
-	States
-	{
-		Spawn:
-			NSMG G -1;
-			Stop;
-		Pickup:
-			TNT1 A 0
-			{
-				if (CountInv("NTM_SMGDual")) return (A_JumpIfInventory("Clip", 0, 3));
-				return (A_Jump(256, 1));
-			}
-			TNT1 A 0;
-			TNT1 A 0 {if (CountInv("NTM_SMGDual")) A_GiveInventory("Clip", 20); else if (CountInv("NTM_SMG")) A_GiveInventory("NTM_SMGDual"); else A_GiveInventory("NTM_SMG");}
-			Stop;
-			TNT1 A 0;
-			Fail;
-	}
-	override void Tick()
-	{
-		if (r_drawvoxels && NTMAI.CanSpin()) A_SetAngle(angle + 3, SPF_Interpolate);
-		Super.Tick();
-	}
-}
-class NTM_RocketLauncher : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 2500;
-		Weapon.AmmoUse1 1;
-		Weapon.AmmoGive1 2;
-		Weapon.AmmoType1 "RocketAmmo";
-		Weapon.AmmoType2 "NTM_HomingAmmo";
-		+Weapon.NoAutoFire
-		Inventory.PickupMessage "$GOTLAUNCHER";
-		Tag "$TAG_ROCKETLAUNCHER";
-		Weapon.UpSound "weapons/selgun";
-		+Weapon.NoAlert
-	}
-	States
-	{
-		Ready:
-			NROC A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Deselect:
-			NROC A 1 A_Lower(10);
-			Loop;
-		Select:
-			NROC A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NROC A 3 Bright
-			{
-				A_AlertMonsters();
-				A_GunFlash();
-				A_WeaponOffset(12, 50, WOF_Interpolate);
-			}
-			NROC B 3 Bright
-			{
-				A_WeaponOffset(16, 56, WOF_Interpolate);
-				A_FireProjectile("Rocket", 0, true, 5, -2);
-			}
-			NROC C 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
-			NROC D 3 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
-			NROC A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
-			NROC A 4 A_WeaponOffset(flags: WOF_Interpolate);
-			NROC A 0 A_Refire;
-			Goto Ready;
-		AltFire:
-			NROC A 0 A_JumpIfInventory("NTM_HomingAmmo", 1, 1);
-			Goto Ready;
-			NROC A 3 Bright
-			{
-				A_AlertMonsters();
-				A_GunFlash();
-				A_WeaponOffset(16, 56, WOF_Interpolate);
-			}
-			NROC B 4 Bright
-			{
-				A_StartSound("rlauncher/homing", 1);
-				A_FireProjectile("NTM_HomingRocket", 0, true, 5, -2);
-				if (!sv_infiniteAmmo) A_TakeInventory("NTM_HomingAmmo", 1);
-				A_WeaponOffset(18, 58, WOF_Interpolate);
-			}
-			NROC C 4 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
-			NROC D 4 Bright A_WeaponOffset(4, 38, WOF_Interpolate);
-			NROC A 4 A_WeaponOffset(flags: WOF_Interpolate);
-			NROC A 11;
-			NROC A 0 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 3 A_Light1;
-			TNT1 A 3 A_Light2;
-			TNT1 A 3 A_Light1;
-			Goto LightDone;
-		Spawn:
-			NLAU A -1;
-			Stop;
-	}
-}
-class NTM_GrenadeLauncher : NTM_RocketLauncher
-{
-	Default
-	{
-		Weapon.AmmoType2 "NTM_ClusterGrenade";
-		Inventory.PickupMessage "You got the Grenade Launcher!";
-		Tag "Grenade Launcher";
-		Obituary "%k demolished %o.";
-		+Weapon.NoAutoaim
-	}
-	States
-	{
-		Ready:
-			NGLA A 1 A_WeaponReady();
-			Loop;
-		Deselect:
-			NGLA A 1 A_Lower(10);
-			Loop;
-		Select:
-			NGLA A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NGLA A 3 Bright
-			{
-				A_StartSound("weapons/glaunch", 1);
-				A_AlertMonsters();
-				A_WeaponOffset(12, 50, WOF_Interpolate);
-			}
-			NGLA B 3 Bright
-			{
-				A_WeaponOffset(16, 56, WOF_Interpolate);
-				A_FireSTGrenade("NTM_Boom2");
-			}
-			NGLA C 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
-			NGLA D 3 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
-			NGLA A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
-			NGLA A 4 A_WeaponOffset(flags: WOF_Interpolate);
-			NGLA A 0 A_Refire;
-			Goto Ready;
-		Altfire:
-			NGLA A 0 A_JumpIfInventory("NTM_ClusterGrenade", 1, 1);
-			Goto Ready;
-			NGLA A 3 Bright
-			{
-				A_StartSound("weapons/glaunch", 1);
-				A_AlertMonsters();
-				A_WeaponOffset(12, 50, WOF_Interpolate);
-			}
-			NGLA B 3 Bright
-			{
-				A_WeaponOffset(16, 56, WOF_Interpolate);
-				A_FireSTGrenade("NTM_Boom3");
-				if (!sv_infiniteAmmo) A_TakeInventory("NTM_ClusterGrenade", 1);
-			}
-			NGLA C 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
-			NGLA D 3 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
-			NGLA A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
-			NGLA A 4 A_WeaponOffset(flags: WOF_Interpolate);
-			NGLA A 5;
-			NGLA A 0 A_Refire;
-			Goto Ready;
-		Spawn:
-			NGLA E -1;
-			Stop;
-		Flash:
-			TNT1 A 3 A_Light2;
-			TNT1 A 3 A_Light1;
-			Goto LightDone;
-	}
-}
-class NTM_Rocket : Rocket replaces Rocket
-{
-	Default
-	{
-		Radius 5;
-		+RocketTrail
-		-ZDoomTrans
-		+DontBlast
-	}
-	States
-	{
-		Spawn:
-			MISL A 1 Bright;
-			Loop;
-		Death:
-			MISL A 0
-			{
-				A_Explode();
-				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
-				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.5));
-				A_SpawnItem("NTM_Explosion");
-			}
-			TNT1 A 10 {if (NTMAI.CanQuake()) A_Quake(2, 10, 0, 400, "");}
-			Stop;
-	}
-}
-class NTM_HomingRocket : NTM_Rocket
-{
-	Default
-	{
-		Radius 5;
-		+SeekerMissile
-		Translation "128:143=96:103", "144:151=88:111", "64:79=104:111", "152:159=104:111", "112:127=96:111";
-	}
-	States
-	{
-		Spawn:
-			MISL A 1 Bright A_SeekerMissile(0, 4, SMF_Look);
-			Loop;
-		Death:
-			MISL A 0
-			{
-				A_Blast(BF_DontWarn, 255, 150, 10);
-				A_Explode(Random(1, 8) * 40, 200);
-				A_RadiusGive("NTM_CorpseGib", 160, RGF_Corpses, 1);
-				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.5));
-				Actor boom = Spawn("NTM_Explosion", pos);
-				if (boom) boom.scale *= 1.5;
-			}
-			TNT1 A 10 {if (NTMAI.CanQuake()) A_Quake(2, 10, 0, 800, "");}
-			Stop;
-	}
-}
-class NTM_PlasmaRifle : NTM_Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 100;
-		Weapon.AmmoUse 1;
-		Weapon.AmmoGive 40;
-		Weapon.AmmoType "Cell";
-		Inventory.PickupMessage "$GOTPLASMA";
-		Tag "$TAG_PLASMARIFLE";
-		Weapon.UpSound "weapons/selgun";
-		+Weapon.NoAlert
-	}
-	States
-	{
-		Ready:
-			NPLS A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Deselect:
-			NPLS A 1 A_Lower(10);
-			Loop;
-		Select:
-			NPLS A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NPLS C 1 Bright
-			{
-				A_FireProjectile("PlasmaBall", 0, true, 5, -2);
-				A_AlertMonsters();
-				A_GunFlash();
-				A_WeaponOffset(Random(-2, 2), Random(32, 36), WOF_Interpolate);
-			}
-			NPLS B 1 Bright A_WeaponOffset(Random(-2, 2), Random(32, 36), WOF_Interpolate);
-			NPLS A 1 A_WeaponOffset(flags: WOF_Interpolate);
-			NPLS D 5 A_Refire;
-			NPLS EED 5;
-			Goto Ready;
-		AltFire:
-			NROC A 0 A_JumpIfInventory("Cell", 20, 1);
-			Goto Ready;
-			NPLS C 2 Bright
-			{
-				A_RailAttack(Random(4, 8) * 20, 5, false, "", "", RGF_Silent, 0, "", 0, 0, 0, 0, 64, 1, "NTM_Rail");
-				A_StartSound("prifle/railgun", 1);
-				if (!sv_infiniteAmmo) A_TakeInventory("Cell", 20);
-				A_AlertMonsters();
-				A_GunFlash();
-				A_WeaponOffset(6, 44, WOF_Interpolate);
-			}
-			NPLS B 2 Bright A_WeaponOffset(4, 40, WOF_Interpolate);
-			NPLS A 2 A_WeaponOffset(2, 36, WOF_Interpolate);
-			NPLS A 3 A_WeaponOffset(flags: WOF_Interpolate);
-			NPLS DEEEDA 5;
-			NPLS A 0 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 1 A_Light2;
-			TNT1 A 1 A_Light1;
-			Goto LightDone;
-		Spawn:
-			PLAS A -1;
-			Stop;
-	}
-}
-class NTM_Flamethrower : NTM_PlasmaRifle
-{
-	Default
-	{
-		Inventory.PickupMessage "You got the Flamethrower!";
-		Tag "Flamethrower";
-		Obituary "%k burnt %o to a crisp.";
-	}
-	States
-	{
-		Ready:
-			NFTH A 1 A_WeaponReady();
-			Loop;
-		Deselect:
-			NFTH A 1 A_Lower(10);
-			Loop;
-		Select:
-			NFTH A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NFTH B 1 Bright
-			{
-				A_AlertMonsters();
-				A_FireProjectile("NTM_Fire", 0, true, 5, -2);
-				A_StartSound("weapons/flamet", 1);
-				A_GunFlash();
-				A_WeaponOffset(Random(-2, 2), Random(32, 36), WOF_Interpolate);
-			}
-			NFTH B 1 Bright A_WeaponOffset(Random(-1, 1), Random(32, 34), WOF_Interpolate);
-			NFTH B 1 A_WeaponOffset(flags: WOF_Interpolate);
-			NFTH A 0 A_Refire;
-			Goto Ready;
-		AltFire:
-			NFTH B 0 A_JumpIfInventory("Cell", 10, 1);
-			Goto Ready;
-			NFTH B 1 Bright
-			{
-				A_AlertMonsters();
-				A_FireProjectile("NTM_FatShot", -3, true, 5, -2);
-				A_FireProjectile("NTM_FatShot", 3, true, 5, -2);
-				A_StartSound("weapons/glaunch", 1);
-				A_GunFlash();
-				A_WeaponOffset(6, 38, WOF_Interpolate);
-				if (!sv_infiniteammo) A_TakeInventory("Cell", 10);
-			}
-			NFTH B 2 A_WeaponOffset(13, 45, WOF_Interpolate);
-			NFTH A 2 A_WeaponOffset(22, 54, WOF_Interpolate);
-			NFTH A 2 A_WeaponOffset(24, 56, WOF_Interpolate);
-			NFTH A 2 A_WeaponOffset(11, 43, WOF_Interpolate);
-			NFTH A 2 A_WeaponOffset(3, 35, WOF_Interpolate);
-			NFTH A 15 A_WeaponOffset(flags: WOF_Interpolate);
-			Goto Ready;
-		Flash:
-			TNT1 A 2 A_Light2;
-			TNT1 A 2 A_Light1;
-			Goto LightDone;
-		Spawn:
-			NFTH C -1;
-			Stop;
-	}
-}
-class NTM_PlasmaBall : PlasmaBall replaces PlasmaBall
-{
-	Default {+DontBlast}
-	States
-	{
-		Spawn:
-			PLSS A 0 A_Jump(127, 1);
-			PLSS AB 3 Bright;
-			Goto Spawn + 1;
-		Death:
-			PLSE B 3 Bright A_Explode(Random(1, 8) * 2);
-			PLSE CDE 3 Bright;
-			Stop;
-	}
-}
-class NTM_Fire : Actor
-{
-	Default
-	{
-		Radius 4;
-		Height 4;
-		Speed 25;
-		Projectile;
-		+Randomize
-		+ZDoomTrans
-		Scale 0.5;
-		Damage 1;
-		+BloodlessImpact
-		+Ripper
-		DamageType "Fire";
-	}
-	States
-	{
-		Spawn:
-			NFIR A 3 Bright NoDelay
-			{
-				scale.x *= FRandomPick(-1, 1);
-				SetDamage(FRandomPick(1, 2));
-			}
-			NFIR B 3 Bright;
-			NFIR CDE 2 Bright;
-			Stop;
-	}
-}
-class NTM_BFG9000 : NTM_Weapon
-{
-	Default
-	{
-		Height 20;
-		Weapon.SelectionOrder 2800;
-		Weapon.AmmoUse 40;
-		Weapon.AmmoGive 40;
-		Weapon.AmmoType "Cell";
-		+Weapon.NoAutoFire
-		Inventory.PickupMessage "$GOTBFG9000";
-		Tag "$TAG_BFG9000";
-		Weapon.UpSound "weapons/selgun";
-	}
-	States
-	{
-		Ready:
-			NBFG A 1 A_WeaponReady(WRF_AllowUser1);
-			Loop;
-		Deselect:
-			NBFG A 1 A_Lower(10);
-			Loop;
-		Select:
-			NBFG A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NBFG B 2 Bright
-			{
-				A_BFGSound();
-				A_GunFlash();
-			}
-			NBFG CBCBCBCBC 2 Bright;
-			NBFG D 2 Bright A_WeaponOffset(3, 40, WOF_Interpolate);
-			NBFG D 3 Bright A_WeaponOffset(6, 48, WOF_Interpolate);
-			NBFG E 2 Bright A_WeaponOffset(9, 56, WOF_Interpolate);
-			NBFG E 3 Bright A_WeaponOffset(12, 64, WOF_Interpolate);
-			NBFG F 2 Bright
-			{
-				A_FireBFG();
-				A_Recoil(cos(pitch) * 10);
-				A_WeaponOffset(15, 68, WOF_Interpolate);
-			}
-			NBFG F 3 Bright A_WeaponOffset(18, 72, WOF_Interpolate);
-			NBFG A 2 A_WeaponOffset(12, 64, WOF_Interpolate);
-			NBFG A 3 A_WeaponOffset(6, 48, WOF_Interpolate);
-			NBFG A 2 A_WeaponOffset(3, 40, WOF_Interpolate);
-			NBFG A 8 A_WeaponOffset(flags: WOF_Interpolate);
-			NBFG A 5 A_ReFire;
-			Goto Ready;
-		Flash:
-			TNT1 A 20 A_Light1;
-			TNT1 A 10 A_Light2;
-			TNT1 A 5 A_Light1;
-			Goto LightDone;
-		Spawn:
-			BFUG A -1;
-			Stop;
-	}
-}
-class NTM_BFGBall : BFGBall replaces BFGBall
-{
-	Default	{+DontBlast}
-	States
-	{
-		Spawn:
-			NBFB A 0 A_Jump(127, 1);
-			NBFB AB 3 Bright;
-			Goto Spawn + 1;
-		Death:
-			BFE1 C 5 Bright
-			{
-				A_RadiusGive("NTM_CorpseGib", 160, RGF_Corpses, 1);
-				if (NTMAI.CanQuake()) A_Quake(4, 20, 0, 800, "");
-			}
-			BFE1 D 5 Bright A_BFGSpray;
-			BFE1 EFG 5 Bright;
-			Stop;
-	}
-}
-class NTM_Unmaker : NTM_BFG9000
-{
-	Default
-	{
-		Weapon.AmmoUse 2;
-		Inventory.PickupMessage "What the !@#% is this?";
-		Tag "???";
-		Obituary "%k gibbed %o.";
-	}
-	States
-	{
-		Ready:
-			NUNM A 1 A_WeaponReady();
-			Loop;
-		Deselect:
-			NUNM A 1 A_Lower(10);
-			Loop;
-		Select:
-			NUNM A 1 A_Raise(10);
-			Loop;
-		Fire:
-			NUNM C 2 Bright
-			{
-				for (int i = -1; i < 2; i++) A_RailAttack(FRandom(2.5, 10) * 4, 5, true, "", "", RGF_Silent, 0, "NTM_RailRed", i * 10, 0, 0, 0, 64, 1, "NTM_RailRed2", 0, 270, 1);
-				A_StartSound("weapons/unmaker", 1);
-				A_WeaponOffset(10, 42, WOF_Interpolate);
-			}
-			NUNM B 2 A_WeaponOffset(7, 39, WOF_Interpolate);
-			NUNM A 2 A_WeaponOffset(3, 35, WOF_Interpolate);
-			NUNM A 2 A_WeaponOffset(flags: WOF_Interpolate);
-			NUNM A 0 A_Refire;
-			Goto Ready;
-		Flash:
-			TNT1 A 1 A_Light2;
-			TNT1 A 1 A_Light1;
-			Goto LightDone;
-		Spawn:
-			NUNM D -1;
-			Stop;
-	}
-}
-class NTM_Boom : Actor
-{
-	Default
-	{
-		Radius 4;
-		Height 4;
-		Scale 0.3;
-		Speed 20;
-		Damage 25;
-		Gravity 0.5;
-		BounceSound "grenade/bounce";
-		Projectile;
-		BounceType "Hexen";
-		+CanBounceWater
-		-NoGravity
-		-NoTeleport
-		+DontBlast
-	}
-	States
-	{
-		Spawn:
-			NGRE ABCDEFABCDEFABCDEF 3;
-		Death:
-			NGRE G 0
-			{
-				A_Blast(BF_DontWarn, 255, 100, 5);
-				A_Explode();
-				A_RadiusGive("NTM_CorpseGib", 128, RGF_Corpses, 1);
-				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
-				A_SpawnItemEx("NTM_Explosion");
-			}
-			TNT1 A 10 {if (NTMAI.CanQuake()) A_Quake(2, 15, 0, 800, "");}
-			Stop;
-	}
-}
-class NTM_Boom2 : NTM_Boom replaces Grenade
-{
-	Default
-	{
-		Radius 8;
-		Height 8;
-		Damage 20;
-		+Randomize
-		+DehExplosion
-		BounceType "Doom";
-		Gravity 0.25;
-		DeathSound "weapons/grenlx";
-		BounceSound "grenade/bounce";
-		Obituary "$OB_GRENADE";
-		DamageType "Grenade";
-		Scale 1;
-		Speed 25;
-	}
-	States
-	{
-		Spawn:
-			NGRS AAAAAAAAAA 5 Bright A_SpawnItemEx("NTM_RevenantTracerSmoke");
-			Goto Death;
-	}
-}
-class NTM_Boom3 : NTM_Boom2
-{
-	Default {Obituary "%o was annihilated by %k.";}
-	States
-	{
-		Spawn:
-			NCLU AAAAAAAAAA 5 Bright A_SpawnItemEx("NTM_RevenantTracerSmoke");
-			Goto Death;
-		Death:
-			NCLU A 0 A_Mushroom("NTM_Boom4", 4, 0, 4, 0.5);
-			Goto Super::Death;
-	}
-}
-class NTM_Boom4 : NTM_Boom2
-{
-	Default
-	{
-		Scale 0.5;
-		Speed 12.5;
-		+ThruActors
-	}
-	States
-	{
-		Spawn:
-			NGRS A 5 Bright;
-			NGRS A 5 Bright {bThruActors = false;}
-			NGRS AAAAAAAA 5 Bright;
-			Goto Death;
-		Death:
-			NGRE G 0
-			{
-				A_Blast(BF_DontWarn, 127.5, 50, 2.5);
-				A_Explode();
-				A_RadiusGive("NTM_CorpseGib", 64, RGF_Corpses, 1);
-				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.8, 1.2));
-				Actor boom = Spawn("NTM_Explosion", pos);
-				if (boom != null) boom.scale *= 0.5;
-			}
-			TNT1 A 10 {if (NTMAI.CanQuake()) A_Quake(1, 15, 0, 800, "");}
-			Stop;
-	}
-}
-class NTM_Remote : Weapon
-{
-	Default
-	{
-		Weapon.SelectionOrder 1700;
-		Weapon.AmmoType "NTM_C4Ammo";
-		Weapon.AmmoUse 1;
-		Obituary "%o fell into %k's trap.";
-		Tag "Remote Bomb";
-		+Weapon.Ammo_Optional
-		+Weapon.NoAlert
-	}
-	States
-	{
-		Select:
-			NREM D 0 A_Overlay(10, "Bomb");
-			NREM D 1 A_Raise(10);
-			Goto Select + 1;
-		Ready:
-			NREM D 1 A_WeaponReady;
-			NREM D 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
-			Loop;
-			NREM D 0 A_Overlay(10, "Bomb");
-			NREM D 0 A_OverlayOffset(10, 0, 0);
-			Loop;
-		Deselect:
-			NREM D 0 A_TakeInventory("NTM_StartBoom");
-			NREM D 0 A_OverlayOffset(10, 0, 128);
-			NREM D 1 A_Lower(10);
-			Goto Deselect + 2;
-		Fire:
-			NREM D 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
-			Goto Ready;
-			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 96, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 128, WOF_Interpolate);
-			NREM D 0
-			{
-				A_StartSound("grenade/pin");
-				A_FireProjectile("NTM_C4", 0, true, flags: FPF_NoAutoaim, pitch: -18 * cos(pitch));
-			}
-			NREM D 0 A_Overlay(10, "Throw");
-			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, -8, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, -12, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, -16, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, -12, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, -8, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
-			NREM D 5 A_OverlayOffset(10, 0, 512);
-			NREM D 0 A_JumpIfInventory("NTM_C4Ammo", 1, 1);
-			Goto Ready;
-			NREM D 0 A_Overlay(10, "Bomb");
-			NREM D 1 A_OverlayOffset(10, 0, 64, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 32, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 16, WOF_Interpolate);
-			NREM D 1 A_OverlayOffset(10, 0, 0, WOF_Interpolate);
-			Goto Ready;
-		Altfire:
-			NREM D 1 A_WeaponOffset(0, 40, WOF_Interpolate);
-			NREM D 2 A_StartSound("grenade/bounce");
-			NREM D 1 A_GiveInventory("NTM_StartBoom", 1);
-			NREM D 0 A_TakeInventory("NTM_StartBoom");
-			NREM D 1 A_WeaponOffset(flags: WOF_Interpolate);
-			NREM D 0 A_Refire("Altfire2");
-		Altfire2:
-			NREM D 1;
-			NREM D 1 A_Refire("Altfire2");
-			Goto Ready;
-		Bomb:
-			NREM A 1 A_JumpIfInventory("NTM_C4Ammo", 1, 2);
-			NREM A 1 A_OverlayOffset(10, 0, 128);
-			Loop;
-		BombL:
-			NREM ABCB 3;
-			Loop;
-		Throw:
-			NREM E 15;
-			Stop;
-	}
-}
-class NTM_StartBoom : NTM_PistolShots {Default {Inventory.MaxAmount 1;}}
-class NTM_C4 : Actor
-{
-	Default
-	{
-		Radius 4;
-		Height 4;
-		Damage 20;
-		Scale 0.3;
-		Damage 20;
-		Speed 20;
-		Projectile;
-		BounceType "Hexen";
-		+CanBounceWater
-		-NoGravity
-		-NoTeleport
-		-BounceOnFloors
-		+NoBlockMap
-		+ThruActors
-		+DontBlast
-	}
-	States
-	{
-		Spawn:
-			NRE2 AAABBBCCCDDDEEEFFFGGGHHH 1 A_JumpIfInventory("NTM_StartBoom", 1, "Explode", AAPTR_Target);
-			Loop;
-		Death:
-			NRE2 C 0 A_JumpIf((target && Distance3D(target) < 20 && !sv_infiniteAmmo), "Pick");
-			NRE2 C 1 A_JumpIfInventory("NTM_StartBoom", 1, "Explode", AAPTR_Target);
-			Loop;
-		Pick:
-			NRE2 C 0
-			{
-				A_SpawnItemEx("NTM_C4Ammo");
-				Destroy();
-			}
-			Stop;
-		Explode:
-			NRE2 A 0
-			{
-				A_Blast(BF_DontWarn, 255, 125, 10);
-				A_Explode(Random(1, 8) * 40, 175);
-				A_RadiusGive("NTM_CorpseGib", 135, RGF_Corpses, 1);
-				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.5));
-				Actor boom = Spawn("NTM_Explosion", pos);
-				if (boom) boom.scale *= 1.25;
-				bNoGravity = true;
-				SetOrigin(pos + (0, 0, 128), false);
-			}
-			TNT1 A 10 {if (NTMAI.CanQuake()) A_Quake(2, 10, 0, 1000, "");}
-			Stop;
 	}
 }
