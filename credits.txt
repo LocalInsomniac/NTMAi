@@ -1,7 +1,9 @@
 [GRAPHICS]
 3D Realms
 Can't Sleep
+doomjedi
 Enjay
+gerolf
 Kinsie
 Monolith Productions
 Nash Muhandes
