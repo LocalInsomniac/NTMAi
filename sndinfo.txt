@@ -1,5 +1,6 @@
 $attenuation weapons/rocklx 0.666
 $attenuation world/barrelx 0.666
+$limit world/barrelx 0
 
 misc/k_pkup	DSKEYUP
 
@@ -47,6 +48,9 @@ $random player/taunt {
 	player/taunt2
 	player/taunt3
 }
+
+NTM_Grenade/pin NSGRENAD
+NTM_Grenade/bounce NSGRENAB
 
 NTM_BulletPuff/miss1 NSPUFF1
 NTM_BulletPuff/miss2 NSPUFF2
