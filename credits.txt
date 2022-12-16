@@ -1,7 +1,9 @@
 [GRAPHICS]
+3D Realms
 Can't Sleep
 Enjay
 Kinsie
+Monolith Productions
 Nash Muhandes
 osjclatchford
 Raven Software
@@ -18,5 +20,6 @@ Boondorl
 Can't Sleep
 Enjay
 Kinsie
+Matt
 Nash Muhandes
 Rachael

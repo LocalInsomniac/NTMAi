@@ -50,7 +50,7 @@ class NTMAI : EventHandler {
 		let mo = e.thing;
 		
 		if (mo.bIsMonster || mo is "PlayerPawn") {
-			mo.scale.x *= FRandomPick(-1, 1);
+			mo.bXFlip = Random(0, 1);
 		}
 	}
 	
@@ -67,7 +67,7 @@ class NTMAI : EventHandler {
 			actorSystem.crushed = false;
 		}
 		
-		mo.scale = mo.default.scale;
+		mo.bXFlip = mo.default.bXFlip;
 		
 		if (!(mo is "PlayerPawn")) {
 			mo.translation = mo.default.translation;
@@ -119,37 +119,39 @@ class NTM_System : Inventory {
 // Actor System
 class NTM_System_Actor : NTM_System {
 	bool dead, gibbed, crushed;
-	int fallTics, footprintState, footprintTics, footprintSide;
-	Actor gibDummy, bloodPool;
+	int fallTics, footprintState, footprintTics, footprintSide, deathLastFrame;
+	float deathLastHeight;
+	Actor gibDummy, bloodPool, footprintBloodPool;
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		footprintSide = -1;
+		deathLastFrame = -1;
+	}
 	
 	override void Tick() {
-		// Duke Nukem 3D: Bloody Footprints
-		if (owner.pos.z <= owner.floorZ && footprintTics > 0) {
-			if (owner.vel.Length() > 0) {
-				--footprintTics;
-				++footprintState;
-				
-				if (footprintState >= 8 && bloodPool) {
-					bool result;
-					Actor footprint;
-					double ang = owner.angle;
-					
-					[result, footprint] = bloodPool.A_SpawnItemEx("NTM_BloodyFootprint", angle: ang, flags: SXF_TransferTranslation | SXF_NoCheckPosition | SXF_AbsoluteAngle);
-					
-					if (footprint) {
-						footprintSide *= -1;
-						footprint.SetOrigin((owner.pos.x + Cos(ang + (footprintSide * 90)) * 5, owner.pos.y + Sin(ang + (footprintSide * 90)) * 5, owner.pos.z), false);
-					}
-					
-					footprintState = 0;
-				}
-			} else {
-				footprintState = 0;
-			}
-		}
-		
 		// Monster/Player death effects
 		if (owner.health <= 0) {
+			// Blood: Jittering death animation
+			if (sv_ntm_enemyMove == 1 && !owner.bBoss) {
+				int frame = owner.curState.frame;
+				
+				if (deathLastFrame != frame) {
+					Vector2 spriteSize = TexMan.GetScaledSize(owner.curState.GetSpriteTexture(0));
+					float spriteHeight = spriteSize.y;
+					
+					if (frame > 0) {
+						float jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
+						
+						owner.SetOrigin(owner.pos + (0, 0, owner.scale.y * jitter), false);
+						owner.ClearInterpolation();
+					}
+					
+					deathLastFrame = frame;
+					deathLastHeight = spriteHeight;
+				}
+			}
+			
 			if (!owner.bNoBlood) {
 				// Duke Nukem 3D: Blood splatter on long falls
 				if (owner.pos.z <= owner.floorZ || owner.bOnMObj) {
@@ -191,8 +193,8 @@ class NTM_System_Actor : NTM_System {
 					dead = true;
 				}
 				
-				// Duke Nukem 3D: Blood pools
-				if (!bloodPool && owner.health < (owner.GetGibHealth() * 0.666) && !(owner is "PlayerChunk") && owner.vel ~== (0, 0, 0)) {
+				// Duke Nukem 3D & Shadow Warrior: Blood pools
+				if (!bloodPool && owner.health < (owner.GetGibHealth() * 0.666) && !(owner is "PlayerChunk") && owner.vel ~== (0, 0, 0) && owner.pos.z <= owner.floorZ) {
 					bool result;
 					Actor bloodP;
 					
@@ -201,6 +203,7 @@ class NTM_System_Actor : NTM_System {
 					if (bloodP) {
 						bloodPool = bloodP;
 						bloodP.target = owner;
+						bloodP.SetOrigin(owner.pos, false);
 					}
 				}
 				
@@ -240,6 +243,45 @@ class NTM_System_Actor : NTM_System {
 					}
 				}
 			}
+		} else {
+			// Duke Nukem 3D & Shadow Warrior: Bloody Footprints
+			if (owner is "PlayerPawn" && owner.pos.z <= owner.floorZ) {
+				if (owner.vel.Length() > 0) {
+					--footprintTics;
+					++footprintState;
+					
+					if (footprintState >= 8) {
+						if (footprintTics > 0 && footprintBloodPool) {
+							bool result;
+							Actor footprint;
+							double ang = owner.angle;
+							
+							[result, footprint] = footprintBloodPool.A_SpawnItemEx("NTM_BloodyFootprint", angle: ang, flags: SXF_TransferTranslation | SXF_AbsoluteAngle | SXF_NoCheckPosition);
+							
+							if (footprint) {
+								double footAngle = ang + (footprintSide * 90);
+								
+								footprint.SetOrigin((owner.pos.x + Cos(footAngle) * 5, owner.pos.y + Sin(footAngle) * 5, owner.pos.z), false);
+							}
+						}
+						
+						footprintState = 0;
+						footprintSide *= -1;
+					}
+				} else {
+					footprintSide = -1;
+					footprintState = 0;
+				}
+			}
+			
+			// Reset all death mechanics
+			deathLastFrame = -1;
+			bloodPool = null;
+			
+			if (gibDummy) {
+				gibDummy.Destroy();
+				gibDummy = null;
+			}
 		}
 		
 		Super.Tick();
@@ -263,25 +305,31 @@ class NTM_Dummy_Gib : Actor {
 		
 		Death:
 			TNT1 A 0 {
-				tracer.A_StartSound("misc/gibbed");
-				tracer.sprite = GetSpriteIndex("NMGI");
-				tracer.frame = 7;
-				tracer.scale = (FRandomPick(1, -1) * 0.625, 0.625);
-				tracer.translation = tracer.bloodTranslation;
-				tracer.health = tracer.GetGibHealth() - 1;
-				
-				for (int i; i < Random(5, 8); i++) {
-					if (i >= 0 && i <= 2) {
-						tracer.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+				if (tracer) {
+					tracer.A_StartSound("misc/gibbed");
+					tracer.sprite = GetSpriteIndex("NMGI");
+					tracer.frame = 7;
+					tracer.scale = (0.666, 0.666);
+					
+					if (!(tracer is "PlayerPawn")) {
+						tracer.translation = tracer.bloodTranslation;
 					}
 					
-					tracer.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
-				}
-				
-				let actorSystem = NTM_System_Actor(tracer.FindInventory("NTM_System_Actor"));
-				
-				if (actorSystem) {
-					actorSystem.gibbed = true;
+					tracer.health = tracer.GetGibHealth() - 1;
+					
+					for (int i; i < Random(5, 8); i++) {
+						if (i >= 0 && i <= 2) {
+							tracer.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+						}
+						
+						tracer.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+					}
+					
+					let actorSystem = NTM_System_Actor(tracer.FindInventory("NTM_System_Actor"));
+					
+					if (actorSystem) {
+						actorSystem.gibbed = true;
+					}
 				}
 			}
 			
@@ -290,7 +338,12 @@ class NTM_Dummy_Gib : Actor {
 	
 	override void Tick() {
 		Super.Tick();
-		SetOrigin(tracer.pos, false);
+		
+		if (tracer) {
+			SetOrigin(tracer.pos, false);
+		} else {
+			Destroy();
+		}
 	}
 }
 

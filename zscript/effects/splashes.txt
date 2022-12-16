@@ -25,12 +25,9 @@ class NTM_LavaSplash : NTM_WaterSplash {
 	}
 }
 
-class NTM_LavaSmoke : Actor {
+class NTM_LavaSmoke : NTM_WaterSplash {
 	Default {
-		+NoInteraction
-		+NotOnAutomap
-		
-		FloatBobPhase 0;
+		Scale 0.9;
 		RenderStyle "Translucent";
 		Alpha 0.7;
 	}

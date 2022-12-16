@@ -13,31 +13,17 @@ class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel {
 		Death:
 			NBAR D 5 Bright;
 			
-			NBAR E 10 {
-				scale = (0.36, 0.36);
+			TNT1 A 15 {
 				A_NoBlocking();
 				A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.25));
-				A_SpawnItemEx("NTM_Explosion", 0, 0, 20);
+				A_SpawnItemEx("NTM_Explosion2", 0, 0, 20);
 				A_SpawnDebris("NTM_BarrelGib");
 				A_Explode();
-				A_Quake(2, 12, 0, 512, "");
+				A_Quake(2, 15, 0, 512, "");
 			}
 			
-			NBAR E 0 A_JumpIf(sv_barrelrespawn, 2);
-			NBAR E -1;
-			Stop;
-			
-			NBAR E 1056 {
-				if (sv_barrelrespawn) {
-					height = default.height;
-					bSolid = false;
-				}
-			}
-			
-			NBAR E 5 {
-				A_Respawn();
-				scale = default.scale;
-			}
+			TNT1 A 1051 A_BarrelDestroy;
+			TNT1 A 5 A_Respawn;
 			
 			Wait;
 	}

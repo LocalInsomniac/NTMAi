@@ -37,6 +37,7 @@ $playersound player	male *pain50 NSPPAI50
 $playersound player	male *pain25 NSPPAI25
 $playersound player	male *death	NSPDEATH
 $playersound player	male *xdeath NSPDHIGH
+
 player/taunt1 NSTAUNT1
 player/taunt2 NSTAUNT2
 player/taunt3 NSTAUNT3
@@ -75,3 +76,41 @@ $random NTM_FlyingGib/splat {
 $volume NTM_FlyingGib/splat 0.75
 
 NTM_System_Actor/pancake NSPANCKE
+
+// German
+NTM_German/sight1 NSGESIT1
+NTM_German/sight2 NSGESIT2
+NTM_German/sight3 NSGESIT3
+NTM_German/sight4 NSGESIT4
+NTM_German/sight5 NSGESIT5
+NTM_German/sight6 NSGESIT6
+
+$random NTM_German/sight {
+	NTM_German/sight1
+	NTM_German/sight2
+	NTM_German/sight3
+	NTM_German/sight4
+	NTM_German/sight5
+	NTM_German/sight6
+}
+
+NTM_German/attack NSGERATK
+$limit NTM_German/attack 0
+
+NTM_German/pain1 NSGEPAI1
+NTM_German/pain2 NSGEPAI2
+NTM_German/pain3 NSGEPAI3
+NTM_German/pain4 NSGEPAI4
+NTM_German/pain5 NSGEPAI5
+
+$random NTM_German/pain {
+	NTM_German/pain1
+	NTM_German/pain2
+	NTM_German/pain3
+	NTM_German/pain4
+	NTM_German/pain5
+}
+
+NTM_German/death1 NSGEDIE1
+NTM_German/death2 NSGEDIE2
+NTM_German/death3 NSGEDIE3

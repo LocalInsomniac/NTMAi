@@ -14,6 +14,8 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 6, "PlasmaRifle";
 		Player.WeaponSlot 7, "BFG9000";
 		Player.CrouchSprite "NPLC";
+		Player.ViewBob 0;
+		Player.ViewHeight 48;
 		Scale 0.666;
 	}
 	
@@ -113,11 +115,11 @@ class NTM_Player : DoomPlayer {
 		}
 		
 		// Flinch when falling
-		if (!waterLevel && !bFly && spawnTics-- <= 0) {
+		if (sv_ntm_flinch && !waterLevel && !bFly && spawnTics-- <= 0) {
 			switch (fallState) {
 				case (0): // Falling
 					if (vel.z < 0) {
-						if (fallTics < 11) {
+						if (fallTics <= 8000 / sv_gravity) {
 							++fallTics;
 						} else {
 							fallState = 1;
@@ -138,6 +140,10 @@ class NTM_Player : DoomPlayer {
 				
 				case (2): // Flinch
 					if (fallTics2 > 0) {
+						if (fallTics2 >= 9) {
+							vel.xy *= 0.16;
+						}
+						
 						A_SetPitch(pitch - 1.5, SPF_Interpolate);
 						--fallTics2;
 					} else {
@@ -150,6 +156,7 @@ class NTM_Player : DoomPlayer {
 		Super.Tick();
 	}
 	
+	// Shadow Warrior-styled weapon bobbing
 	override Vector2 BobWeapon(double ticFrac) {
 		if (multiplayer) {
 			return Super.BobWeapon(ticFrac);
@@ -169,10 +176,8 @@ class NTM_Player : DoomPlayer {
 			double hAngle = (player.vel.Length() > 0) ? (3, 3) dot (3, 3) : 0;
 			
 			hNewAngle = NTMAI.Lerp(hNewAngle, hAngle, 0.1);
-			p[i].x = Round(hNewAngle * w.bobRangeX * viewBob);
-			p[i].y = Round(player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob));
-			p[i].x *= Cos(angle);
-			p[i].y *= Abs(Sin(angle));
+			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle));
+			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle)));
 		}
 		
 		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
@@ -182,7 +187,7 @@ class NTM_Player : DoomPlayer {
 class NTM_PlayerHead : PlayerChunk {
 	Default {
 		Scale 0.625;
-		Gravity 0.3;
+		Gravity 0.36;
 		BounceType "Doom";
 		Radius 4;
 		Height 4;

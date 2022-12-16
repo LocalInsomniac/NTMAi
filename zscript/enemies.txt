@@ -1,0 +1,153 @@
+#include "zscript/enemies/zombieman.txt"
+#include "zscript/enemies/shotgunguy.txt"
+//#include "zscript/enemies/chaingunguy.txt"
+#include "zscript/enemies/imp.txt"
+#include "zscript/enemies/german.txt"
+
+class NTM_Enemy : Actor {
+	int ticsPerChase;
+	
+	property TicsPerChase: ticsPerChase;
+	
+	Default {
+		Scale 0.666;
+		Monster;
+		
+		+FloorClip
+		+DontCorpse
+	}
+	
+	States {
+		See:
+			#### # 0 {
+				switch (sv_ntm_enemyMove) {
+					case 0:
+						SetStateLabel("DukeSee");
+					break;
+					
+					case 1:
+						SetStateLabel("BloodSee");
+					break;
+					
+					case 2:
+						SetStateLabel("SWSee");
+					break;
+				}
+			}
+			
+			Stop;
+	}
+	
+	// NTMAi monster actions
+	action void A_NTM_DukeChase() {
+		A_Chase();
+		
+		// Take an extra step if we didn't start attacking
+		if (curState != FindState("Melee") && curState != FindState("Missile")) {
+			A_Chase();
+		}
+	}
+	
+	action void A_NTM_BloodChase() {
+		// Source: Hideous Destructor, mob.txt
+		if (!target) {
+			A_ClearTarget();
+			SetStateLabel("Spawn");
+			
+			return;
+		}
+		
+		if(!CheckMove(pos.xy)){
+			A_Wander();
+			
+			return;
+		}
+		
+		if (vel.xy == (0, 0)) {
+			if (target) {
+				NewChaseDir();
+			} else {
+				RandomChaseDir();
+			}
+		}
+		
+		bool beFrightened = bFrightened;
+		bool beChaseGoal = bChaseGoal;
+		vector3 oldPos = pos;
+		double oldAngle = angle;
+		
+		A_Chase();
+		
+		if (curState == FindState("Melee") ||
+		    curState == FindState("Missile") ||
+			pos == oldPos) {
+			return;
+		}
+		
+		vector3 posDiff = pos - oldPos;
+		
+		if (posDiff dot posDiff < 10000) {
+			SetOrigin(oldPos, false);
+			vel *= 0.7;
+			vel += posDiff.Unit() * speed * 0.18;
+		}
+		
+		if (!bFloat) {
+			bNoDropoff = true;
+		}
+		
+		bFrightened = beFrightened;
+		bChaseGoal = beChaseGoal;
+		A_Chase(null, null, CHF_NoPlayActive | CHF_DontMove | CHF_NoDirectionTurn);
+	}
+	
+	action void A_NTM_SWChase() {
+		if (CheckMove(pos.xy)) {
+			int tpc = NTM_Enemy(self).ticsPerChase;
+			
+			speed /= tpc;
+			A_Chase();
+			speed *= tpc;
+		} else {
+			A_Chase();
+		}
+	}
+	
+	action void A_NTM_SWChase2() {
+		int tpc = NTM_Enemy(self).ticsPerChase;
+		
+		speed /= tpc;
+		A_Chase(null, null, CHF_NoPlayActive | CHF_NoDirectionTurn |CHF_DontTurn);
+		speed *= tpc;
+	}
+	
+	action void A_NTM_PreDeath() {
+		height = default.Height;
+		bSolid = true;
+		bShootable = true;
+	}
+	
+	action void A_NTM_Death() {
+		A_Scream();
+		height = GetDeathHeight();
+		bCorpse = true;
+		bSolid = false;
+		bShootable = false;
+	}
+	
+	action void A_NTM_XDeath() {
+		A_XScream();
+		height = GetDeathHeight();
+		bCorpse = true;
+		bSolid = false;
+		bShootable = false;
+	}
+	
+	action void A_NTM_PainEnable() {
+		painChance = default.painChance;
+	}
+	
+	action void A_NTM_PainDisable() {
+		painChance = 0;
+	}
+}

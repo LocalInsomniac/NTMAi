@@ -1,0 +1,121 @@
+class NTM_Imp : NTM_Enemy replaces DoomImp {
+	Default {
+		Health 60;
+		Radius 20;
+		Height 56;
+		Mass 100;
+		Speed 9;
+		PainChance 200;
+		SeeSound "imp/sight";
+		PainSound "imp/pain";
+		DeathSound "imp/death";
+		ActiveSound "imp/active";
+		HitObituary "$OB_IMPHIT";
+		Obituary "$OB_IMP";
+		Tag "$FN_IMP";
+		Species "DoomImp";
+		NTM_Enemy.TicsPerChase 3;
+	}
+	
+	States {
+		Spawn:
+			NIMP A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NIMP ABCD 6 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NIMP AABBCCDD 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NIMP A 1 A_NTM_SWChase;
+			NIMP AA 1 A_NTM_SWChase2;
+			NIMP A 1 A_NTM_SWChase;
+			NIMP AA 1 A_NTM_SWChase2;
+			NIMP B 1 A_NTM_SWChase;
+			NIMP BB 1 A_NTM_SWChase2;
+			NIMP B 1 A_NTM_SWChase;
+			NIMP BB 1 A_NTM_SWChase2;
+			NIMP C 1 A_NTM_SWChase;
+			NIMP CC 1 A_NTM_SWChase2;
+			NIMP C 1 A_NTM_SWChase;
+			NIMP CC 1 A_NTM_SWChase2;
+			NIMP D 1 A_NTM_SWChase;
+			NIMP DD 1 A_NTM_SWChase2;
+			NIMP D 1 A_NTM_SWChase;
+			NIMP DD 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+			NIMP EF 6 A_FaceTarget;
+			NIMP G 6 A_NTM_TroopMelee;
+			NIMP G 0 A_JumpIfTargetInsideMeleeRange(1);
+			Goto See;
+			NIMP HI 6 A_FaceTarget;
+			NIMP J 6 A_NTM_TroopMelee;
+			Goto See;
+			
+		Missile:
+			NIMP QR 7 A_FaceTarget;
+			NIMP S 7 A_NTM_TroopAttack;
+			Goto See;
+		
+		Pain:
+			NIMP K 4 A_Pain;
+			Goto See;
+		
+		Death:
+			NIMP L 1 A_NTM_PreDeath;
+			NIMP L 5 A_NTM_Death;
+			NIMP M 6 A_NoBlocking;
+			NIMP NO 6;
+			NIMP P -1;
+			Stop;
+		
+		XDeath:
+			NMGI A 1 A_NTM_PreDeath;
+			NMGI A 4 A_NTM_XDeath;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		
+		Raise:
+			NIMP PONML 6;
+			Goto See;
+	}
+	
+	action void A_NTM_TroopMelee() {
+		A_Recoil(-2);
+		A_CustomMeleeAttack(3 * Random(1, 8), "imp/melee");
+	}
+	
+	action void A_NTM_TroopAttack() {
+		A_CustomComboAttack("NTM_ImpBall", 32, 3 * Random(2, 8), "imp/melee");
+	}
+}
+
+class NTM_ImpBall : DoomImpBall {
+	Default {
+		Speed 12;
+		FastSpeed 24;
+	}
+	
+	States {
+		Spawn:
+			BAL1 AB 4 Bright;
+			Loop;
+		
+		Death:
+			NEXP A 2 Bright {
+				scale *= 0.45;
+				A_SetTranslation("NTM_Explosion");
+			}
+			
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}

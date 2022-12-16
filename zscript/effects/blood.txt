@@ -130,8 +130,6 @@ class NTM_BloodSpot : NTM_BloodSplash {
 			return;		
 		}
 		
-		angle = 0;
-		
 		double ang = DeltaAngle(VectorAngle(norm.x, norm.y), angle);
 		double pch = 90 - ASin(norm.z);
 		
@@ -169,17 +167,12 @@ class NTM_FlyingGib1 : NTM_FlyingBlood {
 			Loop;
 		
 		Crash:
-			#### E 350 {
+			#### E -1 {
+				A_QueueCorpse();
 				A_StartSound("NTM_FlyingGib/splat");
 				vel.xy *= 0;
 				scale.y = Abs(scale.y);
 			}
-			
-			/*TNT1 A 0 {
-				for (int i; i < Random(2, 3); i++) {
-					A_SpawnDebris("NTM_FlyingBlood", true, 0.75, 0.5);
-				}
-			}*/
 			
 			Stop;
 	}
@@ -301,7 +294,7 @@ class NTM_BloodPool : NTM_BloodSpot {
 	
 	States {
 		Spawn:
-			NBLP A 200;
+			NBLP A 200 A_QueueCorpse();
 			NBLP B -1;
 			Stop;
 	}
@@ -311,7 +304,7 @@ class NTM_BloodPool : NTM_BloodSpot {
 			let a = NTM_System_Actor(other.FindInventory("NTM_System_Actor", true));
 			
 			if (a) {
-				a.bloodPool = self;
+				a.footprintBloodPool = self;
 				a.footprintTics = 100;
 				
 				if (other.vel.Length() > 0.5) {
@@ -329,7 +322,7 @@ class NTM_BloodPool : NTM_BloodSpot {
 	override void Tick() {
 		Super.Tick();
 		
-		if (!target || end) {
+		if (end) {
 			Destroy();
 		}
 	}

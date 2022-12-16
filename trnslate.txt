@@ -1,0 +1,5 @@
+NTM_Explosion = "80:95=208:217", "96:111=176:191"
+NTM_German_Green = "112:127=152:159"
+NTM_German_Brown = "112:127=64:79"
+NTM_German_Gray = "112:127=96:111"
+NTM_German_Black = "112:119=104:111", "120:127=5:8"
