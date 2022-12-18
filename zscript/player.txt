@@ -14,8 +14,7 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 6, "PlasmaRifle";
 		Player.WeaponSlot 7, "BFG9000";
 		Player.CrouchSprite "NPLC";
-		Player.ViewBob 0;
-		Player.ViewHeight 48;
+		Player.ViewHeight 46;
 		Scale 0.666;
 	}
 	

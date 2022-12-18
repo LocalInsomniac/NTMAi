@@ -3,8 +3,8 @@ class NTMAI : EventHandler {
 	   MATH
 	   ==== */
 	
-	static float Lerp(float val1, float val2, float amount) {
-		return (val1 * (1 - amount) + val2 * amount);
+	static float Lerp(float a, float b, float f) {
+		return a + f * (b - a);
 	}
 	
 	/* ========
