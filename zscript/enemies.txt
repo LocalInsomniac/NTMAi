@@ -1,6 +1,6 @@
 #include "zscript/enemies/zombieman.txt"
 #include "zscript/enemies/shotgunguy.txt"
-//#include "zscript/enemies/chaingunguy.txt"
+#include "zscript/enemies/chaingunguy.txt"
 #include "zscript/enemies/imp.txt"
 #include "zscript/enemies/german.txt"
 
@@ -117,7 +117,7 @@ class NTM_Enemy : Actor {
 		int tpc = NTM_Enemy(self).ticsPerChase;
 		
 		speed /= tpc;
-		A_Chase(null, null, CHF_NoPlayActive | CHF_NoDirectionTurn |CHF_DontTurn);
+		A_Chase(null, null, CHF_NoPlayActive | CHF_NoDirectionTurn | CHF_DontTurn);
 		speed *= tpc;
 	}
 	

@@ -23,6 +23,14 @@ menu/dismiss NSMENBAK
 menu/choose	NSMENPIK
 menu/clear DSEMPTY
 
+weapons/chngun DSCHNGUN
+
+chainguy/sight DSCGSIT
+chainguy/active DSCGACT
+chainguy/attack DSCHNGUN
+chainguy/pain DSCGPAIN
+chainguy/death DSCGDEAD
+
 /* =============
    CUSTOM SOUNDS
    ============= */
