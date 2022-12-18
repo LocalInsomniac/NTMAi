@@ -14,6 +14,7 @@ class NTM_German : NTM_Enemy replaces WolfensteinSS {
 		DropItem "Clip";
 		Translation "NTM_German_Brown";
 		DamageFactor "NTM_GermanBullet", 0;
+		Species "WolfensteinSS";
 		NTM_Enemy.TicsPerChase 3;
 	}
 	

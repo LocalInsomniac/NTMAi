@@ -16,6 +16,7 @@ class NTM_ChaingunGuy : NTM_Enemy replaces ChaingunGuy {
 		Obituary "$OB_CHAINGUY";
 		Tag "$FN_HEAVY";
 		DropItem "Chaingun";
+		Species "ChaingunGuy";
 		NTM_Enemy.TicsPerChase 3;
 	}
 	
