@@ -31,6 +31,10 @@ chainguy/attack DSCHNGUN
 chainguy/pain DSCGPAIN
 chainguy/death DSCGDEAD
 
+demon/attack NSDEMJMP
+
+spectre/attack NSDEMJMP
+
 /* =============
    CUSTOM SOUNDS
    ============= */

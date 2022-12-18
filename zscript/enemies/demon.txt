@@ -1,0 +1,158 @@
+class NTM_Demon : NTM_Enemy replaces Demon {
+	Default {
+		Health 150;
+		PainChance 180;
+		Speed 12;
+		Radius 30;
+		Height 56;
+		Mass 400;
+		SeeSound "demon/sight";
+		PushSound "demon/attack";
+		AttackSound "demon/melee";
+		PainSound "demon/pain";
+		DeathSound "demon/death";
+		ActiveSound "demon/active";
+		Obituary "$OB_DEMONHIT";
+		Tag "$FN_DEMON";
+		Species "Demon";
+		MeleeRange 48;
+		MeleeThreshold 64;
+		MaxTargetRange 256;
+		MaxDropOffHeight 100;
+		NTM_Enemy.TicsPerChase 2;
+	}
+	
+	States {
+		Spawn:
+			NDEM A 10 Fast A_Look;
+			Loop;
+		
+		DukeSee:
+			NDEM ABCD 4 Fast A_NTM_DukeChase;
+			Goto Jump;
+		
+		BloodSee:
+			NDEM AABBCCDD 2 Fast A_NTM_BloodChase;
+			Goto Jump;
+		
+		SWSee:
+			NDEM A 1 A_NTM_SWChase;
+			NDEM A 1 A_NTM_SWChase2;
+			NDEM A 1 A_NTM_SWChase;
+			NDEM A 1 A_NTM_SWChase2;
+			NDEM B 1 A_NTM_SWChase;
+			NDEM B 1 A_NTM_SWChase2;
+			NDEM B 1 A_NTM_SWChase;
+			NDEM B 1 A_NTM_SWChase2;
+			NDEM C 1 A_NTM_SWChase;
+			NDEM C 1 A_NTM_SWChase2;
+			NDEM C 1 A_NTM_SWChase;
+			NDEM C 1 A_NTM_SWChase2;
+			NDEM D 1 A_NTM_SWChase;
+			NDEM D 1 A_NTM_SWChase2;
+			NDEM D 1 A_NTM_SWChase;
+			NDEM D 1 A_NTM_SWChase2;
+			Goto Jump;
+		
+		Jump:
+			#### # 0 {
+				if (target) {
+					double dist = Distance3D(target);
+					
+					if (dist > meleeThreshold && dist < maxTargetRange) {
+						dist -= (target.radius * 2) + radius;
+						
+						// Check if we can jump towards the player
+						bool canJump = true;
+						Vector2 deltaPos = AngleToVector(AngleTo(target, true), radius);
+						Vector3 checkPos = pos;
+						
+						for (int i = 0; i < dist; i += radius) {
+							checkPos += deltaPos;
+							
+							if (!CheckMove(checkPos.xy)) {
+								canJump = false;
+								
+								break;
+							}
+						}
+						
+						if (canJump) {
+							SetStateLabel("Jump2");
+						}
+					}
+				}
+			}
+			
+			Goto See;
+		
+		Jump2:
+			NDEM H 6 Fast A_FaceTarget;
+			
+			NDEM N 0 {
+				A_FaceTarget();
+				A_ChangeVelocity(15, 0, 8.5, CVF_Relative | CVF_Replace);
+			}
+			
+			NDEM N 1;
+			NDEM NN 1 A_NTM_SargJump;
+			NDEM N 1 A_NTM_SargJump(true);
+			NDEM N 0 A_JumpIfTargetInsideMeleeRange("Melee");
+			NDEM N 1 A_JumpIf(vel.z <= 0 && (bOnMObj || pos.z <= floorZ), 1);
+			Goto Jump2 + 6;
+			NDEM N 0 A_ScaleVelocity(0);
+			Goto See;
+		
+		Melee:
+			NDEM EF 7 Fast A_FaceTarget;
+			NDEM G 7 Fast A_SargAttack;
+			Goto See;
+		
+		Pain:
+			NDEM H 4 Fast A_Pain;
+			Goto See;
+		
+		Death:
+			NDEM I 1 A_NTM_PreDeath;
+			NDEM I 4 A_NTM_Death;
+			NDEM J 5 A_Scream;
+			NDEM K 5 A_NoBlocking;
+			NDEM L 5;
+			NDEM M -1;
+			Stop;
+		
+		Raise:
+			NDEM MLKJI 5;
+			Goto See;
+	}
+	
+	action void A_NTM_SargJump(bool playSound = false) {
+		if (vel.xy.Length() <= 0) {
+			// Not a good place to jump, abort
+			vel.z = 0;
+			SetStateLabel("See");
+		} else {
+			if (playSound) {
+				// GROSS HACK: Use PushSound to play Demon's jumping sound
+				A_StartSound(pushSound);
+			}
+		}
+	}
+}
+
+class NTM_Spectre : NTM_Demon replaces Spectre {
+	Default {
+		RenderStyle "Stencil";
+		Alpha 0.3;
+		SeeSound "spectre/sight";
+		PushSound "spectre/attack";
+		AttackSound "spectre/melee";
+		PainSound "spectre/pain";
+		DeathSound "spectre/death";
+		ActiveSound "spectre/active";
+		Obituary "$OB_SPECTREHIT";
+		Tag "$FN_SPECTRE";
+		
+		+Shadow
+	}
+}
