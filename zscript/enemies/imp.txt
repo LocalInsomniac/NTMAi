@@ -100,8 +100,8 @@ class NTM_Imp : NTM_Enemy replaces DoomImp {
 
 class NTM_ImpBall : DoomImpBall {
 	Default {
-		Speed 15;
-		FastSpeed 30;
+		Speed 12;
+		FastSpeed 24;
 	}
 	
 	States {
