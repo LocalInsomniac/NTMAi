@@ -3,7 +3,7 @@ class NTMAI : EventHandler {
 	   MATH
 	   ==== */
 	
-	static float Lerp(float a, float b, float f) {
+	static double Lerp(double a, double b, double f) {
 		return a + f * (b - a);
 	}
 	
@@ -19,13 +19,17 @@ class NTMAI : EventHandler {
 				pmo.A_GiveInventory("NTM_System_Actor", 1);
 			}
 			
-			// GROSS HACK: Prevent camera flinching on level start
+			/* GROSS HACK: Reset NTM_Player's values in here instead of
+						   PostBeginPlay(), because they persist between level
+						   changes and can mess up things when spawning! */
 			if (pmo is "NTM_Player") {
 				NTM_Player nmo = NTM_Player(pmo);
 				
 				nmo.fallState = 0;
 				nmo.fallTics = 0;
 				nmo.fallTics2 = 0;
+				
+				nmo.spawnStart = 0;
 			}
 		}
 	}

@@ -1,6 +1,10 @@
 class NTM_Player : DoomPlayer {
-	int spawnTics, fallState, fallTics, fallTics2;
+	int fallState, fallTics, fallTics2;
+	
 	double hNewAngle;
+	
+	int spawnStart;
+	Vector2 spawnAngle;
 	
 	Default {
 		Player.StartItem "Pistol";
@@ -114,7 +118,7 @@ class NTM_Player : DoomPlayer {
 		}
 		
 		// Flinch when falling
-		if (sv_ntm_flinch && !waterLevel && !bFly && spawnTics-- <= 0) {
+		if (sv_ntm_flinch && !waterLevel && !bFly) {
 			switch (fallState) {
 				case (0): // Falling
 					if (vel.z < 0) {
@@ -149,6 +153,31 @@ class NTM_Player : DoomPlayer {
 						fallState = 0;
 					}
 				break;
+			}
+		}
+		
+		// Level start twitch like Duke3D
+		if (sv_ntm_startTwitch) {
+			if (spawnStart > 1) {
+				double spawnOldAngle = spawnAngle.x;
+				double spawnOldPitch = spawnAngle.y;
+				double spawnNewAngle = NTMAI.Lerp(spawnOldAngle, 0, 0.16);
+				double spawnNewPitch = NTMAI.Lerp(spawnOldPitch, 0, 0.16);
+				
+				A_SetAngle(angle + (spawnNewAngle - spawnOldAngle), SPF_Interpolate);
+				A_SetPitch(pitch + (spawnNewPitch - spawnOldPitch), SPF_Interpolate);
+				spawnAngle = (spawnNewAngle, spawnNewPitch);
+			} else {
+				// GROSS HACK: Pitch won't get set on first tick, so do it on
+				//             the second one
+				++spawnStart;
+				
+				if (spawnStart < 2) {
+					spawnAngle = (-90, -10);
+					A_SetAngle(angle - 90);
+				} else {
+					A_SetPitch(pitch - 10);
+				}
 			}
 		}
 		
