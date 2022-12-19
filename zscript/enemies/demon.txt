@@ -2,7 +2,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 	Default {
 		Health 150;
 		PainChance 180;
-		Speed 12;
+		Speed 13;
 		Radius 30;
 		Height 56;
 		Mass 400;
@@ -16,7 +16,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 		Tag "$FN_DEMON";
 		Species "Demon";
 		MeleeRange 48;
-		MeleeThreshold 64;
+		MeleeThreshold 80;
 		MaxTargetRange 256;
 		MaxDropOffHeight 100;
 		NTM_Enemy.TicsPerChase 2;
@@ -29,11 +29,11 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 		
 		DukeSee:
 			NDEM ABCD 4 Fast A_NTM_DukeChase;
-			Goto Jump;
+			Goto JumpStart;
 		
 		BloodSee:
 			NDEM AABBCCDD 2 Fast A_NTM_BloodChase;
-			Goto Jump;
+			Goto JumpStart;
 		
 		SWSee:
 			NDEM A 1 A_NTM_SWChase;
@@ -52,9 +52,9 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 			NDEM D 1 A_NTM_SWChase2;
 			NDEM D 1 A_NTM_SWChase;
 			NDEM D 1 A_NTM_SWChase2;
-			Goto Jump;
+			Goto JumpStart;
 		
-		Jump:
+		JumpStart:
 			#### # 0 {
 				if (target) {
 					double dist = Distance3D(target);
@@ -78,7 +78,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 						}
 						
 						if (canJump) {
-							SetStateLabel("Jump2");
+							SetStateLabel("Jump");
 						}
 					}
 				}
@@ -86,8 +86,8 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 			
 			Goto See;
 		
-		Jump2:
-			NDEM H 6 Fast A_FaceTarget;
+		Jump:
+			NDEM H 5 Fast A_FaceTarget;
 			
 			NDEM N 0 {
 				A_FaceTarget();
@@ -97,9 +97,16 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 			NDEM N 1;
 			NDEM NN 1 A_NTM_SargJump;
 			NDEM N 1 A_NTM_SargJump(true);
-			NDEM N 0 A_JumpIfTargetInsideMeleeRange("Melee");
-			NDEM N 1 A_JumpIf(vel.z <= 0 && (bOnMObj || pos.z <= floorZ), 1);
-			Goto Jump2 + 6;
+		JumpLoop:
+			NDEM N 0 A_JumpIfTargetInsideMeleeRange("JumpMelee");
+			NDEM N 1 A_JumpIf(vel.z <= 0 && (bOnMObj || pos.z <= floorZ), "JumpEnd");
+			Loop;
+		
+		JumpMelee:
+			NDEM N 0 A_StartSound(attackSound, flags: ChanF_Overlap);
+			Goto Melee;
+			
+		JumpEnd:
 			NDEM N 0 A_ScaleVelocity(0);
 			Goto See;
 		

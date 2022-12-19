@@ -23,7 +23,7 @@ menu/dismiss NSMENBAK
 menu/choose	NSMENPIK
 menu/clear DSEMPTY
 
-weapons/chngun DSCHNGUN
+weapons/chngun NSCHNGUN
 
 chainguy/sight DSCGSIT
 chainguy/active DSCGACT
@@ -31,9 +31,13 @@ chainguy/attack DSCHNGUN
 chainguy/pain DSCGPAIN
 chainguy/death DSCGDEAD
 
-demon/attack NSDEMJMP
+demon/attack DSSGTJMP
 
-spectre/attack NSDEMJMP
+spectre/attack DSSGTJMP
+
+skull/active DSSKLACT
+skull/attack DSSKLATK
+skull/pain DSSKLPAI
 
 /* =============
    CUSTOM SOUNDS
