@@ -144,7 +144,7 @@ class NTM_System_Actor : NTM_System {
 					Vector2 spriteSize = TexMan.GetScaledSize(owner.curState.GetSpriteTexture(0));
 					float spriteHeight = spriteSize.y;
 					
-					if (frame > 0) {
+					if (frame > 0 && owner.waterLevel == 0) {
 						float jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
 						
 						owner.SetOrigin(owner.pos + (0, 0, owner.scale.y * jitter), false);
