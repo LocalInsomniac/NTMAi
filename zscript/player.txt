@@ -161,8 +161,8 @@ class NTM_Player : DoomPlayer {
 			if (spawnStart > 1) {
 				double spawnOldAngle = spawnAngle.x;
 				double spawnOldPitch = spawnAngle.y;
-				double spawnNewAngle = NTMAI.Lerp(spawnOldAngle, 0, 0.16);
-				double spawnNewPitch = NTMAI.Lerp(spawnOldPitch, 0, 0.16);
+				double spawnNewAngle = NTMAI.Lerp(spawnOldAngle, 0, 0.22);
+				double spawnNewPitch = NTMAI.Lerp(spawnOldPitch, 0, 0.22);
 				
 				A_SetAngle(angle + (spawnNewAngle - spawnOldAngle), SPF_Interpolate);
 				A_SetPitch(pitch + (spawnNewPitch - spawnOldPitch), SPF_Interpolate);
@@ -179,6 +179,8 @@ class NTM_Player : DoomPlayer {
 					A_SetPitch(pitch - 10);
 				}
 			}
+		} else {
+			spawnStart = 2;
 		}
 		
 		Super.Tick();
