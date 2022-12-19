@@ -50,56 +50,19 @@ class NTM_Enemy : Actor {
 	}
 	
 	action void A_NTM_BloodChase() {
-		// Source: Hideous Destructor, mob.txt
-		if (!target) {
-			A_ClearTarget();
-			SetStateLabel("Spawn");
+		if (CheckMove(pos.xy)) {
+			bool noTeleport = bNoTeleport;
+			Vector3 oldPos = pos;
 			
-			return;
+			bNoTeleport = true;
+			vel.xy *= 0.8;
+			A_Chase();
+			SetOrigin(oldPos, true);
+			A_Recoil(speed * -0.16);
+			bNoTeleport = noTeleport;
+		} else {
+			A_Chase();
 		}
-		
-		if(!CheckMove(pos.xy)){
-			A_Wander();
-			
-			return;
-		}
-		
-		if (vel.xy == (0, 0)) {
-			if (target) {
-				NewChaseDir();
-			} else {
-				RandomChaseDir();
-			}
-		}
-		
-		bool beFrightened = bFrightened;
-		bool beChaseGoal = bChaseGoal;
-		vector3 oldPos = pos;
-		double oldAngle = angle;
-		
-		A_Chase();
-		
-		if (curState == FindState("Melee") ||
-		    curState == FindState("Missile") ||
-			pos == oldPos) {
-			return;
-		}
-		
-		vector3 posDiff = pos - oldPos;
-		
-		if (posDiff dot posDiff < 10000) {
-			SetOrigin(oldPos, false);
-			vel *= 0.7;
-			vel += posDiff.Unit() * speed * 0.18;
-		}
-		
-		if (!bFloat) {
-			bNoDropoff = true;
-		}
-		
-		bFrightened = beFrightened;
-		bChaseGoal = beChaseGoal;
-		A_Chase(null, null, CHF_NoPlayActive | CHF_DontMove | CHF_NoDirectionTurn);
 	}
 	
 	action void A_NTM_SWChase() {
