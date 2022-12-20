@@ -159,15 +159,10 @@ class NTM_Player : DoomPlayer {
 			if (time <= 26) {
 				if (time == 26) {
 					A_SetViewAngle(0, SPF_Interpolate);
-					A_SetViewPitch(0, SPF_Interpolate);
 				} else {
-					double f = (26 - time);
+					double f = (26 - time) * 0.0384615384615385;
 					
-					f /= 26;
-					f *= f;
-					f *= f;
-					A_SetViewAngle(-120 * f, SPF_Interpolate);
-					A_SetViewPitch(-20 * f, SPF_Interpolate);
+					A_SetViewAngle(Round(DeltaAngle(angle, 0) * (f * f * f)), SPF_Interpolate);
 				}
 			}
 		}
@@ -195,8 +190,10 @@ class NTM_Player : DoomPlayer {
 			double hAngle = (player.vel.Length() > 0) ? (3, 3) dot (3, 3) : 0;
 			
 			hNewAngle = NTMAI.Lerp(hNewAngle, hAngle, 0.1);
-			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle));
-			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle)));
+			
+			// Add weapon panning like Duke3D
+			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle)) + ((viewAngle * 0.0111111111111111) * 320);
+			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle))) + Max(fallTics2 - 4, 0) * 4;
 		}
 		
 		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);

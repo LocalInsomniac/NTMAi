@@ -30,8 +30,8 @@ class NTMAI : EventHandler {
 				nmo.fallTics2 = 0;
 				
 				if (sv_ntm_startTwitch) {
-					nmo.A_SetViewAngle(-120);
-					nmo.A_SetViewPitch(-20);
+					// Emulate Duke3D twitching using spawn angle
+					nmo.A_SetViewAngle(nmo.DeltaAngle(nmo.angle, 0));
 				}
 			}
 		}
