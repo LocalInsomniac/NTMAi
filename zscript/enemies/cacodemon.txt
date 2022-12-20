@@ -1,0 +1,87 @@
+class NTM_Cacodemon : NTM_Enemy replaces Cacodemon {
+	Default {
+		Health 400;
+		Radius 31;
+		Height 56;
+		Mass 400;
+		Speed 8;
+		PainChance 128;
+		BloodColor "Blue";
+		SeeSound "caco/sight";
+		PainSound "caco/pain";
+		DeathSound "caco/death";
+		ActiveSound "caco/active";
+		Obituary "$OB_CACO";
+		HitObituary "$OB_CACOHIT";
+		Tag "$FN_CACO";
+		Species "Cacodemon";
+		NTM_Enemy.TicsPerChase 3;
+		
+		+Float
+		+NoGravity
+	}
+	
+	States {
+		Spawn:
+			NCAC A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NCAC A 3 A_Chase;
+			Loop;
+		
+		BloodSee:
+			NCAC A 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NCAC A 1 A_NTM_SWChase;
+			NCAC AA 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+			NCAC L 6 A_FaceTarget;
+			NCAC M 6 A_FaceTarget;
+			NCAC N 6 A_CustomMeleeAttack(10 * Random(1, 6), "caco/melee");
+			Goto See;
+		
+		Missile:
+			NCAC B 5 A_FaceTarget;
+			NCAC C 5 A_FaceTarget;
+			NCAC D 5 Bright A_SpawnProjectile("NTM_CacodemonBall", 32);
+			Goto See;
+		
+		Pain:
+			NCAC E 5 A_Pain;
+			NCAC F 5;
+			Goto See;
+		
+		Death:
+			NCAC G 1 A_NTM_PreDeath;
+			NCAC G 6 A_NTM_Death;
+			NCAC H 7 A_NoBlocking;
+			NCAC IJ 7;
+			NCAC J 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
+			Wait;
+			NCAC K -1 A_SetFloorClip;
+			Stop;
+		
+		Raise:
+			NCAC K 8 A_UnSetFloorClip;
+			NCAC JIHG 8;
+			Goto See;
+	}
+}
+
+class NTM_CacodemonBall : CacodemonBall {
+	States {
+		Death:
+			NEXP A 2 Bright {
+				scale *= 0.48;
+				A_SetTranslation("NTM_Explosion_Cacodemon");
+			}
+			
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}

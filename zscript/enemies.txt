@@ -4,6 +4,7 @@
 #include "zscript/enemies/imp.txt"
 #include "zscript/enemies/demon.txt"
 #include "zscript/enemies/lostsoul.txt"
+#include "zscript/enemies/cacodemon.txt"
 #include "zscript/enemies/german.txt"
 
 class NTM_Enemy : Actor {
