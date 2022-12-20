@@ -87,8 +87,6 @@ class NTM_BarrelGib : NTM_Gib {
 // Bullet Puff
 class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	Default {
-		SeeSound "";
-		AttackSound "";
 		Scale 0.8;
 		FloatBobPhase 0;
 		
@@ -98,14 +96,14 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	}
 	
 	States {
-		Crash:
-			PUFF A 4 Bright A_StartSound("NTM_BulletPuff/miss");
-			PUFF BCD 4;
+		Spawn:
+			PUFF A 4 Bright NoDelay A_StartSound("NTM_BulletPuff/miss");
+			PUFF B 4;
+		Melee:
+			PUFF CD 4;
 			Stop;
 		
-		Melee:
-		Spawn:
-			TNT1 A 0 NoDelay A_JumpIf(tracer.bNoBlood, "Crash");
+		XDeath:
 			TNT1 A 0 A_StartSound("NTM_BulletPuff/hit");
 			Stop;
     }
