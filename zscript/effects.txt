@@ -91,7 +91,6 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 		FloatBobPhase 0;
 		
 		+PuffOnActors
-		+HitTracer
 		+NotOnAutomap
 	}
 	

@@ -30,7 +30,6 @@ class NTMAI : EventHandler {
 				nmo.fallTics2 = 0;
 				
 				if (sv_ntm_startTwitch) {
-					nmo.spawnAngle = (-120, -20);
 					nmo.A_SetViewAngle(-120);
 					nmo.A_SetViewPitch(-20);
 				}

@@ -1,7 +1,6 @@
 class NTM_Player : DoomPlayer {
 	int fallState, fallTics, fallTics2;
 	double hNewAngle;
-	Vector2 spawnAngle;
 	
 	Default {
 		Player.StartItem "Pistol";
@@ -154,20 +153,22 @@ class NTM_Player : DoomPlayer {
 		}
 		
 		// Level start twitch like Duke3D
-		float checkAngle = Abs(spawnAngle.x);
-		
-		if (checkAngle > 0) {
-			if (checkAngle > 0.0000008) {
-				double spawnNewAngle = NTMAI.Lerp(spawnAngle.x, 0, 0.22);
-				double spawnNewPitch = NTMAI.Lerp(spawnAngle.y, 0, 0.22);
-				
-				A_SetViewAngle(spawnNewAngle, SPF_Interpolate);
-				A_SetViewPitch(spawnNewPitch, SPF_Interpolate);
-				spawnAngle = (spawnNewAngle, spawnNewPitch);
-			} else {
-				A_SetViewAngle(0, SPF_Interpolate);
-				A_SetViewPitch(0, SPF_Interpolate);
-				spawnAngle = (0, 0);
+		if (sv_ntm_startTwitch) {
+			int time = level.mapTime;
+			
+			if (time <= 26) {
+				if (time == 26) {
+					A_SetViewAngle(0, SPF_Interpolate);
+					A_SetViewPitch(0, SPF_Interpolate);
+				} else {
+					double f = (26 - time);
+					
+					f /= 26;
+					f *= f;
+					f *= f;
+					A_SetViewAngle(-120 * f, SPF_Interpolate);
+					A_SetViewPitch(-20 * f, SPF_Interpolate);
+				}
 			}
 		}
 		
