@@ -57,7 +57,7 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 			NLOS C 2 Bright A_SkullAttack;
 			NLOS D 4 Bright A_JumpIf(vel.xy.Length() < 10, "See");
 			NLOS C 4 Bright;
-			Goto Missile + 2;
+			Goto Missile + 3;
 			
 		Pain:
 			NLOS E 6 Bright A_Pain;
