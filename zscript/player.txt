@@ -1,9 +1,6 @@
 class NTM_Player : DoomPlayer {
 	int fallState, fallTics, fallTics2;
-	
 	double hNewAngle;
-	
-	int spawnStart;
 	Vector2 spawnAngle;
 	
 	Default {
@@ -157,30 +154,21 @@ class NTM_Player : DoomPlayer {
 		}
 		
 		// Level start twitch like Duke3D
-		if (sv_ntm_startTwitch) {
-			if (spawnStart > 1) {
-				double spawnOldAngle = spawnAngle.x;
-				double spawnOldPitch = spawnAngle.y;
-				double spawnNewAngle = NTMAI.Lerp(spawnOldAngle, 0, 0.22);
-				double spawnNewPitch = NTMAI.Lerp(spawnOldPitch, 0, 0.22);
+		float checkAngle = Abs(spawnAngle.x);
+		
+		if (checkAngle > 0) {
+			if (checkAngle > 0.0000008) {
+				double spawnNewAngle = NTMAI.Lerp(spawnAngle.x, 0, 0.22);
+				double spawnNewPitch = NTMAI.Lerp(spawnAngle.y, 0, 0.22);
 				
-				A_SetAngle(angle + (spawnNewAngle - spawnOldAngle), SPF_Interpolate);
-				A_SetPitch(pitch + (spawnNewPitch - spawnOldPitch), SPF_Interpolate);
+				A_SetViewAngle(spawnNewAngle, SPF_Interpolate);
+				A_SetViewPitch(spawnNewPitch, SPF_Interpolate);
 				spawnAngle = (spawnNewAngle, spawnNewPitch);
 			} else {
-				// GROSS HACK: Pitch won't get set on first tick, so do it on
-				//             the second one
-				++spawnStart;
-				
-				if (spawnStart < 2) {
-					spawnAngle = (-90, -10);
-					A_SetAngle(angle - 90);
-				} else {
-					A_SetPitch(pitch - 10);
-				}
+				A_SetViewAngle(0, SPF_Interpolate);
+				A_SetViewPitch(0, SPF_Interpolate);
+				spawnAngle = (0, 0);
 			}
-		} else {
-			spawnStart = 2;
 		}
 		
 		Super.Tick();
