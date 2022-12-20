@@ -4,6 +4,7 @@
 // Explosion
 class NTM_Explosion : Actor {
 	Default {
+		RenderStyle "Add";
 		Translation "NTM_Explosion";
 		FloatBobPhase 0;
 		
@@ -13,6 +14,7 @@ class NTM_Explosion : Actor {
 		+NoGravity
 		+NotOnAutomap
 		+ForceXYBillboard
+		+ZDoomTrans
 	}
 	
 	States {
