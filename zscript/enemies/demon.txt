@@ -18,7 +18,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 		MeleeRange 48;
 		MeleeThreshold 80;
 		MaxTargetRange 256;
-		MaxDropOffHeight 100;
+		MaxDropOffHeight 80;
 		NTM_Enemy.TicsPerChase 2;
 	}
 	
