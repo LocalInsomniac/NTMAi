@@ -192,8 +192,8 @@ class NTM_Player : DoomPlayer {
 			hNewAngle = NTMAI.Lerp(hNewAngle, hAngle, 0.1);
 			
 			// Add weapon panning like Duke3D
-			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle)) + ((viewAngle * 0.0111111111111111) * 320);
-			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle))) + Max(fallTics2 - 4, 0) * 4;
+			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle)) + ((Normalize180(viewAngle) * 0.0111111111111111) * 320);
+			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle))) + Max(fallTics2 - 5, 0) * 5;
 		}
 		
 		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
