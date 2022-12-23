@@ -23,7 +23,7 @@ class NTM_Imp : NTM_Enemy replaces DoomImp {
 			Loop;
 		
 		DukeSee:
-			NIMP ABCD 6 A_NTM_DukeChase;
+			NIMP AABBCCDD 3 A_Chase;
 			Loop;
 		
 		BloodSee:
@@ -102,6 +102,8 @@ class NTM_ImpBall : DoomImpBall {
 	Default {
 		Speed 12;
 		FastSpeed 24;
+		
+		+ForceXYBillboard
 	}
 	
 	States {

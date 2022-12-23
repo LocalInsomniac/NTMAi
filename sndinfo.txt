@@ -1,5 +1,8 @@
 $attenuation weapons/rocklx 0.666
+$attenuation weapons/bfgx 0.5
 $attenuation world/barrelx 0.666
+$limit weapons/rocklx 0
+$limit weapons/bfgx 0
 $limit world/barrelx 0
 
 misc/k_pkup	DSKEYUP
@@ -15,12 +18,12 @@ $random menu/activate {
 }
 
 menu/backup	NSMENBAK
-menu/prompt	NSMENPIK
+menu/prompt	NSBULHIT
 menu/cursor NSMENCUR
-menu/change	NSMENPIK
+menu/change	NSBULHIT
 menu/invalid DSOOF
 menu/dismiss NSMENBAK
-menu/choose	NSMENPIK
+menu/choose	NSBULHIT
 menu/clear DSEMPTY
 
 weapons/chngun DSCHNGUN
@@ -47,31 +50,59 @@ caco/pain DSCACPAI
    CUSTOM SOUNDS
    ============= */
 
+// World
 NTM_World/splash NSSPLASH
 NTM_World/lava NSLAVA
 NTM_World/sizzle NSSIZZLE
-   
+
+// Player
 $playersound player male *falling NSFALLIN
-$playersound player	male *pain100 NSPPA100
-$playersound player	male *pain75 NSPPAI75
-$playersound player	male *pain50 NSPPAI50
-$playersound player	male *pain25 NSPPAI25
-$playersound player	male *death	NSPDEATH
-$playersound player	male *xdeath NSPDHIGH
+$playersound player female *falling NSFALLIN
+$playersound player other *falling NSFALLIN
 
-player/taunt1 NSTAUNT1
-player/taunt2 NSTAUNT2
-player/taunt3 NSTAUNT3
+NTM_Player/pain1 NSPLPAI1
+NTM_Player/pain2 NSPLPAI2
+NTM_Player/pain3 NSPLPAI3
+NTM_Player/pain4 NSPLPAI4
 
-$random player/taunt {
-	player/taunt1
-	player/taunt2
-	player/taunt3
+$random NTM_Player/paina {
+	NTM_Player/pain1
+	NTM_Player/pain2
 }
+
+$random NTM_Player/painb {
+	NTM_Player/pain3
+	NTM_Player/pain4
+}
+
+NTM_Player/painx1 NSPLPAX1
+NTM_Player/painx2 NSPLPAX2
+
+$random NTM_Player/painx {
+	NTM_Player/painx1
+	NTM_Player/painx2
+}
+
+NTM_Player/taunt NSTAUNT
+
+// Weapons
+NTM_Weapon/select NSGUNUP
+
+NTM_Chainsaw/slash1 NSGSPLAT
+NTM_Chainsaw/slash2 NSGSPLA2
+
+$random NTM_Chainsaw/slash {
+	NTM_Chainsaw/slash1
+	NTM_Chainsaw/slash2
+}
+
+NTM_Pistol/out NSCLPOUT
+NTM_Pistol/in NSCLIPIN
 
 NTM_Grenade/pin NSGRENAD
 NTM_Grenade/bounce NSGRENAB
 
+// Effects
 NTM_BulletPuff/miss1 NSPUFF1
 NTM_BulletPuff/miss2 NSPUFF2
 NTM_BulletPuff/miss3 NSPUFF3
@@ -82,13 +113,30 @@ $random NTM_BulletPuff/miss {
 	NTM_BulletPuff/miss3
 }
 
-$volume NTM_BulletPuff/miss 0.38
-NTM_ChainsawPuff/clang NSCLANG
+$volume NTM_BulletPuff/miss 0.4
+
 NTM_BulletPuff/hit NSBULHIT
 $volume NTM_BulletPuff/hit 0.5
 
+NTM_ChainsawPuff/miss NSCLANG
+
+NTM_BulletCasing/bounce1 NSCASIN1
+NTM_BulletCasing/bounce2 NSCASIN2
+
+$random NTM_BulletCasing/bounce {
+	NTM_BulletCasing/bounce1
+	NTM_BulletCasing/bounce2
+}
+
+$volume NTM_BulletCasing/bounce 0.4
+
+NTM_ShellCasing/bounce NSCASIN3
+
+$volume NTM_ShellCasing/bounce 0.4
+
 NTM_FlyingBlood/splat NSBSPLAT
 $volume NTM_FlyingBlood/splat 0.75
+
 NTM_FlyingGib/splat1 NSGSPLAT
 NTM_FlyingGib/splat2 NSGSPLA2
 

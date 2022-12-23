@@ -24,7 +24,7 @@ class NTM_German : NTM_Enemy replaces WolfensteinSS {
 			Loop;
 		
 		DukeSee:
-			NGER BCDE 6 A_NTM_DukeChase;
+			NGER BBCCDDEE 3 A_Chase;
 			Loop;
 		
 		BloodSee:

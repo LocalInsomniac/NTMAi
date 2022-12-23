@@ -74,6 +74,10 @@ class NTM_Cacodemon : NTM_Enemy replaces Cacodemon {
 }
 
 class NTM_CacodemonBall : CacodemonBall {
+	Default {
+		+ForceXYBillboard
+	}
+	
 	States {
 		Death:
 			NEXP A 2 Bright {

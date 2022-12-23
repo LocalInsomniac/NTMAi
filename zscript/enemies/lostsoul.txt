@@ -33,7 +33,7 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 			Loop;
 			
 		DukeSee:
-			NLOS AB 6 Bright A_NTM_DukeChase;
+			NLOS AABB 3 Bright A_Chase;
 			Loop;
 		
 		BloodSee:
@@ -57,7 +57,7 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 			NLOS C 2 Bright A_SkullAttack;
 			NLOS D 4 Bright A_JumpIf(vel.xy.Length() < 10, "See");
 			NLOS C 4 Bright;
-			Goto Missile + 3;
+			Goto Missile + 4;
 			
 		Pain:
 			NLOS E 6 Bright A_Pain;
@@ -84,6 +84,8 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 class NTM_LostSoulGib : NTM_Gib {
 	Default {
 		Scale 0.5;
+		
+		+ForceXYBillboard
 	}
 	
 	States {

@@ -1,0 +1,94 @@
+class NTM_RocketLauncher : RocketLauncher replaces RocketLauncher {
+	Default {
+		Scale 0.75;
+		Weapon.SlotNumber 5;
+		Weapon.UpSound "NTM_Weapon/select";
+	}
+	
+	States {
+		Ready:
+			NROC A 1 A_WeaponReady(WRF_AllowUser1);
+			Loop;
+			
+		Deselect:
+			NROC A 1 A_Lower(12);
+			Loop;
+			
+		Select:
+			NROC A 1 A_Raise(12);
+			Loop;
+			
+		Fire:
+			NROC B 3 Bright {
+				A_FireProjectile("NTM_Rocket", 0, true, 5, -2);
+				A_GunFlash();
+				A_WeaponOffset(12, 50, WOF_Interpolate);
+			}
+			
+			NROC C 3 Bright A_WeaponOffset(16, 56, WOF_Interpolate);
+			NROC D 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
+			NROC A 3 A_WeaponOffset(12, 50, WOF_Interpolate);
+			NROC A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
+			NROC A 3 A_WeaponOffset(flags: WOF_Interpolate);
+			NROC A 0 A_Refire;
+			Goto Ready;
+		
+		Flash:
+			TNT1 A 3 A_Light1;
+			TNT1 A 3 A_Light2;
+			TNT1 A 3 A_Light1;
+			Goto LightDone;
+		
+		Spawn:
+			NROC E -1;
+			Stop;
+	}
+}
+
+class NTM_Rocket : Rocket replaces Rocket {
+	Default {
+		Radius 5;
+		Speed 25;
+		Scale 0.9;
+		
+		-ZDoomTrans
+		-RocketTrail
+	}
+	
+	States {
+		Spawn:
+			MISL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail");
+			Loop;
+			
+		Death:
+			TNT1 A 15 {
+				A_SpawnItemEx("NTM_Explosion2");
+				A_Explode();
+				A_Quake(2, 15, 0, 512, "");
+			}
+			
+			Stop;
+		
+		BrainExplode:
+			TNT1 A 20 {
+				A_SpawnItemEx("NTM_Explosion2");
+				A_Explode();
+				A_Quake(2, 15, 0, 512, "");
+			}
+			
+			TNT1 A 10 A_BrainExplode;
+			Stop;
+	}
+}
+
+class NTM_RocketSmokeTrail : RocketSmokeTrail {
+	Default {
+		Scale 0.64;
+	}
+	
+	States {
+		Spawn:
+			RSMK ABCD 3;
+			Stop;
+	}
+}

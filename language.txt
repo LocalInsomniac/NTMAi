@@ -1,0 +1,2 @@
+[enu default]
+TAG_NTM_FISTS = "Fists";

@@ -86,3 +86,15 @@ decalGroup BloodSplat {
 	BloodSplat5 1
 	BloodSplat6 1
 }
+
+generator NTM_Chainsaw BulletChip
+generator NTM_Pistol BulletChip
+generator NTM_Shotgun BulletChip
+generator NTM_SuperShotgun BulletChip
+generator NTM_Chaingun BulletChip
+
+generator NTM_ZombieMan BulletChip
+generator NTM_ShotgunGuy BulletChip
+generator NTM_ChaingunGuy BulletChip
+//generator NTM_SpiderMastermind BulletChip
+generator NTM_German BulletChip

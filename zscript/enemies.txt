@@ -42,14 +42,6 @@ class NTM_Enemy : Actor {
 	}
 	
 	// NTMAi monster actions
-	action void A_NTM_DukeChase() {
-		A_Chase();
-		
-		// Take an extra step if we didn't start attacking
-		if (curState != FindState("Melee") && curState != FindState("Missile")) {
-			A_Chase();
-		}
-	}
 	
 	action void A_NTM_BloodChase() {
 		if (CheckMove(pos.xy)) {
@@ -57,11 +49,17 @@ class NTM_Enemy : Actor {
 			Vector3 oldPos = pos;
 			
 			bNoTeleport = true;
-			vel.xy *= 0.8;
+			
+			if (!bOnMObj && pos.z > floorZ) {
+				vel.xy *= 0.5;
+			} else {
+				vel.xy *= 0.8;
+			}
+			
+			bNoTeleport = noTeleport;
 			A_Chase();
 			SetOrigin(oldPos, true);
 			A_Recoil(speed * -0.16);
-			bNoTeleport = noTeleport;
 		} else {
 			A_Chase();
 		}

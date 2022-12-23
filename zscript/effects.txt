@@ -28,8 +28,6 @@ class NTM_Explosion : Actor {
 class NTM_Explosion2 : NTM_Explosion {
 	Default {
 		Scale 0.75;
-		
-		-ForceXYBillboard
 	}
 	
 	States {
@@ -77,6 +75,8 @@ class NTM_Gib : Actor {
 class NTM_BarrelGib : NTM_Gib {
 	Default {
 		Scale 0.25;
+		
+		+ForceXYBillboard
 	}
 	
 	States {
@@ -94,18 +94,78 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 		
 		+PuffOnActors
 		+NotOnAutomap
+		+ForceXYBillboard
 	}
 	
 	States {
 		Spawn:
 			PUFF A 4 Bright NoDelay A_StartSound("NTM_BulletPuff/miss");
-			PUFF B 4;
+			PUFF BCD 4;
+			Stop;
+			
 		Melee:
-			PUFF CD 4;
+			PUFF C 4 A_StartSound("player/male/fist");
+			PUFF D 4;
 			Stop;
 		
 		XDeath:
 			TNT1 A 0 A_StartSound("NTM_BulletPuff/hit");
 			Stop;
     }
+}
+
+// Bullet Casing
+class NTM_BulletCasing : Actor {
+	Default {
+		FloatBobPhase 0;
+		Scale 0.16;
+		Radius 1;
+		Height 1;
+		Gravity 1;
+		BounceSound "NTM_BulletCasing/bounce";
+		BounceType "Doom";
+		
+		+Corpse
+		+NoTeleport
+		+NoBlockMap
+		+NotOnAutomap
+		+CanBounceWater
+		+DontSplash
+		+Missile
+		+UseBounceState
+		+ForceXYBillboard
+		+ThruActors
+	}
+	
+	States
+	{
+		Spawn:
+			NBUL A 0;
+		Roll:
+			#### ABCDEFGH 2;
+			Loop;
+			
+		Bounce:
+			#### A 0;
+			Goto Roll;
+			
+		Death:
+			#### C 350 A_Jump(128, 1);
+			Stop;
+			#### G 350;
+			Stop;
+	}
+}
+
+// Shell Casing
+class NTM_ShellCasing : NTM_BulletCasing {
+	Default {
+		BounceSound "NTM_ShellCasing/bounce";
+	}
+	
+	States {
+		Spawn:
+			NSHE A 0;
+			Goto Roll;
+	}
 }

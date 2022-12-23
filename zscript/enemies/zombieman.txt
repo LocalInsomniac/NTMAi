@@ -23,7 +23,7 @@ class NTM_Zombieman : NTM_Enemy replaces Zombieman {
 			Loop;
 		
 		DukeSee:
-			NZOM ABCD 6 A_NTM_DukeChase;
+			NZOM AABBCCDD 3 A_Chase;
 			Loop;
 		
 		BloodSee:
@@ -80,17 +80,17 @@ class NTM_Zombieman : NTM_Enemy replaces Zombieman {
 			Goto See;
 		
 		Grenade:
-			NZOM V 0 A_JumpIfCloser(960, 1, true);
+			NZOM P 0 A_JumpIfCloser(960, 1, true);
 			Goto Missile;
-			NZOM V 6 A_FaceTarget;
+			NZOM P 6 A_FaceTarget;
 			
-			NZOM W 6 {
+			NZOM Q 6 {
 				if (CheckSight(target)) {
 					A_FaceTarget();
 				}
 			}
 			
-			NZOM X 6 {
+			NZOM R 6 {
 				double dist = 1;
 				double zDist = 1;
 				
@@ -102,7 +102,7 @@ class NTM_Zombieman : NTM_Enemy replaces Zombieman {
 				A_ThrowGrenade("NTM_Grenade", 10, FRandom(9, 11) * dist, FRandom(4, 6) * zDist);
 			}
 			
-			NZOM Y 6;
+			NZOM S 6;
 			Goto See;
 		
 		Pain:
@@ -111,15 +111,15 @@ class NTM_Zombieman : NTM_Enemy replaces Zombieman {
 			Goto See;
 		
 		Duck:
-			NZOM S Random(10, 30) A_NTM_PainDisable;
-			NZOM T 10 A_NTM_PosDuck;
-			NZOM U 2 Bright A_NTM_PosAttack;
-			NZOM T 3 A_FaceTarget;
-			NZOM U 2 Bright A_NTM_PosAttack;
-			NZOM T 3 A_FaceTarget;
-			NZOM U 2 Bright A_NTM_PosAttack;
-			NZOM T 8;
-			NZOM T 0 A_NTM_PainEnable;
+			NZOM M Random(10, 30) A_NTM_PainDisable;
+			NZOM N 10 A_NTM_PosDuck;
+			NZOM O 2 Bright A_NTM_PosAttack;
+			NZOM N 3 A_FaceTarget;
+			NZOM O 2 Bright A_NTM_PosAttack;
+			NZOM N 3 A_FaceTarget;
+			NZOM O 2 Bright A_NTM_PosAttack;
+			NZOM N 8;
+			NZOM N 0 A_NTM_PainEnable;
 			Goto See;
 		
 		Death:
@@ -130,7 +130,40 @@ class NTM_Zombieman : NTM_Enemy replaces Zombieman {
 			NZOM L -1;
 			Stop;
 		
+		Death.Chainsaw:
+			NZOM T 10 {
+				A_NTM_PreDeath();
+				A_Scream();
+				bShootable = false;
+				
+				DropItem drop = GetDropItems();
+				
+				while (drop != null) {
+					A_DropItem(drop.name, drop.amount);
+					drop = drop.next;
+				}
+			}
+			
+			NZOM T 15 {
+				height = GetDeathHeight();
+				bCorpse = true;
+			}
+			
+			NZOM U 5 {
+				for (int i = 0; i < 3; ++i) {
+					A_SpawnItemEx("NTM_FlyingBlood", 8, 4, 28, FRandom(2, 5), FRandom(-5, -2), FRandom(2, 6));
+				}
+				
+				A_StartSound("NTM_Chainsaw/slash", Chan_5, ChanF_Overlap);
+				A_NoBlocking(false);
+			}
+			
+			NZOM VWXYZ[^ 5;
+			NZOM ] -1;
+			Stop;
+		
 		XDeath:
+		XDeath.Chainsaw:
 			NMGI A 1 A_NTM_PreDeath;
 			NMGI A 4 A_NTM_XDeath;
 			NMGI B 5 A_NoBlocking;
@@ -173,6 +206,7 @@ class NTM_Grenade : Actor {
 		-NoGravity
 		-NoTeleport
 		+DontBlast
+		+ForceXYBillboard
 	}
 	
 	States {

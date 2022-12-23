@@ -1,18 +1,28 @@
+#include "zscript/weapons/fists.txt"
+#include "zscript/weapons/chainsaw.txt"
+#include "zscript/weapons/pistol.txt"
+#include "zscript/weapons/shotgun.txt"
+#include "zscript/weapons/supershotgun.txt"
+#include "zscript/weapons/chaingun.txt"
+#include "zscript/weapons/rocketlauncher.txt"
+#include "zscript/weapons/plasmarifle.txt"
+#include "zscript/weapons/bfg9000.txt"
+
 class NTM_Player : DoomPlayer {
-	int fallState, fallTics, fallTics2;
+	int fallState, fallTics, fallTics2, oldHealth, painTics;
 	double hNewAngle;
 	
 	Default {
-		Player.StartItem "Pistol";
-		Player.StartItem "Fist";
+		Player.StartItem "NTM_Pistol";
+		Player.StartItem "NTM_Fists";
 		Player.StartItem "Clip", 50;
-		Player.WeaponSlot 1, "Fist", "Chainsaw";
-		Player.WeaponSlot 2, "Pistol";
-		Player.WeaponSlot 3, "Shotgun", "SuperShotgun";
-		Player.WeaponSlot 4, "Chaingun";
-		Player.WeaponSlot 5, "RocketLauncher";
-		Player.WeaponSlot 6, "PlasmaRifle";
-		Player.WeaponSlot 7, "BFG9000";
+		Player.WeaponSlot 1, "NTM_Fists", "NTM_Chainsaw";
+		Player.WeaponSlot 2, "NTM_Pistol";
+		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
+		Player.WeaponSlot 4, "NTM_Chaingun";
+		Player.WeaponSlot 5, "NTM_RocketLauncher";
+		Player.WeaponSlot 6, "NTM_PlasmaRifle";
+		Player.WeaponSlot 7, "NTM_BFG9000";
 		Player.CrouchSprite "NPLC";
 		Player.ViewHeight 46;
 		Scale 0.666;
@@ -62,8 +72,26 @@ class NTM_Player : DoomPlayer {
 			Goto Missile;
 		
 		Pain:
-			NPLA G 4;
-			NPLA G 4 A_Pain;
+			NPLA G 8 {
+				if (painTics <= 0) {
+					int deltaHealth = oldHealth - health;
+					
+					if (deltaHealth > 20 || health < 50) {
+						if (deltaHealth > 40) {
+							A_StartSound("NTM_Player/painx", Chan_Voice);
+						} else {
+							A_StartSound("NTM_Player/painb", Chan_Voice);
+						}
+					} else {
+						A_StartSound("NTM_Player/paina", Chan_Voice);
+					}
+					
+					painTics = Random(20, 35);
+				}
+				
+				oldHealth = health;
+			}
+			
 			Goto Spawn;
 		
 		Death:
@@ -150,6 +178,11 @@ class NTM_Player : DoomPlayer {
 					}
 				break;
 			}
+		}
+		
+		// Pain timer to avoid voice spam
+		if (painTics > 0) {
+			--painTics;
 		}
 		
 		// Level start twitch like Duke3D

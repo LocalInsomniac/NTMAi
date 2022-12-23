@@ -1,0 +1,41 @@
+class NTM_Shotgun : Shotgun replaces Shotgun {
+	Default {
+		Scale 0.75;
+		Weapon.SlotNumber 3;
+		Weapon.UpSound "weapons/shotgr";
+	}
+	
+	States {
+		Ready:
+			NSHO A 1 A_WeaponReady;
+			Loop;
+			
+		Deselect:
+			NSHO A 1 A_Lower(12);
+			Loop;
+			
+		Select:
+			NSHO A 1 A_Raise(12);
+			Loop;
+			
+		Fire:
+			NSHO A 0 A_FireShotgun;
+			NSHO A 2 Bright A_WeaponOffset(10, 48, WOF_Interpolate);
+			NSHO A 1 Bright A_WeaponOffset(12, 50, WOF_Interpolate);
+			NSHO A 1 Bright A_WeaponOffset(8, 42, WOF_Interpolate);
+			NSHO A 1 A_WeaponOffset(5, 39, WOF_Interpolate);
+			NSHO A 3 A_WeaponOffset(flags: WOF_Interpolate);
+			NSHO BC 3;
+			NSHO D 3 A_StartSound("weapons/shotgr", Chan_Weapon, ChanF_Overlap);
+			NSHO E 5 A_SpawnItemEx("NTM_ShellCasing", -22, 28, 26, FRandom(-6, -4), 0, FRandom(4, 6), 90);
+			NSHO DCB 3;
+			NSHO A 2;
+			NSHO A 0 A_ReFire;
+			Goto Ready;
+			
+		Flash:
+			NSHO F 2 Bright A_Light2;
+			NSHO G 2 Bright A_Light1;
+			Goto LightDone;
+	}
+}

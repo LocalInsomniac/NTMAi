@@ -28,7 +28,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 			Loop;
 		
 		DukeSee:
-			NDEM ABCD 4 Fast A_NTM_DukeChase;
+			NDEM AABBCCDD 2 Fast A_Chase;
 			Goto JumpStart;
 		
 		BloodSee:
@@ -104,11 +104,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 			Loop;
 		
 		JumpMelee:
-			NDEM N 0 {
-				A_StartSound(attackSound, flags: ChanF_Overlap);
-				A_NTM_PainEnable();
-			}
-			
+			NDEM N 0 A_StartSound(attackSound, flags: ChanF_Overlap);
 			Goto Melee;
 			
 		JumpEnd:
@@ -122,6 +118,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 		Melee:
 			NDEM EF 7 Fast A_FaceTarget;
 			NDEM G 7 Fast A_SargAttack;
+			NDEM G 0 A_NTM_PainEnable;
 			Goto See;
 		
 		Pain:

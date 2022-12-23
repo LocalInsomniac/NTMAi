@@ -33,7 +33,7 @@ class NTM_ChaingunGuy : NTM_Enemy replaces ChaingunGuy {
 			Goto Super::See;
 		
 		DukeSee:
-			NCGZ ABCD 6 A_NTM_DukeChase;
+			NCGZ AABBCCDD 3 A_Chase;
 			Loop;
 		
 		BloodSee:

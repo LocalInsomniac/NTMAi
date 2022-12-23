@@ -7,6 +7,14 @@ class NTMAI : EventHandler {
 		return a + f * (b - a);
 	}
 	
+	static double Lerp3(double a, double b, double c, double f) {
+		if (f < 0) {
+			return NTMAI.Lerp(b, a, -f);
+		}
+		
+		return NTMAI.Lerp(b, c, f);
+	}
+	
 	/* ========
 	   HANDLING
 	   ======== */
@@ -15,6 +23,9 @@ class NTMAI : EventHandler {
 		let pmo = players[e.playerNumber].mo;
 		
 		if (pmo) {
+			pmo.A_TakeInventory("NTM_Bloody");
+			pmo.A_TakeInventory("NTM_PistolShots");
+			
 			if (!pmo.CountInv("NTM_System_Actor")) {
 				pmo.A_GiveInventory("NTM_System_Actor", 1);
 			}
@@ -28,6 +39,9 @@ class NTMAI : EventHandler {
 				nmo.fallState = 0;
 				nmo.fallTics = 0;
 				nmo.fallTics2 = 0;
+				
+				nmo.oldHealth = nmo.health;
+				nmo.painTics = 0;
 				
 				if (sv_ntm_startTwitch) {
 					// Emulate Duke3D twitching using spawn angle
@@ -125,7 +139,7 @@ class NTM_System : Inventory {
 
 // Actor System
 class NTM_System_Actor : NTM_System {
-	bool dead, gibbed, crushed;
+	bool dead, gibbed, crushed, chopped, rKO;
 	int fallTics, footprintState, footprintTics, footprintSide, deathLastFrame;
 	float deathLastHeight;
 	Actor gibDummy, bloodPool, footprintBloodPool;
@@ -189,8 +203,10 @@ class NTM_System_Actor : NTM_System {
 								owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 							}
 							
-							if (owner.target is "NTM_Player" && !Random(0, 5)) {
-								owner.A_GiveToTarget("NTM_System_Taunt");
+							let killer = owner.target;
+							
+							if (killer is "NTM_Player" && killer.health > 0 && !Random(0, 16)) {
+								killer.A_StartSound("NTM_Player/taunt", Chan_Voice);
 							}
 							
 							gibbed = true;
@@ -249,6 +265,37 @@ class NTM_System_Actor : NTM_System {
 						}
 					}
 				}
+				
+				// Shadow Warrior: Gore effects on melee kill
+				if (!chopped && owner.damageTypeReceived == "Chainsaw") {
+					for (int i = 0; i < 2; ++i) {
+						owner.A_SpawnItemEx("NTM_FlyingBlood", 8, 4, 28, FRandom(2, 5), FRandom(-5, -2), FRandom(2, 6), 0, SXF_UseBloodColor);
+					}
+					
+					owner.A_StartSound("NTM_Chainsaw/slash", Chan_Body, ChanF_Overlap);
+					owner.A_GiveToTarget("NTM_Bloody", 1);
+					chopped = true;
+				}
+			}
+			
+			// Shadow Warrior: Knockback on powerful weapons
+			if (!rKO && !owner.bBoss && (owner.damageTypeReceived == "Berserk" || owner.damageTypeReceived == "SuperShotgun")) {
+				let killer = owner.target;
+				
+				if (killer) {
+					double dist = owner.Distance3D(killer);
+					
+					if (dist > 0) {
+						double force = (8 / Max(1, dist * 0.005)) * (100 / owner.mass);
+						
+						if (force > 1.25) {
+							owner.A_FaceTarget();
+							owner.A_ChangeVelocity(-force, 0, force * 0.8, CVF_Relative);
+						}
+					}
+				}
+				
+				rKO = true;
 			}
 		} else {
 			// Duke Nukem 3D & Shadow Warrior: Bloody Footprints
@@ -351,19 +398,5 @@ class NTM_Dummy_Gib : Actor {
 		} else {
 			Destroy();
 		}
-	}
-}
-
-// Taunt System
-class NTM_System_Taunt : NTM_System {
-	override void AttachToOwner(Actor user) {
-		Super.AttachToOwner(user);
-		
-        if (!owner || owner.health <= 0) {
-			return;
-		}
-		
-		owner.A_StartSound("player/taunt", 2);
-		DepleteOrDestroy();
 	}
 }
