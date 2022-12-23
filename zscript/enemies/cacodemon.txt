@@ -17,6 +17,7 @@ class NTM_Cacodemon : NTM_Enemy replaces Cacodemon {
 		Species "Cacodemon";
 		NTM_Enemy.TicsPerChase 3;
 		
+		-FloorClip
 		+Float
 		+NoGravity
 	}

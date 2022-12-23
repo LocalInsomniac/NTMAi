@@ -46,6 +46,9 @@ caco/active DSCACACT
 caco/melee DSCLAW
 caco/pain DSCACPAI
 
+pain/active DSPEACT
+pain/melee DSCLAW
+
 /* =============
    CUSTOM SOUNDS
    ============= */

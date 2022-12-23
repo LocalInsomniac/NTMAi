@@ -55,6 +55,7 @@ class NTM_Gib : Actor {
 		+BounceOnWalls
 		+DontSplash
 		+ThruActors
+		+FloorClip
 	}
 	
 	States {
@@ -115,9 +116,8 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 }
 
 // Bullet Casing
-class NTM_BulletCasing : Actor {
+class NTM_BulletCasing : NTM_Gib {
 	Default {
-		FloatBobPhase 0;
 		Scale 0.16;
 		Radius 1;
 		Height 1;
@@ -125,16 +125,10 @@ class NTM_BulletCasing : Actor {
 		BounceSound "NTM_BulletCasing/bounce";
 		BounceType "Doom";
 		
-		+Corpse
-		+NoTeleport
-		+NoBlockMap
-		+NotOnAutomap
+		-Corpse
 		+CanBounceWater
-		+DontSplash
 		+Missile
 		+UseBounceState
-		+ForceXYBillboard
-		+ThruActors
 	}
 	
 	States

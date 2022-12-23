@@ -17,6 +17,7 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 		Species "LostSoul";
 		NTM_Enemy.TicsPerChase 3;
 		
+		-FloorClip
 		+Float
 		+NoGravity
 		+MissileMore
@@ -30,7 +31,11 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 	States {
 		Spawn:
 			NLOS AB 6 Bright A_Look;
-			Loop;
+			Goto Spawn + 1;
+		
+		See:
+			NLOS A 0 A_JumpIf(bSkullFly, "Missile2");
+			Goto Super::See;
 			
 		DukeSee:
 			NLOS AABB 3 Bright A_Chase;
@@ -55,9 +60,16 @@ class NTM_LostSoul : NTM_Enemy replaces LostSoul {
 			NLOS CD 4 Bright A_FaceTarget;
 			NLOS C 2 Bright A_FaceTarget;
 			NLOS C 2 Bright A_SkullAttack;
-			NLOS D 4 Bright A_JumpIf(vel.xy.Length() < 10, "See");
+		Missile2:
+			NLOS D 4 Bright A_JumpIf(vel.xy.Length() < 10, 2);
 			NLOS C 4 Bright;
-			Goto Missile + 4;
+			Loop;
+			
+			NLOS D 0 {
+				bSkullFly = false;
+			}
+			
+			Goto See;
 			
 		Pain:
 			NLOS E 6 Bright A_Pain;
