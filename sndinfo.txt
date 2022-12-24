@@ -29,7 +29,15 @@ menu/clear DSEMPTY
 weapons/chngun DSCHNGUN
 
 chainguy/sight DSCGSIT
-chainguy/active DSCGACT
+
+chainguy/active1 DSEMPTY
+chainguy/active2 DSCGACT
+
+$random chainguy/active {
+	chainguy/active1
+	chainguy/active2
+}
+
 chainguy/attack DSCHNGUN
 chainguy/pain DSCGPAIN
 chainguy/death DSCGDEAD
