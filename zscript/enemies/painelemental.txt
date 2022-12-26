@@ -53,7 +53,7 @@ class NTM_PainElemental : NTM_Enemy replaces PainElemental {
 		
 		Melee:
 			NPAI DE 5 A_FaceTarget;
-			NPAI F 5 Bright A_CustomMeleeAttack(Random(1, 6) * 10, "pain/melee");
+			NPAI F 5 A_CustomMeleeAttack(Random(1, 6) * 10, "pain/melee");
 			Goto See;
 		
 		Missile:
@@ -70,8 +70,8 @@ class NTM_PainElemental : NTM_Enemy replaces PainElemental {
 				}
 			}
 			
-			NPAI DE 5 A_FaceTarget;
-			NPAI F 5 Bright A_FaceTarget;
+			NPAI D 5 A_FaceTarget;
+			NPAI EF 5 Bright A_FaceTarget;
 			NPAI F 0 A_PainAttack;
 			Goto See;
 		

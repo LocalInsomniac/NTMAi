@@ -7,14 +7,6 @@ class NTMAI : EventHandler {
 		return a + f * (b - a);
 	}
 	
-	static double Lerp3(double a, double b, double c, double f) {
-		if (f < 0) {
-			return NTMAI.Lerp(b, a, -f);
-		}
-		
-		return NTMAI.Lerp(b, c, f);
-	}
-	
 	/* ========
 	   HANDLING
 	   ======== */
