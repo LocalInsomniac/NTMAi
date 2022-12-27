@@ -146,7 +146,7 @@ class NTM_System_Actor : NTM_System {
 		// Monster/Player death effects
 		if (owner.health <= 0) {
 			// Blood: Jittering death animation
-			if (sv_ntm_enemyMove == 1 && !owner.bBoss) {
+			if (sv_ntm_enemyMove == 1 && !owner.bBoss && !(owner is "PlayerPawn")) {
 				int frame = owner.curState.frame;
 				
 				if (deathLastFrame != frame) {
