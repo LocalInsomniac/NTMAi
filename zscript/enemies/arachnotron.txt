@@ -1,0 +1,111 @@
+class NTM_Arachnotron : NTM_Enemy replaces Arachnotron {
+	Default {
+		Health 500;
+		Radius 64;
+		Height 64;
+		Mass 600;
+		Speed 12;
+		PainChance 128;
+		SeeSound "baby/sight";
+		PainSound "baby/pain";
+		DeathSound "baby/death";
+		ActiveSound "baby/active";
+		Obituary "$OB_BABY";
+		Tag "$FN_ARACH";
+		Species "Arachnotron";
+		NTM_Enemy.TicsPerChase 3;
+		
+		+BossDeath
+		+MAP07Boss2
+	}
+	
+	States {
+		Spawn:
+			NARA B 10 A_Look;
+			Loop;
+		
+		See:
+			NARA B 15;
+			Goto Super::See;
+		
+		DukeSee:
+			NARA A 0 A_NTM_ArachnotronWalk;
+			NARA AABB 3 A_Chase;
+			NARA C 0 A_NTM_ArachnotronWalk;
+			NARA CCBB 3 A_Chase;
+			Loop;
+		
+		BloodSee:
+			NARA A 0 A_NTM_ArachnotronWalk;
+			NARA AABB 3 A_NTM_BloodChase;
+			NARA C 0 A_NTM_ArachnotronWalk;
+			NARA CCBB 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NARA A 0 A_NTM_ArachnotronWalk;
+			NARA A 1 A_NTM_SWChase;
+			NARA AA 1 A_NTM_SWChase2;
+			NARA A 1 A_NTM_SWChase;
+			NARA AA 1 A_NTM_SWChase2;
+			NARA B 1 A_NTM_SWChase;
+			NARA BB 1 A_NTM_SWChase2;
+			NARA B 1 A_NTM_SWChase;
+			NARA BB 1 A_NTM_SWChase2;
+			NARA C 0 A_NTM_ArachnotronWalk;
+			NARA C 1 A_NTM_SWChase;
+			NARA CC 1 A_NTM_SWChase2;
+			NARA C 1 A_NTM_SWChase;
+			NARA CC 1 A_NTM_SWChase2;
+			NARA B 1 A_NTM_SWChase;
+			NARA BB 1 A_NTM_SWChase2;
+			NARA B 1 A_NTM_SWChase;
+			NARA BB 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NARA D 15 A_FaceTarget;
+			
+			NARA E 2 Bright {
+				A_StartSound("baby/attack", Chan_Weapon);
+				A_SpawnProjectile("NTM_ArachnotronBall", 64);
+			}
+			
+			NARA D 2 A_FaceTarget;
+			NARA D 0 A_SpidRefire;
+			Goto Missile + 1;
+		
+		Pain:
+			NARA F 6 A_Pain;
+			Goto Super::See;
+		
+		Death:
+			NARA G 1 A_NTM_PreDeath;
+			NARA G 6 A_NTM_Death;
+			NARA H 7 A_NoBlocking;
+			NARA IJK 7;
+			NARA L -1 A_BossDeath;
+			Stop;
+		
+		Raise:
+			NARA LLKJIHG 5;
+			Goto Super::See;
+	}
+	
+	action void A_NTM_ArachnotronWalk() {
+		A_StartSound("baby/walk", Chan_Body, ChanF_Overlap, 0.5, Attn_Idle);
+	}
+}
+
+class NTM_ArachnotronBall : NTM_PlasmaBall {
+	Default {
+		Damage 3;
+		Translation "NTM_PlasmaBall_Arachnotron";
+	}
+	
+	States {
+		Death:
+			PLSE B 3 Bright;
+			Goto Super::Death + 1;
+	}
+}

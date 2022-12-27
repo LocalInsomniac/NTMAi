@@ -63,6 +63,8 @@ baron/active DSBRSACT
 baron/charge DSBRSJMP
 baron/pain DSBRSPAI
 
+baby/pain DSBSPPAI
+
 pain/active DSPEACT
 pain/melee DSCLAW
 
