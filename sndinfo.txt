@@ -54,6 +54,15 @@ caco/active DSCACACT
 caco/melee DSCLAW
 caco/pain DSCACPAI
 
+knight/sight DSBRSSIT
+knight/active DSBRSACT
+knight/pain DSBRSPAI
+knight/dead DSBRSDTH
+
+baron/active DSBRSACT
+baron/charge DSBRSJMP
+baron/pain DSBRSPAI
+
 pain/active DSPEACT
 pain/melee DSCLAW
 

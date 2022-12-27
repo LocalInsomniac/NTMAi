@@ -1,0 +1,185 @@
+class NTM_BaronOfHell : NTM_Enemy replaces BaronOfHell {
+	Default {
+		Health 1000;
+		Radius 24;
+		Height 64;
+		Mass 1000;
+		Speed 8;
+		PainChance 50;
+		BloodColor "Green";
+		SeeSound "baron/sight";
+		ActiveSound "baron/active";
+		PainSound "baron/pain";
+		DeathSound "baron/death";
+		Obituary "$OB_BARON";
+		HitObituary "$OB_BARONHIT";
+		Tag "$FN_BARON";
+		Species "BaronOfHell";
+		NTM_Enemy.TicsPerChase 3;
+		
+		+BossDeath
+		+E1M8Boss
+	}
+	
+	States {
+		Spawn:
+			NBRS A 10 A_Look;
+			Loop;
+		
+		See:
+			#### # 0 A_JumpIf((bOnMObj || pos.z <= floorZ) && target && CheckSight(target) && Distance3D(target) < 256 && !Random(0, 3), "Charge");
+			Goto Super::See;
+			
+		DukeSee:
+			NBRS AABBCCDD 3 A_Chase;
+			Goto See;
+		
+		BloodSee:
+			NBRS AABBCCDD 3 A_NTM_BloodChase;
+			Goto See;
+		
+		SWSee:
+			NBRS A 1 A_NTM_SWChase;
+			NBRS AA 1 A_NTM_SWChase2;
+			NBRS A 1 A_NTM_SWChase;
+			NBRS AA 1 A_NTM_SWChase2;
+			NBRS B 1 A_NTM_SWChase;
+			NBRS BB 1 A_NTM_SWChase2;
+			NBRS B 1 A_NTM_SWChase;
+			NBRS BB 1 A_NTM_SWChase2;
+			NBRS C 1 A_NTM_SWChase;
+			NBRS CC 1 A_NTM_SWChase2;
+			NBRS C 1 A_NTM_SWChase;
+			NBRS CC 1 A_NTM_SWChase2;
+			NBRS D 1 A_NTM_SWChase;
+			NBRS DD 1 A_NTM_SWChase2;
+			NBRS D 1 A_NTM_SWChase;
+			NBRS DD 1 A_NTM_SWChase2;
+			Goto See;
+		
+		Melee:
+		Missile:
+			#### # 0 A_Jump(100, "Missile3");
+			Goto Missile2;
+		
+		Missile2:
+			NBRS EF 6 A_FaceTarget;
+			NBRS G 8 A_BruisAttack;
+			Goto See;
+		
+		Missile3:
+			NBRS HI 7 A_FaceTarget;
+			
+			NBRS J 8 {
+				A_FatAttack3("NTM_BaronBall");
+				A_SpawnProjectile("NTM_BaronBall", 32);
+			}
+			
+			Goto See;
+		
+		Charge:
+			NBRS K 7 {
+				A_NTM_PainDisable();
+				A_FaceTarget();
+			}
+			
+			NBRS L 9 {
+				A_Recoil(-20);
+				A_StartSound("baron/charge");
+			}
+			
+			NBRS M 5 A_CustomMeleeAttack(10 * random(1, 8), "baron/melee");
+			NBRS M 0 A_NTM_PainEnable;
+			Goto See;
+		
+		Pain:
+			NBRS N 4 A_Pain;
+			Goto See;
+		
+		Death:
+			NBRS O 1 {
+				A_NTM_PreDeath();
+				
+				if (health >= GetGibHealth()) {
+					A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+					A_SpawnItemEx("NTM_FlyingGib3", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+				}
+			}
+			
+			NBRS O 6 A_NTM_Death;
+			NBRS P 7 A_NoBlocking;
+			NBRS QR 7;
+			NBRS S 21;
+			#### # -1 A_BossDeath;
+			Stop;
+		
+		Raise:
+			NBRS S 8 A_NTM_PainEnable;
+			NBRS SSRQPO 8;
+			Goto See;
+	}
+}
+
+class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight {
+	Default {
+		Health 500;
+		Translation "16:47=48:79";
+		SeeSound "knight/sight";
+		ActiveSound "knight/active";
+		PainSound "knight/pain";
+		DeathSound "knight/death";
+		HitObituary "$OB_KNIGHTHIT";
+		Obituary "$OB_KNIGHT";
+		Tag "$FN_HELL";
+		NTM_Enemy.TicsPerChase 2;
+		
+		+MissileMore
+		-BossDeath
+	}
+	
+	States {
+		DukeSee:
+			NBRS AABBCCDD 2 A_Chase;
+			Goto See;
+		
+		BloodSee:
+			NBRS AABBCCDD 2 A_NTM_BloodChase;
+			Goto See;
+		
+		SWSee:
+			NBRS A 1 A_NTM_SWChase;
+			NBRS A 1 A_NTM_SWChase2;
+			NBRS A 1 A_NTM_SWChase;
+			NBRS A 1 A_NTM_SWChase2;
+			NBRS B 1 A_NTM_SWChase;
+			NBRS B 1 A_NTM_SWChase2;
+			NBRS B 1 A_NTM_SWChase;
+			NBRS B 1 A_NTM_SWChase2;
+			NBRS C 1 A_NTM_SWChase;
+			NBRS C 1 A_NTM_SWChase2;
+			NBRS C 1 A_NTM_SWChase;
+			NBRS C 1 A_NTM_SWChase2;
+			NBRS D 1 A_NTM_SWChase;
+			NBRS D 1 A_NTM_SWChase2;
+			NBRS D 1 A_NTM_SWChase;
+			NBRS D 1 A_NTM_SWChase2;
+			Goto See;
+		
+		Melee:
+		Missile:
+			Goto Missile2;
+	}
+}
+
+class NTM_BaronBall : BaronBall {
+	States {
+		Death:
+			NEXP A 2 Bright {
+				scale *= 0.48;
+				A_SetTranslation("NTM_Explosion_BaronOfHell");
+			}
+			
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}

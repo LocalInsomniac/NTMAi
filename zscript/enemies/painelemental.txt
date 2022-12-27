@@ -12,6 +12,7 @@ class NTM_PainElemental : NTM_Enemy replaces PainElemental {
 		DeathSound "pain/death";
 		ActiveSound "pain/active";
 		Tag "$FN_PAIN";
+		Species "PainElemental";
 		NTM_Enemy.ticsPerChase 3;
 		
 		-FloorClip

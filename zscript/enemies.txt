@@ -5,6 +5,7 @@
 #include "zscript/enemies/demon.txt"
 #include "zscript/enemies/lostsoul.txt"
 #include "zscript/enemies/cacodemon.txt"
+#include "zscript/enemies/baronofhell.txt"
 #include "zscript/enemies/painelemental.txt"
 #include "zscript/enemies/german.txt"
 
