@@ -1,4 +1,4 @@
-class NTM_Cacodemon : NTM_Enemy replaces Cacodemon {
+class NTM_Cacodemon : NTM_Enemy {
 	Default {
 		Health 400;
 		Radius 31;

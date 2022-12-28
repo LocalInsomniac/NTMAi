@@ -89,6 +89,97 @@ class NTMAI : EventHandler {
 	
 	override void CheckReplacement(ReplaceEvent e) {
 		switch (e.replacee.GetClassName()) {
+			case 'Zombieman':
+				if (sv_ntm_r_zombieman) {
+					e.replacement = "NTM_Zombieman";
+				}
+			break;
+			
+			case 'ShotgunGuy':
+				if (sv_ntm_r_shotgunGuy) {
+					e.replacement = "NTM_ShotgunGuy";
+				}
+			break;
+			
+			case 'ChaingunGuy':
+				if (sv_ntm_r_heavyWeaponDude) {
+					e.replacement = "NTM_ChaingunGuy";
+				}
+				
+			break;
+			
+			case 'DoomImp':
+				if (sv_ntm_r_imp) {
+					e.replacement = "NTM_Imp";
+				}
+			break;
+			
+			case 'LostSoul':
+				if (sv_ntm_r_lostSoul) {
+					e.replacement = "NTM_LostSoul";
+				}
+			break;
+			
+			case 'Demon':
+				if (sv_ntm_r_demon) {
+					e.replacement = "NTM_Demon";
+				}
+			break;
+			
+			case 'Spectre':
+				if (sv_ntm_r_spectre) {
+					e.replacement = "NTM_Spectre";
+				}
+			break;
+			
+			case 'Cacodemon':
+				if (sv_ntm_r_cacodemon) {
+					e.replacement = "NTM_Cacodemon";
+				}
+			break;
+			
+			case 'HellKnight':
+				if (sv_ntm_r_hellKnight) {
+					e.replacement = "NTM_HellKnight";
+				}
+			break;
+			
+			case 'BaronOfHell':
+				if (sv_ntm_r_baronOfHell) {
+					e.replacement = "NTM_BaronOfHell";
+				}
+			break;
+			
+			case 'Arachnotron':
+				if (sv_ntm_r_arachnotron) {
+					e.replacement = "NTM_Arachnotron";
+				}
+			break;
+			
+			case 'PainElemental':
+				if (sv_ntm_r_painElemental) {
+					e.replacement = "NTM_PainElemental";
+				}
+			break;
+			
+			case 'Revenant':
+				if (sv_ntm_r_revenant) {
+					e.replacement = "NTM_Revenant";
+				}
+			break;
+			
+			case 'Fatso':
+				if (sv_ntm_r_mancubus) {
+					e.replacement = "NTM_Mancubus";
+				}
+			break;
+			
+			case 'Archvile':
+				if (sv_ntm_r_archVile) {
+					e.replacement = "NTM_ArchVile";
+				}
+			break;
+			
 			case 'RealGibs':
 				e.replacement = "NTM_RealGibs";
 			break;
@@ -97,6 +188,66 @@ class NTMAI : EventHandler {
 	
 	override void CheckReplacee(ReplacedEvent e) {
 		switch (e.replacement.GetClassName()) {
+			case 'NTM_Zombieman':
+				e.replacee = "Zombieman";
+			break;
+			
+			case 'NTM_ShotgunGuy':
+				e.replacee = "ShotgunGuy";
+			break;
+			
+			case 'NTM_ChaingunGuy':
+				e.replacee = "ChaingunGuy";
+			break;
+			
+			case 'NTM_DoomImp':
+				e.replacee = "DoomImp";
+			break;
+			
+			case 'NTM_Demon':
+				e.replacee = "Demon";
+			break;
+			
+			case 'NTM_Spectre':
+				e.replacee = "Cacodemon";
+			break;
+			
+			case 'NTM_LostSoul':
+				e.replacee = "LostSoul";
+			break;
+			
+			case 'NTM_Cacodemon':
+				e.replacee = "Cacodemon";
+			break;
+			
+			case 'NTM_HellKnight':
+				e.replacee = "HellKnight";
+			break;
+			
+			case 'NTM_BaronOfHell':
+				e.replacee = "BaronOfHell";
+			break;
+			
+			case 'NTM_Arachnotron':
+				e.replacee = "Arachnotron";
+			break;
+			
+			case 'NTM_PainElemental':
+				e.replacee = "PainElemental";
+			break;
+			
+			case 'NTM_Revenant':
+				e.replacee = "Revenant";
+			break;
+			
+			case 'NTM_Mancubus':
+				e.replacee = "Fatso";
+			break;
+			
+			case 'NTM_ArchVile':
+				e.replacee = "ArchVile";
+			break;
+			
 			case 'NTM_RealGibs':
 				e.replacee = "RealGibs";
 			break;

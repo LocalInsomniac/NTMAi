@@ -1,4 +1,4 @@
-class NTM_PainElemental : NTM_Enemy replaces PainElemental {
+class NTM_PainElemental : NTM_Enemy {
 	Default {
 		Health 400;
 		Radius 31;

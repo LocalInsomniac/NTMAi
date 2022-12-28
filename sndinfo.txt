@@ -5,7 +5,7 @@ $limit weapons/rocklx 0
 $limit weapons/bfgx 0
 $limit world/barrelx 0
 
-misc/k_pkup	DSKEYUP
+misc/k_pkup	NSKEYUP
 
 $random menu/activate {
 	weapons/shotgf

@@ -1,4 +1,4 @@
-class NTM_Mancubus : NTM_Enemy replaces Fatso {
+class NTM_Mancubus : NTM_Enemy {
 	Default {
 		Health 600;
 		Radius 48;

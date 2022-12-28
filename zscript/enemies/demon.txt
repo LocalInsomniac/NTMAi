@@ -1,4 +1,4 @@
-class NTM_Demon : NTM_Enemy replaces Demon {
+class NTM_Demon : NTM_Enemy {
 	Default {
 		Health 150;
 		PainChance 180;
@@ -154,7 +154,7 @@ class NTM_Demon : NTM_Enemy replaces Demon {
 	}
 }
 
-class NTM_Spectre : NTM_Demon replaces Spectre {
+class NTM_Spectre : NTM_Demon {
 	Default {
 		RenderStyle "Stencil";
 		Alpha 0.3;

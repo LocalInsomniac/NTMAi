@@ -1,4 +1,4 @@
-class NTM_Imp : NTM_Enemy replaces DoomImp {
+class NTM_Imp : NTM_Enemy {
 	Default {
 		Health 60;
 		Radius 20;

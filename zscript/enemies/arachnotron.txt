@@ -1,4 +1,4 @@
-class NTM_Arachnotron : NTM_Enemy replaces Arachnotron {
+class NTM_Arachnotron : NTM_Enemy {
 	Default {
 		Health 500;
 		Radius 64;

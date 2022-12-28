@@ -1,4 +1,4 @@
-class NTM_LostSoul : NTM_Enemy replaces LostSoul {
+class NTM_LostSoul : NTM_Enemy {
 	Default {
 		Health 60;
 		Radius 16;

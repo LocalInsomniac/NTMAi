@@ -1,4 +1,4 @@
-class NTM_ShotgunGuy : NTM_Zombieman replaces ShotgunGuy {
+class NTM_ShotgunGuy : NTM_Zombieman {
 	Default {
 		Health 30;
 		Mass 100;

@@ -1,4 +1,4 @@
-class NTM_German : NTM_Enemy replaces WolfensteinSS {
+class NTM_German : NTM_Enemy {
 	Default {
 		Health 50;
 		Radius 20;

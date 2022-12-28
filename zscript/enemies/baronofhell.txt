@@ -1,4 +1,4 @@
-class NTM_BaronOfHell : NTM_Enemy replaces BaronOfHell {
+class NTM_BaronOfHell : NTM_Enemy {
 	Default {
 		Health 1000;
 		Radius 24;

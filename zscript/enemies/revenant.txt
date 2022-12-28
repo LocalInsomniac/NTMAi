@@ -1,4 +1,4 @@
-class NTM_Revenant : NTM_Enemy replaces Revenant {
+class NTM_Revenant : NTM_Enemy {
 	int lastFlyTime;
     bool stopFlying;
 	

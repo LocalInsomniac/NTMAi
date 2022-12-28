@@ -1,4 +1,4 @@
-class NTM_Archvile : NTM_Enemy replaces Archvile {
+class NTM_ArchVile : NTM_Enemy {
 	Default {
 		Health 700;
 		Radius 20;
@@ -67,7 +67,7 @@ class NTM_Archvile : NTM_Enemy replaces Archvile {
 				A_FaceTarget();
 			}
 			
-			NARC H 8 Bright A_VileTarget("NTM_ArchvileFire");
+			NARC H 8 Bright A_VileTarget("NTM_ArchVileFire");
 			NARC IJKLMN 8 Bright A_FaceTarget;
 			
 			NARC O 8 Bright {
@@ -82,7 +82,7 @@ class NTM_Archvile : NTM_Enemy replaces Archvile {
 						target.TraceBleed(newDmg > 0 ? newDmg : 20, self);
 						
 						// Explode the target
-						Actor boom = Spawn("NTM_ArchvileExplosion", target.Vec3Angle(24, target.angle, 0));
+						Actor boom = Spawn("NTM_ArchVileExplosion", target.Vec3Angle(24, target.angle, 0));
 						
 						if (boom) {
 							boom.A_StartSound("vile/stop");
@@ -121,11 +121,11 @@ class NTM_Archvile : NTM_Enemy replaces Archvile {
 	}
 }
 
-class NTM_ArchvileFire : ArchvileFire {
+class NTM_ArchVileFire : ArchvileFire {
 	bool die;
 	
 	Default {
-		Translation "NTM_Explosion_Archvile";
+		Translation "NTM_Explosion_ArchVile";
 		XScale 2.5;
 		YScale 0;
 	}
@@ -164,9 +164,9 @@ class NTM_ArchvileFire : ArchvileFire {
 	}
 }
 
-class NTM_ArchvileExplosion : ArchvileFire {
+class NTM_ArchVileExplosion : ArchvileFire {
 	Default {
-		Translation "NTM_Explosion_Archvile";
+		Translation "NTM_Explosion_ArchVile";
 		Scale 0.8;
 		
 		+NotOnAutoMap

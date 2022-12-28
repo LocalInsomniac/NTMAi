@@ -1,4 +1,4 @@
-class NTM_ChaingunGuy : NTM_Enemy replaces ChaingunGuy {
+class NTM_ChaingunGuy : NTM_Enemy {
 	bool fired;
 	
 	Default {
