@@ -364,7 +364,7 @@ class NTM_System_Actor : NTM_System {
 					bool result;
 					Actor bloodP;
 					
-					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
+					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", -1, flags: SXF_UseBloodColor);
 					
 					if (bloodP) {
 						bloodPool = bloodP;
