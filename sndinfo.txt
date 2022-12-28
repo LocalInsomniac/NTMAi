@@ -73,6 +73,10 @@ skeleton/tracex NSEXPLOD
 $limit skeleton/tracex 0
 $attenuation skeleton/tracex 0.75
 
+vile/stop NSEXPLOD
+$limit vile/stop 0
+$attenuation vile/stop 0.7
+
 pain/active DSPEACT
 pain/melee DSCLAW
 

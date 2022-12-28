@@ -1,0 +1,2 @@
+StartUpTitle = "Nobody Told Me About id 1.0 BETA"
+StartUpColors = "FF 10 10", "90 00 00"
