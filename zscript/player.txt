@@ -158,7 +158,7 @@ class NTM_Player : DoomPlayer {
 				
 				case (1): // Thud
 					if (pos.z <= floorZ || bOnMObj) {
-						A_SetPitch(pitch + 15, SPF_Interpolate);
+						A_SetViewPitch(viewPitch + 15, SPF_Interpolate);
 						fallState = 2;
 						fallTics = 0;
 						fallTics2 += 10;
@@ -171,7 +171,7 @@ class NTM_Player : DoomPlayer {
 							vel.xy *= 0.16;
 						}
 						
-						A_SetPitch(pitch - 1.5, SPF_Interpolate);
+						A_SetViewPitch(viewPitch - 1.5, SPF_Interpolate);
 						--fallTics2;
 					} else {
 						fallState = 0;
