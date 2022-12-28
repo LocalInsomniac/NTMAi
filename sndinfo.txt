@@ -42,6 +42,8 @@ chainguy/attack DSCHNGUN
 chainguy/pain DSCGPAIN
 chainguy/death DSCGDEAD
 
+imp/pain DSBGPAIN
+
 demon/attack DSSGTJMP
 
 spectre/attack DSSGTJMP
@@ -57,7 +59,7 @@ caco/pain DSCACPAI
 knight/sight DSBRSSIT
 knight/active DSBRSACT
 knight/pain DSBRSPAI
-knight/dead DSBRSDTH
+knight/death DSBRSDTH
 
 baron/active DSBRSACT
 baron/charge DSBRSJMP
