@@ -9,6 +9,7 @@
 #include "zscript/enemies/arachnotron.txt"
 #include "zscript/enemies/mancubus.txt"
 #include "zscript/enemies/painelemental.txt"
+#include "zscript/enemies/revenant.txt"
 #include "zscript/enemies/german.txt"
 
 class NTM_Enemy : Actor {
@@ -61,9 +62,9 @@ class NTM_Enemy : Actor {
 				vel.xy *= 0.8;
 			}
 			
-			bNoTeleport = noTeleport;
 			A_Chase();
 			SetOrigin(oldPos, true);
+			bNoTeleport = noTeleport;
 			A_Recoil(speed * -0.16);
 		} else {
 			A_Chase();
