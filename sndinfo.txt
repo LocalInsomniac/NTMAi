@@ -67,6 +67,12 @@ baby/pain DSBSPPAI
 
 fatso/active DSMANACT
 
+skeleton/fly DSSKEFLY
+skeleton/pain DSSKEPAI
+skeleton/tracex NSEXPLOD
+$limit skeleton/tracex 0
+$attenuation skeleton/tracex 0.75
+
 pain/active DSPEACT
 pain/melee DSCLAW
 
