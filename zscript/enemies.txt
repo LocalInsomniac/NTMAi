@@ -51,25 +51,49 @@ class NTM_Enemy : Actor {
 	// NTMAi monster actions
 	
 	action void A_NTM_BloodChase(int flags = 0) {
-		if (CheckMove(pos.xy)) {
-			bool noTeleport = bNoTeleport;
-			Vector3 oldPos = pos;
+		// Source: https://github.com/caligari87/HideousDestructor/blob/master/zscript/mob.txt#L360
+		if (!target) {
+			A_ClearTarget();
+			SetStateLabel("spawn");
 			
-			bNoTeleport = true;
-			
-			if (!bOnMObj && pos.z > floorZ) {
-				vel.xy *= 0.5;
-			} else {
-				vel.xy *= 0.8;
-			}
-			
-			A_Chase("_a_chase_default", "_a_chase_default", flags);
-			SetOrigin(oldPos, true);
-			bNoTeleport = noTeleport;
-			A_Recoil(speed * -0.16);
-		} else {
-			A_Chase();
+			return;
 		}
+		
+		if (!CheckMove(pos.xy)) {
+			A_Wander();
+			
+			return;
+		}
+		
+		if (vel.xy.Length() == 0) {
+			if (target) {
+				NewChaseDir();
+			} else {
+				RandomChaseDir();
+			}
+		}
+		
+		bool beFrightened = bFrightened;
+		bool beChaseGoal = bChaseGoal;
+		Vector3 oldPos = pos;
+		
+		A_Chase("_a_chase_default", "_a_chase_default", flags);
+		
+		if (curState == FindState("Melee") || curState == FindState("Missile") || pos == oldPos) {
+			return;
+		}
+		
+		Vector3 posDiff = pos - oldPos;
+		
+		if (posDiff dot posDiff < 10000){
+			SetOrigin(oldPos, true);
+			vel *= 0.7;
+			vel += posDiff.Unit() * speed * 0.18;
+		}
+		
+		bNoDropoff = !bFloat;
+		bFrightened = beFrightened;
+		bChaseGoal = beChaseGoal;
 	}
 	
 	action void A_NTM_SWChase(int flags = 0) {
@@ -80,7 +104,7 @@ class NTM_Enemy : Actor {
 			A_Chase("_a_chase_default", "_a_chase_default", flags);
 			speed *= tpc;
 		} else {
-			A_Chase();
+			A_Wander();
 		}
 	}
 	
