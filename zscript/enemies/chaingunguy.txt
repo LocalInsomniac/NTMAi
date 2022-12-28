@@ -68,7 +68,7 @@ class NTM_ChaingunGuy : NTM_Enemy replaces ChaingunGuy {
 			NCGZ F 2 Bright A_CPosAttack;
 			NCGZ E 2 A_FaceTarget;
 			NCGZ F 2 Bright A_CPosAttack;
-			NCGZ F 2 A_CPosRefire;
+			NCGZ E 2 A_CPosRefire;
 			Goto Missile + 1;
 		
 		Pain:
