@@ -87,6 +87,8 @@ class NTM_Mancubus : NTM_Enemy replaces Fatso {
 	}
 	
 	action void A_NTM_MancubusAttack(double leftOffset = 5.625, double rightOffset = -5.625) {
+		A_FaceTarget();
+		
 		Actor missile = A_SpawnProjectile("NTM_MancubusShot", 24, 0, leftOffset);
 		
 		if (missile) {
