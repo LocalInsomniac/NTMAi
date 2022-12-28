@@ -7,6 +7,7 @@
 #include "zscript/enemies/cacodemon.txt"
 #include "zscript/enemies/baronofhell.txt"
 #include "zscript/enemies/arachnotron.txt"
+#include "zscript/enemies/mancubus.txt"
 #include "zscript/enemies/painelemental.txt"
 #include "zscript/enemies/german.txt"
 
@@ -36,6 +37,7 @@ class NTM_Enemy : Actor {
 					break;
 					
 					case 2:
+					default:
 						SetStateLabel("SWSee");
 					break;
 				}

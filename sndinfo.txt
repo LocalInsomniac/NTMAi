@@ -65,6 +65,8 @@ baron/pain DSBRSPAI
 
 baby/pain DSBSPPAI
 
+fatso/active DSMANACT
+
 pain/active DSPEACT
 pain/melee DSCLAW
 
