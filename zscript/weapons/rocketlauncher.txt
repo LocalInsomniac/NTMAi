@@ -67,12 +67,9 @@ class NTM_Rocket : Rocket replaces Rocket {
 			Stop;
 		
 		BrainExplode:
-			TNT1 A 20 {
-				A_SpawnItemEx("NTM_Explosion2");
-				A_Explode();
-				A_Quake(2, 15, 0, 512, "");
-			}
-			
+			TNT1 A 0 A_SpawnItemEx("NTM_Explosion2");
+			TNT1 A 0 A_Explode;
+			TNT1 A 20 A_Quake(2, 15, 0, 512, "");
 			TNT1 A 10 A_BrainExplode;
 			Stop;
 	}
