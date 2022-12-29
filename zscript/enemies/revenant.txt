@@ -36,7 +36,7 @@ class NTM_Revenant : NTM_Enemy {
 		
 		See:
 			#### # 0 {
-				if (sv_ntm_monsterFly) {
+				if (sv_ntm_enemyFly) {
 					if (stopFlying) {
 						if ((pos.z - floorZ) < maxStepHeight) {
 							A_StopSound(Chan_Item);
