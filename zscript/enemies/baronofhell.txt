@@ -173,8 +173,13 @@ class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight {
 
 class NTM_BaronBall : BaronBall {
 	States {
+		Spawn:
+			BAL7 AB 4 BRIGHT;
+			Loop;
+			
 		Death:
 			NEXP A 2 Bright {
+				bForceXYBillboard = true;
 				scale *= 0.48;
 				A_SetTranslation("NTM_Explosion_BaronOfHell");
 			}

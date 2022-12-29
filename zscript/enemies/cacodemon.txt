@@ -49,7 +49,12 @@ class NTM_Cacodemon : NTM_Enemy {
 		Missile:
 			NCAC B 5 A_FaceTarget;
 			NCAC C 5 A_FaceTarget;
-			NCAC D 5 Bright A_SpawnProjectile("NTM_CacodemonBall", 32);
+			
+			NCAC D 5 Bright {
+				A_FaceTarget();
+				A_SpawnProjectile("NTM_CacodemonBall", 32);
+			}
+			
 			Goto See;
 		
 		Pain:
@@ -80,6 +85,10 @@ class NTM_CacodemonBall : CacodemonBall {
 	}
 	
 	States {
+		Spawn:
+			BAL2 AB 4 Bright;
+			Loop;
+			
 		Death:
 			NEXP A 2 Bright {
 				scale *= 0.48;

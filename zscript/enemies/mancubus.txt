@@ -107,8 +107,13 @@ class NTM_Mancubus : NTM_Enemy {
 
 class NTM_MancubusShot : FatShot {
 	States {
+		Spawn:
+			MANF AB 4 Bright;
+			Loop;
+		
 		Death:
 			NEXP A 2 Bright {
+				bForceXYBillboard = true;
 				scale *= 0.85;
 				A_SetTranslation("NTM_Explosion");
 			}

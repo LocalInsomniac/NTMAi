@@ -107,6 +107,10 @@ class NTM_ImpBall : DoomImpBall {
 	}
 	
 	States {
+		Spawn:
+			BAL1 AB 4 Bright;
+			Loop;
+			
 		Death:
 			NEXP A 2 Bright {
 				scale *= 0.45;

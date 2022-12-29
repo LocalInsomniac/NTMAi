@@ -206,6 +206,7 @@ class NTM_RevenantTracer : RevenantTracer {
 			
 		Death:
 			NEXP A 2 Bright {
+				bForceXYBillboard = true;
 				scale *= 0.48;
 				A_SetTranslation("NTM_Explosion");
 			}
