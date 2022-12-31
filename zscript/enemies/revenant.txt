@@ -38,7 +38,7 @@ class NTM_Revenant : NTM_Enemy {
 			#### # 0 {
 				if (sv_ntm_enemyFly) {
 					if (stopFlying) {
-						if ((pos.z - floorZ) < maxStepHeight) {
+						if ((pos.z - GetGroundHeight()) < maxStepHeight) {
 							A_StopSound(Chan_Item);
 							bNoGravity = false;
 							lastFlyTime = level.time;
@@ -95,7 +95,7 @@ class NTM_Revenant : NTM_Enemy {
 			Stop;
 		
 		DukeSee:
-			NREV AABBCCDDEEFF 2 A_Chase;
+			NREV AABBCCDDEEFF 2 A_NTM_DukeChase;
 			Goto See;
 		
 		BloodSee:
@@ -130,7 +130,7 @@ class NTM_Revenant : NTM_Enemy {
 			Goto See;
 		
 		DukeFly:
-			NREV S 2 Bright A_Chase;
+			NREV S 2 Bright A_NTM_DukeChase;
 			Goto See;
 		
 		BloodFly:
@@ -188,8 +188,7 @@ class NTM_Revenant : NTM_Enemy {
 			Stop;
 			
 		Raise:
-			NREV R 5 A_NTM_PainEnable;
-			NREV QPON 5;
+			NREV RQPON 5;
 			Goto See;
 	}
 }

@@ -24,7 +24,7 @@ class NTM_German : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NGER BBCCDDEE 3 A_Chase;
+			NGER BBCCDDEE 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
@@ -105,8 +105,7 @@ class NTM_German : NTM_Enemy {
 			Stop;
 		
 		Raise:
-			NGER L 5 A_NTM_PainEnable;
-			NGER KJI 5;
+			NGER LKJI 5;
 			Goto See;
 	}
 	

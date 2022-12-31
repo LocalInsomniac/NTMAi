@@ -6,6 +6,7 @@ class NTM_Imp : NTM_Enemy {
 		Mass 100;
 		Speed 9;
 		PainChance 200;
+		MaxDropOffHeight 80;
 		SeeSound "imp/sight";
 		PainSound "imp/pain";
 		DeathSound "imp/death";
@@ -23,7 +24,7 @@ class NTM_Imp : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NIMP AABBCCDD 3 A_Chase;
+			NIMP AABBCCDD 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
@@ -86,6 +87,10 @@ class NTM_Imp : NTM_Enemy {
 		Raise:
 			NIMP PONML 6;
 			Goto See;
+		
+		Leap:
+			NIMP G 1 A_NTM_Leap;
+			Loop;
 	}
 	
 	action void A_NTM_TroopMelee() {
@@ -95,6 +100,11 @@ class NTM_Imp : NTM_Enemy {
 	
 	action void A_NTM_TroopAttack() {
 		A_CustomComboAttack("NTM_ImpBall", 32, 3 * Random(2, 8), "imp/melee");
+	}
+	
+	override void PostBeginPlay() {
+		Super.PostBeginPlay();
+		leapDistance = 360;
 	}
 }
 

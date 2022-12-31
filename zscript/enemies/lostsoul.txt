@@ -38,7 +38,7 @@ class NTM_LostSoul : NTM_Enemy {
 			Goto Super::See;
 			
 		DukeSee:
-			NLOS AABB 3 Bright A_Chase;
+			NLOS AABB 3 Bright A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:

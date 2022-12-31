@@ -23,7 +23,7 @@ class NTM_Zombieman : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NZOM AABBCCDD 3 A_Chase;
+			NZOM AABBCCDD 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
@@ -172,8 +172,7 @@ class NTM_Zombieman : NTM_Enemy {
 			Stop;
 		
 		Raise:
-			NZOM K 5 A_NTM_PainEnable;
-			NZOM JIH 5;
+			NZOM KJIH 5;
 			Goto See;
 	}
 	

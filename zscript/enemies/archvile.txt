@@ -27,7 +27,7 @@ class NTM_ArchVile : NTM_Enemy {
 			Loop;
 			
 		DukeSee:
-			NARC AABBCCDDEEFF 2 A_VileChase;
+			NARC AABBCCDDEEFF 2 A_NTM_DukeChase(CHF_Resurrect);
 			Loop;
 		
 		BloodSee:

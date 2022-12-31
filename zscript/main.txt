@@ -7,6 +7,10 @@ class NTMAI : EventHandler {
 		return a + f * (b - a);
 	}
 	
+	static Vector3 Lerp3(Vector3 a, Vector3 b, double f) {
+		return (a + (f * (b - a)));
+	}
+	
 	/* ========
 	   HANDLING
 	   ======== */

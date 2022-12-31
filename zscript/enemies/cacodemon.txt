@@ -28,7 +28,7 @@ class NTM_Cacodemon : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NCAC A 3 A_Chase;
+			NCAC A 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:

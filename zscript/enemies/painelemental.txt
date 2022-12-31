@@ -26,7 +26,7 @@ class NTM_PainElemental : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NPAI AABBCCBB 3 A_Chase;
+			NPAI AABBCCBB 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:

@@ -25,7 +25,7 @@ class NTM_Mancubus : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NMAN AABBCCDDEEFF 4 A_Chase;
+			NMAN AABBCCDDEEFF 4 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:

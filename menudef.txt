@@ -6,7 +6,7 @@ OptionValue "NTM_Options_Soulsphere" {
 
 OptionValue "NTM_Options_EnemyMovementStyle" {
     0, "Duke Nukem 3D"
-    1, "Blood"
+    1, "Blood (Experimental)"
 	2, "Shadow Warrior"
 }
 
@@ -33,6 +33,7 @@ OptionMenu "NTM_Options" {
 	StaticText ""
 	Option "Enemy Movement Style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
 	Option "Zombies Throw Grenades On Hard Difficulties", "sv_ntm_grenadiers", "YesNo"
+	Option "Imps Leap Over Ledges", "sv_ntm_enemyLeap", "YesNo"
 	Option "Flying Revenants", "sv_ntm_enemyFly", "OnOff"
 }
 

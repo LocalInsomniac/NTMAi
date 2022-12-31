@@ -27,11 +27,11 @@ class NTM_BaronOfHell : NTM_Enemy {
 			Loop;
 		
 		See:
-			#### # 0 A_JumpIf((bOnMObj || pos.z <= floorZ) && target && CheckSight(target) && Distance3D(target) < 256 && !Random(0, 3), "Charge");
+			#### # 0 A_JumpIf(target && CheckOnGround() && !CheckPitBeforeTarget() && Distance3D(target) < 256 && !Random(0, 3), "Charge");
 			Goto Super::See;
 			
 		DukeSee:
-			NBRS AABBCCDD 3 A_Chase;
+			NBRS AABBCCDD 3 A_NTM_DukeChase;
 			Goto See;
 		
 		BloodSee:
@@ -114,8 +114,7 @@ class NTM_BaronOfHell : NTM_Enemy {
 			Stop;
 		
 		Raise:
-			NBRS S 8 A_NTM_PainEnable;
-			NBRS SSRQPO 8;
+			NBRS SSSRQPO 8;
 			Goto See;
 	}
 }

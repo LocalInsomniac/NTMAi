@@ -30,9 +30,9 @@ class NTM_Arachnotron : NTM_Enemy {
 		
 		DukeSee:
 			NARA A 0 A_NTM_ArachnotronWalk;
-			NARA AABB 3 A_Chase;
+			NARA AABB 3 A_NTM_DukeChase;
 			NARA C 0 A_NTM_ArachnotronWalk;
-			NARA CCBB 3 A_Chase;
+			NARA CCBB 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
