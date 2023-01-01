@@ -331,6 +331,8 @@ class NTM_BloodPool : NTM_BloodSpot {
 // Bloody Footprint
 class NTM_BloodyFootprint : NTM_BloodSpot {
 	Default {
+		Scale 0.48;
+		
 		+FloorClip
 	}
 	
