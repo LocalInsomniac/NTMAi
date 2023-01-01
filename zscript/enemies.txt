@@ -118,21 +118,21 @@ class NTM_Enemy : Actor {
 			return false;
 		}
 		
-		bNoDropOff = false;
-		
 		/* 1. If we are standing
-		   2. and there is a 1/4 chance
+		   2. and there is a 1/20 chance
 		   3a. we can jump upwards and the target has a bigger height
 		       difference than maxStepHeight
 		   3b. we can jump forwards and there's a deep pit in front of us
 		   4. and the target is within max jump radius
 		   5. and there are no obstacles in front of us */
-        if (CheckOnGround(false) && !Random(0, 24) && ((flags & JF_Up && Abs(target.pos.z - pos.z) > default.maxStepHeight) || (flags & JF_Forward && CheckPitBeforeTarget()))) {
+        if (CheckOnGround(false) && !Random(0, 20) && ((flags & JF_Up && Abs(target.pos.z - pos.z) > default.maxStepHeight) || (flags & JF_Forward && CheckPitBeforeTarget()))) {
 			double dist = Distance3D(target);
 			
 			if (dist > (meleeThreshold + radius) && dist < (leapDistance - radius)) {
-				dist -= (target.radius * 2) + radius;
+				dist -= (target.radius * 2) + (radius * 2);
 				maxStepHeight = maxDropOffHeight * 1.6;
+				bNoDropOff = false;
+				bCanPass = false;
 						
 				bool canJump = true;
 				Vector2 deltaPos = AngleToVector(AngleTo(target, true), radius);
@@ -143,6 +143,7 @@ class NTM_Enemy : Actor {
 					
 					if (!CheckMove(checkPos.xy)) {
 						maxStepHeight = default.maxStepHeight;
+						bCanPass = true;
 						
 						return false;
 					}
@@ -150,6 +151,7 @@ class NTM_Enemy : Actor {
 				
 				A_NTM_PainDisable();
 				maxStepHeight = default.maxStepHeight;
+				bCanPass = true;
 				oldLeap = 0;
 				SetStateLabel("Leap");
 				
@@ -329,10 +331,22 @@ class NTM_Enemy : Actor {
                 return;
             }
         } else {
+			int leapFrame = invoker.oldLeap;
+			
 			if (vel.z > 0) {
 				double spd = invoker.leapSpeed;
 				
 				vel += (cos(angle) * spd, sin(angle) * spd, 0);
+				
+				if (vel.z < 4) {
+					frame = leapFrame + 1;
+				}
+			} else {
+				if (vel.z > -4) {
+					frame = leapFrame + 1;
+				} else {
+					frame = leapFrame + 2;
+				}
 			}
 		}
 		

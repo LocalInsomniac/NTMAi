@@ -89,7 +89,7 @@ class NTM_Imp : NTM_Enemy {
 			Goto See;
 		
 		Leap:
-			NIMP G 1 A_NTM_Leap;
+			NIMP E 1 A_NTM_Leap;
 			Loop;
 	}
 	

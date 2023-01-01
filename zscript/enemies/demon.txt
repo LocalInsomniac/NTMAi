@@ -57,11 +57,11 @@ class NTM_Demon : NTM_Enemy {
 		JumpStart:
 			#### # 0 {
 				if (target) {
-					bNoDropOff = false;
-					
 					double dist = Distance2D(target);
 					
 					if (dist > meleeThreshold && dist < maxTargetRange) {
+						bCanPass = false;
+						bNoDropOff = false;
 						dist -= (target.radius * 2) + radius;
 						
 						// Check if we can jump towards the player
@@ -78,6 +78,8 @@ class NTM_Demon : NTM_Enemy {
 								break;
 							}
 						}
+						
+						bCanPass = true;
 						
 						if (canJump) {
 							SetStateLabel("Jump");
