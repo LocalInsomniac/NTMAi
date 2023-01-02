@@ -38,29 +38,15 @@ class NTM_Player : DoomPlayer {
 			Loop;
 		
 		Jump:
-			NPLA M 1 {
-				if (CantJump()) {
-					SetStateLabel("Spawn");
-				}
-				
-				if (vel.z <= 0) {
-					SetStateLabel("Fall");
-				}
-			}
-			
+			NPLA M 1;
+			NPLA M 0 A_JumpIf(CantJump(), "Spawn");
+			NPLA M 0 A_JumpIf(vel.z <= 0, "Fall");
 			Loop;
 		
 		Fall:
-			NPLA N 1 {
-				if (pos.z <= floorZ || bOnMObj || CantJump()) {
-					SetStateLabel("Spawn");
-				}
-				
-				if (vel.z > 0) {
-					SetStateLabel("Jump");
-				}
-			}
-			
+			NPLA N 1;
+			NPLA N 0 A_JumpIf(CantJump() || pos.z <= floorZ || bOnMObj, "Spawn");
+			NPLA N 0 A_JumpIf(vel.z > 0, "Jump");
 			Loop;
 		
 		Missile:
