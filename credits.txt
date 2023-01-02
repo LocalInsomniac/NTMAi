@@ -7,7 +7,7 @@
 
 Can't Sleep, David G, DenisBelmondo, • Graphics Editing
     Enjay, Gifty, horselessheadsman, •
-       KaZudra, osjclatchford, Quill •
+              KaZudra, osjclatchford •
 
 Captain Toenail • "Forgotten One" Lost Soul
 
@@ -41,9 +41,9 @@ ShallowB • "DOOM 64" Imp
 ========
 [AUDIO]
 
-3D Realms, id Software, Valve Software • Base Sounds
+3D Realms, id Software, SD EnterNET, Valve Software • Base Sounds
 
-Can't Sleep, Kinsie • Sound Mixing
+Antares031, Can't Sleep, Kinsie • Sound Mixing
 
 silentzora • "Project: Redux - DOOM 64 Main Theme"
 

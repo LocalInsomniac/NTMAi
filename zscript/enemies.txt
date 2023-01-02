@@ -11,6 +11,7 @@
 #include "zscript/enemies/painelemental.txt"
 #include "zscript/enemies/revenant.txt"
 #include "zscript/enemies/archvile.txt"
+#include "zscript/enemies/cyberdemon.txt"
 #include "zscript/enemies/german.txt"
 
 class NTM_Enemy : Actor {
@@ -352,4 +353,25 @@ class NTM_Enemy : Actor {
 		
 		invoker.oldLeapZVel = vel.z;
     }
+}
+
+class NTM_Boss : NTM_Enemy {
+	Default {
+		+Boss
+		+MissileMore
+		+NoRadiusDmg
+		+DontMorph
+		+BossDeath
+	}
+	
+	action void A_NTM_BossDeath() {
+		Actor boom = Spawn("NTM_Explosion", pos + (Random(-radius, radius), Random(-radius, radius), Random(height * 0.5, height * 2)));
+		
+		if (boom) {
+			boom.scale *= 0.64;
+			boom.A_StartSound("world/barrelx", Chan_Body, ChanF_Default, 0.666);
+		}
+		
+		A_Quake(2, 35, 0, 1024, "");
+	}
 }

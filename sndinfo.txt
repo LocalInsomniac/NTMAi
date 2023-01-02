@@ -69,6 +69,9 @@ baby/pain DSBSPPAI
 
 fatso/active DSMANACT
 
+pain/active DSPEACT
+pain/melee DSCLAW
+
 skeleton/fly DSSKEFLY
 skeleton/pain DSSKEPAI
 skeleton/tracex NSEXPLOD
@@ -79,8 +82,12 @@ vile/stop NSEXPLOD
 $limit vile/stop 0
 $attenuation vile/stop 0.7
 
-pain/active DSPEACT
-pain/melee DSCLAW
+cyber/metal DSMETAL
+cyber/active DSCYBACT
+cyber/attack DSCYBATK
+cyber/tracex NSEXPLOD
+$attenuation cyber/attack 0.6
+$attenuation cyber/tracex 0.8
 
 /* =============
    CUSTOM SOUNDS

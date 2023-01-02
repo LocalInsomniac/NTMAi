@@ -184,6 +184,12 @@ class NTMAI : EventHandler {
 				}
 			break;
 			
+			case 'Cyberdemon':
+				if (sv_ntm_r_cyberdemon) {
+					e.replacement = "NTM_Cyberdemon";
+				}
+			break;
+			
 			case 'RealGibs':
 				e.replacement = "NTM_RealGibs";
 			break;
@@ -213,7 +219,7 @@ class NTMAI : EventHandler {
 			break;
 			
 			case 'NTM_Spectre':
-				e.replacee = "Cacodemon";
+				e.replacee = "Spectre";
 			break;
 			
 			case 'NTM_LostSoul':
@@ -250,6 +256,10 @@ class NTMAI : EventHandler {
 			
 			case 'NTM_ArchVile':
 				e.replacee = "ArchVile";
+			break;
+			
+			case 'NTM_Cyberdemon':
+				e.replacee = "Cyberdemon";
 			break;
 			
 			case 'NTM_RealGibs':
