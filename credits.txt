@@ -1,39 +1,70 @@
 [GRAPHICS]
-3D Realms
-Can't Sleep
-Captain Toenail
-Craneo
-David G
-DenisBelmondo
-doomjedi
-Enjay
-gerolf
-Gifty
-hidfan
-horselessheadsman
-jdredalert
-Jekyll Grim Payne
-KaZudra
-Kinsie
-Lobotomy Software
-Monolith Productions
-Nash Muhandes
-osjclatchford
-Raven Software
 
-[SOUNDS]
-3D Realms
-Can't Sleep
-id Software
-Kinsie
-Valve Software
+3D Realms, Lobotomy Software, • Base Graphics
+         id Software, Midway, •
+        Monolith Productions, •
+               Raven Software •
 
+Can't Sleep, David G, DenisBelmondo, • Graphics Editing
+    Enjay, Gifty, horselessheadsman, •
+       KaZudra, osjclatchford, Quill •
+
+Captain Toenail • "Forgotten One" Lost Soul
+
+         Craneo, • "DOOM 2016/Eternal Monsters" Arachnotron
+ Jimmy, Jimmy91, •
+LitteWhiteMouse, •
+   Logan McCloud •
+
+fgsfds, Kinsie, • Menu Graphics
+    NightFright •
+
+gerolf • "Wolfenstein 3D" Helmeted SS Guard
+
+hidfan, Honey16, • "DOOM Neural Upscale 2X"
+         Lollie, •
+    NightFright, •
+    Scuba Steve, •
+           Teder •
+
+Jekyll Grim Payne • "Beautiful Doom" Zombieman Chainsaw Death
+
+jdredalert • "Angled DOOM" Weapon Graphics
+
+Nash Muhandes • "Nash's Gore Mod", "Nash's Gore Mod: Vengeance Edition"
+              • Gore Graphics
+
+Ac!d, RoastBeefo • HUD Graphics
+
+ShallowB • "DOOM 64" Imp
+
+========
+[AUDIO]
+
+3D Realms, id Software, Valve Software • Base Sounds
+
+Can't Sleep, Kinsie • Sound Mixing
+
+silentzora • "Project: Redux - DOOM 64 Main Theme"
+
+======
 [CODE]
-Boondorl
-Can't Sleep
-Enjay
+
+Can't Sleep, Kinsie • Base Programming
+
+Enjay • "Revised Splashes"
+
+Matt • "Hideous Destructor" Monster Movement
+
+Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore 
+
+Rachael • "Smooth Fluids"
+
+ZZYZX • "ZSDuke" Leaping Monsters
+
+================
+[SPECIAL THANKS]
+
+jdredalert • "Angled DOOM"
+
 Kinsie
-Matt
-Nash Muhandes
-Rachael
-ZZYZX
