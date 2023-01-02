@@ -46,13 +46,13 @@ class NTM_PlasmaBall : PlasmaBall replaces PlasmaBall {
 	
 	States {
 		Spawn:
-			PLSS A 0 A_Jump(128, 1);
-			PLSS AB 3 Bright;
+			NPLB A 0 NoDelay A_Jump(128, 2);
+			NPLB ABCD 1 Bright;
 			Goto Spawn + 1;
 			
 		Death:
-			PLSE B 3 Bright A_Explode(Random(1, 8) * 2, 30);
-			PLSE CDE 3 Bright;
+			NPLB F 2 Bright A_Explode(Random(1, 8) * 2, 30);
+			NPLB FGHIJK 2 Bright;
 			Stop;
 	}
 }
