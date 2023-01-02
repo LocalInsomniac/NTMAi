@@ -59,6 +59,8 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 		
 		Death:
 			NBFX A 2 Bright {
+				A_Quake(3, 20, 0, 1024, "");
+				
 				// Gib all nearby corpses
 				BlockThingsIterator it = BlockThingsIterator.Create(self, 128);
 				
@@ -77,7 +79,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 					double ang = i * 9;
 					double dist = 1024;
 					
-					AimLineAttack(i * 9, 1024, victim, 512);
+					AimLineAttack(ang, 1024, victim, 512);
 					
 					let victimActor = victim.lineTarget;
 					
@@ -87,11 +89,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 						dist -= Distance2D(victimActor);
 						
 						if (victimActor != target) {
-							int dmg = 0;
-							
-							for (int j = 0; j < 16; ++j) {
-								dmg += Random[BFGSpray](1, 8);
-							}
+							int dmg = 20 * Random(1, 10);
 							
 							victimActor.DamageMObj(self, target, dmg, "BFGSplash");
 							
@@ -104,7 +102,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 						}
 						
 						if (dist > 0) {
-							victimActor.AimLineAttack(i * 9, dist, victim, 512);
+							victimActor.AimLineAttack(ang, dist, victim, 512);
 							victimActor = victim.lineTarget;
 						} else {
 							victimActor = null;
