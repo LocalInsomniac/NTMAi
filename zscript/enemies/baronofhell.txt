@@ -27,7 +27,7 @@ class NTM_BaronOfHell : NTM_Enemy {
 			Loop;
 		
 		See:
-			#### # 0 A_JumpIf(target && CheckOnGround() && !CheckPitBeforeTarget() && Distance3D(target) < 256 && !Random(0, 3), "Charge");
+			#### # 0 A_JumpIf(target && CheckSight(target) && CheckOnGround() && !CheckPitBeforeTarget() && Distance3D(target) < 256 && !Random(0, 3), "Charge");
 			Goto Super::See;
 			
 		DukeSee:
