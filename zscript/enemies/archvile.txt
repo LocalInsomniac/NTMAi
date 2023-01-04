@@ -116,7 +116,7 @@ class NTM_ArchVile : NTM_Enemy {
 			Stop;
 	}
 	
-	action void A_NTM_Archvile_SWChase() {
+	void A_NTM_Archvile_SWChase() {
 		A_NTM_SWChase(CHF_Resurrect);
 	}
 }

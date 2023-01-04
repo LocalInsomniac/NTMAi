@@ -13,6 +13,7 @@ class NTM_Cyberdemon : NTM_Boss {
 		DeathSound "cyber/death";
 		Obituary "$OB_CYBORG";
 		Tag "$FN_CYBER";
+		Species "Cyberdemon";
 		NTM_Enemy.TicsPerChase 3;
 		
 		+E2M8Boss
@@ -25,21 +26,21 @@ class NTM_Cyberdemon : NTM_Boss {
 			Loop;
 		
 		DukeSee:
-			NCYB A 0 A_NTM_CyberdemonHoof;
+			NCYB A 0 A_NTM_CyberHoof;
 			NCYB AABB 3 A_NTM_DukeChase;
-			NCYB C 0 A_NTM_CyberdemonMetal;
+			NCYB C 0 A_NTM_CyberMetal;
 			NCYB CCDD 3 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
-			NCYB A 0 A_NTM_CyberdemonHoof;
-			NCYB AABB 3 A_NTM_DukeChase;
-			NCYB C 0 A_NTM_CyberdemonMetal;
-			NCYB CCDD 3 A_NTM_DukeChase;
+			NCYB A 0 A_NTM_CyberHoof;
+			NCYB AABB 3 A_NTM_BloodChase;
+			NCYB C 0 A_NTM_CyberMetal;
+			NCYB CCDD 3 A_NTM_BloodChase;
 			Loop;
 		
 		SWSee:
-			NCYB A 0 A_NTM_CyberdemonHoof;
+			NCYB A 0 A_NTM_CyberHoof;
 			NCYB A 1 A_NTM_SWChase;
 			NCYB AA 1 A_NTM_SWChase2;
 			NCYB A 1 A_NTM_SWChase;
@@ -48,7 +49,7 @@ class NTM_Cyberdemon : NTM_Boss {
 			NCYB BB 1 A_NTM_SWChase2;
 			NCYB B 1 A_NTM_SWChase;
 			NCYB BB 1 A_NTM_SWChase2;
-			NCYB C 0 A_NTM_CyberdemonMetal;
+			NCYB C 0 A_NTM_CyberMetal;
 			NCYB C 1 A_NTM_SWChase;
 			NCYB CC 1 A_NTM_SWChase2;
 			NCYB C 1 A_NTM_SWChase;
@@ -62,25 +63,25 @@ class NTM_Cyberdemon : NTM_Boss {
 		Missile:
 			NCYB E 0 A_Jump(100, "Missile2");
 			NCYB E 6 A_FaceTarget;
-			NCYB F 6 Bright A_NTM_CyberdemonAttack;
+			NCYB F 6 Bright A_NTM_CyberAttack;
 			NCYB E 18 A_FaceTarget;
-			NCYB F 6 Bright A_NTM_CyberdemonAttack;
+			NCYB F 6 Bright A_NTM_CyberAttack;
 			NCYB E 18 A_FaceTarget;
-			NCYB F 6 Bright A_NTM_CyberdemonAttack;
+			NCYB F 6 Bright A_NTM_CyberAttack;
 			NCYB E 6 A_FaceTarget;
 			Goto See;
 		
 		Missile2:
 			NCYB G 10 A_FaceTarget;
-			NCYB H 3 Bright A_NTM_CyberdemonAttack2;
+			NCYB H 3 Bright A_NTM_CyberAttack2;
 			NCYB G 3 A_FaceTarget;
-			NCYB H 3 Bright A_NTM_CyberdemonAttack2;
+			NCYB H 3 Bright A_NTM_CyberAttack2;
 			NCYB G 3 A_FaceTarget;
-			NCYB H 3 Bright A_NTM_CyberdemonAttack2;
+			NCYB H 3 Bright A_NTM_CyberAttack2;
 			NCYB G 3 A_FaceTarget;
-			NCYB H 3 Bright A_NTM_CyberdemonAttack2;
+			NCYB H 3 Bright A_NTM_CyberAttack2;
 			NCYB G 3 A_FaceTarget;
-			NCYB H 3 Bright A_NTM_CyberdemonAttack2;
+			NCYB H 3 Bright A_NTM_CyberAttack2;
 			NCYB G 8 A_FaceTarget;
 			Goto See;
 		
@@ -99,15 +100,15 @@ class NTM_Cyberdemon : NTM_Boss {
 			Stop;
 	}
 	
-	action void A_NTM_CyberdemonHoof() {
+	action void A_NTM_CyberHoof() {
 		A_StartSound("cyber/hoof", Chan_Body, ChanF_Overlap);
 	}
 	
-	action void A_NTM_CyberdemonMetal() {
+	action void A_NTM_CyberMetal() {
 		A_StartSound("cyber/metal", Chan_Body, ChanF_Overlap);
 	}
 	
-	action void A_NTM_CyberdemonAttack() {
+	action void A_NTM_CyberAttack() {
 		if (!target) {
 			SetStateLabel("See");
 			
@@ -118,7 +119,7 @@ class NTM_Cyberdemon : NTM_Boss {
 		A_SpawnProjectile("NTM_Rocket", 48, -22.5);
 	}
 	
-	action void A_NTM_CyberdemonAttack2() {
+	action void A_NTM_CyberAttack2() {
 		if (!target) {
 			SetStateLabel("See");
 			
