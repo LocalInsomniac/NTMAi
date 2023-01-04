@@ -64,7 +64,7 @@ class NTM_BaronOfHell : NTM_Enemy {
 		
 		Missile2:
 			NBRS EF 6 A_FaceTarget;
-			NBRS G 8 A_BruisAttack;
+			NBRS G 8 A_CustomComboAttack("NTM_BaronBall", 32, 10 * Random(1, 8), "baron/melee");
 			Goto See;
 		
 		Missile3:
