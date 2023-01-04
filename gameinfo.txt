@@ -1,2 +1,2 @@
-StartUpTitle = "Nobody Told Me About id 1.0 BETA"
+StartUpTitle = "Nobody Told Me About id 1.0-ALPHA-RC1"
 StartUpColors = "FF 10 10", "90 00 00"

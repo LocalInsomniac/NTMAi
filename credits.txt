@@ -1,3 +1,9 @@
+[NOBODY TOLD ME ABOUT ID]
+
+A Build Engine-style mod for GZDoom
+Created by Can't Sleep
+
+==========
 [GRAPHICS]
 
 3D Realms, Lobotomy Software, • Base Graphics
