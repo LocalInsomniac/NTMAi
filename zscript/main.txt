@@ -190,6 +190,12 @@ class NTMAI : EventHandler {
 				}
 			break;
 			
+			case 'SpiderMastermind':
+				if (sv_ntm_r_spiderMastermind) {
+					e.replacement = "NTM_SpiderMastermind";
+				}
+			break;
+			
 			case 'RealGibs':
 				e.replacement = "NTM_RealGibs";
 			break;
@@ -260,6 +266,10 @@ class NTMAI : EventHandler {
 			
 			case 'NTM_Cyberdemon':
 				e.replacee = "Cyberdemon";
+			break;
+			
+			case 'NTM_SpiderMastermind':
+				e.replacee = "SpiderMastermind";
 			break;
 			
 			case 'NTM_RealGibs':

@@ -89,6 +89,13 @@ cyber/tracex NSEXPLOD
 $attenuation cyber/attack 0.6
 $attenuation cyber/tracex 0.8
 
+spider/shoot DSCYBATK
+spider/attack DSSPIATK
+spider/summon DSBOSPIT
+spider/pain DSSPIPAI
+$attenuation spider/attack 0.5
+$attenuation spider/summon 0.64
+
 /* =============
    CUSTOM SOUNDS
    ============= */
