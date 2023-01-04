@@ -1,0 +1,80 @@
+Height 32;
+MonospaceFonts true, "0";
+
+StatusBar Normal {
+	DrawImage "NTMBAR", 0, 168;
+	DrawNumber 3, NTM_Digit, Untranslated, Health, DrawShadow, Alignment(Center), 34, 183;
+	DrawNumber 3, NTM_Digit, Untranslated, Armor, DrawShadow, Alignment(Center), 64, 183;
+	DrawNumber 3, NTM_Digit, Untranslated, Ammo1, DrawShadow, Alignment(Center), 207, 183;
+	DrawSwitchableImage KeySlot 2, "", "STKEYS0", 275, 180;
+	DrawSwitchableImage KeySlot 3, "", "STKEYS1", 283, 180;
+	DrawSwitchableImage KeySlot 1, "", "STKEYS2", 291, 180;
+	DrawSwitchableImage KeySlot 5, "", "STKEYS3", 275, 188;
+	DrawSwitchableImage KeySlot 6, "", "STKEYS4", 283, 188;
+	DrawSwitchableImage KeySlot 4, "", "STKEYS5", 291, 188;
+	DrawString NTMFONT, Yellow, "2-4:   /", 102, 179, 0, Alignment(Center);
+	DrawNumber 3, NTMFONT, Yellow, Ammo("Clip"), 114, 179;
+	DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Clip"), 131, 179;	
+	
+	InInventory NTM_Shotgun || NTM_SuperShotgun {
+		DrawString NTMFONT, Yellow, "3:     /", 102, 187, 0, Alignment(Center);
+		DrawNumber 3, NTMFONT, Yellow, Ammo("Shell"), 114, 187;
+		DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Shell"), 131, 187;
+	} else {
+		DrawString NTMFONT, DarkGray, "3:     /", 102, 187, 0, Alignment(Center);
+		DrawNumber 3, NTMFONT, DarkGray, Ammo("Shell"), 114, 187;
+		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("Shell"), 131, 187;
+	}
+	
+	InInventory NTM_RocketLauncher {
+		DrawString NTMFONT, Yellow, "5:     /", 156, 179, 0, Alignment(Center);
+		DrawNumber 3, NTMFONT, Yellow, Ammo("RocketAmmo"), 168, 179;
+		DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("RocketAmmo"), 185, 179;
+	} else {
+		DrawString NTMFONT, DarkGray, "5:     /", 156, 179, 0, Alignment(Center);
+		DrawNumber 3, NTMFONT, DarkGray, Ammo("RocketAmmo"), 168, 179;
+		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("RocketAmmo"), 185, 179;
+	}
+	
+	InInventory NTM_PlasmaRifle || NTM_BFG9000 {
+		DrawString NTMFONT, Yellow, "6-7:   /", 156, 187, 0, Alignment(Center);
+		DrawNumber 3, NTMFONT, Yellow, Ammo("Cell"), 168, 187;
+		DrawNumber 3, NTMFONT, Yellow, AmmoCapacity("Cell"), 185, 187;
+	} else {
+		DrawString NTMFONT, DarkGray, "6-7:   /", 156, 187, 0, Alignment(Center);
+		DrawNumber 3, NTMFONT, DarkGray, Ammo("Cell"), 168, 187;
+		DrawNumber 3, NTMFONT, DarkGray, AmmoCapacity("Cell"), 185, 187;
+	}
+	
+	DrawSelectedInventory AlwaysShowCounter, NTM_Digit, 230, 171, 269, 183;
+	
+	IfWaterLevel 3 {
+		DrawBar "NTMAIR1", "", AirTime, Horizontal, 23, 155;
+		DrawImage "NTMAIR", 4, 154, None;
+	}
+}
+
+StatusBar FullScreen, ForceScaled, FullScreenOffsets {
+	DrawImage "NTMHP", 20, -2, CenterBottom;
+	DrawNumber 3, NTM_Digit, Untranslated, Health, DrawShadow, 32, -18;
+	DrawImage "NTMARMOR", 53, -2, CenterBottom;
+	DrawNumber 3, NTM_Digit, Untranslated, Armor, DrawShadow, 65, -18;
+	DrawImage "NTMAMMO", 86, -2, CenterBottom;
+	DrawNumber 3, NTM_Digit, Untranslated, Ammo1, DrawShadow, 98, -18;
+	
+	IfWaterLevel 3 {
+		DrawBar "NTMAIR1", "", AirTime, Horizontal, 23, -43;
+		DrawImage "NTMAIR", 4, -44, None;
+	}
+	
+	DrawSelectedInventory AlternateOnEmpty | AlwaysShowCounter, NTM_Digit, 108, -32, 149, -21 {
+	} else {
+		DrawImage "NTMITEM", 127, -2, CenterBottom;
+	}
+	
+	GameMode Deathmatch {
+		DrawNumber 3, NTM_Digit, Untranslated, Frags, DrawShadow, -3, 1;
+	} else {
+		DrawKeyBar 100, Vertical, ReverseRows, Auto, -10, 2, 0, 3, Auto;
+	}
+}
