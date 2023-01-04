@@ -1,0 +1,10 @@
+#include "zcommon.acs"
+
+script "NTM_StartTitle" enter {
+	if (GetCVar("sv_ntm_startTitle")) {
+		str name = strParam(n: PrintName_LevelName);
+		
+		SetFont("BIGFONT");
+		HudMessage(s: name; HUDMsg_FadeOut, 69420, CR_Untranslated, 0.5, 0.4, 3.5, 0.5);
+	}
+}

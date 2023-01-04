@@ -1,0 +1,76 @@
+class NTM_Pistol : Pistol replaces Pistol {
+	Default {
+		Scale 0.75;
+		Weapon.SlotNumber 2;
+		Weapon.UpSound "NTM_Pistol/in";
+		
+		+Weapon.NoAlert
+	}
+	
+	States {
+		Ready:
+			NPIS A 1 A_WeaponReady(WRF_AllowUser1 | WRF_AllowReload);
+			Loop;
+			
+		Deselect:
+			NPIS A 1 A_Lower(12);
+			Loop;
+			
+		Select:
+			NPIS A 1 A_Raise(12);
+			Loop;
+			
+		Fire:
+			NPIS B 0 A_AlertMonsters;
+			NPIS B 3 Bright A_FirePistol;
+			
+			NPIS C 3 {
+				A_SpawnItemEx("NTM_BulletCasing", 0, 32, 34, FRandom(-6, -4), 0, FRandom(3, 5), 90);
+				A_GiveInventory("NTM_PistolShots", 1);
+			}
+			
+			NPIS D 3;
+			NPIS E 0 A_JumpIfInventory("NTM_PistolShots", 10, 2);
+			NPIS E 3 A_Refire;
+			Goto Ready;
+			NPIS E 3;
+			Goto Reload + 2;
+		
+		AltFire:
+		Reload:
+			NPIS B 0 A_JumpIfInventory("NTM_PistolShots", 1, 1);
+			Goto Ready;
+			NPIS F 0;
+			NPIS F 3 A_StartSound("NTM_Pistol/out");
+			NPIS G 3 A_WeaponOffset(22, 21, WOF_Interpolate);
+			NPIS H 3 A_WeaponOffset(24, 19, WOF_Interpolate);
+			NPIS F 14 A_StartSound("NTM_Pistol/in");
+			NPIS IJ 3;
+			
+			NPIS K 4 {
+				A_WeaponOffset(26, 10, WOF_Interpolate);
+				A_SetInventory("NTM_PistolShots", 0);
+			}
+			
+			NPIS K 3 A_WeaponOffset(flags: WOF_Interpolate);
+			Goto Ready;
+			
+		Flash:
+			NPIS L 3 Bright A_Light1;
+			Goto LightDone;
+	}
+}
+
+class NTM_PistolShots : Inventory {
+	Default {
+		+Inventory.Undroppable
+		+Inventory.Untossable
+		Inventory.MaxAmount 10;
+	}
+	
+	States {
+		Spawn:
+			TNT1 A 0;
+			Fail;
+	}
+}

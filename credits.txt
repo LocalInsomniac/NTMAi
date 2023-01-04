@@ -1,93 +1,76 @@
-GRAPHICS:
-Ac!d
-alandoguns
-Amuscaria
-BigDaveHasSomeToo
-BloodyAcid
-Blox
-Can't Sleep
-Captain J
-CeeJay
-CynicalDreamer
-David G
-DeathCold
-DenisBelmondo
-DoomNukem
-DrPyspy
-Eriance
-Gothic
-GRAU
-Hellfire
-hidfan
-Homie
-HorrorMovieGuy
-id Software
-IMX
-jdredalert
-Jekyll Grim Payne
-JoeyTD
+[NOBODY TOLD ME ABOUT ID]
+
+A Build Engine-style mod for GZDoom
+Created by Can't Sleep
+
+==========
+[GRAPHICS]
+
+3D Realms, Lobotomy Software, • Base Graphics
+         id Software, Midway, •
+        Monolith Productions, •
+               Raven Software •
+
+Can't Sleep, David G, DenisBelmondo, • Graphics Editing
+    Enjay, Gifty, horselessheadsman, •
+     KaZudra, neoworm, osjclatchford •
+
+Captain Toenail • "Forgotten One" Lost Soul
+
+         Craneo, • "DOOM 2016/Eternal Monsters" Arachnotron
+ Jimmy, Jimmy91, •
+LitteWhiteMouse, •
+   Logan McCloud •
+
+fgsfds, Kinsie, • Menu Graphics
+    NightFright •
+
+gerolf • "Wolfenstein 3D" Helmeted SS Guard
+
+hidfan, Honey16, • "DOOM Neural Upscale 2X"
+         Lollie, •
+    NightFright, •
+    Scuba Steve, •
+           Teder •
+
+Jekyll Grim Payne • "Beautiful Doom" Zombieman Chainsaw Death
+
+jdredalert • "Angled DOOM" Weapon Graphics
+
+Nash Muhandes • "Nash's Gore Mod", "Nash's Gore Mod: Vengeance Edition"
+              • Gore Graphics
+
+Ac!d, RoastBeefo • HUD Graphics
+
+ShallowB • "DOOM 64" Imp
+
+========
+[AUDIO]
+
+3D Realms, id Software, SD EnterNET, Valve Software • Base Sounds
+
+Antares031, Can't Sleep, Kinsie • Sound Mixing
+
+silentzora • "Project: Redux - DOOM 64 Main Theme"
+
+======
+[CODE]
+
+Can't Sleep, Kinsie • Base Programming
+
+Enjay • "Revised Splashes"
+
+Matt • "Hideous Destructor" Monster Movement
+
+Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore 
+
+Rachael • "Smooth Fluids"
+
+ZZYZX • "ZSDuke" Leaping Monsters
+
+================
+[SPECIAL THANKS]
+
+jdredalert • "Angled DOOM"
+
 Kinsie
-Lobotomy Software
-MarphitimusBlackimus
-Mike12
-Minigunner
-mrtaterz
-Nash Muhandes
-Neccronixis
-nels
-Neoworm
-Raven Software
-raymoohawk
-Reikall
-Ringman
-RoastBeefo
-Rogue Entertainment
-Sgt Mark IV
-Sonik.o.Fan
-Team Hellspawn
-TheRailgunner
-Vostyok
-Z86
-zrrion the insect
-3D Realms
-
-SOUNDS:
-Aubrey Hodges
-Dynamo
-id Software
-Jaxxoon R
-Kinsie
-Lobotomy Software
-Nash Muhandes
-The Internet
-Valve Software
-YukesVonFaust
-3D Realms
-
-MUSIC:
-silentzora
-
-CODE:
-Ac!d
-Boondorl
-Can't Sleep
-Enjay
-Jekyll Grim Payne
-jewalky
-Kinsie
-Nash Muhandes
-PillowBlaster
-REVENGE
-wildweasel
-Zombie
-
-GENERAL:
-BROS_ETT_311
-Captain J
-DIAMOND
-EddieMann
-jankespro12
-mrtaterz
--/Pin\-
-
-Let me know if there are some people missing!

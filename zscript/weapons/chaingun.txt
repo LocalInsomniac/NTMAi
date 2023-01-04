@@ -1,0 +1,56 @@
+class NTM_Chaingun : Chaingun replaces Chaingun {
+	Default {
+		Scale 0.75;
+		Weapon.SlotNumber 4;
+		Weapon.UpSound "NTM_Weapon/select";
+	}
+	
+	States {
+		Ready:
+			NCHA A 1 A_WeaponReady;
+			Loop;
+		
+		Deselect:
+			NCHA A 1 A_Lower(12);
+			Loop;
+		
+		Select:
+			NCHA A 1 A_Raise(12);
+			Loop;
+		
+		Fire:
+			NCHA E 1 Bright {
+				A_StartSound("weapons/chngun", Chan_Weapon);
+				A_FireBullets(5.6, 0, 1, 5, "BulletPuff");
+				A_GunFlash();
+				A_WeaponOffset(Random(0, 8), Random(36, 40), WOF_Interpolate);
+			}
+			
+			NCHA B 1 {
+				A_SpawnItemEx("NTM_BulletCasing", -5, 25, 22, FRandom(4, 6), 0, FRandom(4, 6), 90);
+				A_WeaponOffset(Random(-2, 4), Random(34, 38), WOF_Interpolate);
+			}
+			
+			NCHA CD 1 A_WeaponOffset(Random(-2, 2), Random(32, 34), WOF_Interpolate);
+			NCHA A 2 A_Refire;
+			
+			NCHA B 3 {
+				A_WeaponOffset(flags: WOF_Interpolate);
+				A_Refire("Refire");
+			}
+			
+			NCHA C 4 A_Refire("Refire2");
+			NCHA D 5 A_Refire;
+			Goto Ready;
+		
+		Refire:
+			NCHA B 1;
+		Refire2:
+			NCHA CD 1;
+			Goto Fire;
+		
+		Flash:
+			TNT1 A 1 A_Light2;
+			Goto LightDone;
+	}
+}

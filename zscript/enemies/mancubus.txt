@@ -1,0 +1,124 @@
+class NTM_Mancubus : NTM_Enemy {
+	Default {
+		Health 600;
+		Radius 48;
+		Height 64;
+		Mass 1000;
+		Speed 8;
+		PainChance 80;
+		SeeSound "fatso/sight";
+		ActiveSound "fatso/active";
+		PainSound "fatso/pain";
+		DeathSound "fatso/death";
+		Obituary "$OB_FATSO";
+		Tag "$FN_MANCU";
+		Species "Fatso";
+		NTM_Enemy.TicsPerChase 4;
+		
+		+BossDeath
+		+MAP07Boss1
+	}
+	
+	States {
+		Spawn:
+			NMAN A 15 A_Look;
+			Loop;
+		
+		DukeSee:
+			NMAN AABBCCDDEEFF 4 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NMAN AABBCCDDEEFF 4 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NMAN A 1 A_NTM_SWChase;
+			NMAN AAA 1 A_NTM_SWChase2;
+			NMAN A 1 A_NTM_SWChase;
+			NMAN AAA 1 A_NTM_SWChase2;
+			NMAN B 1 A_NTM_SWChase;
+			NMAN BBB 1 A_NTM_SWChase2;
+			NMAN B 1 A_NTM_SWChase;
+			NMAN BBB 1 A_NTM_SWChase2;
+			NMAN C 1 A_NTM_SWChase;
+			NMAN CCC 1 A_NTM_SWChase2;
+			NMAN C 1 A_NTM_SWChase;
+			NMAN CCC 1 A_NTM_SWChase2;
+			NMAN D 1 A_NTM_SWChase;
+			NMAN DDD 1 A_NTM_SWChase2;
+			NMAN D 1 A_NTM_SWChase;
+			NMAN DDD 1 A_NTM_SWChase2;
+			NMAN E 1 A_NTM_SWChase;
+			NMAN EEE 1 A_NTM_SWChase2;
+			NMAN E 1 A_NTM_SWChase;
+			NMAN EEE 1 A_NTM_SWChase2;
+			NMAN F 1 A_NTM_SWChase;
+			NMAN FFF 1 A_NTM_SWChase2;
+			NMAN F 1 A_NTM_SWChase;
+			NMAN FFF 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NMAN G 18 A_FatRaise;
+			NMAN H 10 Bright A_NTM_MancubusAttack(11.25, 0);
+			NMAN IG 5 A_FaceTarget;
+			NMAN H 10 Bright A_NTM_MancubusAttack(0, -11.25);
+			NMAN IG 5 A_FaceTarget;
+			NMAN H 10 Bright A_NTM_MancubusAttack;
+			NMAN IG 5 A_FaceTarget;
+			Goto See;
+		
+		Pain:
+			NMAN J 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NMAN K 1 A_NTM_PreDeath;
+			NMAN K 5 A_NTM_Death;
+			NMAN L 6 A_NoBlocking;
+			NMAN MNOPQRS 6;
+			NMAN T -1 A_BossDeath;
+			Stop;
+			
+		 Raise:
+			NMAN RQPONMLK 5;
+			Goto See;
+	}
+	
+	action void A_NTM_MancubusAttack(double leftOffset = 5.625, double rightOffset = -5.625) {
+		A_FaceTarget();
+		
+		double offset = leftOffset;
+		
+		for (double i = -90; i <= 90; i += 180) {
+			Actor missile = A_SpawnProjectile("NTM_MancubusShot", 24, 0, offset);
+			
+			if (missile) {
+				double ang = angle - i;
+				
+				missile.SetOrigin(missile.pos + (cos(ang) * 20, sin(ang) * 20, 0), false);
+			}
+			
+			offset = rightOffset;
+		}
+	}
+}
+
+class NTM_MancubusShot : FatShot {
+	States {
+		Spawn:
+			MANF AB 4 Bright;
+			Loop;
+		
+		Death:
+			NEXP A 2 Bright {
+				bForceXYBillboard = true;
+				scale *= 0.85;
+				A_SetTranslation("NTM_Explosion");
+			}
+			
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+}

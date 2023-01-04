@@ -1,84 +1,47 @@
-OptionValue "NTM_Options_BloodPools"
-{
-    0, "Off"
-    1, "On"
-	2, "On gib"
-}
-OptionValue "NTM_Options_Soulsphere"
-{
+OptionValue "NTM_Options_Soulsphere" {
 	0, "No"
 	1, "Yes"
-	2, "Outside secrets"
+	2, "Outside Secrets"
 }
-OptionValue "NTM_Options_SecretItem"
-{
-	0, "No"
-	1, "Yes"
-	2, "Random"
-	3, "Randomly appear outside secrets"
+
+OptionValue "NTM_Options_EnemyMovementStyle" {
+    0, "Duke Nukem 3D"
+    1, "Blood (Experimental)"
+	2, "Shadow Warrior"
 }
-OptionValue "NTM_ActorOptions_Toggle"
-{
-	0, "Don't replace"
+
+OptionValue "NTM_ActorOptions_Toggle" {
+	0, "Don't Replace"
 	1, "Replace"
 }
-OptionValue "NTM_Options_Infight"
-{
-	-1, "Off"
-	0, "On"
-	1, "Total infighting"
-}
-OptionMenu "NTM_Options"
-{
+
+OptionMenu "NTM_Options" {
     Title "NTMAI Options"
 	StaticText "Changes will take full effect on level restart.", "White"
 	StaticText ""
 	Submenu "Enemy Replacement Options", "NTM_ActorOptions"
 	StaticText ""
-    StaticText "Movement options", "Yellow"
-	Option "New movement", "sv_ntm_move", "OnOff"
-	Option "Camera flinching", "cl_ntm_cameraFlinch", "OnOff"
-	Option "Camera quaking", "cl_ntm_cameraQuake", "OnOff"
-	Option "Camera tilt on death", "cl_ntm_cameraTilt", "OnOff"
-	Option "Head flies off when gibbed", "sv_ntm_cameraHead", "YesNo"
+    StaticText "Visual Options", "Yellow"
+	Option "Show Title On Level Start", "sv_ntm_startTitle", "YesNo"
+	Option "Twitch On Level Start", "sv_ntm_startTwitch", "YesNo"
 	StaticText ""
-	StaticText "Visual options", "Yellow"
-	Option "Empty casings stay on floor", "cl_ntm_casing", "YesNo"
-	Option "Taunt after gibbing", "cl_ntm_taunt", "OnOff"
-	Option "Sprite shadows", "cl_ntm_shadows", "OnOff"
-	Slider "Max shadow distance", "cl_ntm_shadowDistance", 0, 10000, 100, 0
-	Slider "Flying blood frequency", "cl_ntm_bloodFrequency", 0.3, 1, 0.1
-	Option "Blood stays on floor", "cl_ntm_bloodDetail", "YesNo"
-	Option "Blood pools", "sv_ntm_bloodPools", "NTM_Options_BloodPools"
-	Option "Bloody footprints", "sv_ntm_bloodFootprints", "OnOff"
-	Option "Gibs stay on floor", "cl_ntm_gibDetail", "YesNo"
-	Option "Stretchy crushed gibs", "sv_ntm_bloodStretch", "OnOff"
-	Option "Blood-styled death animations (Experimental)", "sv_ntm_bloodDeath", "OnOff"
-	Option "Burning humanoids", "sv_ntm_burn", "OnOff"
-	Option "Voxels", "r_drawvoxels", "OnOff"
-	Option "Spinning weapon voxels", "cl_ntm_voxelSpin", "OnOff"
+	StaticText "Gameplay Options", "Yellow"
+	Option "Flinch From Long Falls", "sv_ntm_flinch", "YesNo"
+	Option "Play Keycard Animation On Locked Doors", "sv_ntm_keycard", "YesNo"
+	Option "Auto-Activate Radiation Suit On Hazards", "cl_ntm_autoRadSuit", "YesNo"
+	Option "Replace Soulspheres With Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
 	StaticText ""
-	StaticText "Gameplay options", "Yellow"
-	Option "Play keycard animation on locked doors", "sv_ntm_keycard", "YesNo"
-	Option "Auto-activate radiation suit on hazards", "cl_ntm_activate", "YesNo"
-	Option "Replace Soulspheres with Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
-	Option "Explosive Shells replace Shells in secrets", "sv_ntm_boomShell", "NTM_Options_SecretItem"
-	Option "Homing Rockets replace Rockets in secrets", "sv_ntm_homingRocket", "NTM_Options_SecretItem"
-	Option "Cluster Grenades replace Grenades in secrets", "sv_ntm_clusterGrenade", "NTM_Options_SecretItem"
-	Option "Vanilla monster infighting", "infighting", "NTM_Options_Infight"
-	Option "Smooth monster movement (Experimental)", "sv_ntm_monsterSmooth", "OnOff"
-	Option "Zombies throw grenades on hard difficulties", "sv_ntm_grenadiers", "YesNo"
-	Option "Monsters jump over pits (Experimental)", "sv_ntm_monsterLeap", "YesNo"
-	Option "Monsters jump at targets", "sv_ntm_monsterJump", "YesNo"
-	Option "Flying revenants", "sv_ntm_monsterFly", "OnOff"
-	Option "Better Pain Elemental limiting", "sv_ntm_monsterPainLimit", "OnOff"
+	Option "Enemy Movement Style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
+	Option "Zombies Throw Grenades On Hard Difficulties", "sv_ntm_grenadiers", "YesNo"
+	Option "Imps Leap Over Ledges", "sv_ntm_enemyLeap", "YesNo"
+	Option "Flying Revenants", "sv_ntm_enemyFly", "OnOff"
 }
-OptionMenu "NTM_ActorOptions"
-{
+
+OptionMenu "NTM_ActorOptions" {
 	Title "Enemy Replacement Options"
-	StaticText "With this menu, you can control which enemies will be", "White"
-	StaticText "replaced with NTMAi's enemies. This is useful for retaining new", "White"
-	StaticText "enemies in map packs that replace vanilla enemies.", "White"
+	StaticText "These options control which enemies will be replaced with", "White"
+	StaticText "NTMAi's enemies. This is useful for retaining new enemies", "White"
+	StaticText "in map packs that use DeHackEd and/or replace vanilla enemies.", "White"
 	StaticText ""
 	StaticText "These changes will take full effect on level restart.", "White"
 	StaticText ""
@@ -101,8 +64,7 @@ OptionMenu "NTM_ActorOptions"
 	Option "Cyberdemon", "sv_ntm_r_cyberdemon", "NTM_ActorOptions_Toggle"
 	Option "SS", "sv_ntm_r_ss", "NTM_ActorOptions_Toggle"
 }
-AddOptionMenu "OptionsMenu"
-{
-    StaticText ""
-    Submenu "NTMAI Options", "NTM_Options"
+
+AddOptionMenu "OptionsMenu" {
+    Submenu "NTMAi Options", "NTM_Options"
 }
