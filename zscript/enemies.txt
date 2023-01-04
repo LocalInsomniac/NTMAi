@@ -12,6 +12,7 @@
 #include "zscript/enemies/revenant.txt"
 #include "zscript/enemies/archvile.txt"
 #include "zscript/enemies/cyberdemon.txt"
+#include "zscript/enemies/spidermastermind.txt"
 #include "zscript/enemies/german.txt"
 
 class NTM_Enemy : Actor {
@@ -25,7 +26,7 @@ class NTM_Enemy : Actor {
 	double leapDistance, leapSpeed, oldLeapZVel;
 	
 	int ticsPerChase;
-	bool chaseStuck;
+	int chaseStuck;
 	property TicsPerChase: ticsPerChase;
 	
 	Default {
@@ -167,28 +168,32 @@ class NTM_Enemy : Actor {
 	   NTMAi monster actions
 	   ===================== */
 	
-	action void A_NTM_DukeChase(int flags = 0) {
+	void A_NTM_DukeChase(int flags = 0) {
 		bool beDropoff = bDropoff;
 		Vector3 oldPos = pos;
 		
-		if (invoker.chaseStuck) {
-			bDropoff = true;
+		if (chaseStuck > 0) {
+			if (chaseStuck > 1) {
+				bDropoff = true;
+			}
+			
+			++chaseStuck;
 		}
 		
 		A_Chase("_a_chase_default", "_a_chase_default", flags);
 		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
-			invoker.chaseStuck = true;
+			++chaseStuck;
 			
 			return;
 		}
 		
-		invoker.chaseStuck = false;
-		invoker.TryLeap();
+		chaseStuck = 0;
+		TryLeap();
 	}
 	
-	action void A_NTM_BloodChase(int flags = 0) {
+	void A_NTM_BloodChase(int flags = 0) {
 		// Source: https://github.com/caligari87/HideousDestructor/blob/master/zscript/mob.txt#L360
 		if (!target) {
 			A_ClearTarget();
@@ -206,9 +211,13 @@ class NTM_Enemy : Actor {
 		bool beDropoff = bDropoff;
 		
 		if (vel.xy.Length() == 0) {
-			if (invoker.chaseStuck) {
-				bNoDropoff = false;
-				bDropoff = true;
+			if (chaseStuck > 0) {
+				if (chaseStuck > 1) {
+					bNoDropoff = false;
+					bDropoff = true;
+				}
+				
+				++chaseStuck;
 			}
 			
 			if (target) {
@@ -224,7 +233,7 @@ class NTM_Enemy : Actor {
 		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
-			invoker.chaseStuck = true;
+			++chaseStuck;
 			
 			return;
 		}
@@ -241,11 +250,11 @@ class NTM_Enemy : Actor {
 			vel += posDiff.Unit() * speed * 0.18;
 		}
 		
-		invoker.chaseStuck = false;
-		bNoDropoff = !bDropOff && !bFloat && invoker.CheckOnGround() && !invoker.TryLeap();
+		chaseStuck = 0;
+		bNoDropoff = !bDropOff && !bFloat && CheckOnGround() && !TryLeap();
 	}
 	
-	action void A_NTM_SWChase(int flags = 0) {
+	void A_NTM_SWChase(int flags = 0) {
 		if (CheckMove(pos.xy)) {
 			int tpc = NTM_Enemy(self).ticsPerChase;
 			
@@ -256,7 +265,7 @@ class NTM_Enemy : Actor {
 			A_Wander();
 		}
 		
-		invoker.TryLeap();
+		TryLeap();
 	}
 	
 	action void A_NTM_SWChase2() {
