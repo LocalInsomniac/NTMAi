@@ -2,6 +2,45 @@ GameInfo {
 	AddEventHandlers = "NTMAI"
     PlayerClasses = "NTM_Player"
 	QuitSound = ""
-	//BorderFlat = "AG128_1"
+	BorderFlat = "AG128_1"
 	//StatusBarClass = "NTM_StatusBar"
+}
+
+ClearSkills
+
+Skill Easy {
+    EasyBossBrain
+    SlowMonsters
+    SpawnFilter = Easy
+    DamageFactor = 0.5
+    MonsterHealth = 0.5
+	KickbackFactor = 0.5
+    Name = "Not Too Rough"
+    Key = "t"
+}
+
+Skill Normal {
+    SpawnFilter = Normal
+    Key = "h"
+    DamageFactor = 0.75
+    MonsterHealth = 0.75
+    KickbackFactor = 0.75
+    Name = "Hurt Me Plenty"
+    DefaultSkill
+}
+
+Skill Hard {
+    SpawnFilter = Hard
+    Aggressiveness = 0.5
+    Name = "Ultra Violence"
+    Key = "u"
+}
+
+Skill Nightmare {
+    SpawnFilter = Nightmare
+    DamageFactor = 2
+    KickbackFactor = 2
+    Aggressiveness = 1.0
+    Name = "Nightmare"
+    Key = "n"
 }
