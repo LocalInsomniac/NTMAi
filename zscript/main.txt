@@ -196,6 +196,12 @@ class NTMAI : EventHandler {
 				}
 			break;
 			
+			case 'WolfensteinSS':
+				if (sv_ntm_r_ss) {
+					e.replacement = "NTM_German";
+				}
+			break;
+			
 			case 'RealGibs':
 				e.replacement = "NTM_RealGibs";
 			break;
@@ -270,6 +276,10 @@ class NTMAI : EventHandler {
 			
 			case 'NTM_SpiderMastermind':
 				e.replacee = "SpiderMastermind";
+			break;
+			
+			case 'NTM_German':
+				e.replacee = "WolfensteinSS";
 			break;
 			
 			case 'NTM_RealGibs':
