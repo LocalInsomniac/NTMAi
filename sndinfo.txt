@@ -96,6 +96,8 @@ spider/pain DSSPIPAI
 $attenuation spider/attack 0.5
 $attenuation spider/summon 0.64
 
+$alias intermission/tick weapons/chngun
+
 /* =============
    CUSTOM SOUNDS
    ============= */
