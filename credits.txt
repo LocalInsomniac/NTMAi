@@ -11,6 +11,8 @@ Created by Can't Sleep
         Monolith Productions, •
                Raven Software •
 
+Ac!d, RoastBeefo • HUD Graphics
+
 Can't Sleep, David G, DenisBelmondo, • Graphics Editing
     Enjay, Gifty, horselessheadsman, •
      KaZudra, neoworm, osjclatchford •
@@ -21,6 +23,8 @@ Captain Toenail • "Forgotten One" Lost Soul
  Jimmy, Jimmy91, •
 LitteWhiteMouse, •
    Logan McCloud •
+
+Dr_Cosmobyte, Mr. Enchanter, Ninhil • Mighty Foot
 
 fgsfds, Kinsie, • Menu Graphics
     NightFright •
@@ -39,8 +43,6 @@ jdredalert • "Angled DOOM" Weapon Graphics
 
 Nash Muhandes • "Nash's Gore Mod", "Nash's Gore Mod: Vengeance Edition"
               • Gore Graphics
-
-Ac!d, RoastBeefo • HUD Graphics
 
 ShallowB • "DOOM 64" Imp
 

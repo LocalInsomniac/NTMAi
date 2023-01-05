@@ -7,6 +7,7 @@
 #include "zscript/weapons/rocketlauncher.txt"
 #include "zscript/weapons/plasmarifle.txt"
 #include "zscript/weapons/bfg9000.txt"
+#include "zscript/weapons/kick.txt"
 #include "zscript/weapons/keys.txt"
 
 class NTM_Player : DoomPlayer {

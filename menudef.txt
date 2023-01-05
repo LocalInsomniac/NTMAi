@@ -74,6 +74,8 @@ OptionMenu "NTM_Options" {
 	StaticText ""
 	Submenu "Enemy Replacement Options", "NTM_ActorOptions"
 	StaticText ""
+	Submenu "Customize Controls", "CustomizeControls"
+	StaticText ""
     StaticText "Visual Options", "Yellow"
 	Option "Show Title On Level Start", "sv_ntm_startTitle", "YesNo"
 	Option "Twitch On Level Start", "sv_ntm_startTwitch", "YesNo"

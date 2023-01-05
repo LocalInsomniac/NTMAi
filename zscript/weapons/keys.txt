@@ -6,6 +6,7 @@ class NTM_Key : Weapon {
 		
 		+Weapon.CheatNotWeapon
 		+Inventory.Undroppable
+		+Inventory.Untossable
 	}
 	
 	States {

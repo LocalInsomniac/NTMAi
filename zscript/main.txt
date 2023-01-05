@@ -11,9 +11,9 @@ class NTMAI : EventHandler {
 		return (a + (f * (b - a)));
 	}
 	
-	/* ========
-	   HANDLING
-	   ======== */
+	/* ======
+	   PLAYER
+	   ====== */
 	
 	override void PlayerEntered(PlayerEvent e) {
 		let pmo = players[e.playerNumber].mo;
@@ -57,6 +57,43 @@ class NTMAI : EventHandler {
 			DoThingRevive(pmo);
 		}
 	}
+	
+	override void NetworkProcess(ConsoleEvent e) {
+		Name n = e.name;
+		
+		if (n == "NTM_Kick") {
+			let pmo = players[e.player].mo;
+			
+			if (pmo && !pmo.CountInv("NTM_Kick")) {
+				pmo.A_GiveInventory("NTM_Kick");
+				pmo.UseInventory(pmo.FindInventory("NTM_Kick"));
+			}
+		} /*else {
+			if (n == "NTM_Grenade") {
+				let p = players[e.player];
+				
+				if (p) {
+					let pmo = p.mo;
+					
+					if (pmo && pmo.CountInv("NTM_GrenadeItem") && !pmo.CountInv("NTM_GrenadeThrow")) {
+						pmo.A_TakeInventory("NTM_GrenadeItem", 1);
+						pmo.A_GiveInventory("NTM_GrenadeThrow");
+						
+						let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
+						
+						if (grn) {
+							grn.prevWeapon = prevWeapon.GetClassName();
+							p.pendingWeapon = grn;
+						}
+					}
+				}
+			}
+		}*/
+	}
+	
+	/* =====
+	   WORLD
+	   ===== */
 	
 	override void WorldThingSpawned(WorldEvent e) {
 		let mo = e.thing;
@@ -193,6 +230,10 @@ class NTMAI : EventHandler {
 		
 		return false;
 	}
+	
+	/* ===========
+	   REPLACEMENT
+	   =========== */
 	
 	override void CheckReplacement(ReplaceEvent e) {
 		switch (e.replacee.GetClassName()) {
