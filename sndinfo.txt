@@ -115,7 +115,7 @@ $playersound player other *falling NSFALLIN
 NTM_Player/pain1 NSPLPAI1
 NTM_Player/pain2 NSPLPAI2
 NTM_Player/pain3 NSPLPAI3
-NTM_Player/pain4 NSPLPAI4
+NTM_Player/painx NSPLPAIX
 
 $random NTM_Player/paina {
 	NTM_Player/pain1
@@ -124,15 +124,7 @@ $random NTM_Player/paina {
 
 $random NTM_Player/painb {
 	NTM_Player/pain3
-	NTM_Player/pain4
-}
-
-NTM_Player/painx1 NSPLPAX1
-NTM_Player/painx2 NSPLPAX2
-
-$random NTM_Player/painx {
-	NTM_Player/painx1
-	NTM_Player/painx2
+	NTM_Player/paina
 }
 
 NTM_Player/taunt NSTAUNT
