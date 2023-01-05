@@ -64,7 +64,7 @@ class NTM_Player : DoomPlayer {
 				if (painTics <= 0) {
 					int deltaHealth = oldHealth - health;
 					
-					if (deltaHealth > 20 || health < 50) {
+					if (deltaHealth > 20 || health < 64) {
 						if (deltaHealth > 40) {
 							A_StartSound("NTM_Player/painx", Chan_Voice);
 						} else {
