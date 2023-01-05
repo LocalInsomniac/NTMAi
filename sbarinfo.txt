@@ -63,7 +63,7 @@ StatusBar FullScreen, ForceScaled, FullScreenOffsets {
 	DrawNumber 3, NTM_Digit, Untranslated, Ammo1, DrawShadow, 98, -18;
 	
 	IfWaterLevel 3 {
-		DrawBar "NTMAIR1", "", AirTime, Horizontal, 23, -43;
+		DrawBar "NTMAIR1", "NTMAIR2", AirTime, Horizontal, 23, -43;
 		DrawImage "NTMAIR", 4, -44, None;
 	}
 	
