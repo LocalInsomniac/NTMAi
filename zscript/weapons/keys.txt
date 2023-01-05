@@ -1,0 +1,94 @@
+class NTM_Key : Weapon {
+	class<Weapon> prevWeapon;
+	
+	Default {
+		Weapon.SlotNumber 0;
+		
+		+Weapon.CheatNotWeapon
+		+Inventory.Undroppable
+	}
+	
+	States {
+		Select:
+			NRKE A 1 A_Raise(11);
+			Loop;
+			
+		Ready:
+			NRKE B 0;
+		Ready2:
+			#### # 0 A_StartSound("misc/k_pkup");
+			#### ########## 1 Bright A_WeaponReady;
+		Fire:
+		Deselect:
+			#### ######### 1 Bright A_WeaponOffset(0, 11, WOF_Add);
+			
+			#### # 0 {
+				A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
+				A_TakeInventory(invoker.GetClassName());
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_Key_RedCard : NTM_Key {}
+
+class NTM_Key_YellowCard : NTM_Key {
+	States {
+		Select:
+			NYKE A 1 A_Raise(12);
+			Loop;
+		
+		Ready:
+			NYKE B 0;
+			Goto Ready2;
+	}
+}
+
+class NTM_Key_BlueCard : NTM_Key {
+	States {
+		Select:
+			NBKE A 1 A_Raise(12);
+			Loop;
+		
+		Ready:
+			NBKE B 0;
+			Goto Ready2;
+	}
+}
+
+class NTM_Key_RedSkull : NTM_Key {
+	States {
+		Select:
+			NRSK A 1 A_Raise(12);
+			Loop;
+		
+		Ready:
+			NRSK B 0;
+			Goto Ready2;
+	}
+}
+
+class NTM_Key_YellowSkull : NTM_Key {
+	States {
+		Select:
+			NYSK A 1 A_Raise(12);
+			Loop;
+		
+		Ready:
+			NYSK B 0;
+			Goto Ready2;
+	}
+}
+
+class NTM_Key_BlueSkull : NTM_Key {
+	States {
+		Select:
+			NBSK A 1 A_Raise(12);
+			Loop;
+		
+		Ready:
+			NBSK B 0;
+			Goto Ready2;
+	}
+}

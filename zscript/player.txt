@@ -7,10 +7,12 @@
 #include "zscript/weapons/rocketlauncher.txt"
 #include "zscript/weapons/plasmarifle.txt"
 #include "zscript/weapons/bfg9000.txt"
+#include "zscript/weapons/keys.txt"
 
 class NTM_Player : DoomPlayer {
-	int fallState, fallTics, fallTics2, oldHealth, painTics;
+	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
 	double hNewAngle;
+	Line door;
 	
 	Default {
 		Player.StartItem "NTM_Pistol";
@@ -125,6 +127,16 @@ class NTM_Player : DoomPlayer {
 		} else {
 			level.airControl = 0.00390625;
 			A_SetSpeed(1);
+		}
+		
+		// Keycard animations
+		if (doorTics > 0) {
+			A_SetSpeed(0);
+			--doorTics;
+			
+			if (doorTics <= 0 && door) {
+				door.Activate(self, 1, SPAC_Use);
+			}
 		}
 		
 		// Flinch when falling

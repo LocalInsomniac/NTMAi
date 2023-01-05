@@ -39,6 +39,9 @@ class NTMAI : EventHandler {
 				nmo.oldHealth = nmo.health;
 				nmo.painTics = 0;
 				
+				nmo.doorTics = 0;
+				nmo.door = null;
+				
 				if (sv_ntm_startTwitch) {
 					// Emulate Duke3D twitching using spawn angle
 					nmo.A_SetViewAngle(nmo.DeltaAngle(nmo.angle, 0));
@@ -89,6 +92,106 @@ class NTMAI : EventHandler {
 		if (!(mo is "PlayerPawn")) {
 			mo.translation = mo.default.translation;
 		}
+	}
+	
+	override void WorldLinePreActivated(WorldEvent e) {
+		let mo = e.thing;
+		Line l = e.activatedLine;
+		
+		// If this is a locked door, check if we can play a keycard animation
+		if (mo is "NTM_Player" && l.special == 13 && sv_ntm_keycard) {
+			bool lock = false;
+			NTM_Player pmo = NTM_Player(mo);
+			
+			if (pmo.door != l) {
+				switch (l.args[3]) {
+					case 1:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 2:
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 3:
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 4:
+						if (UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 5:
+						if (UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 6:
+						if (UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 129:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 130:
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 131:
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+				}
+			}
+			
+			if (lock) {
+				// Queue this door so we can open it after the animation
+				pmo.door = l;
+				pmo.doorTics = 24;
+				e.shouldActivate = false;
+			}
+		}
+	}
+	
+	bool UseKey(WorldEvent e, class<Key> keyItem, class<NTM_Key> keyAnim) {
+		Actor pmo = e.thing;
+		
+		if (pmo.CountInv(keyItem) && !pmo.CountInv(keyAnim)) {
+			let p = pmo.player;
+			let prevWeapon = p.readyWeapon;
+			
+            pmo.A_GiveInventory(keyAnim);
+            
+			let keycard = NTM_Key(pmo.FindInventory(keyAnim));
+            
+			if (keycard) {
+				keycard.prevWeapon = prevWeapon.GetClassName();
+                p.pendingWeapon = keycard;
+            } else {
+				return false;
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 	
 	override void CheckReplacement(ReplaceEvent e) {
