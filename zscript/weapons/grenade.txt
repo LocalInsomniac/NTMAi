@@ -41,29 +41,29 @@ class NTM_GrenadeThrow : Weapon {
 	
 	States {
 		Select:
-			NGRG A 1 A_Raise(11);
+			NGRG A 1 A_Raise(12);
 			Loop;
 		
 		Deselect:
 		Ready:
 		Fire:
 			NGRG A 0 A_WeaponOffset();
-			NGRG BC 3;
-			NGRG D 3 A_StartSound("NTM_Grenade/pin");
-			NGRG EF 3;
-			NGRG FFFFFFFF 1 A_WeaponOffset(0, 11, WOF_Add);
+			NGRG BC 2;
+			NGRG D 2 A_StartSound("NTM_Grenade/pin");
+			NGRG EF 2;
+			NGRG FFFFFFF 1 A_WeaponOffset(0, 12, WOF_Add);
 			
 			NGRG F 0 {
 				if (!sv_infiniteAmmo) {
 					A_TakeInventory("NTM_GrenadeItem", 1);
 				}
 				
-				AddZ(32);
+				Actor grenade = A_FireProjectile("NTM_Grenade", 0, false, 0);
 				
-				Actor grenade = SpawnSubMissile("NTM_Grenade", self);
+				if (grenade) {
+					grenade.vel.z += 5;
+				}
 				
-				AddZ(-32);
-				grenade.vel.z = -clamp(tan(pitch), -4, 4) * grenade.speed + 4;
 				A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
 				A_TakeInventory("NTM_GrenadeThrow");
 			}
@@ -74,8 +74,8 @@ class NTM_GrenadeThrow : Weapon {
 
 class NTM_Grenade : Actor {
 	Default {
-		Radius 4;
-		Height 4;
+		Radius 8;
+		Height 8;
 		Scale 0.3;
 		Speed 18;
 		Damage 25;

@@ -62,6 +62,16 @@ class NTMAI : EventHandler {
 		let pmo = players[e.playerNumber].mo;
 		
 		if (pmo) {
+			pmo.A_TakeInventory("NTM_Kick");
+			pmo.A_TakeInventory("NTM_GrenadeThrow");
+			pmo.A_TakeInventory("NTM_Bloody");
+			pmo.A_TakeInventory("NTM_PistolShots");
+			pmo.A_TakeInventory("NTM_Key_RedCard");
+			pmo.A_TakeInventory("NTM_Key_YellowCard");
+			pmo.A_TakeInventory("NTM_Key_BlueCard");
+			pmo.A_TakeInventory("NTM_Key_RedSkull");
+			pmo.A_TakeInventory("NTM_Key_YellowSkull");
+			pmo.A_TakeInventory("NTM_Key_BlueSkull");
 			DoThingRevive(pmo);
 		}
 	}
