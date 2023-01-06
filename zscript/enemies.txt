@@ -23,7 +23,7 @@ class NTM_Enemy : Actor {
     }
 	
 	int oldLeap;
-	double leapDistance, leapSpeed, oldLeapZVel;
+	double leapDistance, leapSpeed;
 	
 	int ticsPerChase;
 	int chaseStuck;
@@ -64,7 +64,7 @@ class NTM_Enemy : Actor {
 	   ===================== */
 	
 	double GetGroundHeight(bool includeMObj = true) {
-        double _floorZ = GetZAt();
+        double _floorZ = floorZ;
 		
 		if (includeMObj) {
 			bool ok;
@@ -311,7 +311,7 @@ class NTM_Enemy : Actor {
 	}
 	
 	action void A_NTM_Leap() {
-		if (invoker.CheckOnGround() || (vel.z == 0 && invoker.oldLeapZVel == 0)) {
+		if (invoker.CheckOnGround()) {
             if (!invoker.oldLeap) {
 				if (!target) {
 					return;
@@ -359,8 +359,6 @@ class NTM_Enemy : Actor {
 				}
 			}
 		}
-		
-		invoker.oldLeapZVel = vel.z;
     }
 }
 
