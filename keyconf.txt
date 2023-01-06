@@ -5,7 +5,7 @@ alias NTM_Kick "netevent NTM_Kick"
 DefaultBind Q NTM_Kick
 
 AddMenuKey "Hand Grenade" NTM_UseGrenade
-alias NTM_UseGrenade "netevent NTM_Grenade"
+alias NTM_UseGrenade "netevent NTM_UseGrenade"
 DefaultBind G NTM_UseGrenade
 
 AddMenuKey "Portable Medikit" NTM_UsePortableMedkit

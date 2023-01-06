@@ -8,6 +8,7 @@
 #include "zscript/weapons/plasmarifle.txt"
 #include "zscript/weapons/bfg9000.txt"
 #include "zscript/weapons/kick.txt"
+#include "zscript/weapons/grenade.txt"
 #include "zscript/weapons/keys.txt"
 
 class NTM_Player : DoomPlayer {
@@ -119,6 +120,26 @@ class NTM_Player : DoomPlayer {
 	}
 	
 	override void Tick() {
+		// GROSS HACK: Do not let the player be able to select temporary
+		//             animations!
+		if (player) {
+			let r = player.readyWeapon;
+			let l = player.pendingWeapon;
+			
+			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
+				A_TakeInventory("NTM_Key_RedCard");
+				A_TakeInventory("NTM_Key_YellowCard");
+				A_TakeInventory("NTM_Key_BlueCard");
+				A_TakeInventory("NTM_Key_RedSkull");
+				A_TakeInventory("NTM_Key_YellowSkull");
+				A_TakeInventory("NTM_Key_BlueSkull");
+			}
+			
+			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
+				A_TakeInventory("NTM_GrenadeThrow");
+			}
+		}
+		
 		// Less slippery movement
 		if (!multiplayer && (!curSector || !(curSector.flags & 16))) {
 			level.airControl = 0.53777778;
