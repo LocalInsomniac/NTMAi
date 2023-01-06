@@ -41,7 +41,7 @@ class NTM_Backpack : CustomInventory replaces Backpack {
 			
 		Pickup:
 			TNT1 A 0 {
-				A_GiveInventory("NTM_Grenade", 1);
+				A_GiveInventory("NTM_GrenadeItem", 1);
 				A_GiveInventory("Backpack", 1);
 			}
 			
