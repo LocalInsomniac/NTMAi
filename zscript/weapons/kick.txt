@@ -14,7 +14,7 @@ class NTM_Kick : CustomInventory {
 			TNT1 A 3;
 			NKIK AB 2;
 			
-			NKIK C 5 {
+			NKIK C 6 {
 				if (CountInv("PowerStrength")) { // || CountInv("NTM_PowerBerserk")
 					A_CustomPunch(20 * Random(1, 10), true, CPF_NoTurn, "NTM_BerserkPuff", 0, 0.25, 100, "", "player/male/fist");
 				} else {
