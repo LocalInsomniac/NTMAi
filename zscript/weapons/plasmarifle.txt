@@ -51,8 +51,7 @@ class NTM_PlasmaBall : PlasmaBall replaces PlasmaBall {
 			Goto Spawn + 1;
 			
 		Death:
-			NPLB F 2 Bright A_Explode(Random(1, 8) * 2, 30);
-			NPLB FGHIJK 2 Bright;
+			NPLB EEFGHIJ 2 Bright;
 			Stop;
 	}
 }
