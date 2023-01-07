@@ -3,44 +3,41 @@ GameInfo {
     PlayerClasses = "NTM_Player"
 	QuitSound = ""
 	BorderFlat = "AG128_1"
-	//StatusBarClass = "NTM_StatusBar"
 }
 
-ClearSkills
-
-Skill Easy {
-    EasyBossBrain
-    SlowMonsters
-    SpawnFilter = Easy
-    DamageFactor = 0.5
-    MonsterHealth = 0.5
-	KickbackFactor = 0.5
-    Name = "Not Too Rough"
-    Key = "t"
+Skill Baby {
+	AutoUseHealth
+	AmmoFactor = 2
+	DamageFactor = 0.5
+	EasyBossBrain
+	SpawnFilter = Baby
+	Name = "Too Young To Die"
+	Key = "i"
 }
 
-Skill Normal {
-    SpawnFilter = Normal
-    Key = "h"
-    DamageFactor = 0.75
-    MonsterHealth = 0.75
-    KickbackFactor = 0.75
-    Name = "Hurt Me Plenty"
-    DefaultSkill
+skill Easy {
+	EasyBossBrain
+	SpawnFilter = Easy
+	Name = "Not Too Rough"
+	Key = "h"
+}
+
+skill Normal {
+	SpawnFilter = Normal
+	Key = "h"
+	Name = "Hurt Me Plenty"
+	DefaultSkill
 }
 
 Skill Hard {
-    SpawnFilter = Hard
-    Aggressiveness = 0.5
-    Name = "Ultra Violence"
-    Key = "u"
+	SpawnFilter = Hard
+	Name = "Ultra-Violence"
+	Key = "u"
 }
 
 Skill Nightmare {
-    SpawnFilter = Nightmare
-    DamageFactor = 2
-    KickbackFactor = 2
-    Aggressiveness = 1.0
-    Name = "Nightmare"
-    Key = "n"
+	Aggressiveness = 0.666
+	SpawnFilter = Nightmare
+	Name = "Nightmare"
+	Key = "n"
 }

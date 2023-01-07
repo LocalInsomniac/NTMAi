@@ -55,7 +55,7 @@ class NTM_Zombieman : NTM_Enemy {
 					int skill = G_SkillPropertyInt(7);
 					int ran = Random(0, 256);
 					
-					if ((skill >= 4 && ran <= 20) || (skill >= 2 && ran <= 10)) {
+					if ((skill >= 3 && ran <= 20) || (skill >= 1 && ran <= 10)) {
 						double dist = Distance3D(target);
 						
 						if (dist > 256 && dist < 520) {
