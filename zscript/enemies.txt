@@ -244,7 +244,7 @@ class NTM_Enemy : Actor {
 		
 		Vector3 posDiff = pos - oldPos;
 		
-		if (posDiff dot posDiff < 10000) {
+		if (!chaseStuck && posDiff dot posDiff < 10000) {
 			SetOrigin(oldPos, true);
 			vel *= 0.7;
 			vel += posDiff.Unit() * speed * 0.18;
