@@ -683,7 +683,7 @@ class NTM_System_Actor : NTM_System {
 					double dist = owner.Distance3D(killer);
 					
 					if (dist > 0) {
-						double force = (8 / Max(1, dist * 0.005)) * (100 / owner.mass);
+						double force = (8 / Max(1, dist * 0.005)) * (100 / Max(100, owner.mass * 0.32));
 						
 						if (force > 1.25) {
 							owner.A_FaceTarget();
