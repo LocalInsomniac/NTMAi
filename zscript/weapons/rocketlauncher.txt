@@ -62,7 +62,11 @@ class NTM_Rocket : Rocket replaces Rocket {
 			
 		Death:
 			TNT1 A 0 A_SpawnItemEx("NTM_Explosion2");
-			TNT1 A 0 A_Explode;
+			
+			TNT1 A 0 {
+				NTMAi.Explode(self, 128, 128, XF_HurtSource);
+			}
+			
 			TNT1 A 15 A_Quake(2, 15, 0, 512, "");
 			Stop;
 	}

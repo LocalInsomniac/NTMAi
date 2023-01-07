@@ -11,6 +11,38 @@ class NTMAI : EventHandler {
 		return (a + (f * (b - a)));
 	}
 	
+	/* =======
+	   ACTIONS
+	   ======= */
+	
+	static void Explode(Actor caller, int damage = 128, int distance = 128, int flags = 0, name mod = "None") {
+		if (!caller || damage <= 0 || distance <= 0) {
+			return;
+		}
+		
+		if (sv_ntm_blast) {
+			// Do blast damage like Blood
+			NTM_Blast blast = NTM_Blast(caller.Spawn("NTM_Blast", caller.pos));
+			
+			if (blast) {
+				if (caller.bMissile) {
+					blast.master = caller;
+					blast.target = caller.target;
+				} else {
+					blast.target = caller;
+				}
+				
+				blast.blastDamage = damage;
+				blast.blastDamage2 = damage;
+				blast.blastRadius = distance;
+				blast.damageType = mod;
+				blast.blastFlags = flags;
+			}
+		} else {
+			caller.A_Explode(damage, distance, flags, damageType: mod);
+		}
+	}
+	
 	/* ======
 	   PLAYER
 	   ====== */

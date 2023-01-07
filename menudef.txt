@@ -85,6 +85,7 @@ OptionMenu "NTM_Options" {
 	Option "Play Keycard Animation On Locked Doors", "sv_ntm_keycard", "YesNo"
 	Option "Auto-Activate Radiation Suit On Hazards", "cl_ntm_autoRadSuit", "YesNo"
 	Option "Replace Soulspheres With Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
+	Option "Blood Explosion Damage (Experimental)", "sv_ntm_blast", "OnOff"
 	StaticText ""
 	Option "Enemy Movement Style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
 	Option "Zombies Throw Grenades On Hard Difficulties", "sv_ntm_grenadiers", "YesNo"

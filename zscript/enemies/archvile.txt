@@ -86,11 +86,13 @@ class NTM_ArchVile : NTM_Enemy {
 						
 						if (boom) {
 							boom.A_StartSound("vile/stop");
-							boom.A_Explode(70, 70, XF_NoSplash, false, 0, 0, 0, "BulletPuff", "Fire");
+							NTMAi.Explode(boom, 70, 70, XF_NoSplash, "Fire");
 						}
 						
 						if (!target.bDontThrust) {
-							target.vel.z = 1000 / Max(1, target.mass);
+							double m = Max(1, target.mass);
+							
+							target.vel.z = 1000 / m;
 						}
 					}
 				}
