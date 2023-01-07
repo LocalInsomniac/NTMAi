@@ -1,6 +1,6 @@
 class NTM_Fists : Fist {
 	Default {
-		Tag "$TAG_NTM_FISTS";
+		Tag "Fists";
 		Weapon.SlotNumber 1;
 		Inventory.AltHUDIcon "NFISA0";
 		
