@@ -36,7 +36,7 @@ class NTM_Fists : Fist {
 	}
 	
 	action void A_NTM_Punch() {
-		if (CountInv("PowerStrength")) { // || CountInv("NTM_PowerBerserk")
+		if (CountInv("PowerStrength") || CountInv("NTM_PowerBerserk")) {
 			A_CustomPunch(20, false, CPF_NoTurn, "NTM_BerserkPuff", 66, 0.25, 100, "", "player/male/fist");
 		} else {
 			A_CustomPunch(2, false, CPF_NoTurn, "NTM_FistPuff", 66, 0, 0, "", "player/male/fist");

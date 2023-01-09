@@ -129,6 +129,9 @@ $random NTM_Player/painb {
 
 NTM_Player/taunt NSTAUNT
 
+NTM_RadSuit/use NSSUIT
+NTM_Infrared/use NSGOGGLE
+
 // Weapons
 NTM_Weapon/select NSGUNUP
 

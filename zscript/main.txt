@@ -144,6 +144,33 @@ class NTMAI : EventHandler {
 	   WORLD
 	   ===== */
 	
+	static void DoReplaceActor(Actor og, class<Actor> new) {
+		bool ok;
+		Actor rep;
+		
+		[ok, rep] = og.A_SpawnItemEx(new, flags: SXF_NoCheckPosition | SXF_TransferAmbushFlag | SXF_TransferPitch | SXF_TransferPointers | SXF_TransferSpecial | SXF_TransferRoll);
+		
+		if (rep) {
+			og.Destroy();
+		}
+	}
+	
+	static void ReplaceSecret(Actor og, class<Actor> rep, int cvar) {
+		if (cvar == 1) {
+			NTMAi.DoReplaceActor(og, rep);
+			
+			return;
+		}
+		
+		if (cvar >= 2) {
+			let s = og.curSector;
+			
+			if (s && !s.IsSecret()) {
+				NTMAi.DoReplaceActor(og, rep);
+			}
+		}
+	}
+	
 	override void WorldThingSpawned(WorldEvent e) {
 		let mo = e.thing;
 		

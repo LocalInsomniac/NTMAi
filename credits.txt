@@ -65,7 +65,10 @@ Enjay • "Revised Splashes"
 
 Matt • "Hideous Destructor" Monster Movement
 
-Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore 
+Mikk- • "Build-Style Toggleable Powerups"
+
+Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore
+			  • "Less Slippery Movement"
 
 Rachael • "Smooth Fluids"
 
