@@ -1,0 +1,98 @@
+// Explosion
+class NTM_Explosion : Actor {
+	Default {
+		RenderStyle "Add";
+		Translation "NTM_Explosion";
+		FloatBobPhase 0;
+		
+		+Corpse
+		+NoTeleport
+		+NoBlockMap
+		+NoGravity
+		+NotOnAutomap
+		+ForceXYBillboard
+		+ZDoomTrans
+	}
+	
+	States {
+		Spawn:
+			NEXP ABCDEFGHIJ 3 Bright;
+			Stop;
+	}
+}
+
+// Explosion 2
+class NTM_Explosion2 : NTM_Explosion {
+	Default {
+		Scale 0.75;
+	}
+	
+	States {
+		Spawn:
+			NEX2 ABCDEFGHIJKLMNOPQRSTU 2 Bright;
+			Stop;
+	}
+}
+
+// Blood-Style Blast
+class NTM_Blast : Actor {
+	int blastDamage, blastDamage2, blastRadius, blastFlags;
+	
+	Default {
+		Radius 1;
+		Height 1;
+		
+		+NoInteraction
+		+NotOnAutomap
+	}
+	
+	States {
+		Spawn:
+			TNT1 A -1;
+			Stop;
+	}
+	
+	override void Tick() {
+		Super.Tick();
+		
+		/* Expand the explosion sphere.
+		   Damage and velocity is dealt depending on how much the sphere has
+		   expanded. This effect finishes in 8 tics. */
+		double rad = radius * 1.3;
+		double expand = Ceil(blastRadius * 0.125);
+		BlockThingsIterator it = BlockThingsIterator.Create(self, radius);
+		
+		while (it.Next()) {
+			let mo = it.thing;
+			
+			if (mo != self && (mo != target || blastFlags & XF_HurtSource) && mo != master && !mo.bNoRadiusDmg) {
+				double dist = Max(0.0001, Distance3D(mo));
+				
+				if (dist <= rad && CheckSight(mo, SF_IgnoreVisibility | SF_IgnoreWaterBoundary)) {
+					mo.DamageMObj(self, target, blastDamage, damageType, DMG_Thrustless | DMG_Explosion);
+					
+					// Fling objects away
+					if (!mo.bDontThrust && (mo is "PlayerPawn" || mo.bIsMonster || mo.bShootable) && (!mo.bCorpse || mo.vel.Length() > 0.16)) {
+						Vector3 mPos = mo.pos;
+						Vector3 unit = (mPos.x - pos.x, mPos.y - pos.y, (mPos.z + (mo.height * 0.5)) - pos.z).Unit();
+						
+						if (unit.z > 0) {
+							unit.z *= 1.6;
+						}
+						
+						mo.vel += (unit * blastDamage * expand * 0.5) / mo.mass;
+					}
+				}
+			}
+		}
+		
+		if (radius >= blastRadius) {
+			Destroy();
+			
+			return;
+		}
+		
+		blastDamage -= Floor(blastDamage2 * 0.125);
+		A_SetSize(radius + expand, height + expand);
+	}
+}

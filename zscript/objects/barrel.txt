@@ -1,0 +1,45 @@
+// Explosive Barrel
+class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel {
+	Default {
+		Height 28;
+		Scale 0.6;
+	}
+	
+	States {
+		Spawn:
+			NBAR ABCB 6;
+			Loop;
+		
+		Death:
+			NBAR D 5 Bright;
+			TNT1 A 0 A_NoBlocking;
+			TNT1 A 0 A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.25));
+			TNT1 A 0 A_SpawnItemEx("NTM_Explosion2", 0, 0, 20);
+			TNT1 A 0 A_SpawnDebris("NTM_BarrelGib");
+			
+			TNT1 A 0 {
+				NTMAi.Explode(self);
+			}
+			
+			TNT1 A 15 A_Quake(2, 15, 0, 512, "");
+			TNT1 A 1051 A_BarrelDestroy;
+			TNT1 A 5 A_Respawn;
+			
+			Wait;
+	}
+}
+
+// Barrel Gib
+class NTM_BarrelGib : NTM_Gib {
+	Default {
+		Scale 0.25;
+		
+		+ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NBGB ABCDEFGH 3;
+			Loop;
+	}
+}
