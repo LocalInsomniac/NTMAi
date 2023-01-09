@@ -1,40 +1,29 @@
 splash NTM_Blood {
-	BaseClass NTM_BloodSplash
 	Sound NTM_World/splash
 	NoAlert
 }
 
 splash NTM_Water {
-	BaseClass NTM_WaterSplash
 	Sound NTM_World/splash
 	NoAlert
 }
 
 splash NTM_Lava {
-	BaseClass NTM_LavaSplash
-	ChunkClass NTM_LavaSmoke
-	ChunkZVelShift 1
 	Sound NTM_World/lava
 	NoAlert
 }
 
 splash NTM_Nuke {
-	BaseClass NTM_NukeSplash
-	ChunkClass NTM_NukeSmoke
-	ChunkZVelShift 1
 	Sound NTM_World/lava
 	NoAlert
 }
 
 splash NTM_LavaSmoke {
-	ChunkClass NTM_LavaSmoke
-	ChunkBaseZVel 1
 	Sound NTM_World/sizzle
 	NoAlert
 }
 
 splash NTM_Slime {
-	BaseClass NTM_SlimeSplash
 	Sound NTM_World/splash
 	NoAlert
 }

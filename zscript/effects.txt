@@ -1,5 +1,4 @@
 #include "zscript/effects/blood.txt"
-#include "zscript/effects/splashes.txt"
 
 // Explosion
 class NTM_Explosion : Actor {
@@ -124,10 +123,11 @@ class NTM_BulletCasing : NTM_Gib {
 		Gravity 1;
 		BounceSound "NTM_BulletCasing/bounce";
 		BounceType "Doom";
+		BounceFactor 0.75;
 		
 		-Corpse
-		+CanBounceWater
 		+Missile
+		+CanBounceWater
 		+UseBounceState
 	}
 	
@@ -144,6 +144,11 @@ class NTM_BulletCasing : NTM_Gib {
 			Goto Roll;
 			
 		Death:
+			#### # 0 {
+				bMissile = false;
+				A_SetFloorClip();
+			}
+			
 			#### C 350 A_Jump(128, 1);
 			Stop;
 			#### G 350;
