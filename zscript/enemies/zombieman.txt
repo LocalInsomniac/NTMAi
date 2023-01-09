@@ -1,4 +1,4 @@
-class NTM_Zombieman : NTM_Enemy {
+class NTM_Zombieman : NTM_Humanoid {
 	Default {
 		Health 20;
 		Radius 20;
@@ -9,6 +9,7 @@ class NTM_Zombieman : NTM_Enemy {
 		AttackSound "grunt/attack";
 		PainSound "grunt/pain";
 		DeathSound "grunt/death";
+		NTM_Humanoid.BurnSound "grunt/burn";
 		ActiveSound "grunt/active";
 		Obituary "$OB_ZOMBIE";
 		Tag "$FN_ZOMBIE";

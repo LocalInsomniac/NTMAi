@@ -28,6 +28,10 @@ menu/clear DSEMPTY
 
 weapons/chngun DSCHNGUN
 
+grunt/burn DSPOBURN
+
+shotguy/burn DSPOBURN
+
 chainguy/sight DSCGSIT
 
 chainguy/active1 DSEMPTY
@@ -41,8 +45,10 @@ $random chainguy/active {
 chainguy/attack DSCHNGUN
 chainguy/pain DSCGPAIN
 chainguy/death DSCGDEAD
+chainguy/burn DSPOBURN
 
 imp/pain DSBGPAIN
+imp/burn DSBGBURN
 
 demon/attack DSSGTJMP
 
@@ -233,3 +239,13 @@ $random NTM_German/pain {
 NTM_German/death1 NSGEDIE1
 NTM_German/death2 NSGEDIE2
 NTM_German/death3 NSGEDIE3
+
+NTM_German/burn1 NSGEBRN1
+NTM_German/burn2 NSGEBRN2
+NTM_German/burn3 NSGEBRN3
+
+$random NTM_German/burn {
+	NTM_German/burn1
+	NTM_German/burn2
+	NTM_German/burn3
+}

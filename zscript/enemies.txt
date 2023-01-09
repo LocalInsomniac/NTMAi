@@ -1,3 +1,4 @@
+#include "zscript/enemies/humanoid.txt"
 #include "zscript/enemies/zombieman.txt"
 #include "zscript/enemies/shotgunguy.txt"
 #include "zscript/enemies/chaingunguy.txt"

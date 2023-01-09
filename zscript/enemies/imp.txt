@@ -1,4 +1,4 @@
-class NTM_Imp : NTM_Enemy {
+class NTM_Imp : NTM_Humanoid {
 	Default {
 		Health 60;
 		Radius 20;
@@ -8,9 +8,10 @@ class NTM_Imp : NTM_Enemy {
 		PainChance 200;
 		MaxDropOffHeight 80;
 		SeeSound "imp/sight";
+		ActiveSound "imp/active";
 		PainSound "imp/pain";
 		DeathSound "imp/death";
-		ActiveSound "imp/active";
+		NTM_Humanoid.BurnSound "imp/burn";
 		HitObituary "$OB_IMPHIT";
 		Obituary "$OB_IMP";
 		Tag "$FN_IMP";
