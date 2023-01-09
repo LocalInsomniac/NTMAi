@@ -1,6 +1,3 @@
 [default]
 MUSIC_INTRO = "NTMAI";
 MUSIC_DM2TTL = "NTMAI";
-
-[enu default]
-TAG_NTM_FISTS = "Fists";

@@ -77,20 +77,25 @@ class NTM_ArchVile : NTM_Enemy {
 					if (CheckSight(target)) {
 						A_StartSound("vile/stop", Chan_Weapon, ChanF_Overlap);
 						
-						int newDmg = target.DamageMobj(self, self, 20, "Fire");
+						Vector3 boomPos = target.Vec3Angle(24, target.angle, 0);
+						int newDmg = target.DamageMObj(self, self, 20, "Fire");
 						
-						target.TraceBleed(newDmg > 0 ? newDmg : 20, self);
+						if (target) {
+							target.TraceBleed(newDmg > 0 ? newDmg : 20, self);
+						}
 						
 						// Explode the target
-						Actor boom = Spawn("NTM_ArchVileExplosion", target.Vec3Angle(24, target.angle, 0));
+						Actor boom = Spawn("NTM_ArchVileExplosion", boomPos);
 						
 						if (boom) {
 							boom.A_StartSound("vile/stop");
-							boom.A_Explode(70, 70, XF_NoSplash, false, 0, 0, 0, "BulletPuff", "Fire");
+							NTMAi.Explode(boom, 70, 70, XF_NoSplash, "Fire");
 						}
 						
-						if (!target.bDontThrust) {
-							target.vel.z = 1000 / Max(1, target.mass);
+						if (target && !target.bDontThrust) {
+							double m = Max(1, target.mass);
+							
+							target.vel.z = 1000 / m;
 						}
 					}
 				}

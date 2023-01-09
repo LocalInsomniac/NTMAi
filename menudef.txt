@@ -1,3 +1,56 @@
+// Main Menu
+ListMenu "MainMenu" {
+	StaticPatch 94, 2, "M_DOOM"
+	Position 96, 72
+	
+	IfOption(ReadThis) {
+		Position 96, 64
+	}
+	
+	PatchItem "M_NGAME", "n", "PlayerClassMenu"
+	
+	IfOption(SwapMenu) {
+		PatchItem "M_LOADG", "l", "LoadGameMenu"
+		PatchItem "M_SAVEG", "s", "SaveGameMenu"
+		PatchItem "M_OPTION", "o", "OptionsMenu"
+		TextItem "NTMAi Options", "o", "NTM_Options"
+	} else {
+		PatchItem "M_OPTION","o", "OptionsMenu"
+		TextItem "NTMAi Options", "o", "NTM_Options"
+		PatchItem "M_LOADG", "l", "LoadGameMenu"
+		PatchItem "M_SAVEG", "s", "SaveGameMenu"
+	}
+	
+	IfOption(ReadThis) {
+		PatchItem "M_RDTHIS", "r", "ReadThisMenu"
+	}
+	
+	PatchItem "M_QUITG", "q", "QuitMenu"
+}
+
+// Player Class Menu
+ListMenu "PlayerClassMenu" {
+	NetgameMessage "$NEWGAME"
+	StaticTextCentered 160, 16, "Class"
+	Position 48, 64
+	PlayerDisplay 220, 64, "20 00 00", "80 00 40"
+	MouseWindow 0, 220
+}
+
+// Episode Menu
+ListMenu "EpisodeMenu" {
+	NetgameMessage "$NEWGAME"
+	StaticTextCentered 160, 38, "Episode"
+	Position 48, 64
+}
+
+// Skill Menu
+ListMenu "SkillMenu" {
+	StaticTextCentered 160, 38, "Difficulty"
+	Position 72, 64
+}
+
+// NTMAi Options
 OptionValue "NTM_Options_Soulsphere" {
 	0, "No"
 	1, "Yes"
@@ -21,6 +74,8 @@ OptionMenu "NTM_Options" {
 	StaticText ""
 	Submenu "Enemy Replacement Options", "NTM_ActorOptions"
 	StaticText ""
+	Submenu "Customize Controls", "CustomizeControls"
+	StaticText ""
     StaticText "Visual Options", "Yellow"
 	Option "Show Title On Level Start", "sv_ntm_startTitle", "YesNo"
 	Option "Twitch On Level Start", "sv_ntm_startTwitch", "YesNo"
@@ -30,6 +85,7 @@ OptionMenu "NTM_Options" {
 	Option "Play Keycard Animation On Locked Doors", "sv_ntm_keycard", "YesNo"
 	Option "Auto-Activate Radiation Suit On Hazards", "cl_ntm_autoRadSuit", "YesNo"
 	Option "Replace Soulspheres With Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
+	Option "Blood Explosion Damage (Experimental)", "sv_ntm_blast", "OnOff"
 	StaticText ""
 	Option "Enemy Movement Style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
 	Option "Zombies Throw Grenades On Hard Difficulties", "sv_ntm_grenadiers", "YesNo"

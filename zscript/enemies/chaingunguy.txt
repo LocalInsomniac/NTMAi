@@ -1,4 +1,4 @@
-class NTM_ChaingunGuy : NTM_Enemy {
+class NTM_ChaingunGuy : NTM_Humanoid {
 	bool fired;
 	
 	Default {
@@ -9,10 +9,11 @@ class NTM_ChaingunGuy : NTM_Enemy {
 		Speed 8;
 		PainChance 170;
 		SeeSound "chainguy/sight";
-		PainSound "chainguy/pain";
-		DeathSound "chainguy/death";
 		ActiveSound "chainguy/active";
 		AttackSound "chainguy/attack";
+		PainSound "chainguy/pain";
+		DeathSound "chainguy/death";
+		NTM_Humanoid.BurnSound "chainguy/burn";
 		Obituary "$OB_CHAINGUY";
 		Tag "$FN_HEAVY";
 		DropItem "Chaingun";

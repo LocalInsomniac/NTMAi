@@ -106,6 +106,10 @@ class NTM_Mancubus : NTM_Enemy {
 }
 
 class NTM_MancubusShot : FatShot {
+	Default {
+		DamageType "Fire";
+	}
+	
 	States {
 		Spawn:
 			MANF AB 4 Bright;

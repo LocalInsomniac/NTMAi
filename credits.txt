@@ -11,11 +11,16 @@ Created by Can't Sleep
         Monolith Productions, •
                Raven Software •
 
+Ac!d, RoastBeefo • HUD Graphics
+
 Can't Sleep, David G, DenisBelmondo, • Graphics Editing
     Enjay, Gifty, horselessheadsman, •
      KaZudra, neoworm, osjclatchford •
 
 Captain Toenail • "Forgotten One" Lost Soul
+
+Craneo, Dr_Cosmobyte, Mr. Enchanter, • Mighty Foot
+Ninhil                               •
 
          Craneo, • "DOOM 2016/Eternal Monsters" Arachnotron
  Jimmy, Jimmy91, •
@@ -40,8 +45,6 @@ jdredalert • "Angled DOOM" Weapon Graphics
 Nash Muhandes • "Nash's Gore Mod", "Nash's Gore Mod: Vengeance Edition"
               • Gore Graphics
 
-Ac!d, RoastBeefo • HUD Graphics
-
 ShallowB • "DOOM 64" Imp
 
 ========
@@ -49,7 +52,7 @@ ShallowB • "DOOM 64" Imp
 
 3D Realms, id Software, SD EnterNET, Valve Software • Base Sounds
 
-Antares031, Can't Sleep, Kinsie • Sound Mixing
+Antares031, Can't Sleep, Dynamo, Kinsie • Sound Mixing
 
 silentzora • "Project: Redux - DOOM 64 Main Theme"
 
@@ -62,7 +65,10 @@ Enjay • "Revised Splashes"
 
 Matt • "Hideous Destructor" Monster Movement
 
-Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore 
+Mikk- • "Build-Style Toggleable Powerups"
+
+Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore
+			  • "Less Slippery Movement"
 
 Rachael • "Smooth Fluids"
 
@@ -70,6 +76,8 @@ ZZYZX • "ZSDuke" Leaping Monsters
 
 ================
 [SPECIAL THANKS]
+
+GuyDoom • Playtesting
 
 jdredalert • "Angled DOOM"
 

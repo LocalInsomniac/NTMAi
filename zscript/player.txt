@@ -7,10 +7,14 @@
 #include "zscript/weapons/rocketlauncher.txt"
 #include "zscript/weapons/plasmarifle.txt"
 #include "zscript/weapons/bfg9000.txt"
+#include "zscript/weapons/kick.txt"
+#include "zscript/weapons/grenade.txt"
+#include "zscript/weapons/keys.txt"
 
 class NTM_Player : DoomPlayer {
-	int fallState, fallTics, fallTics2, oldHealth, painTics;
+	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
 	double hNewAngle;
+	Line door;
 	
 	Default {
 		Player.StartItem "NTM_Pistol";
@@ -62,7 +66,7 @@ class NTM_Player : DoomPlayer {
 				if (painTics <= 0) {
 					int deltaHealth = oldHealth - health;
 					
-					if (deltaHealth > 20 || health < 50) {
+					if (deltaHealth > 20 || health < 64) {
 						if (deltaHealth > 40) {
 							A_StartSound("NTM_Player/painx", Chan_Voice);
 						} else {
@@ -116,15 +120,44 @@ class NTM_Player : DoomPlayer {
 	}
 	
 	override void Tick() {
+		// GROSS HACK: Do not let the player be able to select temporary
+		//             animations!
+		if (player) {
+			let r = player.readyWeapon;
+			let l = player.pendingWeapon;
+			
+			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
+				A_TakeInventory("NTM_Key_RedCard");
+				A_TakeInventory("NTM_Key_YellowCard");
+				A_TakeInventory("NTM_Key_BlueCard");
+				A_TakeInventory("NTM_Key_RedSkull");
+				A_TakeInventory("NTM_Key_YellowSkull");
+				A_TakeInventory("NTM_Key_BlueSkull");
+			}
+			
+			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
+				A_TakeInventory("NTM_GrenadeThrow");
+			}
+		}
+		
 		// Less slippery movement
-		if (!multiplayer && curSector && !(curSector.flags & 16)) {
+		if (!multiplayer && (!curSector || !(curSector.flags & 16))) {
 			level.airControl = 0.53777778;
 			A_SetSpeed(2.24);
 			vel.xy *= 0.88;
-			viewBob = 0.88;
 		} else {
 			level.airControl = 0.00390625;
 			A_SetSpeed(1);
+		}
+		
+		// Keycard animations
+		if (doorTics > 0) {
+			A_SetSpeed(0);
+			--doorTics;
+			
+			if (doorTics <= 0 && door) {
+				door.Activate(self, 1, SPAC_Use);
+			}
 		}
 		
 		// Flinch when falling
@@ -183,6 +216,34 @@ class NTM_Player : DoomPlayer {
 					
 					A_SetViewAngle(Round(DeltaAngle(angle, 0) * (f * f * f)), SPF_Interpolate);
 				}
+			}
+		}
+		
+		// Auto-activate radiation suit if allowed
+		if (CVar.FindCVar("cl_ntm_autoRadSuit").GetBool()) {
+			NTM_ToggleableInventory suit = NTM_ToggleableInventory(FindInventory("NTM_RadSuit"));
+			
+			if (suit) {
+				// The suit will automatically ¨be used underwater and on slime
+				if (waterLevel >=3 || (curSector && curSector.damageType)) {
+					if (!suit.active) {
+						suit.automatic = false;
+						UseInventory(suit);
+					}
+				} else {
+					if (suit.active) {
+						suit.automatic = false;
+						UseInventory(suit);
+					}
+				}
+				
+				suit.automatic = true;
+			}
+		} else {
+			NTM_ToggleableInventory suit = NTM_ToggleableInventory(FindInventory("NTM_RadSuit"));
+			
+			if (suit) {
+				suit.automatic = false;
 			}
 		}
 		

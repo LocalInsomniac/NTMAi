@@ -1,41 +1,6 @@
 #include "zscript/effects/blood.txt"
-#include "zscript/effects/splashes.txt"
-
-// Explosion
-class NTM_Explosion : Actor {
-	Default {
-		RenderStyle "Add";
-		Translation "NTM_Explosion";
-		FloatBobPhase 0;
-		
-		+Corpse
-		+NoTeleport
-		+NoBlockMap
-		+NoGravity
-		+NotOnAutomap
-		+ForceXYBillboard
-		+ZDoomTrans
-	}
-	
-	States {
-		Spawn:
-			NEXP ABCDEFGHIJ 3 Bright;
-			Stop;
-	}
-}
-
-// Explosion 2
-class NTM_Explosion2 : NTM_Explosion {
-	Default {
-		Scale 0.75;
-	}
-	
-	States {
-		Spawn:
-			NEX2 ABCDEFGHIJKLMNOPQRSTU 2 Bright;
-			Stop;
-	}
-}
+#include "zscript/effects/casings.txt"
+#include "zscript/effects/explosions.txt"
 
 // Gib Base
 class NTM_Gib : Actor {
@@ -72,21 +37,6 @@ class NTM_Gib : Actor {
 	}
 }
 
-// Barrel Gib
-class NTM_BarrelGib : NTM_Gib {
-	Default {
-		Scale 0.25;
-		
-		+ForceXYBillboard
-	}
-	
-	States {
-		Spawn:
-			NBGB ABCDEFGH 3;
-			Loop;
-	}
-}
-
 // Bullet Puff
 class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	Default {
@@ -113,53 +63,4 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 			TNT1 A 0 A_StartSound("NTM_BulletPuff/hit");
 			Stop;
     }
-}
-
-// Bullet Casing
-class NTM_BulletCasing : NTM_Gib {
-	Default {
-		Scale 0.16;
-		Radius 1;
-		Height 1;
-		Gravity 1;
-		BounceSound "NTM_BulletCasing/bounce";
-		BounceType "Doom";
-		
-		-Corpse
-		+CanBounceWater
-		+Missile
-		+UseBounceState
-	}
-	
-	States
-	{
-		Spawn:
-			NBUL A 0;
-		Roll:
-			#### ABCDEFGH 2;
-			Loop;
-			
-		Bounce:
-			#### A 0;
-			Goto Roll;
-			
-		Death:
-			#### C 350 A_Jump(128, 1);
-			Stop;
-			#### G 350;
-			Stop;
-	}
-}
-
-// Shell Casing
-class NTM_ShellCasing : NTM_BulletCasing {
-	Default {
-		BounceSound "NTM_ShellCasing/bounce";
-	}
-	
-	States {
-		Spawn:
-			NSHE A 0;
-			Goto Roll;
-	}
 }

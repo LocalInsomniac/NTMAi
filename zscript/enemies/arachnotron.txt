@@ -102,10 +102,4 @@ class NTM_ArachnotronBall : NTM_PlasmaBall {
 		Damage 3;
 		Translation "NTM_PlasmaBall_Arachnotron";
 	}
-	
-	States {
-		Death:
-			PLSE B 3 Bright;
-			Goto Super::Death + 1;
-	}
 }

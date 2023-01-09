@@ -1,26 +1,165 @@
-// Explosive Barrel
-class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel {
+#include "zscript/objects/barrel.txt"
+#include "zscript/objects/items.txt"
+#include "zscript/objects/spheres.txt"
+
+// Toggleable Inventory (by Mikk-)
+class NTM_ToggleableInventory : CustomInventory {
+	bool automatic;
+	bool active;
+	int ticker;
+	
+	property Type: type;
+	class<Powerup> type;
+	
+	// Time in tics (or negative values in seconds) it takes to deplete a unit
+	property RegenPeriod: regenTics;
+	int regenTics;
+	
+	property ActivateSound: activateSound;
+	Sound activateSound;
+	
+	property DeactivateSound: deactivateSound;
+	Sound deactivateSound;
+	
+	property DepletedSound: depletedSound;
+	Sound depletedSound;
+	
+	// Time in tics (or negative values for seconds) it takes to regenerate a
+	// unit. 0 implies no regeneration.
+	property DepletePeriod: activeTics;
+	int activeTics;
+	
+	// Flags
+	private int tiFlags;
+	flagDef CheckFloorRegen: tiFlags, 0; // Only regenerate when on ground
+	flagDef ActiveOnly: tiFlags, 1; // Cannot be deactivated
+	
 	Default {
-		Height 28;
-		Scale 0.6;
+		NTM_ToggleableInventory.DepletePeriod -1;
+		
+		NTM_ToggleableInventory.ActivateSound "";
+		NTM_ToggleableInventory.DeactivateSound "";
+		NTM_ToggleableInventory.DepletedSound "";
+		
+		Inventory.Amount 100;
+		Inventory.MaxAmount 100;
+		Inventory.InterHubAmount 100;
+		
+		+Inventory.InvBar
+	}
+	
+	override void AttachToOwner(Actor other) {
+		super.AttachToOwner(other);
+		
+		// If the periods are negative, make positive and multiply by ticrate.
+		if (activeTics < 0) {
+			activeTics = (-activeTics) * ticrate;
+		}
+		
+		if (regenTics < 0) {
+			regenTics = (-regenTics) * ticrate;
+		}
+	}
+	
+	override void DoEffect() {
+		if (active) {
+			if (amount < 1) {
+				owner.A_TakeInventory(type);
+				owner.A_StartSound(depletedSound, Chan_Body, ChanF_Overlap);
+				active = false;
+				
+				if (!bKeepDepleted) {
+					DepleteOrDestroy();
+					
+					return;
+				}
+			}
+			
+			if (!owner.CountInv(type)) {
+				active = false;
+			}
+			
+			if (++ticker == activeTics) {
+				ticker = 0;
+				amount = Max(amount - 1, 0);
+				
+				return;
+			}
+		}
+		
+		if (!active && amount < maxAmount && regenTics && ++ticker == regenTics) {
+			ticker = 0;
+			
+			if (bCheckFloorRegen && !owner.player.onGround) {
+				return;
+			}
+			
+			amount = Min(amount + 1, maxAmount);
+		}
+	}
+	
+	override void Travelled() {
+		Super.Travelled();
+		
+		// Deactivate if powerup doesn't carry over maps
+		if (!owner.CountInv(type)) {
+			active = false;
+		}
+	}
+	
+	// This function simply substitutes GiveInventory to modify the given
+	// powerup's duration.
+	void GiveToggleablePowerup() {
+		owner.GiveInventory(type, 1);
+		
+		let i = Powerup(owner.FindInventory(type));
+		
+		/* Set the duration to around 2 years of real time
+		   (might as well be infinite)
+		   NOTE: It's set to "0x7FFFFFFD" instead of "0x7FFFFFFF" so that
+				 PowerTimeFreezer could work properly. */
+		if (i) {
+			i.effectTics = 0x7FFFFFFD;
+		}
+	}
+	
+	/* These virtual functions can be overridden in inheriting classes to add
+	   things such as particle effects, sounds and other stuff when the powerup
+	   is activated or deactivated.
+	   
+	   Don't forget to call the super function, otherwise it will not play any
+	   sounds. */
+	virtual void ActivatePowerup() {
+		owner.A_StartSound(activateSound, Chan_Body, ChanF_Overlap);
+	}
+	
+	virtual void DeactivatePowerup() {
+		owner.A_StartSound(deactivateSound, Chan_Body, ChanF_Overlap);
 	}
 	
 	States {
-		Spawn:
-			NBAR ABCB 6;
-			Loop;
-		
-		Death:
-			NBAR D 5 Bright;
-			TNT1 A 0 A_NoBlocking;
-			TNT1 A 0 A_StartSound("world/barrelx", 5, 0, 1, Attn_Norm, FRandom(0.5, 1.25));
-			TNT1 A 0 A_SpawnItemEx("NTM_Explosion2", 0, 0, 20);
-			TNT1 A 0 A_SpawnDebris("NTM_BarrelGib");
-			TNT1 A 0 A_Explode;
-			TNT1 A 15 A_Quake(2, 15, 0, 512, "");
-			TNT1 A 1051 A_BarrelDestroy;
-			TNT1 A 5 A_Respawn;
+		Use:
+			TNT1 A 0 {
+				if (invoker.automatic || invoker.amount < 1) {
+					return;
+				}
+				
+				if (invoker.active) {
+					if (invoker.bActiveOnly) {
+						return;
+					}
+					
+					invoker.owner.TakeInventory(invoker.type, 1);
+					invoker.DeactivatePowerup();
+				} else {
+					invoker.GiveToggleablePowerup();
+					invoker.ActivatePowerup();
+				}
+				
+				invoker.ticker = 0;
+				invoker.active = !invoker.active;
+			}
 			
-			Wait;
+			Fail;
 	}
 }

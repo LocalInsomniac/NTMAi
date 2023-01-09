@@ -11,16 +11,56 @@ class NTMAI : EventHandler {
 		return (a + (f * (b - a)));
 	}
 	
-	/* ========
-	   HANDLING
-	   ======== */
+	/* =======
+	   ACTIONS
+	   ======= */
+	
+	static void Explode(Actor caller, int damage = 128, int distance = 128, int flags = 0, name mod = "None") {
+		if (!caller || damage <= 0 || distance <= 0) {
+			return;
+		}
+		
+		if (sv_ntm_blast) {
+			// Do blast damage like Blood
+			NTM_Blast blast = NTM_Blast(caller.Spawn("NTM_Blast", caller.pos));
+			
+			if (blast) {
+				if (caller.bMissile) {
+					blast.master = caller;
+					blast.target = caller.target;
+				} else {
+					blast.target = caller;
+				}
+				
+				blast.blastDamage = damage;
+				blast.blastDamage2 = damage;
+				blast.blastRadius = distance;
+				blast.damageType = mod;
+				blast.blastFlags = flags;
+			}
+		} else {
+			caller.A_Explode(damage, distance, flags, damageType: mod);
+		}
+	}
+	
+	/* ======
+	   PLAYER
+	   ====== */
 	
 	override void PlayerEntered(PlayerEvent e) {
 		let pmo = players[e.playerNumber].mo;
 		
 		if (pmo) {
+			pmo.A_TakeInventory("NTM_Kick");
+			pmo.A_TakeInventory("NTM_GrenadeThrow");
 			pmo.A_TakeInventory("NTM_Bloody");
 			pmo.A_TakeInventory("NTM_PistolShots");
+			pmo.A_TakeInventory("NTM_Key_RedCard");
+			pmo.A_TakeInventory("NTM_Key_YellowCard");
+			pmo.A_TakeInventory("NTM_Key_BlueCard");
+			pmo.A_TakeInventory("NTM_Key_RedSkull");
+			pmo.A_TakeInventory("NTM_Key_YellowSkull");
+			pmo.A_TakeInventory("NTM_Key_BlueSkull");
 			
 			if (!pmo.CountInv("NTM_System_Actor")) {
 				pmo.A_GiveInventory("NTM_System_Actor", 1);
@@ -39,6 +79,9 @@ class NTMAI : EventHandler {
 				nmo.oldHealth = nmo.health;
 				nmo.painTics = 0;
 				
+				nmo.doorTics = 0;
+				nmo.door = null;
+				
 				if (sv_ntm_startTwitch) {
 					// Emulate Duke3D twitching using spawn angle
 					nmo.A_SetViewAngle(nmo.DeltaAngle(nmo.angle, 0));
@@ -51,7 +94,80 @@ class NTMAI : EventHandler {
 		let pmo = players[e.playerNumber].mo;
 		
 		if (pmo) {
+			pmo.A_TakeInventory("NTM_Kick");
+			pmo.A_TakeInventory("NTM_GrenadeThrow");
+			pmo.A_TakeInventory("NTM_Bloody");
+			pmo.A_TakeInventory("NTM_PistolShots");
+			pmo.A_TakeInventory("NTM_Key_RedCard");
+			pmo.A_TakeInventory("NTM_Key_YellowCard");
+			pmo.A_TakeInventory("NTM_Key_BlueCard");
+			pmo.A_TakeInventory("NTM_Key_RedSkull");
+			pmo.A_TakeInventory("NTM_Key_YellowSkull");
+			pmo.A_TakeInventory("NTM_Key_BlueSkull");
 			DoThingRevive(pmo);
+		}
+	}
+	
+	override void NetworkProcess(ConsoleEvent e) {
+		Name n = e.name;
+		
+		if (n == "NTM_Kick") {
+			let pmo = players[e.player].mo;
+			
+			if (pmo && pmo is "NTM_Player" && !pmo.CountInv("NTM_Kick")) {
+				pmo.A_GiveInventory("NTM_Kick");
+				pmo.UseInventory(pmo.FindInventory("NTM_Kick"));
+			}
+		} else {
+			if (n == "NTM_UseGrenade") {
+				let p = players[e.player];
+				
+				if (p) {
+					let pmo = p.mo;
+					
+					if (pmo && pmo is "NTM_Player" && (sv_infiniteAmmo || pmo.CountInv("NTM_GrenadeItem")) && !(p.readyWeapon is "NTM_GrenadeThrow")) {
+						pmo.A_GiveInventory("NTM_GrenadeThrow");
+						
+						let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
+						
+						if (grn) {
+							grn.prevWeapon = p.readyWeapon.GetClassName();
+							p.pendingWeapon = grn;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/* =====
+	   WORLD
+	   ===== */
+	
+	static void DoReplaceActor(Actor og, class<Actor> new) {
+		bool ok;
+		Actor rep;
+		
+		[ok, rep] = og.A_SpawnItemEx(new, flags: SXF_NoCheckPosition | SXF_TransferAmbushFlag | SXF_TransferPitch | SXF_TransferPointers | SXF_TransferSpecial | SXF_TransferRoll);
+		
+		if (rep) {
+			og.Destroy();
+		}
+	}
+	
+	static void ReplaceSecret(Actor og, class<Actor> rep, int cvar) {
+		if (cvar == 1) {
+			NTMAi.DoReplaceActor(og, rep);
+			
+			return;
+		}
+		
+		if (cvar >= 2) {
+			let s = og.curSector;
+			
+			if (s && !s.IsSecret()) {
+				NTMAi.DoReplaceActor(og, rep);
+			}
 		}
 	}
 	
@@ -65,9 +181,22 @@ class NTMAI : EventHandler {
 	
 	override void WorldThingDied(WorldEvent e) {
 		let mo = e.thing;
+		bool boo = mo.bIsMonster;
 		
-		if (mo.bIsMonster || mo is "PlayerPawn") {
+		if (boo || mo is "PlayerPawn") {
 			mo.bXFlip = Random(0, 1);
+		}
+		
+		// Add a small chance for Zombies to drop grenades
+		if (boo) {
+			class<Actor> s = mo.species;
+			
+			if (((mo is "Zombieman" || s is "Zombieman")
+			    || (mo is "ShotgunGuy" || s is "ShotgunGuy")
+				|| (mo is "ChaingunGuy" || s is "ChaingunGuy"))
+				&& mo.GetDropItems() != null && Random(0, 256) < 32) {
+				mo.A_DropItem("NTM_GrenadeItem");
+			}
 		}
 	}
 	
@@ -90,6 +219,124 @@ class NTMAI : EventHandler {
 			mo.translation = mo.default.translation;
 		}
 	}
+	
+	override void WorldLinePreActivated(WorldEvent e) {
+		let mo = e.thing;
+		Line l = e.activatedLine;
+		
+		// If this is a locked door, check if we can play a keycard animation
+		if (mo is "NTM_Player" && l.special == 13 && sv_ntm_keycard) {
+			bool lock = false;
+			NTM_Player pmo = NTM_Player(mo);
+			
+			if (pmo.door != l) {
+				switch (l.args[3]) {
+					case 1:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 2:
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 3:
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 4:
+						if (UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 5:
+						if (UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 6:
+						if (UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 100:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")
+						    || UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")
+							|| UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 129:
+					case 132:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 130:
+					case 133:
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 131:
+					case 134:
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+				}
+			}
+			
+			if (lock) {
+				// Queue this door so we can open it after the animation
+				pmo.door = l;
+				pmo.doorTics = 24;
+				e.shouldActivate = false;
+			}
+		}
+	}
+	
+	bool UseKey(WorldEvent e, class<Key> keyItem, class<NTM_Key> keyAnim) {
+		Actor pmo = e.thing;
+		
+		if (pmo.CountInv(keyItem)) {
+			let p = pmo.player;
+			
+			if (p && !(p.readyWeapon is keyAnim)) {
+				let prevWeapon = p.readyWeapon;
+				
+				pmo.A_GiveInventory(keyAnim);
+				
+				let keycard = NTM_Key(pmo.FindInventory(keyAnim));
+				
+				if (keycard) {
+					keycard.prevWeapon = prevWeapon.GetClassName();
+					p.pendingWeapon = keycard;
+				} else {
+					return false;
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/* ===========
+	   REPLACEMENT
+	   =========== */
 	
 	override void CheckReplacement(ReplaceEvent e) {
 		switch (e.replacee.GetClassName()) {
@@ -463,7 +710,7 @@ class NTM_System_Actor : NTM_System {
 					double dist = owner.Distance3D(killer);
 					
 					if (dist > 0) {
-						double force = (8 / Max(1, dist * 0.005)) * (100 / owner.mass);
+						double force = (8 / Max(1, dist * 0.005)) * (100 / Max(100, owner.mass * 0.32));
 						
 						if (force > 1.25) {
 							owner.A_FaceTarget();

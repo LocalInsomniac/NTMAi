@@ -1,6 +1,6 @@
 class NTM_Fists : Fist {
 	Default {
-		Tag "$TAG_NTM_FISTS";
+		Tag "Fists";
 		Weapon.SlotNumber 1;
 		Inventory.AltHUDIcon "NFISA0";
 		
@@ -36,10 +36,10 @@ class NTM_Fists : Fist {
 	}
 	
 	action void A_NTM_Punch() {
-		if (CountInv("PowerStrength")) { // || CountInv("NTM_PowerBerserk")
-			A_CustomPunch(20, false, CPF_NoTurn, "NTM_BerserkPuff", 0, 0.25, 100, "", "player/male/fist");
+		if (CountInv("PowerStrength") || CountInv("NTM_PowerBerserk")) {
+			A_CustomPunch(20, false, CPF_NoTurn, "NTM_BerserkPuff", 66, 0.25, 100, "", "player/male/fist");
 		} else {
-			A_CustomPunch(2, false, CPF_NoTurn, "NTM_FistPuff", 0, 0, 0, "", "player/male/fist");
+			A_CustomPunch(2, false, CPF_NoTurn, "NTM_FistPuff", 66, 0, 0, "", "player/male/fist");
 		}
 	}
 }

@@ -1,3 +1,4 @@
+#include "zscript/enemies/humanoid.txt"
 #include "zscript/enemies/zombieman.txt"
 #include "zscript/enemies/shotgunguy.txt"
 #include "zscript/enemies/chaingunguy.txt"
@@ -23,7 +24,7 @@ class NTM_Enemy : Actor {
     }
 	
 	int oldLeap;
-	double leapDistance, leapSpeed, oldLeapZVel;
+	double leapDistance, leapSpeed;
 	
 	int ticsPerChase;
 	int chaseStuck;
@@ -64,7 +65,7 @@ class NTM_Enemy : Actor {
 	   ===================== */
 	
 	double GetGroundHeight(bool includeMObj = true) {
-        double _floorZ = GetZAt();
+        double _floorZ = floorZ;
 		
 		if (includeMObj) {
 			bool ok;
@@ -230,10 +231,10 @@ class NTM_Enemy : Actor {
 		Vector3 oldPos = pos;
 		
 		A_Chase("_a_chase_default", "_a_chase_default", flags);
-		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
 			++chaseStuck;
+			bDropoff = beDropoff;
 			
 			return;
 		}
@@ -244,13 +245,17 @@ class NTM_Enemy : Actor {
 		
 		Vector3 posDiff = pos - oldPos;
 		
-		if (posDiff dot posDiff < 10000) {
+		/* GROSS HACK: Disable smooth chasing when monsters are allowed to drop
+		               off ledges. This is because they get stuck in walls when
+					   falling! */
+		if (!bDropoff && posDiff dot posDiff < 10000) {
 			SetOrigin(oldPos, true);
 			vel *= 0.7;
 			vel += posDiff.Unit() * speed * 0.18;
 		}
 		
 		chaseStuck = 0;
+		bDropoff = beDropoff;
 		bNoDropoff = !bDropOff && !bFloat && CheckOnGround() && !TryLeap();
 	}
 	
@@ -311,7 +316,7 @@ class NTM_Enemy : Actor {
 	}
 	
 	action void A_NTM_Leap() {
-		if (invoker.CheckOnGround() || (vel.z == 0 && invoker.oldLeapZVel == 0)) {
+		if (invoker.CheckOnGround()) {
             if (!invoker.oldLeap) {
 				if (!target) {
 					return;
@@ -359,8 +364,6 @@ class NTM_Enemy : Actor {
 				}
 			}
 		}
-		
-		invoker.oldLeapZVel = vel.z;
     }
 }
 

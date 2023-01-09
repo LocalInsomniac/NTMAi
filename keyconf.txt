@@ -1,0 +1,25 @@
+AddKeySection "NTMAI Controls" NewKeys
+
+AddMenuKey "Trusty Boot" NTM_Kick
+alias NTM_Kick "netevent NTM_Kick"
+DefaultBind Q NTM_Kick
+
+AddMenuKey "Hand Grenade" NTM_UseGrenade
+alias NTM_UseGrenade "netevent NTM_UseGrenade"
+DefaultBind G NTM_UseGrenade
+
+AddMenuKey "Portable Medikit" NTM_UsePortableMedkit
+alias NTM_UsePortableMedkit "use NTM_PortableMedkit"
+DefaultBind V NTM_UsePortableMedkit
+
+AddMenuKey "Berserk Pack" NTM_UseBerserk
+alias NTM_UseBerserk "use NTM_Berserk"
+DefaultBind B NTM_UseBerserk
+
+AddMenuKey "Infrared" NTM_UseInfrared
+alias NTM_UseInfrared "use NTM_Infrared"
+DefaultBind N NTM_UseInfrared
+
+AddMenuKey "Radiation Suit" NTM_UseRadSuit
+alias NTM_UseRadSuit "use NTM_RadSuit"
+DefaultBind M NTM_UseRadSuit

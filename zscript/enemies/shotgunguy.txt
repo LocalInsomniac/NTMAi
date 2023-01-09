@@ -7,6 +7,7 @@ class NTM_ShotgunGuy : NTM_Zombieman {
 		AttackSound "shotguy/attack";
 		PainSound "shotguy/pain";
 		DeathSound "shotguy/death";
+		NTM_Humanoid.BurnSound "shotguy/burn";
 		ActiveSound "shotguy/active";
 		Obituary "$OB_SHOTGUY";
 		Tag "$FN_SHOTGUN";

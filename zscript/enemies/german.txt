@@ -1,4 +1,4 @@
-class NTM_German : NTM_Enemy {
+class NTM_German : NTM_Humanoid {
 	Default {
 		Health 50;
 		Radius 20;
@@ -7,8 +7,9 @@ class NTM_German : NTM_Enemy {
 		PainChance 170;
 		PainChance "NTM_GermanBullet", 0;
 		SeeSound "NTM_German/sight";
-		PainSound "NTM_German/pain";
 		AttackSound "wolfss/attack";
+		PainSound "NTM_German/pain";
+		NTM_Humanoid.BurnSound "NTM_German/burn";
 		Obituary "%o was shot by a German.";
 		Tag "German";
 		DropItem "Clip";

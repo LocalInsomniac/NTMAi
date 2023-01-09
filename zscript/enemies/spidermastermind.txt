@@ -74,12 +74,19 @@ class NTM_SpiderMastermind : NTM_Boss {
 				int skill = G_SkillPropertyInt(7);
 				int ran = Random(0, 256);
 				
-				if ((skill >= 4 && ran <= 64) || (skill >= 2 && ran <= 32)) {
+				if ((skill >= 3 && ran <= 64) || (skill >= 1 && ran <= 32)) {
 					int limit = 4;
 					ThinkerIterator it = ThinkerIterator.Create("Arachnotron");
+					Actor mo;
 					
-					while (it.Next()) {
-						--limit;
+					while (mo = Actor(it.Next())) {
+						/* There is a 50% chance for the iterator to ignore a
+						   dead Arachnotron. This means that the Spider
+						   Mastermind can still summon them, but more corpses
+						   means lower chances. */
+						if (mo.health > 0 || Random(0, 1)) {
+							--limit;
+						}
 					}
 					
 					if (limit > 0) {

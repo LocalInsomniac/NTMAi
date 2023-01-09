@@ -28,6 +28,10 @@ menu/clear DSEMPTY
 
 weapons/chngun DSCHNGUN
 
+grunt/burn DSPOBURN
+
+shotguy/burn DSPOBURN
+
 chainguy/sight DSCGSIT
 
 chainguy/active1 DSEMPTY
@@ -41,8 +45,10 @@ $random chainguy/active {
 chainguy/attack DSCHNGUN
 chainguy/pain DSCGPAIN
 chainguy/death DSCGDEAD
+chainguy/burn DSPOBURN
 
 imp/pain DSBGPAIN
+imp/burn DSBGBURN
 
 demon/attack DSSGTJMP
 
@@ -96,6 +102,8 @@ spider/pain DSSPIPAI
 $attenuation spider/attack 0.5
 $attenuation spider/summon 0.64
 
+$alias intermission/tick weapons/chngun
+
 /* =============
    CUSTOM SOUNDS
    ============= */
@@ -113,7 +121,7 @@ $playersound player other *falling NSFALLIN
 NTM_Player/pain1 NSPLPAI1
 NTM_Player/pain2 NSPLPAI2
 NTM_Player/pain3 NSPLPAI3
-NTM_Player/pain4 NSPLPAI4
+NTM_Player/painx NSPLPAIX
 
 $random NTM_Player/paina {
 	NTM_Player/pain1
@@ -122,18 +130,13 @@ $random NTM_Player/paina {
 
 $random NTM_Player/painb {
 	NTM_Player/pain3
-	NTM_Player/pain4
-}
-
-NTM_Player/painx1 NSPLPAX1
-NTM_Player/painx2 NSPLPAX2
-
-$random NTM_Player/painx {
-	NTM_Player/painx1
-	NTM_Player/painx2
+	NTM_Player/paina
 }
 
 NTM_Player/taunt NSTAUNT
+
+NTM_RadSuit/use NSSUIT
+NTM_Infrared/use NSGOGGLE
 
 // Weapons
 NTM_Weapon/select NSGUNUP
@@ -236,3 +239,13 @@ $random NTM_German/pain {
 NTM_German/death1 NSGEDIE1
 NTM_German/death2 NSGEDIE2
 NTM_German/death3 NSGEDIE3
+
+NTM_German/burn1 NSGEBRN1
+NTM_German/burn2 NSGEBRN2
+NTM_German/burn3 NSGEBRN3
+
+$random NTM_German/burn {
+	NTM_German/burn1
+	NTM_German/burn2
+	NTM_German/burn3
+}

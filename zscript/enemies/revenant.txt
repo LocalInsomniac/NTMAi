@@ -45,7 +45,6 @@ class NTM_Revenant : NTM_Enemy {
 							stopFlying = false;
 							A_SetFloorClip();
 							SetStateLabel("See");
-							A_NTM_PainEnable();
 						} else {
 							vel.z = Max(-4, vel.z - 4);
 						}
@@ -64,7 +63,6 @@ class NTM_Revenant : NTM_Enemy {
 								A_UnsetFloorClip();
 								SetStateLabel("Fly");
 								vel.z += 4;
-								A_NTM_PainDisable();
 							}
 						}
 					}

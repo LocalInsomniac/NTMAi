@@ -4,6 +4,7 @@ server bool sv_ntm_flinch = true;
 server bool sv_ntm_keycard = true;
 user bool cl_ntm_autoRadSuit = true;
 server int sv_ntm_soulsphere = 2;
+server bool sv_ntm_blast = false;
 server int sv_ntm_enemyMove = 2;
 server bool sv_ntm_enemyLeap = true;
 server bool sv_ntm_grenadiers = true;
