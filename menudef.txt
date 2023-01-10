@@ -119,6 +119,12 @@ OptionMenu "NTM_ActorOptions" {
 	Option "Spider Mastermind", "sv_ntm_r_spiderMastermind", "NTM_ActorOptions_Toggle"
 	Option "Cyberdemon", "sv_ntm_r_cyberdemon", "NTM_ActorOptions_Toggle"
 	Option "SS", "sv_ntm_r_ss", "NTM_ActorOptions_Toggle"
+	StaticText ""
+	StaticText "NTMAi can automatically replace custom enemies that come from WADs,", "White"
+	StaticText "such as AD MORTEM and Eviternity. You can disable this", "White"
+	StaticText "option if you want to play with the original enemies.", "White"
+	StaticText ""
+	Option "Custom Enemies", "sv_ntm_r_custom", "NTM_ActorOptions_Toggle"
 }
 
 AddOptionMenu "OptionsMenu" {

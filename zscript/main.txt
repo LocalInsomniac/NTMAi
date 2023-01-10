@@ -1,4 +1,56 @@
-class NTMAI : EventHandler {
+#include "zscript/lib/md5/md5.txt"
+
+class NTMAi : EventHandler {
+	bool bADMORTEM;
+	bool bEviternity;
+	
+	static string LumpPrintHash(string lumpName) {
+		int lumpIndex = WADs.FindLump(lumpName);
+		
+		if (lumpIndex != -1) {
+			string hash = MD5.Hash(WADs.ReadLump(lumpIndex));
+			
+			Console.PrintF("'"..lumpName.."' hash is '"..hash.."'");
+			
+			return hash;
+		}
+		
+		Console.PrintF("Could not find lump '"..lumpName.."'");
+		
+		return "";
+	}
+	
+	static bool LumpHasHash(string lumpName, string hash) {
+		int lumpIndex = WADs.FindLump(lumpName);
+		
+		if (lumpIndex != -1 && MD5.Hash(WADs.ReadLump(lumpIndex)) == hash) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	override void OnRegister() {
+		/* [AD MORTEM]
+		
+		   DeH_Actor_150 = Pumpkin Marine
+		   DeH_Actor_151 = Gargoyle
+		   DeH_Actor_152 = Satyr
+		   DeH_Actor_153 = Running Rocket
+		   DeH_Actor_156 = Skeleton
+		   DeH_Actor_158 = Super Revenant
+		   DeH_Actor_231 = Gremlin */
+		bADMORTEM = NTMAi.LumpHasHash("DSFRE048", "0f76f6c24ac906634562a7aadf8f527f");
+		
+		/* [Eviternity]
+		   
+		   BaronOfHell = Annihilator
+		   WolfensteinSS = Former Captain
+		   CommanderKeen = Astral Cacodemon
+		   BossBrain = Archangelus */
+		bEviternity = NTMAi.LumpHasHash("XLT_EV15", "4a96b98efc9a0ab68ffd2533a3a3ee01");
+	}
+	
 	/* ====
 	   MATH
 	   ==== */

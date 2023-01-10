@@ -29,3 +29,4 @@ server bool sv_ntm_r_archVile = true;
 server bool sv_ntm_r_spiderMastermind = true;
 server bool sv_ntm_r_cyberdemon = true;
 server bool sv_ntm_r_ss = true;
+server bool sv_ntm_r_custom = true;
