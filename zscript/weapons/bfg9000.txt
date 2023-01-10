@@ -112,7 +112,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 			}
 			
 			NBFX BC 2 Bright;
-			NBFX DEFGHIJKL 4 Bright;
+			NBFX DEFGHIJKL 3 Bright;
 			Stop;
 	}
 }
