@@ -65,7 +65,7 @@ class NTM_Blast : Actor {
 		while (it.Next()) {
 			let mo = it.thing;
 			
-			if (mo != self && (mo != target || blastFlags & XF_HurtSource) && mo != master && !mo.bNoRadiusDmg) {
+			if (mo && mo != self && (mo != target || blastFlags & XF_HurtSource) && mo != master && !mo.bNoRadiusDmg) {
 				double dist = Max(0.0001, Distance3D(mo));
 				
 				if (dist <= rad && CheckSight(mo, SF_IgnoreVisibility | SF_IgnoreWaterBoundary)) {
