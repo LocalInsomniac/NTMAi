@@ -6,7 +6,6 @@ class NTM_BaronOfHell : NTM_Enemy {
 		Mass 1000;
 		Speed 8;
 		PainChance 50;
-		BloodColor "Green";
 		SeeSound "baron/sight";
 		ActiveSound "baron/active";
 		PainSound "baron/pain";
@@ -174,7 +173,7 @@ class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight {
 class NTM_BaronBall : BaronBall {
 	States {
 		Spawn:
-			BAL7 AB 4 BRIGHT;
+			NBRB AB 4 Bright;
 			Loop;
 			
 		Death:
