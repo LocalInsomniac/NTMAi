@@ -4,6 +4,7 @@ class NTM_SuperShotgun : SuperShotgun replaces SuperShotgun {
 		Weapon.SlotNumber 3;
 		Weapon.UpSound "weapons/sshotc";
 		Weapon.Kickback 100;
+		Inventory.PickupMessage "Super Shotgun!";
 	}
 	
 	States {

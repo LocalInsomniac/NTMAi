@@ -5,7 +5,7 @@ class NTM_GrenadeItem : CustomInventory {
 		Inventory.MaxAmount 20;
 		Inventory.InterHubAmount 0x7FFFFFFF;
 		Inventory.Icon "NGRIB0";
-		Inventory.PickupMessage "Picked up a hand grenade.";
+		Inventory.PickupMessage "Hand Grenade";
 		
 		+Inventory.InvBar
 	}

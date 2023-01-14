@@ -3,6 +3,7 @@ class NTM_Chaingun : Chaingun replaces Chaingun {
 		Scale 0.75;
 		Weapon.SlotNumber 4;
 		Weapon.UpSound "NTM_Weapon/select";
+		Inventory.PickupMessage "Chaingun!";
 	}
 	
 	States {

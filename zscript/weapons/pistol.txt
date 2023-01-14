@@ -3,6 +3,7 @@ class NTM_Pistol : Pistol replaces Pistol {
 		Scale 0.75;
 		Weapon.SlotNumber 2;
 		Weapon.UpSound "NTM_Pistol/in";
+		Inventory.PickupMessage "Pistol";
 		
 		+Weapon.NoAlert
 	}
