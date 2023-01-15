@@ -22,6 +22,9 @@ Craneo, Jimmy, Jimmy91, • "DOOM 2016/Eternal Monsters" Arachnotron
        LitteWhiteMouse, •
           Logan McCloud •
 
+3D Realms, Craneo, Banjo Software, Midway, Mike12, Minigunner, • Angled Pistol
+											  Uboa, wildweasel •
+
 fgsfds, Kinsie, NightFright • Menu Graphics
 
 gerolf • "Wolfenstein 3D" Helmeted SS Guard
@@ -41,7 +44,8 @@ ShallowB • "DOOM 64" Imp
 ========
 [AUDIO]
 
-3D Realms, id Software, SD EnterNET, Valve Software • Base Sounds
+3D Realms, id Software, Raven Software, SD EnterNET, • Base Sounds
+									  Valve Software •
 
 Antares031, Can't Sleep, Dynamo, Jaxxoon R, Kinsie, • Sound Mixing
 				     Nash Muhandes, Yukes Von Faust •
