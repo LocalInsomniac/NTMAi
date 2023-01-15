@@ -13,7 +13,7 @@ alias NTM_UsePortableMedkit "use NTM_PortableMedkit"
 DefaultBind V NTM_UsePortableMedkit
 
 AddMenuKey "Berserk Pack" NTM_UseBerserk
-alias NTM_UseBerserk "use NTM_Berserk"
+alias NTM_UseBerserk "use NTM_BerserkPack"
 DefaultBind B NTM_UseBerserk
 
 AddMenuKey "Infrared" NTM_UseInfrared
