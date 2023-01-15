@@ -14,19 +14,20 @@ class NTM_Key : Weapon {
 	
 	States {
 		Select:
-			NRKE A 1 A_Raise(11);
-			Loop;
-		
-		Ready:
-			NRKE B 0;
-		Ready2:
-			#### B 0 A_StartSound("misc/k_pkup");
-			#### ########## 1 Bright A_WeaponReady(WRF_DisableSwitch);
 		Deselect:
+		Ready:
 		Fire:
+			NRKE A 0;
+			Goto Animation;
+		
+		Animation:
+			#### A 0 A_WeaponOffset(0, 131);
+			#### ######### 1 A_WeaponOffset(0, -11, WOF_Add);
+			#### B 1 A_StartSound("misc/k_pkup");
+			#### ######### 1 Bright;
 			#### ######### 1 Bright A_WeaponOffset(0, 11, WOF_Add);
 			
-			#### B 0 {
+			#### # 0 {
 				A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
 				A_TakeInventory(invoker.GetClassName());
 			}
@@ -40,59 +41,54 @@ class NTM_Key_RedCard : NTM_Key {}
 class NTM_Key_YellowCard : NTM_Key {
 	States {
 		Select:
-			NYKE A 1 A_Raise(12);
-			Loop;
-		
+		Deselect:
 		Ready:
-			NYKE B 0;
-			Goto Ready2;
+		Fire:
+			NYKE A 0;
+			Goto Animation;
 	}
 }
 
 class NTM_Key_BlueCard : NTM_Key {
 	States {
 		Select:
-			NBKE A 1 A_Raise(12);
-			Loop;
-		
+		Deselect:
 		Ready:
-			NBKE B 0;
-			Goto Ready2;
+		Fire:
+			NBKE A 0;
+			Goto Animation;
 	}
 }
 
 class NTM_Key_RedSkull : NTM_Key {
 	States {
 		Select:
-			NRSK A 1 A_Raise(12);
-			Loop;
-		
+		Deselect:
 		Ready:
-			NRSK B 0;
-			Goto Ready2;
+		Fire:
+			NRSK A 0;
+			Goto Animation;
 	}
 }
 
 class NTM_Key_YellowSkull : NTM_Key {
 	States {
 		Select:
-			NYSK A 1 A_Raise(12);
-			Loop;
-		
+		Deselect:
 		Ready:
-			NYSK B 0;
-			Goto Ready2;
+		Fire:
+			NYSK A 0;
+			Goto Animation;
 	}
 }
 
 class NTM_Key_BlueSkull : NTM_Key {
 	States {
 		Select:
-			NBSK A 1 A_Raise(12);
-			Loop;
-		
+		Deselect:
 		Ready:
-			NBSK B 0;
-			Goto Ready2;
+		Fire:
+			NBSK A 0;
+			Goto Animation;
 	}
 }

@@ -41,13 +41,11 @@ class NTM_GrenadeThrow : Weapon {
 	
 	States {
 		Select:
-			NGRG A 1 A_Raise(12);
-			Loop;
-		
 		Deselect:
 		Ready:
 		Fire:
-			NGRG A 0 A_WeaponOffset();
+			NGRG A 0 A_WeaponOffset(0, 116);
+			NGRG AAAAAAA 1 A_WeaponOffset(0, -12, WOF_Add);
 			NGRG BC 2;
 			NGRG D 2 A_StartSound("NTM_Grenade/pin");
 			NGRG EF 2;
