@@ -80,8 +80,8 @@ class NTM_Grenade : Actor {
 		Gravity 0.5;
 		BounceType "Doom";
 		BounceSound "NTM_Grenade/bounce";
-		BounceFactor 0.5;
-		BounceCount 3;
+		BounceFactor 0.666;
+		BounceCount 4;
 		Projectile;
 		
 		+CanBounceWater
@@ -92,6 +92,7 @@ class NTM_Grenade : Actor {
 		+DontBounceOnSky
 		+DontBounceOnShootables
 		+UseBounceState
+		+SlidesOnWalls
 	}
 	
 	States {
