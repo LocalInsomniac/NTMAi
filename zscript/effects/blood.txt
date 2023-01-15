@@ -171,7 +171,7 @@ class NTM_FlyingGib1 : NTM_FlyingBlood {
 				A_QueueCorpse();
 				A_StartSound("NTM_FlyingGib/splat");
 				vel.xy *= 0;
-				scale.y = Abs(scale.y);
+				bYFlip = false;
 			}
 			
 			Stop;

@@ -4,6 +4,9 @@
 
 // Gib Base
 class NTM_Gib : Actor {
+	private int gibFlags;
+	flagDef NoRandomFlip: gibFlags, 0;
+	
 	Default {
 		FloatBobPhase 0;
 		Health 10;
@@ -32,8 +35,11 @@ class NTM_Gib : Actor {
 	
 	override void PostBeginPlay() {
 		Super.PostBeginPlay();
-		scale.x *= FRandomPick(-1, 1);
-		scale.y *= FRandomPick(-1, 1);
+		
+		if (!bNoRandomFlip) {
+			bXFlip = Random(0, 1);
+			bYFlip = Random(0, 1);
+		}
 	}
 }
 
