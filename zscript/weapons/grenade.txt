@@ -41,7 +41,6 @@ class NTM_GrenadeThrow : Weapon {
 	
 	States {
 		Select:
-		Deselect:
 		Ready:
 		Fire:
 			NGRG A 0 A_WeaponOffset(0, 116);
@@ -62,6 +61,14 @@ class NTM_GrenadeThrow : Weapon {
 					grenade.vel.z += 5;
 				}
 				
+				A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
+				A_TakeInventory("NTM_GrenadeThrow");
+			}
+			
+			Stop;
+		
+		Deselect:
+			NGRG F 0 {
 				A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
 				A_TakeInventory("NTM_GrenadeThrow");
 			}
