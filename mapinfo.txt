@@ -3,6 +3,8 @@ GameInfo {
     PlayerClasses = "NTM_Player"
 	QuitSound = ""
 	BorderFlat = "AG128_1"
+	TitlePage = "NTMPIC"
+	TitleMusic = "$MUSIC_NTMAI"
 }
 
 Skill Baby {
