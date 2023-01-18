@@ -46,7 +46,7 @@ class NTM_Gib : Actor {
 // Bullet Puff
 class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	Default {
-		Scale 0.8;
+		Scale 0.666;
 		FloatBobPhase 0;
 		
 		+PuffOnActors
@@ -56,13 +56,13 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	
 	States {
 		Spawn:
-			PUFF A 4 Bright NoDelay A_StartSound("NTM_BulletPuff/miss");
-			PUFF BCD 4;
+			NPUF A 2 Bright NoDelay A_StartSound("NTM_BulletPuff/miss");
+			NPUF BCDEF 2;
 			Stop;
 			
 		Melee:
-			PUFF C 4 A_StartSound("player/male/fist");
-			PUFF D 4;
+			NPUF C 2 A_StartSound("player/male/fist");
+			NPUF DEF 2;
 			Stop;
 		
 		XDeath:
