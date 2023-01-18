@@ -105,7 +105,6 @@ class NTM_Grenade : Actor {
 			NGRE ABCDEFABCDEFABCDEF 3;
 			
 		Death:
-			NGRE A 0 A_Log(""..self.." declares war!");
 			NGRE A 0 A_SpawnItemEx("NTM_GrenadeExplosion", flags: SXF_NoCheckPosition);
 			Stop;
 	}
