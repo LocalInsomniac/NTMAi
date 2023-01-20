@@ -84,6 +84,9 @@ class NTM_Player : DoomPlayer {
 			
 			Goto Spawn;
 		
+		Death.Fire:
+			NPLA G 12 A_ItBurnsItBurns;
+			NPLA G 1 A_CrispyPlayer;
 		Death:
 			NPLA H 7;
 			NPLA I 7 A_PlayerScream;
@@ -99,6 +102,14 @@ class NTM_Player : DoomPlayer {
 			NMGI CDEFG 5;
 			NMGI H -1;
 			Stop;
+		
+		FireHands:
+			NITB ABCD 3 Bright;
+			Loop;
+			
+		FireHandsLower:
+			NITB AAABBBCCCDDD 1 Bright A_HandLower;
+			Loop;
 	}
 	
 	void A_PlayerJump() {
@@ -277,6 +288,67 @@ class NTM_Player : DoomPlayer {
 		}
 		
 		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
+	}
+	
+	void A_ItBurnsItBurns() {
+		if (player != null && player.mo == self) {
+			player.SetPSprite(PSP_StrifeHands, FindState("FireHands"));
+			
+			player.readyWeapon = null;
+			player.pendingWeapon = WP_NoChange;
+			player.playerState = PST_Live;
+			player.extraLight = 3;
+		}
+	}
+	
+	void A_CrispyPlayer() {
+		if (player != null && player.mo == self) {
+			PSprite psp = player.GetPSprite(PSP_StrifeHands);
+			
+			State fireHandsLower = FindState("FireHandsLower");
+			State fireHands = FindState("FireHands");
+			
+			if (psp) {
+				if (psp.curState != null && fireHandsLower != null && fireHands != null) {
+					// Calculate state to go to.
+					int dist = fireHands.DistanceTo(psp.curState);
+					
+					if (dist > 0) {
+						player.playerState = PST_Dead;
+						psp.SetState(fireHandsLower + dist);
+						
+						return;
+					}
+				}
+				
+				player.playerState = PST_Dead;
+				psp.SetState(null);
+			}
+		}
+	}
+	
+	void A_HandLower() {
+		if (player != null) {
+			PSprite psp = player.GetPSprite(PSP_StrifeHands);
+			
+			if (psp) {
+				if (psp.curState == null) {
+					psp.SetState(null);
+					
+					return;
+				}
+				
+				psp.y += 3;
+				
+				if (psp.y > weaponBottom * 4) {
+					psp.SetState(null);
+				}
+			}
+			
+			if (player.extraLight > 0) {
+				--player.extraLight;
+			}
+		}
 	}
 }
 
