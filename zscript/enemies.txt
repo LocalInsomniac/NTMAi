@@ -185,7 +185,7 @@ class NTM_Enemy : Actor {
 	   NTMAi monster actions
 	   ===================== */
 	
-	void A_NTM_DukeChase(int flags = 0) {
+	void A_NTM_DukeChase(bool resurrect = false) {
 		bool beDropoff = bDropoff;
 		Vector3 oldPos = pos;
 		
@@ -197,7 +197,12 @@ class NTM_Enemy : Actor {
 			++chaseStuck;
 		}
 		
-		A_Chase("_a_chase_default", "_a_chase_default", flags);
+		if (resurrect) {
+			A_VileChase();
+		} else {
+			A_Chase();
+		}
+		
 		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
@@ -210,7 +215,7 @@ class NTM_Enemy : Actor {
 		TryLeap();
 	}
 	
-	void A_NTM_BloodChase(int flags = 0) {
+	void A_NTM_BloodChase(bool resurrect = false) {
 		// Source: https://github.com/caligari87/HideousDestructor/blob/master/zscript/mob.txt#L360
 		if (!target) {
 			A_ClearTarget();
@@ -245,7 +250,12 @@ class NTM_Enemy : Actor {
 		
 		Vector3 oldPos = pos;
 		
-		A_Chase("_a_chase_default", "_a_chase_default", flags);
+		if (resurrect) {
+			A_VileChase();
+		} else {
+			A_Chase();
+		}
+		
 		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
@@ -254,7 +264,7 @@ class NTM_Enemy : Actor {
 			return;
 		}
 		
-		if (curState == FindState("Melee") || curState == FindState("Missile")) {
+		if (curState == FindState("Melee") || curState == FindState("Missile") || curState == FindState("Heal")) {
 			return;
 		}
 		
@@ -270,12 +280,12 @@ class NTM_Enemy : Actor {
 		TryLeap();
 	}
 	
-	void A_NTM_SWChase(int flags = 0) {
+	void A_NTM_SWChase(bool resurrect = false) {
 		if (CheckMove(pos.xy)) {
 			int tpc = NTM_Enemy(self).ticsPerChase;
 			
 			speed /= tpc;
-			A_NTM_DukeChase(flags);
+			A_NTM_DukeChase(resurrect);
 			speed *= tpc;
 		} else {
 			A_Wander();
