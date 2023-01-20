@@ -3,28 +3,23 @@
 class NTMAi : EventHandler {
 	bool bADMORTEM;
 	bool bEviternity;
+	bool bScythe2;
 	
-	static string LumpPrintHash(string lumpName) {
-		int lumpIndex = WADs.FindLump(lumpName);
+	static void LumpPrintHash(string lumpName) {
+		int lump = -1;
 		
-		if (lumpIndex != -1) {
-			string hash = MD5.Hash(WADs.ReadLump(lumpIndex));
-			
-			Console.PrintF("'"..lumpName.."' hash is '"..hash.."'");
-			
-			return hash;
+		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
+			Console.PrintF("'"..lumpName.."' ("..lump..") hash is '"..(MD5.Hash(WADs.ReadLump(lump))).."'");
 		}
-		
-		Console.PrintF("Could not find lump '"..lumpName.."'");
-		
-		return "";
 	}
 	
 	static bool LumpHasHash(string lumpName, string hash) {
-		int lumpIndex = WADs.FindLump(lumpName);
+		int lump = -1;
 		
-		if (lumpIndex != -1 && MD5.Hash(WADs.ReadLump(lumpIndex)) == hash) {
-			return true;
+		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
+			if (MD5.Hash(WADs.ReadLump(lump)) == hash) {
+				return true;
+			}
 		}
 		
 		return false;
@@ -38,7 +33,7 @@ class NTMAi : EventHandler {
 		   DeH_Actor_152 = Satyr
 		   DeH_Actor_153 = Running Rocket
 		   DeH_Actor_156 = Skeleton
-		   DeH_Actor_158 = Super Revenant
+		   DeH_Actor_158 = Gjenganger
 		   DeH_Actor_231 = Gremlin */
 		bADMORTEM = NTMAi.LumpHasHash("DSFRE048", "0f76f6c24ac906634562a7aadf8f527f");
 		
@@ -49,6 +44,12 @@ class NTMAi : EventHandler {
 		   CommanderKeen = Astral Cacodemon
 		   BossBrain = Archangelus */
 		bEviternity = NTMAi.LumpHasHash("XLT_EV15", "4a96b98efc9a0ab68ffd2533a3a3ee01");
+		
+		/* [Scythe 2]
+		
+		   WolfensteinSS = Evil Marine
+		   CommanderKeen = Afrit */
+		bScythe2 = NTMAi.LumpHasHash("DEHACKED", "64fec1191ba91059d450ddfbe7ac1d7d");
 	}
 	
 	/* ====
@@ -245,9 +246,8 @@ class NTMAi : EventHandler {
 			
 			if (((mo is "Zombieman" || s is "Zombieman")
 			    || (mo is "ShotgunGuy" || s is "ShotgunGuy")
-				|| (mo is "ChaingunGuy" || s is "ChaingunGuy"))
-				&& mo.GetDropItems() != null && Random(0, 256) < 32) {
-				mo.A_DropItem("NTM_GrenadeItem");
+				|| (mo is "ChaingunGuy" || s is "ChaingunGuy"))) {
+				mo.A_DropItem("NTM_GrenadeItem", 1, 32);
 			}
 		}
 	}
@@ -266,6 +266,7 @@ class NTMAi : EventHandler {
 		}
 		
 		mo.bXFlip = mo.default.bXFlip;
+		mo.scale = mo.default.scale;
 		
 		if (!(mo is "PlayerPawn")) {
 			mo.translation = mo.default.translation;
@@ -448,7 +449,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'BaronOfHell':
-				if (sv_ntm_r_baronOfHell) {
+				if (sv_ntm_r_baronOfHell && !bEviternity) {
 					e.replacement = "NTM_BaronOfHell";
 				}
 			break;
@@ -497,12 +498,79 @@ class NTMAi : EventHandler {
 			
 			case 'WolfensteinSS':
 				if (sv_ntm_r_ss) {
+					if (sv_ntm_r_custom) {
+						if (bEviternity) {
+							// e.replacement = "NTM_FormerCaptain";
+							
+							break;
+						}
+						
+						if (bScythe2) {
+							e.replacement = "NTM_EvilMarine";
+							
+							break;
+						}
+					}
+					
 					e.replacement = "NTM_German";
+				}
+			break;
+			
+			case 'CommanderKeen':
+				if (sv_ntm_r_custom) {
+					/*if (bEviternity) {
+						e.replacement = "NTM_AstralCacodemon";
+						
+						break;
+					}*/
+					
+					if (bScythe2) {
+						e.replacement = "NTM_Afrit";
+						
+						break;
+					}
 				}
 			break;
 			
 			case 'RealGibs':
 				e.replacement = "NTM_RealGibs";
+			break;
+			
+			// AD MORTEM
+			case 'DeH_Actor_150':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_PumpkinMarine";
+				}
+			break;
+			
+			case 'DeH_Actor_151':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Gargoyle";
+				}
+			break;
+			
+			case 'DeH_Actor_152':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Satyr";
+				}
+			break;
+			
+			case 'DeH_Actor_156':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Skeleton";
+				}
+			break;
+			
+			case 'DeH_Actor_158':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Gjenganger";
+				}
+			break;
+			
+			case 'DeH_Actor_231':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_LittleMarine";
+				}
 			break;
 		}
 	}
@@ -578,11 +646,42 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_German':
+			case 'NTM_EvilMarine':
 				e.replacee = "WolfensteinSS";
+			break;
+			
+			//case 'NTM_AstralCacodemon':
+			case 'NTM_Afrit':
+				e.replacee = "CommanderKeen";
 			break;
 			
 			case 'NTM_RealGibs':
 				e.replacee = "RealGibs";
+			break;
+			
+			// AD MORTEM
+			case 'NTM_PumpkinMarine':
+				e.replacee = "DeH_Actor_150";
+			break;
+			
+			case 'NTM_Gargoyle':
+				e.replacee = "DeH_Actor_151";
+			break;
+			
+			case 'NTM_Satyr':
+				e.replacee = "DeH_Actor_152";
+			break;
+			
+			case 'NTM_Skeleton':
+				e.replacee = "DeH_Actor_156";
+			break;
+			
+			case 'NTM_Gjenganger':
+				e.replacee = "DeH_Actor_158";
+			break;
+			
+			case 'NTM_LittleMarine':
+				e.replacee = "DeH_Actor_231";
 			break;
 		}
 	}
@@ -617,7 +716,7 @@ class NTM_System : Inventory {
 class NTM_System_Actor : NTM_System {
 	bool dead, gibbed, crushed, chopped, rKO;
 	int fallTics, footprintState, footprintTics, footprintSide, deathLastFrame;
-	float deathLastHeight;
+	double deathLastHeight;
 	Actor gibDummy, bloodPool, footprintBloodPool;
 	
 	override void PostBeginPlay() {
@@ -634,18 +733,22 @@ class NTM_System_Actor : NTM_System {
 				int frame = owner.curState.frame;
 				
 				if (deathLastFrame != frame) {
-					Vector2 spriteSize = TexMan.GetScaledSize(owner.curState.GetSpriteTexture(0));
-					float spriteHeight = spriteSize.y;
+					TextureID tex = owner.curState.GetSpriteTexture(0);
 					
-					if (frame > 0 && owner.waterLevel == 0) {
-						float jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
+					if (tex) {
+						Vector2 spriteSize = TexMan.GetScaledSize(tex);
+						double spriteHeight = spriteSize.y;
 						
-						owner.SetOrigin(owner.pos + (0, 0, owner.scale.y * jitter), false);
-						owner.ClearInterpolation();
+						if (frame > 0 && owner.waterLevel == 0) {
+							double jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
+							
+							owner.SetOrigin(owner.pos + (0, 0, owner.scale.y * jitter), false);
+							owner.ClearInterpolation();
+						}
+						
+						deathLastFrame = frame;
+						deathLastHeight = spriteHeight;
 					}
-					
-					deathLastFrame = frame;
-					deathLastHeight = spriteHeight;
 				}
 			}
 			
@@ -697,12 +800,14 @@ class NTM_System_Actor : NTM_System {
 					bool result;
 					Actor bloodP;
 					
-					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", -1, flags: SXF_UseBloodColor);
+					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
 					
 					if (bloodP) {
+						// Slightly offset the blood pool so there's no
+						// Z-fighting in software mode
 						bloodPool = bloodP;
 						bloodP.target = owner;
-						bloodP.SetOrigin(owner.pos, false);
+						bloodP.SetOrigin(owner.pos + (1, 0, 0), false);
 					}
 				}
 				

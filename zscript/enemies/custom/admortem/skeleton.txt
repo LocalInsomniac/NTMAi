@@ -1,0 +1,186 @@
+class NTM_Skeleton : NTM_Enemy {
+	Default {
+		Health 150;
+		GibHealth 70;
+		Radius 20;
+		Height 56;
+		Mass 400;
+		Speed 14;
+		ReactionTime 8;
+		PainChance 180;
+		MeleeThreshold 196;
+		SeeSound "NTM_Skeleton/sight";
+		ActiveSound "NTM_Skeleton/active";
+		MeleeSound "NTM_Skeleton/melee";
+		PainSound "NTM_Skeleton/pain";
+		DeathSound "NTM_Skeleton/death";
+		NTM_Enemy.XDeathSound "NTM_Skeleton/xdeath";
+		HitObituary "%o was spooked by a Skeleton.";
+		Obituary "A Skeleton had a bone to pick with %o.";
+		Tag "Skeleton";
+		NTM_Enemy.TicsPerChase 2;
+		
+		+NoBlood
+	}
+	
+	States {
+		Spawn:
+			NSKE A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NSKE AABBCCDDEEFF 2 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NSKE AABBCCDDEEFF 2 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NSKE A 1 A_NTM_SWChase;
+			NSKE A 1 A_NTM_SWChase2;
+			NSKE A 1 A_NTM_SWChase;
+			NSKE A 1 A_NTM_SWChase2;
+			NSKE B 1 A_NTM_SWChase;
+			NSKE B 1 A_NTM_SWChase2;
+			NSKE B 1 A_NTM_SWChase;
+			NSKE B 1 A_NTM_SWChase2;
+			NSKE C 1 A_NTM_SWChase;
+			NSKE C 1 A_NTM_SWChase2;
+			NSKE C 1 A_NTM_SWChase;
+			NSKE C 1 A_NTM_SWChase2;
+			NSKE D 1 A_NTM_SWChase;
+			NSKE D 1 A_NTM_SWChase2;
+			NSKE D 1 A_NTM_SWChase;
+			NSKE D 1 A_NTM_SWChase2;
+			NSKE E 1 A_NTM_SWChase;
+			NSKE E 1 A_NTM_SWChase2;
+			NSKE E 1 A_NTM_SWChase;
+			NSKE E 1 A_NTM_SWChase2;
+			NSKE F 1 A_NTM_SWChase;
+			NSKE F 1 A_NTM_SWChase2;
+			NSKE F 1 A_NTM_SWChase;
+			NSKE F 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+			NSKE G 0 A_FaceTarget;
+			NSKE G 6 A_StartSound("NTM_Skeleton/swing");
+			NSKE H 6 A_FaceTarget;
+			NSKE I 6 A_SkelFist;
+			Goto See;
+		
+		Missile:
+			NSKE GH 4 A_FaceTarget;
+			
+			NSKE I 6 {
+				A_FaceTarget();
+				A_SpawnProjectile("NTM_Bone");
+			}
+			
+			Goto See;
+		
+		Pain:
+			NSKE J 10 A_Pain;
+			Goto See;
+		
+		Death:
+			NSKE K 1 A_NTM_PreDeath;
+			NSKE K 4 A_NTM_Death;
+			NSKE L 5 A_NoBlocking;
+			NSKE MN 5;
+			NSKE O -1;
+			Stop;
+		
+		XDeath:
+			NSKE P 1 A_NTM_PreDeath;
+			
+			NSKE P 5 {
+				A_NTM_XDeath();
+				
+				for (int i = 0; i < 4; i++) {
+					A_SpawnItemEx("NTM_SkeletonBone", FRandom(-16, 16), FRandom(-16, 16), FRandom(16, 56), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20), FRandom(0, 360));
+				}
+				
+				A_SpawnItemEx("NTM_SkeletonSkull", 0, 0, 0, FRandom(-4, 4), FRandom(-4, 4), 16);
+			}
+			
+			NSKE Q 6 A_NoBlocking;
+			NSKE RS 6;
+			NSKE T -1;
+			Stop;
+		
+		Raise:
+			NSKE ONMLK 5;
+			Goto See;
+	}
+}
+
+class NTM_Bone : NTM_ImpBall {
+	Default {
+		Scale 0.9;
+		Damage 4;
+		Speed 18;
+		FastSpeed 20;
+		SeeSound "NTM_Skeleton/swing";
+		DeathSound "NTM_Skeleton/bonex";
+		RenderStyle "Normal";
+		
+		-ZDoomTrans
+	}
+	
+	States {
+		Spawn:
+			NBON ABCD 4;
+			Loop;
+		
+		Death:
+			NPUF C 4 A_SetScale(1);
+			NPUF DEF 4;
+			Stop;
+	}
+}
+
+class NTM_SkeletonBone : NTM_Gib {
+	Default {
+		Scale 0.666;
+		Radius 4;
+		Height 8;
+		Gravity 0.75;
+		BounceType "Doom";
+		BounceFactor 0.5;
+		
+		-Corpse
+		+Missile
+		+CanBounceWater
+		+UseBounceState
+		
+		+NTM_Gib.NoRandomFlip
+	}
+	
+	States {
+		Spawn:
+		Bounce:
+			NBON ABCD 4;
+			Loop;
+		
+		Death:
+			NBON E 0 A_QueueCorpse;
+			NBON E -1 A_SetFloorClip;
+			Stop;
+	}
+}
+
+class NTM_SkeletonSkull : NTM_SkeletonBone {
+	States {
+		Spawn:
+		Bounce:
+			NSKU ABCDE 4;
+			Loop;
+		
+		Death:
+			NSKU A 0 A_QueueCorpse;
+			NSKU A -1 A_SetFloorClip;
+			Stop;
+	}
+}

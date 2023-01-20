@@ -17,6 +17,7 @@ class NTM_Imp : NTM_Humanoid {
 		Tag "$FN_IMP";
 		Species "DoomImp";
 		NTM_Enemy.TicsPerChase 3;
+		NTM_Enemy.LeapDistance 360;
 	}
 	
 	States {
@@ -101,11 +102,6 @@ class NTM_Imp : NTM_Humanoid {
 	
 	action void A_NTM_TroopAttack() {
 		A_CustomComboAttack("NTM_ImpBall", 32, 3 * Random(2, 8), "imp/melee");
-	}
-	
-	override void PostBeginPlay() {
-		Super.PostBeginPlay();
-		leapDistance = 360;
 	}
 }
 

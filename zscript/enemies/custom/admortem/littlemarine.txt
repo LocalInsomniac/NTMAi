@@ -1,0 +1,81 @@
+class NTM_LittleMarine : NTM_Enemy {
+	Default {
+		Health 30;
+		PainChance 1000;
+		Speed 17;
+		Radius 16;
+		Height 32;
+		Mass 50;
+		MeleeRange 80;
+		Scale 0.36;
+		Tag "Little Marine";
+		HitObituary "%o was bludgeoned by %p tiny self.";
+		SeeSound "NTM_LittleMarine/sight";
+		ActiveSound "NTM_LittleMarine/active";
+		PainSound "NTM_LittleMarine/pain";
+		DeathSound "NTM_LittleMarine/death";
+		NTM_Enemy.TicsPerChase 2;
+	}
+	
+	States {
+		Spawn:
+			NPLA A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NPLA AABBCCDD 2 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NPLA AABBCCDD 2 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NPLA A 1 A_NTM_SWChase;
+			NPLA A 1 A_NTM_SWChase2;
+			NPLA A 1 A_NTM_SWChase;
+			NPLA A 1 A_NTM_SWChase2;
+			NPLA B 1 A_NTM_SWChase;
+			NPLA B 1 A_NTM_SWChase2;
+			NPLA B 1 A_NTM_SWChase;
+			NPLA B 1 A_NTM_SWChase2;
+			NPLA C 1 A_NTM_SWChase;
+			NPLA C 1 A_NTM_SWChase2;
+			NPLA C 1 A_NTM_SWChase;
+			NPLA C 1 A_NTM_SWChase2;
+			NPLA D 1 A_NTM_SWChase;
+			NPLA D 1 A_NTM_SWChase2;
+			NPLA D 1 A_NTM_SWChase;
+			NPLA D 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+			NPLA EE 6 Fast A_FaceTarget;
+			NPLA E 4 Fast A_CustomMeleeAttack(Random(1, 10) * 4, "NTM_LittleMarine/melee");
+			Goto See;
+		
+		Pain:
+			NPLA G 10 A_Pain;
+			Goto See;
+		
+		Death:
+			NPLA H 1 A_NTM_PreDeath;
+			NPLA H 4 A_NTM_Death;
+			NPLA I 5 A_NoBlocking;
+			NPLA JK 5;
+			NPLA L -1;
+			Stop;
+		
+		XDeath:
+			NMGI A 1 A_NTM_PreDeath;
+			NMGI A 4 A_NTM_XDeath;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		
+		Raise:
+			NPLA LKJIH 5;
+			Goto See;
+	}
+}

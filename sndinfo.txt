@@ -94,6 +94,7 @@ cyber/attack DSCYBATK
 cyber/tracex NSEXPLOD
 $attenuation cyber/attack 0.6
 $attenuation cyber/tracex 0.8
+cyber/pain DSBRSPAI
 
 spider/shoot DSCYBATK
 spider/attack DSSPIATK
@@ -249,3 +250,121 @@ $random NTM_German/burn {
 	NTM_German/burn2
 	NTM_German/burn3
 }
+
+/* =========
+   AD MORTEM
+   ========= */
+
+// Pumpkin Marine
+NTM_PumpkinMarine/sight NSPUMSIT
+NTM_PumpkinMarine/active NSPUMACT
+NTM_PumpkinMarine/attack DSPLASMA
+NTM_PumpkinMarine/pain NSPUMPAI
+NTM_PumpkinMarine/death NSPUMDIE
+NTM_PumpkinMarine/burn NSFALLIN
+
+// Gargoyle
+NTM_Gargoyle/sight NSGARSIT
+NTM_Gargoyle/active NSGARACT
+NTM_Gargoyle/melee DSCLAW
+NTM_Gargoyle/pain NSGARPAI
+NTM_Gargoyle/death NSGARDIE
+
+// Satyr
+NTM_Satyr/sight DSBRSSIT
+NTM_Satyr/active DSBRSACT
+NTM_Satyr/pain DSBRSPAI
+NTM_Satyr/death DSBRSDTH 
+
+// Skeleton
+NTM_Skeleton/sight NSSKESIT
+NTM_Skeleton/active NSSKEACT
+NTM_Skeleton/swing DSSKESWG
+NTM_Skeleton/bonex NSBONEXP
+NTM_Skeleton/melee DSSKEPCH
+NTM_Skeleton/pain NSSKEPAI
+NTM_Skeleton/death NSSKEDIE
+NTM_Skeleton/xdeath NSSKEGIB
+
+// Gjenganger
+NTM_Gjenganger/sight NSGJESIT
+NTM_Gjenganger/active NSGJEACT
+NTM_Gjenganger/melee NSGJEAIR
+NTM_Gjenganger/missile DSRLAUNC
+NTM_Gjenganger/missilex DSBAREXP
+$attenuation NTM_Gjenganger/missilex 0.7
+$limit NTM_Gjenganger/missilex 0
+NTM_Gjenganger/pain NSGJEPAI
+NTM_Gjenganger/death NSGJEDIE
+
+// Little Marine
+NTM_LittleMarine/sight NSTAUNT
+$pitchset NTM_LittleMarine/sight 1.6
+NTM_LittleMarine/active DSNOWAY
+$pitchset NTM_LittleMarine/active 1.6
+NTM_LittleMarine/melee DSPUNCH
+$pitchset NTM_LittleMarine/melee 1.25
+
+NTM_LittleMarine/pain1 NSPLPAI1
+$pitchset NTM_LittleMarine/pain1 1.6
+NTM_LittleMarine/pain2 NSPLPAI2
+$pitchset NTM_LittleMarine/pain2 1.6
+NTM_LittleMarine/pain3 NSPLPAI3
+$pitchset NTM_LittleMarine/pain3 1.6
+NTM_LittleMarine/pain4 NSPLPAIX
+$pitchset NTM_LittleMarine/pain4 1.6
+
+$random NTM_LittleMarine/pain {
+	NTM_LittleMarine/pain1
+	NTM_LittleMarine/pain2
+	NTM_LittleMarine/pain3
+	NTM_LittleMarine/pain4
+}
+
+NTM_LittleMarine/death1 DSPLDETH
+$pitchset NTM_LittleMarine/death1 1.6
+NTM_LittleMarine/death2 DSPDIEHI
+$pitchset NTM_LittleMarine/death2 1.6
+
+$random NTM_LittleMarine/death {
+	NTM_LittleMarine/death1
+	NTM_LittleMarine/death2
+}
+
+/* ========
+   SCYTHE 2
+   ======== */
+
+// Evil Marine
+NTM_EvilMarine/sight1 DSPOSIT1
+NTM_EvilMarine/sight2 DSPOSIT2
+NTM_EvilMarine/sight3 DSPOSIT3
+
+$random NTM_EvilMarine/sight {
+	NTM_EvilMarine/sight1
+	NTM_EvilMarine/sight2
+	NTM_EvilMarine/sight3
+}
+
+NTM_EvilMarine/active DSPOSACT
+NTM_EvilMarine/attack DSPLASMA
+NTM_EvilMarine/pain DSPOPAIN
+
+NTM_EvilMarine/death1 DSPODTH1
+NTM_EvilMarine/death2 DSPODTH2
+NTM_EvilMarine/death3 DSPODTH3
+
+$random NTM_EvilMarine/death {
+	NTM_EvilMarine/death1
+	NTM_EvilMarine/death2
+	NTM_EvilMarine/death3
+}
+
+NTM_EvilMarine/burn DSPOBURN
+
+// Afrit
+NTM_Afrit/sight NSAFRSIT
+NTM_Afrit/active NSAFRACT
+NTM_Afrit/attack DSFIRSHT
+NTM_Afrit/pain NSAFRPAI
+NTM_Afrit/death NSAFRDIE

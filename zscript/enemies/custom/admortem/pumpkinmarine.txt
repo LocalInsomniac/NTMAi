@@ -1,0 +1,81 @@
+class NTM_PumpkinMarine : NTM_Humanoid {
+	Default {
+		Health 250;
+		Speed 15;
+		PainChance 30;
+		Radius 20;
+		Height 56;
+		MaxDropOffHeight 80;
+		SeeSound "NTM_PumpkinMarine/sight";
+		ActiveSound "NTM_PumpkinMarine/active";
+		AttackSound "NTM_PumpkinMarine/attack";
+		PainSound "NTM_PumpkinMarine/pain";
+		DeathSound "NTM_PumpkinMarine/death";
+		NTM_Humanoid.BurnSound "NTM_PumpkinMarine/burn";
+		Tag "Pumpkin Marine";
+		Obituary "%o slipped on a Pumpkin Marine.";
+		NTM_Enemy.TicsPerChase 1;
+		NTM_Enemy.LeapDistance 360;
+	}
+	
+	States {
+		Spawn:
+			NPUM A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NPUM AABBCCDD 1 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NPUM AABBCCDD 1 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NPUM AABBCCDD 1 A_NTM_SWChase;
+			Loop;
+		
+		Missile:
+			NPUM E 2 A_FaceTarget;
+			NPUM F 1 Bright A_NTM_PumpkinAttack;
+			NPUM E 2 A_FaceTarget;
+			NPUM F 1 Bright A_NTM_PumpkinAttack;
+			NPUM E 2 A_FaceTarget;
+			NPUM F 1 Bright A_NTM_PumpkinAttack;
+			Goto See;
+		
+		Pain:
+			NPUM G 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NPUM H 1 A_NTM_PreDeath;
+			NPUM H 4 A_NTM_Death;
+			NPUM I 5 A_NoBlocking;
+			NPUM JK 5;
+			NPUM L -1;
+			Stop;
+		
+		XDeath:
+			NMGI A 1 A_NTM_PreDeath;
+			NMGI A 4 A_NTM_XDeath;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		
+		Raise:
+			NPUM LLKJIH 5;
+			Goto See;
+		
+		Leap:
+			NPUM M 1 A_NTM_Leap(false);
+			Loop;
+	}
+	
+	action void A_NTM_PumpkinAttack() {
+		A_StartSound(attackSound, Chan_Weapon);
+		A_FaceTarget();
+		A_SpawnProjectile("NTM_ArachnotronBall");
+	}
+}

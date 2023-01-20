@@ -6,13 +6,16 @@ Created by Can't Sleep
 ==========
 [GRAPHICS]
 
-3D Realms, Lobotomy Software, id Software, Midway, • Base Graphics
-              Monolith Productions, Raven Software •
+00_Zombie_00, borogk, Megaherz, President People, Virtue • "AD MORTEM" Enemies
+
+3D Realms, Banjo Software, Lobotomy Software, id Software, • Base Graphics
+			 Midway, Monolith Productions, Raven Software, •
+									   Rogue Entertainment •
 
 Ac!d, RoastBeefo • HUD Graphics
 
 Can't Sleep, David G, DenisBelmondo, Enjay, Gifty, Hellfire, • Graphics Editing
-          horselessheadsman, KaZudra, neoworm, osjclatchford •
+  horselessheadsman, KaZudra, neoworm, osjclatchford, Xaser, •
 
 Captain Toenail • "Forgotten One" Lost Soul
 
@@ -22,8 +25,9 @@ Craneo, Jimmy, Jimmy91, • "DOOM 2016/Eternal Monsters" Arachnotron
        LitteWhiteMouse, •
           Logan McCloud •
 
-3D Realms, Craneo, Banjo Software, Midway, Mike12, Minigunner, • Angled Pistol
-											  Uboa, wildweasel •
+Craneo, Mike12, Minigunner, Uboa, wildweasel • Angled Pistol
+
+Espi, Ebola • "Scythe 2" Afrit
 
 fgsfds, Kinsie, NightFright • Menu Graphics
 
@@ -44,8 +48,8 @@ ShallowB • "DOOM 64" Imp
 ========
 [AUDIO]
 
-3D Realms, id Software, Raven Software, SD EnterNET, • Base Sounds
-									  Valve Software •
+3D Realms, id Software, Midway, Raven Software, SD EnterNET, • Base Sounds
+											  Valve Software •
 
 Antares031, Can't Sleep, Dynamo, Jaxxoon R, Kinsie, • Sound Mixing
 				     Nash Muhandes, Yukes Von Faust •
