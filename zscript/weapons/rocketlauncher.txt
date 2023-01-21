@@ -48,7 +48,7 @@ class NTM_RocketLauncher : RocketLauncher replaces RocketLauncher {
 
 class NTM_Rocket : Rocket replaces Rocket {
 	Default {
-		Radius 5;
+		Radius 6;
 		Speed 25;
 		Scale 0.9;
 		
@@ -58,7 +58,7 @@ class NTM_Rocket : Rocket replaces Rocket {
 	
 	States {
 		Spawn:
-			MISL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail");
+			MISL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail", 0, 0, 4);
 			Loop;
 			
 		Death:
