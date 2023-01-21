@@ -252,6 +252,18 @@ class NTMAi : EventHandler {
 		}
 	}
 	
+	override void WorldThingGround(WorldEvent e) {
+		let mo = e.thing;
+		
+		if (mo) {
+			mo.A_XScream();
+			
+			if (mo.ceilingZ == mo.GetZAt(0, 0, 0, GZF_Ceiling)) {
+				mo.A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
+			}
+		}
+	}
+	
 	override void WorldThingRevived(WorldEvent e) {
 		DoThingRevive(e.thing);
 	}
@@ -655,10 +667,6 @@ class NTMAi : EventHandler {
 				e.replacee = "CommanderKeen";
 			break;
 			
-			case 'NTM_RealGibs':
-				e.replacee = "RealGibs";
-			break;
-			
 			// AD MORTEM
 			case 'NTM_PumpkinMarine':
 				e.replacee = "DeH_Actor_150";
@@ -796,38 +804,27 @@ class NTM_System_Actor : NTM_System {
 				}
 				
 				// Duke Nukem 3D & Shadow Warrior: Blood pools
-				if (!bloodPool && owner.health < (owner.GetGibHealth() * 0.666) && !(owner is "PlayerChunk") && owner.vel ~== (0, 0, 0) && owner.pos.z <= owner.floorZ) {
-					bool result;
-					Actor bloodP;
+				if (!bloodPool && owner.health < (owner.GetGibHealth() * 0.666) && !(owner is "PlayerChunk") && owner.vel.Length() == 0) {
+					double fz = owner.floorZ;
 					
-					[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
-					
-					if (bloodP) {
-						// Slightly offset the blood pool so there's no
-						// Z-fighting in software mode
-						bloodPool = bloodP;
-						bloodP.target = owner;
-						bloodP.SetOrigin(owner.pos + (1, 0, 0), false);
-					}
-				}
-				
-				// Duke Nukem 3D: Stretchy gibs under crushers
-				if (!crushed && owner.pos.z <= owner.floorZ && owner.ceilingZ <= (owner.pos.z + owner.GetDeathHeight())) {
-					if (owner.radius > 31) {
-						owner.A_SpawnItemEx("NTM_BigGibs", flags: SXF_UseBloodColor);
-					} else {
-						if (owner.radius > 23) {
-							owner.A_SpawnItemEx("NTM_MediumGibs", flags: SXF_UseBloodColor);
-						} else {
-							owner.A_SpawnItemEx("NTM_SmallGibs", flags: SXF_UseBloodColor);
+					if (owner.pos.z <= fz && fz == owner.GetZAt(1, 0, 0, GZF_AbsoluteAng)) {
+						bool result;
+						Actor bloodP;
+						
+						[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
+						
+						if (bloodP) {
+							// Slightly offset the blood pool so there's no
+							// Z-fighting in software mode
+							bloodPool = bloodP;
+							bloodP.target = owner;
+							bloodP.SetOrigin(owner.pos + (1, 0, 0), false);
 						}
 					}
-					
-					crushed = true;
 				}
 				
 				// Common: Gibbable corpses
-				bool isGibbable = (dead && !gibbed && !crushed && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss);
+				bool isGibbable = dead && !gibbed && !crushed && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss;
 				
 				if (gibDummy) {
 					if (!isGibbable) {

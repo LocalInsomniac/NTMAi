@@ -196,60 +196,6 @@ class NTM_FlyingGib3 : NTM_FlyingGib1 {
 	}
 }
 
-// Real Gibs
-class NTM_RealGibs : RealGibs {
-	States {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				A_XScream();
-				A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
-				Destroy();
-			}
-			
-			Goto Super::Spawn;
-	}
-}
-
-// Small Gibs
-class NTM_SmallGibs : RealGibs {
-	Default {
-		Radius 20;
-		FloatBobPhase 0;
-	}
-	
-	States {
-		Spawn:
-			NGIB A -1;
-			Stop;
-	}
-}
-
-// Medium Gibs
-class NTM_MediumGibs : NTM_SmallGibs {
-	Default {
-		Radius 32;
-	}
-	
-	States {
-		Spawn:
-			NGIB B -1;
-			Stop;
-	}
-}
-
-// Big Gibs
-class NTM_BigGibs : NTM_SmallGibs {
-	Default {
-		Radius 44;
-	}
-	
-	States {
-		Spawn:
-			NGIB C -1;
-			Stop;
-	}
-}
-
 // Gib Meat
 class NTM_GibMeat : RealGibs {
 	Default {
