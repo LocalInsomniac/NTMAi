@@ -544,10 +544,6 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
-			case 'RealGibs':
-				e.replacement = "NTM_RealGibs";
-			break;
-			
 			// AD MORTEM
 			case 'DeH_Actor_150':
 				if (sv_ntm_r_custom && bADMORTEM) {

@@ -130,6 +130,20 @@ class NTM_Player : DoomPlayer {
 		return (bNoClip || bFly || waterLevel > 0);
 	}
 	
+	override void PlayerThink() {
+		super.PlayerThink();
+		
+		// Less slippery movement
+		if (!curSector || !(curSector.flags & 16)) {
+			level.airControl = 0.64;
+			A_SetSpeed(2.24);
+			vel.xy *= 0.88;
+		} else {
+			level.airControl = 0.00390625;
+			A_SetSpeed(1);
+		}
+	}
+	
 	override void Tick() {
 		// GROSS HACK: Do not let the player be able to select temporary
 		//             animations!
@@ -149,16 +163,6 @@ class NTM_Player : DoomPlayer {
 			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
 				A_TakeInventory("NTM_GrenadeThrow");
 			}
-		}
-		
-		// Less slippery movement
-		if (!multiplayer && (!curSector || !(curSector.flags & 16))) {
-			level.airControl = 0.53777778;
-			A_SetSpeed(2.24);
-			vel.xy *= 0.88;
-		} else {
-			level.airControl = 0.00390625;
-			A_SetSpeed(1);
 		}
 		
 		// Keycard animations
