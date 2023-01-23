@@ -80,7 +80,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 					double ang = i * 9;
 					double dist = 1024;
 					
-					AimLineAttack(ang, 1024, victim, 512);
+					AimLineAttack(ang, 1024, victim, 1024);
 					
 					let victimActor = victim.lineTarget;
 					
@@ -90,7 +90,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 						dist -= Distance2D(victimActor);
 						
 						if (victimActor != target) {
-							int dmg = 20 * Random(1, 10);
+							int dmg = 22.5 * Random(1, 10);
 							
 							victimActor.DamageMObj(self, target, dmg, "BFGSplash");
 							
@@ -103,7 +103,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 						}
 						
 						if (dist > 0) {
-							victimActor.AimLineAttack(ang, dist, victim, 512);
+							victimActor.AimLineAttack(ang, dist, victim, 1024);
 							victimActor = victim.lineTarget;
 						} else {
 							victimActor = null;
