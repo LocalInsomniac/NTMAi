@@ -88,6 +88,7 @@ class NTM_AfritShot : NTM_MancubusShot {
 	Default {
 		Speed 12;
 		Damage 10;
+		SeeSound "NTM_Afrit/attack";
 		
 		+SeekerMissile
 	}
