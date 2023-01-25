@@ -53,6 +53,8 @@ class NTM_Burn : NTM_Enemy {
 					A_StartSound(def.burnSound, Chan_Voice);
 					deathSound = def.deathSound;
 				}
+				
+				A_StartSound("NTM_Burn/burn");
 			}
 			
 			Goto See;
