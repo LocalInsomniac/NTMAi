@@ -5,12 +5,13 @@ class NTM_Humanoid : NTM_Enemy {
 	States {
 		Death.Fire:
 		XDeath.Fire:
-			TNT1 A 0 {
+			TNT1 A 1 {
 				A_NoBlocking();
 				
 				NTM_Burn burn = NTM_Burn(Spawn("NTM_Burn", pos));
 				
 				if (burn) {
+					burn.A_StartSound(burnSound, Chan_Voice);
 					burn.A_SetSpecial(special, args[0], args[1], args[2], args[3], args[4]);
 					burn.CopyFriendliness(self, true);
 					burn.angle = angle;
@@ -44,17 +45,14 @@ class NTM_Burn : NTM_Enemy {
 	
 	States {
 		Spawn:
-			NBUR A 0 NoDelay {
-				class<NTM_Humanoid> cls = invoker.original; 
-				
-				if (cls) {
-					readonly<NTM_Humanoid> def = GetDefaultByType(cls);
+			NBUR A 1 NoDelay A_StartSound("NTM_Burn/burn");
+			
+			NBUR A 0 {
+				if (original) {
+					readonly<NTM_Humanoid> def = GetDefaultByType(original);
 					
-					A_StartSound(def.burnSound, Chan_Voice);
 					deathSound = def.deathSound;
 				}
-				
-				A_StartSound("NTM_Burn/burn");
 			}
 			
 			Goto See;
@@ -108,6 +106,7 @@ class NTM_Burn : NTM_Enemy {
 			
 		Raise:
 			NBUR ONMLGFE 3 Bright;
+			
 			NBUR A 0 {
 				if (original) {
 					Actor revive = Spawn(original, pos);
@@ -119,6 +118,7 @@ class NTM_Burn : NTM_Enemy {
 					}
 				}
 			}
+			
 			Stop;
 	}
 	
