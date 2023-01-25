@@ -59,7 +59,7 @@ skull/attack DSSKLATK
 skull/pain DSSKLPAI
 
 caco/active DSCACACT
-caco/melee DSCLAW
+caco/melee DSCACATK
 caco/pain DSCACPAI
 
 knight/sight DSBRSSIT
@@ -77,7 +77,7 @@ fatso/active DSMANACT
 fatso/attack DSMANFIR
 
 pain/active DSPEACT
-pain/melee DSCLAW
+pain/melee DSCACATK
 
 skeleton/fly DSSKEFLY
 skeleton/pain DSSKEPAI
