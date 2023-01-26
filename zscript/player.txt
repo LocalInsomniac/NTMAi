@@ -11,6 +11,10 @@
 #include "zscript/weapons/grenade.txt"
 #include "zscript/weapons/keys.txt"
 
+#include "zscript/weapons/custom/mayhem2019/tommygun.txt"
+#include "zscript/weapons/custom/mayhem2019/napalmlauncher.txt"
+#include "zscript/weapons/custom/mayhem2019/flamethrower.txt"
+
 class NTM_Player : DoomPlayer {
 	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
 	double hNewAngle;
@@ -23,9 +27,9 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 1, "NTM_Fists", "NTM_Chainsaw";
 		Player.WeaponSlot 2, "NTM_Pistol";
 		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
-		Player.WeaponSlot 4, "NTM_Chaingun";
-		Player.WeaponSlot 5, "NTM_RocketLauncher";
-		Player.WeaponSlot 6, "NTM_PlasmaRifle";
+		Player.WeaponSlot 4, "NTM_Chaingun";//, "NTM_TommyGun";
+		Player.WeaponSlot 5, "NTM_RocketLauncher";//, "NTM_NapalmLauncher";
+		Player.WeaponSlot 6, "NTM_PlasmaRifle";//, "NTM_Flamethrower";
 		Player.WeaponSlot 7, "NTM_BFG9000";
 		Player.CrouchSprite "NPLC";
 		Player.ViewHeight 46;
@@ -142,28 +146,6 @@ class NTM_Player : DoomPlayer {
 			level.airControl = 0.00390625;
 			A_SetSpeed(1);
 		}
-	}
-	
-	override void Tick() {
-		// GROSS HACK: Do not let the player be able to select temporary
-		//             animations!
-		if (player) {
-			let r = player.readyWeapon;
-			let l = player.pendingWeapon;
-			
-			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
-				A_TakeInventory("NTM_Key_RedCard");
-				A_TakeInventory("NTM_Key_YellowCard");
-				A_TakeInventory("NTM_Key_BlueCard");
-				A_TakeInventory("NTM_Key_RedSkull");
-				A_TakeInventory("NTM_Key_YellowSkull");
-				A_TakeInventory("NTM_Key_BlueSkull");
-			}
-			
-			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
-				A_TakeInventory("NTM_GrenadeThrow");
-			}
-		}
 		
 		// Keycard animations
 		if (doorTics > 0) {
@@ -214,11 +196,6 @@ class NTM_Player : DoomPlayer {
 			}
 		}
 		
-		// Pain timer to avoid voice spam
-		if (painTics > 0) {
-			--painTics;
-		}
-		
 		// Level start twitch like Duke3D
 		if (sv_ntm_startTwitch) {
 			int time = level.mapTime;
@@ -232,6 +209,33 @@ class NTM_Player : DoomPlayer {
 					A_SetViewAngle(Round(DeltaAngle(angle, 0) * (f * f * f)), SPF_Interpolate);
 				}
 			}
+		}
+	}
+	
+	override void Tick() {
+		// GROSS HACK: Do not let the player be able to select temporary
+		//             animations!
+		if (player) {
+			let r = player.readyWeapon;
+			let l = player.pendingWeapon;
+			
+			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
+				A_TakeInventory("NTM_Key_RedCard");
+				A_TakeInventory("NTM_Key_YellowCard");
+				A_TakeInventory("NTM_Key_BlueCard");
+				A_TakeInventory("NTM_Key_RedSkull");
+				A_TakeInventory("NTM_Key_YellowSkull");
+				A_TakeInventory("NTM_Key_BlueSkull");
+			}
+			
+			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
+				A_TakeInventory("NTM_GrenadeThrow");
+			}
+		}
+		
+		// Pain timer to avoid voice spam
+		if (painTics > 0) {
+			--painTics;
 		}
 		
 		// Auto-activate radiation suit if allowed
@@ -262,7 +266,7 @@ class NTM_Player : DoomPlayer {
 			}
 		}
 		
-		Super.Tick();
+		super.Tick();
 	}
 	
 	// Shadow Warrior-styled weapon bobbing
@@ -373,7 +377,11 @@ class NTM_PlayerHead : PlayerChunk {
 		Spawn:
 			NHEA A 0 NoDelay {
 				viewBob = 0;
-				player.attacker = null;
+				
+				if (player) {
+					player.attacker = null;
+				}
+				
 				scale.x *= FRandomPick(-1, 1);
 			}
 			
