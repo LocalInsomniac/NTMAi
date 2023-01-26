@@ -121,7 +121,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 class NTM_BFGExtra : BFGExtra {
 	States {
 		Spawn:
-			NBFS ABCDE 4 Bright;
+			NBFS ABCDEFGH 3 Bright;
 			Stop;
 	}
 }
