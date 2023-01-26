@@ -70,3 +70,55 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 			Stop;
     }
 }
+
+// Teleport Fog
+class NTM_TeleportFog : Actor replaces TeleportFog {
+	Default {
+		Height 32;
+		Scale 0.622;
+		Speed 0.1;
+		RenderStyle "Add";
+		SeeSound "misc/teleport";
+		Translation "NTM_Fog_Green";
+		
+		+NoBlockMap
+		+NoTeleport
+		+NoGravity
+		+ZDoomTrans
+		+ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NFOG AB 2 Bright;
+			Loop;
+	}
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		
+		AddZ(height, false);
+		A_StartSound(seeSound);
+	}
+	
+	override void Tick() {
+		super.Tick();
+		
+		scale += (-speed, speed);
+		
+		if (scale.x <= 0) {
+			Destroy();
+		}
+	}
+}
+
+// Item Fog
+class NTM_ItemFog : NTM_TeleportFog replaces ItemFog {
+	Default {
+		Height 12;
+		Scale 0.411;
+		Speed 0.05;
+		SeeSound "";
+		Translation "NTM_Fog_Blue";
+	}
+}
