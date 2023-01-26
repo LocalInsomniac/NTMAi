@@ -86,7 +86,7 @@ class NTM_CacodemonBall : CacodemonBall {
 	
 	States {
 		Spawn:
-			BAL2 AB 4 Bright;
+			NCAB ABCD 2 Bright;
 			Loop;
 			
 		Death:

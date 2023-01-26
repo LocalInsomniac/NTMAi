@@ -1,4 +1,4 @@
-class NTM_RocketLauncher : RocketLauncher replaces RocketLauncher {
+class NTM_RocketLauncher : RocketLauncher {
 	Default {
 		Scale 0.75;
 		Weapon.SlotNumber 5;
@@ -58,7 +58,7 @@ class NTM_Rocket : Rocket replaces Rocket {
 	
 	States {
 		Spawn:
-			MISL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail", 0, 0, 4);
+			NMSL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail", 0, 0, 4);
 			Loop;
 			
 		Death:

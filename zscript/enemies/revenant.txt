@@ -198,7 +198,7 @@ class NTM_RevenantTracer : RevenantTracer {
 	
 	States {
 		Spawn:
-			FATB AB 2 Bright A_NTM_Tracer;
+			NRTR AB 2 Bright A_NTM_Tracer;
 			Loop;
 			
 		Death:

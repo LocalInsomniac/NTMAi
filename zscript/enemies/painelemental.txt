@@ -13,7 +13,7 @@ class NTM_PainElemental : NTM_Enemy {
 		ActiveSound "pain/active";
 		Tag "$FN_PAIN";
 		Species "PainElemental";
-		NTM_Enemy.ticsPerChase 3;
+		NTM_Enemy.TicsPerChase 3;
 		
 		-FloorClip
 		+Float

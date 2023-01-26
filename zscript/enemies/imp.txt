@@ -105,6 +105,18 @@ class NTM_Imp : NTM_Humanoid {
 	}
 }
 
+class NTM_ShadowImp : NTM_Imp {
+	Default {
+		RenderStyle "Stencil";
+		Alpha 0.3;
+		Obituary "%o was burnt by a Shadow Imp.";
+		HitObituary "%o bumped into a Shadow Imp.";
+		Tag "Shadow Imp";
+		
+		+Shadow
+	}
+}
+
 class NTM_ImpBall : DoomImpBall {
 	Default {
 		Speed 12;
@@ -115,7 +127,7 @@ class NTM_ImpBall : DoomImpBall {
 	
 	States {
 		Spawn:
-			BAL1 AB 4 Bright;
+			NIMB ABCD 2 Bright;
 			Loop;
 			
 		Death:
