@@ -10,7 +10,7 @@ class NTM_Pistol : Pistol replaces Pistol {
 	
 	States {
 		Ready:
-			NPIS A 1 A_WeaponReady(WRF_AllowUser1 | WRF_AllowReload);
+			NPIS A 1 A_WeaponReady(WRF_AllowReload);
 			Loop;
 			
 		Deselect:
