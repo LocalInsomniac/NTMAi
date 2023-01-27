@@ -36,6 +36,7 @@ class NTM_Burn : NTM_Enemy {
 		-IsMonster
 		-CountKill
 		-Solid
+		-Shootable
 		+NonShootable
 		+NotAutoaimed
 		+DropOff
