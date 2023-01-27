@@ -76,7 +76,7 @@ class NTM_TeleportFog : Actor replaces TeleportFog {
 	Default {
 		Height 32;
 		Scale 0.622;
-		Speed 0.1;
+		Speed 0.08;
 		RenderStyle "Add";
 		SeeSound "misc/teleport";
 		Translation "NTM_Fog_Green";
