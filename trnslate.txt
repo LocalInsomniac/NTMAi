@@ -1,4 +1,4 @@
-NTM_PlasmaBall_Arachnotron = "192:207=169:191"
+NTM_PlasmaBall_Arachnotron = "192:207=168:191", "240:247=191:191"
 NTM_Explosion = "48:63=208:217", "64:79=176:191"
 NTM_Explosion_Cacodemon = "48:55=224:231", "56:63=210:223", "64:71=182:191", "72:79=254:254"
 NTM_Explosion_BaronOfHell = "48:79=173:191"
