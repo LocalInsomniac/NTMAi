@@ -120,9 +120,8 @@ OptionMenu "NTM_ActorOptions" {
 	Option "Cyberdemon", "sv_ntm_r_cyberdemon", "NTM_ActorOptions_Toggle"
 	Option "SS", "sv_ntm_r_ss", "NTM_ActorOptions_Toggle"
 	StaticText ""
-	StaticText "NTMAi will automatically replace custom enemies from AD MORTEM, Eviternity", "White"
-	StaticText "and Scythe 2. You can disable this option if you", "White"
-	StaticText "want to play with the original enemies.", "White"
+	StaticText "NTMAi will automatically replace custom enemies from AD MORTEM and Scythe 2.", "White"
+	StaticText "You can disable this option if you want to play with the original enemies.", "White"
 	StaticText ""
 	Option "Custom Enemies", "sv_ntm_r_custom", "NTM_ActorOptions_Toggle"
 }
