@@ -46,6 +46,7 @@ class NTM_Gib : Actor {
 // Bullet Puff
 class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	Default {
+		Height 4;
 		Scale 0.666;
 		FloatBobPhase 0;
 		
