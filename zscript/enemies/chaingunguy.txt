@@ -83,16 +83,14 @@ class NTM_ChaingunGuy : NTM_Humanoid {
 		
 		Death:
 			#### # 0 A_JumpIf(fired && Random(0, 1), "Death2");
-			NCGZ H 1 A_NTM_PreDeath;
-			NCGZ H 4 A_NTM_Death;
+			NCGZ H 5 A_NTM_Death;
 			NCGZ I 5 A_NoBlocking;
 			NCGZ JK 5;
 			NCGZ L -1;
 			Stop;
 		
 		Death2:
-			NCGZ M 1 A_NTM_PreDeath;
-			NCGZ M 2 A_NTM_Death;
+			NCGZ M 3 A_NTM_Death;
 			NCGZ N 3 Bright A_StartSound("chainguy/attack", Chan_Weapon);
 			NCGZ H 3;
 			NCGZ O 3 Bright A_StartSound("chainguy/attack", Chan_Weapon);

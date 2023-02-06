@@ -58,7 +58,6 @@ class NTM_Enemy : Actor {
 		Monster;
 		
 		+FloorClip
-		+DontCorpse
 		+SlidesOnWalls
 	}
 	
@@ -310,13 +309,12 @@ class NTM_Enemy : Actor {
 		speed *= tpc;
 	}
 	
-	action void A_NTM_PreDeath() {
+	/*action void A_NTM_PreDeath() {
 		A_NTM_PainEnable();
 		gravity = default.gravity;
 		height = default.height;
 		bSolid = true;
 		bShootable = true;
-		bNoDropoff = default.bNoDropoff;
 	}
 	
 	void A_NTM_CommonDeath() {
@@ -324,9 +322,11 @@ class NTM_Enemy : Actor {
 		bCorpse = true;
 		bSolid = false;
 		bShootable = false;
-	}
+	}*/
 	
 	void A_NTM_Death(Sound high = "", Sound normal = "", Sound wimp = "") {
+		A_NTM_PainEnable();
+		
 		if (high != "") {
 			// Play different scream based on severity
 			if (health <= GetGibHealth() * 0.5) {
@@ -341,18 +341,16 @@ class NTM_Enemy : Actor {
 		} else {
 			A_Scream();
 		}
-		
-		A_NTM_CommonDeath();
 	}
 	
 	void A_NTM_XDeath() {
+		A_NTM_PainEnable();
+		
 		if (xDeathSound) {
 			A_StartSound(xDeathSound);
 		} else {
 			A_XScream();
 		}
-		
-		A_NTM_CommonDeath();
 	}
 	
 	action void A_NTM_PainEnable() {

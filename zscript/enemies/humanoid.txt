@@ -22,8 +22,7 @@ class NTM_Humanoid : NTM_Enemy {
 		
 		XDeath:
 		XDeath.Fire:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
+			NMGI A 5 A_NTM_XDeath;
 			NMGI B 5 A_NoBlocking;
 			NMGI CDEFG 5;
 			NMGI H -1;
@@ -40,7 +39,6 @@ class NTM_Burn : NTM_Enemy {
 		Scale 0.7;
 		NTM_Enemy.TicsPerChase 3;
 		
-		-DontCorpse
 		-IsMonster
 		-CountKill
 		-Solid

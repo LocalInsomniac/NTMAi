@@ -28,7 +28,6 @@ class NTM_Satyr : NTM_HellKnight {
 		
 		Charge:
 			NBRS K 7 {
-				bNoDropoff = false;
 				A_NTM_PainDisable();
 				A_FaceTarget();
 			}

@@ -81,8 +81,7 @@ class NTM_Arachnotron : NTM_Enemy {
 			Goto Super::See;
 		
 		Death:
-			NARA G 1 A_NTM_PreDeath;
-			NARA G 6 A_NTM_Death;
+			NARA G 7 A_NTM_Death;
 			NARA H 7 A_NoBlocking;
 			NARA IJK 7;
 			NARA L -1 A_BossDeath;

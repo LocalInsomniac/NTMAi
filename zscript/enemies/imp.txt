@@ -71,8 +71,7 @@ class NTM_Imp : NTM_Humanoid {
 			Goto See;
 		
 		Death:
-			NIMP L 1 A_NTM_PreDeath;
-			NIMP L 5 A_NTM_Death;
+			NIMP L 6 A_NTM_Death;
 			NIMP M 6 A_NoBlocking;
 			NIMP NO 6;
 			NIMP P -1;

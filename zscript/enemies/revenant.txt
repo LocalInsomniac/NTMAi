@@ -172,13 +172,12 @@ class NTM_Revenant : NTM_Enemy {
 			Goto See;
 			
 		Death:
-			NREV N 1 {
+			NREV N 6 {
 				A_StopSound(Chan_Item);
 				A_SetFloorClip();
-				A_NTM_PreDeath();
+				A_NTM_Death();
 			}
 			
-			NREV N 5 A_NTM_Death;
 			NREV O 6 A_NoBlocking;
 			NREV P 6;
 			NREV Q 6;

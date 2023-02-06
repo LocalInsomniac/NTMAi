@@ -78,7 +78,6 @@ class NTM_BaronOfHell : NTM_Enemy {
 		
 		Charge:
 			NBRS K 7 {
-				bNoDropoff = false;
 				A_NTM_PainDisable();
 				A_FaceTarget();
 			}
@@ -97,8 +96,8 @@ class NTM_BaronOfHell : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NBRS O 1 {
-				A_NTM_PreDeath();
+			NBRS O 7 {
+				A_NTM_Death();
 				
 				if (health >= GetGibHealth()) {
 					A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
@@ -106,7 +105,6 @@ class NTM_BaronOfHell : NTM_Enemy {
 				}
 			}
 			
-			NBRS O 6 A_NTM_Death;
 			NBRS P 7 A_NoBlocking;
 			NBRS QR 7;
 			NBRS S 21;

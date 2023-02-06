@@ -77,8 +77,7 @@ class NTM_LostSoul : NTM_Enemy {
 			Goto See;
 			
 		Death:
-			NLOS E 1 A_NTM_PreDeath;
-			NLOS E 0 A_NTM_Death;
+			NLOS E 1;
 			
 			NLOS E 0 {
 				Actor boom = Spawn("NTM_Explosion", pos + (0, 0, 16));
@@ -88,6 +87,7 @@ class NTM_LostSoul : NTM_Enemy {
 				}
 				
 				A_SpawnDebris("NTM_LostSoulGib", false, 1.5);
+				A_NTM_Death();
 			}
 			
 			Stop;

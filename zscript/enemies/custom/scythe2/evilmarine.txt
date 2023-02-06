@@ -44,19 +44,10 @@ class NTM_EvilMarine : NTM_PumpkinMarine {
 			Goto See;
 		
 		Death:
-			NPLA H 1 A_NTM_PreDeath;
-			NPLA H 4 A_NTM_Death;
+			NPLA H 5 A_NTM_Death;
 			NPLA I 5 A_NoBlocking;
 			NPLA JK 5;
 			NPLA L -1;
-			Stop;
-		
-		XDeath:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
-			NMGI H -1;
 			Stop;
 		
 		Raise:

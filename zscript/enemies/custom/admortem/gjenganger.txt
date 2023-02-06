@@ -92,8 +92,7 @@ class NTM_Gjenganger : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NGJE H 1 A_NTM_PreDeath;
-			NGJE H 4 A_NTM_Death;
+			NGJE H 5 A_NTM_Death;
 			NGJE I 5 A_NoBlocking;
 			NGJE JK 5;
 			NGJE L -1;

@@ -74,8 +74,7 @@ class NTM_Mancubus : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NMAN K 1 A_NTM_PreDeath;
-			NMAN K 5 A_NTM_Death;
+			NMAN K 6 A_NTM_Death;
 			NMAN L 6 A_NoBlocking;
 			NMAN MNOPQRS 6;
 			NMAN T -1 A_BossDeath;

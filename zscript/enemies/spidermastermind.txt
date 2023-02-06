@@ -150,15 +150,14 @@ class NTM_SpiderMastermind : NTM_Boss {
 			Goto See;
 			
 		Death:
-			NSPI I 1 {
+			NSPI I 10 {
 				// GROSS HACK: We still have a sprite with rotations during
 				//             this sequence, disable randomly mirroring the
 				//             corpse for now.
-				A_NTM_PreDeath();
+				A_NTM_Death();
 				bXFlip = false;
 			}
 			
-			NSPI I 9 A_NTM_Death;
 			NSPI IIIIII 8 A_NTM_BossDeath;
 			
 			NSPI J 8 {

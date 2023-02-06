@@ -63,8 +63,7 @@ class NTM_Cacodemon : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NCAC G 1 A_NTM_PreDeath;
-			NCAC G 6 A_NTM_Death;
+			NCAC G 7 A_NTM_Death;
 			NCAC H 7 A_NoBlocking;
 			NCAC IJ 7;
 			NCAC J 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);

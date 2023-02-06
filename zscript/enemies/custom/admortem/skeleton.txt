@@ -85,24 +85,21 @@ class NTM_Skeleton : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NSKE K 1 A_NTM_PreDeath;
-			NSKE K 4 A_NTM_Death;
+			NSKE K 5 A_NTM_Death;
 			NSKE L 5 A_NoBlocking;
 			NSKE MN 5;
 			NSKE O -1;
 			Stop;
 		
 		XDeath:
-			NSKE P 1 A_NTM_PreDeath;
-			
-			NSKE P 5 {
+			NSKE P 6 {
 				A_NTM_XDeath();
 				
 				for (int i = 0; i < 4; i++) {
 					A_SpawnItemEx("NTM_SkeletonBone", FRandom(-16, 16), FRandom(-16, 16), FRandom(16, 56), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20), FRandom(0, 360));
 				}
 				
-				A_SpawnItemEx("NTM_SkeletonSkull", 0, 0, 0, FRandom(-4, 4), FRandom(-4, 4), 16);
+				A_SpawnItemEx("NTM_SkeletonSkull", 0, 0, height, FRandom(-4, 4), FRandom(-4, 4), 16);
 			}
 			
 			NSKE Q 6 A_NoBlocking;

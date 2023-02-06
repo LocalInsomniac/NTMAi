@@ -49,19 +49,10 @@ class NTM_PumpkinMarine : NTM_Humanoid {
 			Goto See;
 		
 		Death:
-			NPUM H 1 A_NTM_PreDeath;
-			NPUM H 4 A_NTM_Death;
+			NPUM H 5 A_NTM_Death;
 			NPUM I 5 A_NoBlocking;
 			NPUM JK 5;
 			NPUM L -1;
-			Stop;
-		
-		XDeath:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
-			NMGI H -1;
 			Stop;
 		
 		Raise:

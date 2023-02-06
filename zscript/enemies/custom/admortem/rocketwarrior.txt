@@ -47,10 +47,10 @@ class NTM_RocketWarrior : NTM_Enemy {
 		Melee:
 			NRWL G 0 A_StopSound(Chan_Body);
 			NRWL G 4 A_FaceTarget;
-			NRWL A 0 A_Die;
+			NRWL G 0 A_Die;
 		
 		Death:
-			NRWL A 1 A_NTM_PreDeath;
+			NRWL G 1;
 			
 			TNT1 A 15 {
 				A_StopSound(Chan_Body);

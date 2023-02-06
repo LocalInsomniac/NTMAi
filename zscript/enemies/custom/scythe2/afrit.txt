@@ -70,8 +70,7 @@ class NTM_Afrit : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NAFR I 1 Bright A_NTM_PreDeath;
-			NAFR I 4 Bright A_NTM_Death;
+			NAFR I 5 Bright A_NTM_Death;
 			NAFR J 5 Bright A_NoBlocking;
 			NAFR KLMNOPQ 5 Bright;
 			

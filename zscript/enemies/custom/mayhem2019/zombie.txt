@@ -66,8 +66,7 @@ class NTM_Zombie : NTM_Humanoid {
 		
 		Death:
 			NZO2 A 0 A_Jump(32, "Death2");
-			NZO2 L 1 A_NTM_PreDeath;
-			NZO2 L 5 A_NTM_Death;
+			NZO2 L 6 A_NTM_Death;
 			NZO2 M 5 A_NoBlocking;
 			NZO2 N 6;
 			NZO2 O 5;
@@ -76,8 +75,7 @@ class NTM_Zombie : NTM_Humanoid {
 			
 		Death2:
 			NZO2 Q 0 A_NTM_ZombieDeath;
-			NZO2 Q 1 A_NTM_PreDeath;
-			NZO2 Q 5 A_NTM_Death;
+			NZO2 Q 6 A_NTM_Death;
 			NZO2 R 5 A_NoBlocking;
 			NZO2 S 6;
 			NZO2 T 5;
@@ -87,8 +85,7 @@ class NTM_Zombie : NTM_Humanoid {
 		XDeath:
 		XDeath.Fire:
 			NZO2 V 0 A_NTM_ZombieDeath;
-			NZO2 V 1 A_NTM_PreDeath;
-			NZO2 V 4 A_NTM_XDeath;
+			NZO2 V 5 A_NTM_XDeath;
 			NZO2 W 5 A_NoBlocking;
 			NZO2 XYZ 5;
 			NZO2 [ -1;

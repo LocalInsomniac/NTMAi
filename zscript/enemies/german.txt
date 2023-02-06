@@ -71,9 +71,7 @@ class NTM_German : NTM_Humanoid {
 			Goto See;
 		
 		Death:
-			NGER I 1 A_NTM_PreDeath;
-			
-			NGER I 4 A_NTM_Death("NTM_German/death1", "NTM_German/death2", "NTM_German/death3");
+			NGER I 5 A_NTM_Death("NTM_German/death1", "NTM_German/death2", "NTM_German/death3");
 			NGER J 5 A_NoBlocking;
 			NGER KL 5;
 			NGER M -1 A_Jump(100, 1);
@@ -81,14 +79,6 @@ class NTM_German : NTM_Humanoid {
 			NGER M Random(30, 180);
 			NGER NMN 3;
 			NGER M -1;
-			Stop;
-		
-		XDeath:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
-			NMGI H -1;
 			Stop;
 		
 		Raise:

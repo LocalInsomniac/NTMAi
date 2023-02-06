@@ -42,8 +42,7 @@ class NTM_Hothead : NTM_PainElemental {
 			Goto See;
 			
 		Death:
-			NHOT F 1 Bright A_NTM_PreDeath;
-			NHOT F 7 Bright A_NTM_Death;
+			NHOT F 8 Bright A_NTM_Death;
 			NHOT G 8 Bright;
 			
 			TNT1 A 15 {

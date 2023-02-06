@@ -113,8 +113,7 @@ class NTM_ArchVile : NTM_Enemy {
 			Goto See;
 			
 		Death:
-			NARC R 1 A_NTM_PreDeath;
-			NARC R 5 A_NTM_Death;
+			NARC R 6 A_NTM_Death;
 			NARC S 6 A_NoBlocking;
 			NARC TUVWX 6;
 			NARC Y -1;

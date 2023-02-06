@@ -38,8 +38,7 @@ class NTM_DeathCube : NTM_Enemy {
 			Goto See + 1;
 		
 		Death:
-			NDCU G 1 A_NTM_PreDeath;
-			NDCU G 1 A_NTM_Death;
+			NDCU G 2 A_NTM_Death;
 			
 			TNT1 A 15 {
 				Spawn("NTM_Explosion2", pos + (0, 0, 10));

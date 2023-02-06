@@ -90,8 +90,7 @@ class NTM_Cyberdemon : NTM_Boss {
 			Goto See;
 		
 		Death:
-			NCYB J 1 A_NTM_PreDeath;
-			NCYB J 9 A_NTM_Death;
+			NCYB J 10 A_NTM_Death;
 			NCYB JJJJJJKLM 8 A_NTM_BossDeath;
 			NCYB N 8 A_NoBlocking;
 			NCYB OPQ 8;

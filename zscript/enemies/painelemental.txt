@@ -81,8 +81,7 @@ class NTM_PainElemental : NTM_Enemy {
 			Goto See;
 			
 		Death:
-			NPAI H 1 Bright A_NTM_PreDeath;
-			NPAI H 7 Bright A_NTM_Death;
+			NPAI H 8 Bright A_NTM_Death;
 			NPAI I 8 Bright;
 			
 			NPAI I 0 {

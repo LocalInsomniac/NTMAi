@@ -124,8 +124,7 @@ class NTM_Zombieman : NTM_Humanoid {
 			Goto See;
 		
 		Death:
-			NZOM H 1 A_NTM_PreDeath;
-			NZOM H 4 A_NTM_Death;
+			NZOM H 5 A_NTM_Death;
 			NZOM I 5 A_NoBlocking;
 			NZOM JK 5;
 			NZOM L -1;
@@ -133,9 +132,9 @@ class NTM_Zombieman : NTM_Humanoid {
 		
 		Death.Chainsaw:
 			NZOM T 10 {
-				A_NTM_PreDeath();
-				A_Scream();
-				bShootable = false;
+				A_NTM_Death();
+				bCorpse = false;
+				height = default.height;
 				
 				DropItem drop = GetDropItems();
 				
@@ -145,18 +144,16 @@ class NTM_Zombieman : NTM_Humanoid {
 				}
 			}
 			
-			NZOM T 15 {
-				height = GetDeathHeight();
-				bCorpse = true;
-			}
+			NZOM T 15 A_NoBlocking(false);
 			
 			NZOM U 5 {
 				for (int i = 0; i < 3; ++i) {
 					A_SpawnItemEx("NTM_FlyingBlood", 8, 4, 28, FRandom(2, 5), FRandom(-5, -2), FRandom(2, 6));
 				}
 				
+				bCorpse = true;
+				height = GetDeathHeight();
 				A_StartSound("NTM_Chainsaw/slash", Chan_5, ChanF_Overlap);
-				A_NoBlocking(false);
 			}
 			
 			NZOM VWXYZ[^ 5;

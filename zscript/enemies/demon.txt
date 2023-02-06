@@ -60,8 +60,9 @@ class NTM_Demon : NTM_Enemy {
 					double dist = Distance2D(target);
 					
 					if (dist > meleeThreshold && dist < maxTargetRange) {
+						bool beCanPass = bCanPass;
+						
 						bCanPass = false;
-						bNoDropOff = false;
 						dist -= (target.radius * 2) + radius;
 						
 						// Check if we can jump towards the player
@@ -79,7 +80,7 @@ class NTM_Demon : NTM_Enemy {
 							}
 						}
 						
-						bCanPass = true;
+						bCanPass = beCanPass;
 						
 						if (canJump) {
 							SetStateLabel("Jump");
@@ -130,8 +131,7 @@ class NTM_Demon : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NDEM I 1 A_NTM_PreDeath;
-			NDEM I 4 A_NTM_Death;
+			NDEM I 5 A_NTM_Death;
 			NDEM J 5 A_Scream;
 			NDEM K 5 A_NoBlocking;
 			NDEM L 5;

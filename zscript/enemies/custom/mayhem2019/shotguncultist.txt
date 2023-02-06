@@ -60,8 +60,7 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 		
 		Death:
 		Death.Chainsaw:
-			NCUL H 1 A_NTM_PreDeath;
-			NCUL H 4 A_NTM_Death("NTM_Cultist/death1", "NTM_Cultist/death2", "NTM_Cultist/death3");
+			NCUL H 5 A_NTM_Death("NTM_Cultist/death1", "NTM_Cultist/death2", "NTM_Cultist/death3");
 			NCUL I 5 A_NoBlocking;
 			NCUL JK 5;
 			NCUL L -1;
