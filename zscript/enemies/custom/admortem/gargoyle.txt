@@ -96,6 +96,12 @@ class NTM_Gargoyle : NTM_Enemy {
 	}
 }
 
+class NTM_Gargoyle2 : NTM_Gargoyle {
+	Default {
+		-SpawnCeiling
+	}
+}
+
 class NTM_GargoyleBall : NTM_ImpBall {
 	Default {
 		Speed 13;

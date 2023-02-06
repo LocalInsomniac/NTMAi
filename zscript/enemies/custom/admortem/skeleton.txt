@@ -116,6 +116,12 @@ class NTM_Skeleton : NTM_Enemy {
 	}
 }
 
+class NTM_Skeleton2 : NTM_Skeleton {
+	Default {
+		Health 120;
+	}
+}
+
 class NTM_Bone : NTM_ImpBall {
 	Default {
 		Scale 0.9;
@@ -154,7 +160,6 @@ class NTM_SkeletonBone : NTM_Gib {
 		+Missile
 		+CanBounceWater
 		+UseBounceState
-		
 		+NTM_Gib.NoRandomFlip
 	}
 	

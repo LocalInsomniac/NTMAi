@@ -10,6 +10,9 @@ class NTM_Satyr : NTM_HellKnight {
 		ActiveSound "NTM_Satyr/active";
 		PainSound "NTM_Satyr/pain";
 		DeathSound "NTM_Satyr/death";
+		Tag "Satyr";
+		Obituary "%o was scorched by a Satyr.";
+		HitObituary "%o was mauled by a Satyr.";
 		
 		+MissileEvenMore
 	}
@@ -45,9 +48,18 @@ class NTM_Satyr : NTM_HellKnight {
 	}
 }
 
+class NTM_Satyr2 : NTM_Satyr {
+	Default {
+		MaxTargetRange 16;
+		Health 320;
+		PainChance 100;
+	}
+}
+
 class NTM_SatyrBall : NTM_BaronBall {
 	Default {
 		Damage 5;
+		DamageType "Fire";
 		Translation "168:176=208:216";
 		Scale 0.85;
 	}
