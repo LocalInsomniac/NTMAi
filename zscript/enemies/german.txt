@@ -7,7 +7,7 @@ class NTM_German : NTM_Humanoid {
 		PainChance 170;
 		PainChance "NTM_GermanBullet", 0;
 		SeeSound "NTM_German/sight";
-		AttackSound "wolfss/attack";
+		AttackSound "NTM_German/attack";
 		PainSound "NTM_German/pain";
 		NTM_Humanoid.BurnSound "NTM_German/burn";
 		Obituary "%o was shot by a German.";
@@ -73,21 +73,7 @@ class NTM_German : NTM_Humanoid {
 		Death:
 			NGER I 1 A_NTM_PreDeath;
 			
-			NGER I 4 {
-				A_NTM_Death();
-				
-				// Play different scream based on severity
-				if (health <= GetGibHealth() * 0.5) {
-					A_StartSound("NTM_German/death1");
-				} else {
-					if (health < -1) {
-						A_StartSound("NTM_German/death2");
-					} else {
-						A_StartSound("NTM_German/death3");
-					}
-				}
-			}
-			
+			NGER I 4 A_NTM_Death("NTM_German/death1", "NTM_German/death2", "NTM_German/death3");
 			NGER J 5 A_NoBlocking;
 			NGER KL 5;
 			NGER M -1 A_Jump(100, 1);
@@ -111,8 +97,8 @@ class NTM_German : NTM_Humanoid {
 	}
 	
 	action void A_NTM_GermanAttack () {
-		A_CustomBulletAttack(30, 0, 1, 1, "NTM_GermanBulletPuff");
-		A_StartSound("NTM_German/attack", Chan_Weapon);
+		A_CustomBulletAttack(30, 0, 1, Random(1, 5), "NTM_GermanBulletPuff");
+		A_StartSound(attackSound, Chan_Weapon);
 	}
 }
 

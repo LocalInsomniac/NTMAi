@@ -1,8 +1,9 @@
-class NTM_PlasmaRifle : PlasmaRifle replaces PlasmaRifle {
+class NTM_PlasmaRifle : PlasmaRifle {
 	Default {
 		Scale 0.75;
 		Weapon.SlotNumber 6;
 		Weapon.UpSound "NTM_Weapon/select";
+		Inventory.PickupMessage "Plasma Rifle!";
 	}
 	
 	States
@@ -39,7 +40,7 @@ class NTM_PlasmaRifle : PlasmaRifle replaces PlasmaRifle {
 	}
 }
 
-class NTM_PlasmaBall : PlasmaBall replaces PlasmaBall {
+class NTM_PlasmaBall : PlasmaBall {
 	Default {
 		+ForceXYBillboard
 	}

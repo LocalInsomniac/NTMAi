@@ -6,37 +6,38 @@ Created by Can't Sleep
 ==========
 [GRAPHICS]
 
-3D Realms, Lobotomy Software, • Base Graphics
-         id Software, Midway, •
-        Monolith Productions, •
-               Raven Software •
+00_Zombie_00, borogk, Megaherz, President People, Virtue • "AD MORTEM" Enemies
+
+3D Realms, Banjo Software, Lobotomy Software, id Software, • Base Graphics
+			 Midway, Monolith Productions, Raven Software, •
+									   Rogue Entertainment •
 
 Ac!d, RoastBeefo • HUD Graphics
 
-Can't Sleep, David G, DenisBelmondo, • Graphics Editing
-    Enjay, Gifty, horselessheadsman, •
-     KaZudra, neoworm, osjclatchford •
+Amuscaria, osjclatchford • "Major Crisis" Zombie
+
+Can't Sleep, David G, DenisBelmondo, ElectricPulse, Gifty, • Graphics Editing
+	 Hellfire, HorrorMovieGuy, horselessheadsman, KaZudra, •
+							neoworm, osjclatchford, Xaser, •
 
 Captain Toenail • "Forgotten One" Lost Soul
 
-Craneo, Dr_Cosmobyte, Mr. Enchanter, • Mighty Foot
-Ninhil                               •
+Craneo, Dr_Cosmobyte, Mr. Enchanter, Ninhil • Mighty Foot
 
-         Craneo, • "DOOM 2016/Eternal Monsters" Arachnotron
- Jimmy, Jimmy91, •
-LitteWhiteMouse, •
-   Logan McCloud •
+Craneo, Jimmy, Jimmy91, • "DOOM 2016/Eternal Monsters" Arachnotron
+       LitteWhiteMouse, •
+          Logan McCloud •
 
-fgsfds, Kinsie, • Menu Graphics
-    NightFright •
+Craneo, Mike12, Minigunner, Uboa, wildweasel • Angled Pistol
+
+Espi, Ebola • "Scythe 2" Afrit
+
+fgsfds, Kinsie, NightFright • Menu Graphics
 
 gerolf • "Wolfenstein 3D" Helmeted SS Guard
 
-hidfan, Honey16, • "DOOM Neural Upscale 2X"
-         Lollie, •
-    NightFright, •
-    Scuba Steve, •
-           Teder •
+hidfan, Honey16, Lollie, NightFright, Scuba Steve, • "DOOM Neural Upscale 2X"
+											 Teder •
 
 Jekyll Grim Payne • "Beautiful Doom" Zombieman Chainsaw Death
 
@@ -45,23 +46,34 @@ jdredalert • "Angled DOOM" Weapon Graphics
 Nash Muhandes • "Nash's Gore Mod", "Nash's Gore Mod: Vengeance Edition"
               • Gore Graphics
 
+Scuba Steve • Flamethrower
+
 ShallowB • "DOOM 64" Imp
 
 ========
 [AUDIO]
 
-3D Realms, id Software, SD EnterNET, Valve Software • Base Sounds
+3D Realms, id Software, Midway, Monolith Productions, • Base Sounds
+		  Raven Software, SD EnterNET, Valve Software •
 
-Antares031, Can't Sleep, Dynamo, Kinsie • Sound Mixing
+Antares031, Can't Sleep, Dynamo, Jaxxoon R, Kinsie, • Sound Mixing
+				     Nash Muhandes, Yukes Von Faust •
+
+James "Jimmy" Paddock • "Cabin - Shut In"
+					  • "Scattered Evil - Horde of Locusts"
+					  • "Speed of Doom - Unknown Organism"
+
+Nathan "Lippeth" Maxx • "URE 2020 - Tomb Sweet Tomb"
+					  • "URE 2020 - Turning Tricks"
 
 silentzora • "Project: Redux - DOOM 64 Main Theme"
 
 ======
 [CODE]
 
-Can't Sleep, Kinsie • Base Programming
+3saster • "GZDoom Utilities"
 
-Enjay • "Revised Splashes"
+Can't Sleep, Kinsie • Base Programming
 
 Matt • "Hideous Destructor" Monster Movement
 

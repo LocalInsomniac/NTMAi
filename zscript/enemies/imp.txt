@@ -17,6 +17,7 @@ class NTM_Imp : NTM_Humanoid {
 		Tag "$FN_IMP";
 		Species "DoomImp";
 		NTM_Enemy.TicsPerChase 3;
+		NTM_Enemy.LeapDistance 360;
 	}
 	
 	States {
@@ -77,14 +78,6 @@ class NTM_Imp : NTM_Humanoid {
 			NIMP P -1;
 			Stop;
 		
-		XDeath:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
-			NMGI H -1;
-			Stop;
-		
 		Raise:
 			NIMP PONML 6;
 			Goto See;
@@ -102,10 +95,17 @@ class NTM_Imp : NTM_Humanoid {
 	action void A_NTM_TroopAttack() {
 		A_CustomComboAttack("NTM_ImpBall", 32, 3 * Random(2, 8), "imp/melee");
 	}
-	
-	override void PostBeginPlay() {
-		Super.PostBeginPlay();
-		leapDistance = 360;
+}
+
+class NTM_ShadowImp : NTM_Imp {
+	Default {
+		RenderStyle "Stencil";
+		Alpha 0.3;
+		Obituary "%o was burnt by a Shadow Imp.";
+		HitObituary "%o bumped into a Shadow Imp.";
+		Tag "Shadow Imp";
+		
+		+Shadow
 	}
 }
 
@@ -119,7 +119,7 @@ class NTM_ImpBall : DoomImpBall {
 	
 	States {
 		Spawn:
-			BAL1 AB 4 Bright;
+			NIMB ABCD 2 Bright;
 			Loop;
 			
 		Death:

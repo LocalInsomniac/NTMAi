@@ -112,7 +112,7 @@ class NTM_MancubusShot : FatShot {
 	
 	States {
 		Spawn:
-			MANF AB 4 Bright;
+			NMBS AB 4 Bright;
 			Loop;
 		
 		Death:

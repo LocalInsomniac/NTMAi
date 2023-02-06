@@ -12,11 +12,12 @@ class NTM_Explosion : Actor {
 		+NotOnAutomap
 		+ForceXYBillboard
 		+ZDoomTrans
+		+Bright
 	}
 	
 	States {
 		Spawn:
-			NEXP ABCDEFGHIJ 3 Bright;
+			NEXP ABCDEFGHIJ 3;
 			Stop;
 	}
 }
@@ -29,7 +30,16 @@ class NTM_Explosion2 : NTM_Explosion {
 	
 	States {
 		Spawn:
-			NEX2 ABCDEFGHIJKLMNOPQRSTU 2 Bright;
+			NEX2 ABCDEFGHIJKLMNOPQRSTU 2;
+			Stop;
+	}
+}
+
+// Explosion 4
+class NTM_Explosion4 : NTM_Explosion {
+	States {
+		Spawn:
+			NEX4 ABCDEFGHIJKL 3;
 			Stop;
 	}
 }
@@ -65,7 +75,7 @@ class NTM_Blast : Actor {
 		while (it.Next()) {
 			let mo = it.thing;
 			
-			if (mo != self && (mo != target || blastFlags & XF_HurtSource) && mo != master && !mo.bNoRadiusDmg) {
+			if (mo && mo != self && (mo != target || blastFlags & XF_HurtSource) && mo != master && !mo.bNoRadiusDmg) {
 				double dist = Max(0.0001, Distance3D(mo));
 				
 				if (dist <= rad && CheckSight(mo, SF_IgnoreVisibility | SF_IgnoreWaterBoundary)) {

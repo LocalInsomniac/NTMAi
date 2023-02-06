@@ -155,21 +155,22 @@ class NTM_PowerRadSuit : PowerIronFeet {
 // Infrared
 class NTM_Infrared : NTM_ToggleableInventory replaces Infrared {
 	Default {
+		Scale 0.9;
 		Tag "Light Amplification Visor";
 		NTM_ToggleableInventory.Type "NTM_PowerInfrared";
 		NTM_ToggleableInventory.ActivateSound "NTM_Infrared/use";
 		NTM_ToggleableInventory.DepletePeriod 45;
 		Inventory.PickupMessage "Light Amplification Visor";
 		Inventory.PickupSound "misc/i_pkup";
-		Inventory.Icon "NINFA0";
+		Inventory.Icon "NINFC0";
 		
 		+Inventory.InvBar
 	}
 	
 	States {
 		Spawn:
-			PVIS A 12 Bright;
-			PVIS B 12;
+			NINF A 12;
+			NINF B 12 Bright;
 			Loop;
 	}
 	

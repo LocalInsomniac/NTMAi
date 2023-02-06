@@ -3,6 +3,7 @@ class NTM_Shotgun : Shotgun replaces Shotgun {
 		Scale 0.75;
 		Weapon.SlotNumber 3;
 		Weapon.UpSound "weapons/shotgr";
+		Inventory.PickupMessage "Shotgun!";
 	}
 	
 	States {

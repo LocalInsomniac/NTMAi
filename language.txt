@@ -1,3 +1,2 @@
 [default]
-MUSIC_INTRO = "NTMAI";
-MUSIC_DM2TTL = "NTMAI";
+MUSIC_NTMAI = "NTMAI";

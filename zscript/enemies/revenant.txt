@@ -198,7 +198,7 @@ class NTM_RevenantTracer : RevenantTracer {
 	
 	States {
 		Spawn:
-			FATB AB 2 Bright A_NTM_Tracer;
+			NRTR AB 2 Bright A_NTM_Tracer;
 			Loop;
 			
 		Death:
@@ -212,7 +212,7 @@ class NTM_RevenantTracer : RevenantTracer {
 			Stop;
 	}
 	
-	void A_NTM_Tracer() {
+	void A_NTM_Tracer(double turn = 5) {
 		Actor smoke = Spawn("NTM_RevenantTracerSmoke", Vec3Offset(-vel.x, -vel.y, 0));
 		
 		if (smoke != null) {
@@ -223,7 +223,7 @@ class NTM_RevenantTracer : RevenantTracer {
 			}
 		}
 		
-		A_Tracer2(5);
+		A_Tracer2(turn);
 	}
 }
 

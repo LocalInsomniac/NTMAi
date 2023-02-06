@@ -590,3 +590,9 @@ texture optional ROCKRED3
 	pic NROCKR07 tics 4
 	pic NROCKR08 tics 4
 	pic NROCKR09 tics 4
+
+texture optional M_SKULL1
+	pic NSKULL1 tics 8
+	pic NSKULL2 tics 4
+	pic NSKULL3 tics 10
+	pic NSKULL2 tics 4

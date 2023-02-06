@@ -16,6 +16,24 @@
 #include "zscript/enemies/spidermastermind.txt"
 #include "zscript/enemies/german.txt"
 
+#include "zscript/enemies/custom/admortem/pumpkinmarine.txt"
+#include "zscript/enemies/custom/admortem/gargoyle.txt"
+#include "zscript/enemies/custom/admortem/satyr.txt"
+#include "zscript/enemies/custom/admortem/skeleton.txt"
+#include "zscript/enemies/custom/admortem/gjenganger.txt"
+#include "zscript/enemies/custom/admortem/littlemarine.txt"
+#include "zscript/enemies/custom/admortem/rocketwarrior.txt"
+
+#include "zscript/enemies/custom/mayhem2019/zombie.txt"
+#include "zscript/enemies/custom/mayhem2019/shotguncultist.txt"
+#include "zscript/enemies/custom/mayhem2019/tommyguncultist.txt"
+#include "zscript/enemies/custom/mayhem2019/lightningorb.txt"
+#include "zscript/enemies/custom/mayhem2019/hothead.txt"
+#include "zscript/enemies/custom/mayhem2019/deathcube.txt"
+
+#include "zscript/enemies/custom/scythe2/evilmarine.txt"
+#include "zscript/enemies/custom/scythe2/afrit.txt"
+
 class NTM_Enemy : Actor {
 	enum EJumpFlags {
         JF_Forward = (1 << 0),
@@ -23,12 +41,17 @@ class NTM_Enemy : Actor {
         JF_All = JF_Forward | JF_Up,
     }
 	
-	int oldLeap;
-	double leapDistance, leapSpeed;
+	int oldLeap, chaseStuck;
+	double leapSpeed;
 	
 	int ticsPerChase;
-	int chaseStuck;
 	property TicsPerChase: ticsPerChase;
+	
+	double leapDistance;
+	property LeapDistance: leapDistance;
+	
+	Sound xDeathSound;
+	property XDeathSound: xDeathSound;
 	
 	Default {
 		Scale 0.666;
@@ -36,6 +59,7 @@ class NTM_Enemy : Actor {
 		
 		+FloorClip
 		+DontCorpse
+		+SlidesOnWalls
 	}
 	
 	States {
@@ -86,7 +110,7 @@ class NTM_Enemy : Actor {
     }
 	
 	bool CheckOnGround(bool includeMObj = true) {
-        return Abs(GetGroundHeight(includeMObj) - pos.z) < 1;
+        return vel.z <= 0 && Abs(GetGroundHeight(includeMObj) - pos.z) < 1;
     }
 	
 	bool CheckPitBeforeTarget() {
@@ -169,7 +193,7 @@ class NTM_Enemy : Actor {
 	   NTMAi monster actions
 	   ===================== */
 	
-	void A_NTM_DukeChase(int flags = 0) {
+	void A_NTM_DukeChase(bool vile = false) {
 		bool beDropoff = bDropoff;
 		Vector3 oldPos = pos;
 		
@@ -181,7 +205,12 @@ class NTM_Enemy : Actor {
 			++chaseStuck;
 		}
 		
-		A_Chase("_a_chase_default", "_a_chase_default", flags);
+		if (vile) {
+			A_VileChase();
+		} else {
+			A_Chase();
+		}
+		
 		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
@@ -194,11 +223,11 @@ class NTM_Enemy : Actor {
 		TryLeap();
 	}
 	
-	void A_NTM_BloodChase(int flags = 0) {
+	void A_NTM_BloodChase(bool vile = false) {
 		// Source: https://github.com/caligari87/HideousDestructor/blob/master/zscript/mob.txt#L360
 		if (!target) {
 			A_ClearTarget();
-			SetStateLabel("spawn");
+			SetStateLabel("Spawn");
 			
 			return;
 		}
@@ -211,16 +240,15 @@ class NTM_Enemy : Actor {
 		
 		bool beDropoff = bDropoff;
 		
-		if (vel.xy.Length() == 0) {
-			if (chaseStuck > 0) {
-				if (chaseStuck > 1) {
-					bNoDropoff = false;
-					bDropoff = true;
-				}
-				
-				++chaseStuck;
+		if (chaseStuck > 0) {
+			if (chaseStuck > 1) {
+				bDropoff = true;
 			}
 			
+			++chaseStuck;
+		}
+		
+		if (vel.xy.Length() == 0) {
 			if (target) {
 				NewChaseDir();
 			} else {
@@ -230,41 +258,42 @@ class NTM_Enemy : Actor {
 		
 		Vector3 oldPos = pos;
 		
-		A_Chase("_a_chase_default", "_a_chase_default", flags);
+		if (vile) {
+			A_VileChase();
+		} else {
+			A_Chase();
+		}
+		
+		bDropoff = beDropoff;
 		
 		if (pos == oldPos) {
 			++chaseStuck;
-			bDropoff = beDropoff;
 			
 			return;
 		}
 		
-		if (curState == FindState("Melee") || curState == FindState("Missile")) {
+		if (curState == FindState("Melee") || curState == FindState("Missile") || curState == FindState("Heal")) {
 			return;
 		}
 		
 		Vector3 posDiff = pos - oldPos;
 		
-		/* GROSS HACK: Disable smooth chasing when monsters are allowed to drop
-		               off ledges. This is because they get stuck in walls when
-					   falling! */
-		if (!bDropoff && posDiff dot posDiff < 10000) {
+		if (posDiff dot posDiff < 10000) {
 			SetOrigin(oldPos, true);
 			vel *= 0.7;
 			vel += posDiff.Unit() * speed * 0.18;
 		}
 		
 		chaseStuck = 0;
-		bDropoff = beDropoff;
-		bNoDropoff = !bDropOff && !bFloat && CheckOnGround() && !TryLeap();
+		TryLeap();
 	}
 	
-	void A_NTM_SWChase(int flags = 0) {
+	void A_NTM_SWChase(bool vile = false) {
 		if (CheckMove(pos.xy)) {
 			int tpc = NTM_Enemy(self).ticsPerChase;
 			
 			speed /= tpc;
-			A_NTM_DukeChase(flags);
+			A_NTM_DukeChase(vile);
 			speed *= tpc;
 		} else {
 			A_Wander();
@@ -290,20 +319,40 @@ class NTM_Enemy : Actor {
 		bNoDropoff = default.bNoDropoff;
 	}
 	
-	action void A_NTM_Death() {
-		A_Scream();
+	void A_NTM_CommonDeath() {
 		height = GetDeathHeight();
 		bCorpse = true;
 		bSolid = false;
 		bShootable = false;
 	}
 	
-	action void A_NTM_XDeath() {
-		A_XScream();
-		height = GetDeathHeight();
-		bCorpse = true;
-		bSolid = false;
-		bShootable = false;
+	void A_NTM_Death(Sound high = "", Sound normal = "", Sound wimp = "") {
+		if (high != "") {
+			// Play different scream based on severity
+			if (health <= GetGibHealth() * 0.5) {
+				A_StartSound(high, Chan_Voice);
+			} else {
+				if (health < -1) {
+					A_StartSound(normal, Chan_Voice);
+				} else {
+					A_StartSound(wimp, Chan_Voice);
+				}
+			}
+		} else {
+			A_Scream();
+		}
+		
+		A_NTM_CommonDeath();
+	}
+	
+	void A_NTM_XDeath() {
+		if (xDeathSound) {
+			A_StartSound(xDeathSound);
+		} else {
+			A_XScream();
+		}
+		
+		A_NTM_CommonDeath();
 	}
 	
 	action void A_NTM_PainEnable() {
@@ -315,9 +364,9 @@ class NTM_Enemy : Actor {
 		painChance = 0;
 	}
 	
-	action void A_NTM_Leap() {
-		if (invoker.CheckOnGround()) {
-            if (!invoker.oldLeap) {
+	void A_NTM_Leap(bool threeFrames = true) {
+		if (CheckOnGround()) {
+            if (!oldLeap) {
 				if (!target) {
 					return;
 				}
@@ -325,14 +374,14 @@ class NTM_Enemy : Actor {
                 A_FaceTarget();
 				
                 double vertical = 10;
-                double horizontal = Max(Distance3D(target) - radius - target.radius, 0.1) / invoker.leapDistance;
+                double horizontal = Max(Distance3D(target) - radius - target.radius, 0.1) / leapDistance;
 				
-				invoker.leapSpeed = horizontal * 0.2;
+				leapSpeed = horizontal * 0.2;
 				horizontal *= speed * 0.96;
 				vertical *= Clamp((target.floorZ - floorZ) * 0.024, 0.9, 1.5);
 				gravity = 0.75;
                 vel = (cos(angle) * horizontal, sin(angle) * horizontal, vel.z + vertical);
-                invoker.oldLeap = frame;
+                oldLeap = frame;
             } else {
 				if (sv_ntm_enemyMove != 1) {
 					vel.xy *= 0;
@@ -346,21 +395,21 @@ class NTM_Enemy : Actor {
                 return;
             }
         } else {
-			int leapFrame = invoker.oldLeap;
-			
 			if (vel.z > 0) {
-				double spd = invoker.leapSpeed;
+				vel += (cos(angle) * leapSpeed, sin(angle) * leapSpeed, 0);
 				
-				vel += (cos(angle) * spd, sin(angle) * spd, 0);
-				
-				if (vel.z < 4) {
-					frame = leapFrame + 1;
+				if (threeFrames && vel.z < 4) {
+					frame = oldLeap + 1;
 				}
 			} else {
-				if (vel.z > -4) {
-					frame = leapFrame + 1;
+				if (threeFrames) {
+					if (vel.z > -4) {
+						frame = oldLeap + 1;
+					} else {
+						frame = oldLeap + 2;
+					}
 				} else {
-					frame = leapFrame + 2;
+					frame = oldLeap + 1;
 				}
 			}
 		}

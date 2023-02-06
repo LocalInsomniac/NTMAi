@@ -11,6 +11,10 @@
 #include "zscript/weapons/grenade.txt"
 #include "zscript/weapons/keys.txt"
 
+#include "zscript/weapons/custom/mayhem2019/tommygun.txt"
+#include "zscript/weapons/custom/mayhem2019/napalmlauncher.txt"
+#include "zscript/weapons/custom/mayhem2019/flamethrower.txt"
+
 class NTM_Player : DoomPlayer {
 	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
 	double hNewAngle;
@@ -23,10 +27,10 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 1, "NTM_Fists", "NTM_Chainsaw";
 		Player.WeaponSlot 2, "NTM_Pistol";
 		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
-		Player.WeaponSlot 4, "NTM_Chaingun";
-		Player.WeaponSlot 5, "NTM_RocketLauncher";
-		Player.WeaponSlot 6, "NTM_PlasmaRifle";
-		Player.WeaponSlot 7, "NTM_BFG9000";
+		Player.WeaponSlot 4, "NTM_TommyGun", "NTM_Chaingun";
+		Player.WeaponSlot 5, "NTM_NapalmLauncher", "NTM_RocketLauncher";
+		Player.WeaponSlot 6, "NTM_Flamethrower", "NTM_PlasmaRifle";
+		Player.WeaponSlot 7, "BFG9000", "NTM_BFG9000";
 		Player.CrouchSprite "NPLC";
 		Player.ViewHeight 46;
 		Scale 0.666;
@@ -84,21 +88,33 @@ class NTM_Player : DoomPlayer {
 			
 			Goto Spawn;
 		
+		Death.Fire:
+			NPLA G 12 A_ItBurnsItBurns;
+			NPLA G 1 A_CrispyPlayer;
 		Death:
 			NPLA H 7;
 			NPLA I 7 A_PlayerScream;
 			NPLA J 7 A_NoBlocking;
 			NPLA K 7;
-			NPLA L -1;
-			Stop;
+			NPLA L 16 A_CheckPlayerDone;
+			Wait;
 		
 		XDeath:
+		XDeath.Fire:
 			NMGI A 1 A_XScream;
 			NMGI A 4 A_SkullPop("NTM_PlayerHead");
 			NMGI B 5 A_NoBlocking;
 			NMGI CDEFG 5;
-			NMGI H -1;
-			Stop;
+			NMGI H 16 A_CheckPlayerDone;
+			Wait;
+		
+		FireHands:
+			NITB ABCD 3 Bright;
+			Loop;
+			
+		FireHandsLower:
+			NITB AAABBBCCCDDD 1 Bright A_HandLower;
+			Loop;
 	}
 	
 	void A_PlayerJump() {
@@ -119,30 +135,12 @@ class NTM_Player : DoomPlayer {
 		return (bNoClip || bFly || waterLevel > 0);
 	}
 	
-	override void Tick() {
-		// GROSS HACK: Do not let the player be able to select temporary
-		//             animations!
-		if (player) {
-			let r = player.readyWeapon;
-			let l = player.pendingWeapon;
-			
-			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
-				A_TakeInventory("NTM_Key_RedCard");
-				A_TakeInventory("NTM_Key_YellowCard");
-				A_TakeInventory("NTM_Key_BlueCard");
-				A_TakeInventory("NTM_Key_RedSkull");
-				A_TakeInventory("NTM_Key_YellowSkull");
-				A_TakeInventory("NTM_Key_BlueSkull");
-			}
-			
-			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
-				A_TakeInventory("NTM_GrenadeThrow");
-			}
-		}
+	override void PlayerThink() {
+		super.PlayerThink();
 		
 		// Less slippery movement
-		if (!multiplayer && (!curSector || !(curSector.flags & 16))) {
-			level.airControl = 0.53777778;
+		if (!curSector || !(curSector.flags & 16)) {
+			level.airControl = 0.64;
 			A_SetSpeed(2.24);
 			vel.xy *= 0.88;
 		} else {
@@ -199,11 +197,6 @@ class NTM_Player : DoomPlayer {
 			}
 		}
 		
-		// Pain timer to avoid voice spam
-		if (painTics > 0) {
-			--painTics;
-		}
-		
 		// Level start twitch like Duke3D
 		if (sv_ntm_startTwitch) {
 			int time = level.mapTime;
@@ -217,6 +210,33 @@ class NTM_Player : DoomPlayer {
 					A_SetViewAngle(Round(DeltaAngle(angle, 0) * (f * f * f)), SPF_Interpolate);
 				}
 			}
+		}
+	}
+	
+	override void Tick() {
+		// GROSS HACK: Do not let the player be able to select temporary
+		//             animations!
+		if (player) {
+			let r = player.readyWeapon;
+			let l = player.pendingWeapon;
+			
+			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
+				A_TakeInventory("NTM_Key_RedCard");
+				A_TakeInventory("NTM_Key_YellowCard");
+				A_TakeInventory("NTM_Key_BlueCard");
+				A_TakeInventory("NTM_Key_RedSkull");
+				A_TakeInventory("NTM_Key_YellowSkull");
+				A_TakeInventory("NTM_Key_BlueSkull");
+			}
+			
+			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
+				A_TakeInventory("NTM_GrenadeThrow");
+			}
+		}
+		
+		// Pain timer to avoid voice spam
+		if (painTics > 0) {
+			--painTics;
 		}
 		
 		// Auto-activate radiation suit if allowed
@@ -247,7 +267,7 @@ class NTM_Player : DoomPlayer {
 			}
 		}
 		
-		Super.Tick();
+		super.Tick();
 	}
 	
 	// Shadow Warrior-styled weapon bobbing
@@ -278,31 +298,85 @@ class NTM_Player : DoomPlayer {
 		
 		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
 	}
+	
+	void A_ItBurnsItBurns() {
+		if (player != null && player.mo == self) {
+			player.SetPSprite(PSP_StrifeHands, FindState("FireHands"));
+			
+			player.readyWeapon = null;
+			player.pendingWeapon = WP_NoChange;
+			player.playerState = PST_Live;
+			player.extraLight = 3;
+		}
+	}
+	
+	void A_CrispyPlayer() {
+		if (player != null && player.mo == self) {
+			PSprite psp = player.GetPSprite(PSP_StrifeHands);
+			
+			State fireHandsLower = FindState("FireHandsLower");
+			State fireHands = FindState("FireHands");
+			
+			if (psp) {
+				if (psp.curState != null && fireHandsLower != null && fireHands != null) {
+					// Calculate state to go to.
+					int dist = fireHands.DistanceTo(psp.curState);
+					
+					if (dist > 0) {
+						player.playerState = PST_Dead;
+						psp.SetState(fireHandsLower + dist);
+						
+						return;
+					}
+				}
+				
+				player.playerState = PST_Dead;
+				psp.SetState(null);
+			}
+		}
+	}
+	
+	void A_HandLower() {
+		if (player != null) {
+			PSprite psp = player.GetPSprite(PSP_StrifeHands);
+			
+			if (psp) {
+				if (psp.curState == null) {
+					psp.SetState(null);
+					
+					return;
+				}
+				
+				psp.y += 3;
+				
+				if (psp.y > weaponBottom * 4) {
+					psp.SetState(null);
+				}
+			}
+			
+			if (player.extraLight > 0) {
+				--player.extraLight;
+			}
+		}
+	}
 }
 
-class NTM_PlayerHead : PlayerChunk {
+class NTM_PlayerHead : BloodySkull {
 	Default {
-		Scale 0.625;
+		Scale 0.666;
 		Gravity 0.36;
 		BounceType "Doom";
-		Radius 4;
-		Height 4;
 		
-		+CanBounceWater
 		+Missile
 		+UseBounceState
+		+CanBounceWater
+		-DontBounceOnSky
 	}
 	
 	States {
 		Spawn:
-			NHEA A 0 NoDelay {
-				viewBob = 0;
-				player.attacker = null;
-				scale.x *= FRandomPick(-1, 1);
-			}
-			
-			NHEA ABCD 3 A_JumpIf(pos.z <= floorZ && vel.z == 0, "Death");
-			Goto Spawn + 2;
+			NHEA ABCD 4 A_JumpIf(pos.z <= floorZ && vel.z == 0, "Death");
+			Loop;
 		
 		Bounce.Floor:
 			NHEA A 0 {
@@ -313,10 +387,20 @@ class NTM_PlayerHead : PlayerChunk {
 				}
 			}
 			
-			Goto Spawn + 1;
+			Goto Spawn;
 		
 		Death:
 			NHEA E 16 A_CheckPlayerDone;
 			Wait;
+	}
+	
+	override void PostBeginPlay() {
+		viewBob = 0;
+		
+		if (player) {
+			player.attacker = null;
+		}
+		
+		bXFlip = Random(0, 1);
 	}
 }

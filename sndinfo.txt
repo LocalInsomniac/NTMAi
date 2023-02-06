@@ -59,7 +59,7 @@ skull/attack DSSKLATK
 skull/pain DSSKLPAI
 
 caco/active DSCACACT
-caco/melee DSCLAW
+caco/melee DSCACATK
 caco/pain DSCACPAI
 
 knight/sight DSBRSSIT
@@ -74,9 +74,10 @@ baron/pain DSBRSPAI
 baby/pain DSBSPPAI
 
 fatso/active DSMANACT
+fatso/attack DSMANFIR
 
 pain/active DSPEACT
-pain/melee DSCLAW
+pain/melee DSCACATK
 
 skeleton/fly DSSKEFLY
 skeleton/pain DSSKEPAI
@@ -94,6 +95,7 @@ cyber/attack DSCYBATK
 cyber/tracex NSEXPLOD
 $attenuation cyber/attack 0.6
 $attenuation cyber/tracex 0.8
+cyber/pain DSBRSPAI
 
 spider/shoot DSCYBATK
 spider/attack DSSPIATK
@@ -202,6 +204,9 @@ $volume NTM_FlyingGib/splat 0.75
 
 NTM_System_Actor/pancake NSPANCKE
 
+NTM_Burn/burn NSBURN
+$attenuation NTM_Burn/burn 0.666
+
 // German
 NTM_German/sight1 NSGESIT1
 NTM_German/sight2 NSGESIT2
@@ -249,3 +254,235 @@ $random NTM_German/burn {
 	NTM_German/burn2
 	NTM_German/burn3
 }
+
+/* =========
+   AD MORTEM
+   ========= */
+
+// Pumpkin Marine
+NTM_PumpkinMarine/sight NSPUMSIT
+NTM_PumpkinMarine/active NSPUMACT
+NTM_PumpkinMarine/attack DSPLASMA
+NTM_PumpkinMarine/pain NSPUMPAI
+NTM_PumpkinMarine/death NSPUMDIE
+NTM_PumpkinMarine/burn NSFALLIN
+
+// Gargoyle
+NTM_Gargoyle/sight NSGARSIT
+NTM_Gargoyle/active NSGARACT
+NTM_Gargoyle/melee DSCLAW
+NTM_Gargoyle/pain NSGARPAI
+NTM_Gargoyle/death NSGARDIE
+
+// Satyr
+NTM_Satyr/sight DSBRSSIT
+NTM_Satyr/active DSBRSACT
+NTM_Satyr/pain DSBRSPAI
+NTM_Satyr/death DSBRSDTH 
+
+// Skeleton
+NTM_Skeleton/sight NSSKESIT
+NTM_Skeleton/active NSSKEACT
+NTM_Skeleton/swing DSSKESWG
+NTM_Skeleton/bonex NSBONEXP
+NTM_Skeleton/melee DSSKEPCH
+NTM_Skeleton/pain NSSKEPAI
+NTM_Skeleton/death NSSKEDIE
+NTM_Skeleton/xdeath NSSKEGIB
+
+// Gjenganger
+NTM_Gjenganger/sight NSGJESIT
+NTM_Gjenganger/active NSGJEACT
+NTM_Gjenganger/melee NSGJEAIR
+NTM_Gjenganger/missile DSRLAUNC
+NTM_Gjenganger/missilex DSBAREXP
+$attenuation NTM_Gjenganger/missilex 0.7
+$limit NTM_Gjenganger/missilex 0
+NTM_Gjenganger/pain NSGJEPAI
+NTM_Gjenganger/death NSGJEDIE
+
+// Little Marine
+NTM_LittleMarine/sight NSTAUNT
+$pitchset NTM_LittleMarine/sight 1.6
+NTM_LittleMarine/active DSNOWAY
+$pitchset NTM_LittleMarine/active 1.6
+NTM_LittleMarine/melee DSPUNCH
+$pitchset NTM_LittleMarine/melee 1.25
+
+NTM_LittleMarine/pain1 NSPLPAI1
+$pitchset NTM_LittleMarine/pain1 1.6
+NTM_LittleMarine/pain2 NSPLPAI2
+$pitchset NTM_LittleMarine/pain2 1.6
+NTM_LittleMarine/pain3 NSPLPAI3
+$pitchset NTM_LittleMarine/pain3 1.6
+NTM_LittleMarine/pain4 NSPLPAIX
+$pitchset NTM_LittleMarine/pain4 1.6
+
+$random NTM_LittleMarine/pain {
+	NTM_LittleMarine/pain1
+	NTM_LittleMarine/pain2
+	NTM_LittleMarine/pain3
+	NTM_LittleMarine/pain4
+}
+
+NTM_LittleMarine/death1 DSPLDETH
+$pitchset NTM_LittleMarine/death1 1.6
+NTM_LittleMarine/death2 DSPDIEHI
+$pitchset NTM_LittleMarine/death2 1.6
+
+$random NTM_LittleMarine/death {
+	NTM_LittleMarine/death1
+	NTM_LittleMarine/death2
+}
+
+// Rocket Warrior
+NTM_RocketWarrior/active NSRWLACT
+NTM_RocketWarrior/death DSBAREXP
+$attenuation NTM_RocketWarrior/death 0.666
+$limit NTM_RocketWarrior/death 0
+
+/* ===========
+   MAYHEM 2019
+   =========== */
+
+NTM_TommyGun/fire NSTOMMY
+NTM_TommyGun/out NSCLPOUT
+NTM_TommyGun/in NSTOMMYR
+
+NTM_NapalmLauncher/fire NSNAPALM
+
+NTM_Flamethrower/select NSFLATUP
+NTM_Flamethrower/fire NSFLAMET
+
+NTM_Zombie/sight NSZOMSIT
+
+NTM_Zombie/active1 NSZOACT1
+NTM_Zombie/active2 NSZOACT2
+
+$random NTM_Zombie/active {
+	NTM_Zombie/active1
+	NTM_Zombie/active2
+}
+
+NTM_Zombie/attack NSZOMATK
+NTM_Zombie/melee NSZOMHIT
+NTM_Zombie/pain NSZOMPAI
+
+NTM_Zombie/death1 NSZODIE1
+NTM_Zombie/death2 NSZODIE2
+NTM_Zombie/death3 NSZODIE3
+
+$random NTM_Zombie/death {
+	NTM_Zombie/death1
+	NTM_Zombie/death2
+	NTM_Zombie/death3
+}
+
+NTM_Zombie/burn NSZODIE3
+
+NTM_Cultist/sight1 NSCULSIT
+
+$random NTM_Cultist/sight {
+	NTM_Cultist/sight1
+	NTM_Cultist/active1
+	NTM_Cultist/active2
+	NTM_Cultist/active3
+	NTM_Cultist/active4
+	NTM_Cultist/active5
+}
+
+NTM_Cultist/active1 NSCUACT1
+NTM_Cultist/active2 NSCUACT2
+NTM_Cultist/active3 NSCUACT3
+NTM_Cultist/active4 NSCUACT4
+NTM_Cultist/active5 NSCUACT5
+
+$random NTM_Cultist/active {
+	NTM_Cultist/active1
+	NTM_Cultist/active2
+	NTM_Cultist/active3
+	NTM_Cultist/active4
+	NTM_Cultist/active5
+	0
+}
+
+NTM_Cultist/pain1 NSCUPAI1
+NTM_Cultist/pain2 NSCUPAI2
+NTM_Cultist/pain3 NSCUPAI3
+NTM_Cultist/pain4 NSCUPAI4
+NTM_Cultist/pain5 NSCUPAI5
+NTM_Cultist/pain6 NSCUPAI6
+
+$random NTM_Cultist/pain {
+	NTM_Cultist/pain1
+	NTM_Cultist/pain2
+	NTM_Cultist/pain3
+	NTM_Cultist/pain4
+	NTM_Cultist/pain5
+	NTM_Cultist/pain6
+}
+
+NTM_Cultist/death1 NSCUDIE1
+NTM_Cultist/death2 NSCUDIE2
+NTM_Cultist/death3 NSCUDIE3
+
+NTM_Cultist/burn1 NSCUBRN1
+NTM_Cultist/burn2 NSCUBRN2
+NTM_Cultist/burn3 NSCUBRN3
+
+$random NTM_Cultist/burn {
+	NTM_Cultist/burn1
+	NTM_Cultist/burn2
+	NTM_Cultist/burn3
+}
+
+NTM_LightningOrb/active NSORBACT
+NTM_LightningOrb/attack NSORBATK
+NTM_LightningOrb/death DSRXPLOD
+$attenuation NTM_LightningOrb/death 0.666
+$limit NTM_LightningOrb/death 0
+
+NTM_DeathCube/active DSBOSCUB
+NTM_DeathCube/death DSBAREXP
+$attenuation NTM_DeathCube/death 0.666
+$limit NTM_DeathCube/death 0
+
+NTM_Hothead/attack DSFIRSHT
+
+/* ========
+   SCYTHE 2
+   ======== */
+
+// Evil Marine
+NTM_EvilMarine/sight1 DSPOSIT1
+NTM_EvilMarine/sight2 DSPOSIT2
+NTM_EvilMarine/sight3 DSPOSIT3
+
+$random NTM_EvilMarine/sight {
+	NTM_EvilMarine/sight1
+	NTM_EvilMarine/sight2
+	NTM_EvilMarine/sight3
+}
+
+NTM_EvilMarine/active DSPOSACT
+NTM_EvilMarine/attack DSPLASMA
+NTM_EvilMarine/pain DSPOPAIN
+
+NTM_EvilMarine/death1 DSPODTH1
+NTM_EvilMarine/death2 DSPODTH2
+NTM_EvilMarine/death3 DSPODTH3
+
+$random NTM_EvilMarine/death {
+	NTM_EvilMarine/death1
+	NTM_EvilMarine/death2
+	NTM_EvilMarine/death3
+}
+
+NTM_EvilMarine/burn DSPOBURN
+
+// Afrit
+NTM_Afrit/sight NSAFRSIT
+NTM_Afrit/active NSAFRACT
+NTM_Afrit/attack DSFIRSHT
+NTM_Afrit/pain NSAFRPAI
+NTM_Afrit/death NSAFRDIE

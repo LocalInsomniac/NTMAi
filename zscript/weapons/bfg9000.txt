@@ -1,8 +1,9 @@
-class NTM_BFG9000 : BFG9000 replaces BFG9000 {
+class NTM_BFG9000 : BFG9000 {
 	Default {
 		Scale 0.75;
 		Weapon.SlotNumber 7;
 		Weapon.UpSound "NTM_Weapon/select";
+		Inventory.PickupMessage "The BFG 9000! Oh, yes.";
 	}
 	
 	States {
@@ -58,7 +59,8 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 			Loop;
 		
 		Death:
-			NBFX A 2 Bright {
+			NEX4 A 2 Bright {
+				A_SetTranslation("NTM_Fog_Green");
 				A_Quake(3, 20, 0, 1024, "");
 				
 				// Gib all nearby corpses
@@ -79,7 +81,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 					double ang = i * 9;
 					double dist = 1024;
 					
-					AimLineAttack(ang, 1024, victim, 512);
+					AimLineAttack(ang, 1024, victim, 1024);
 					
 					let victimActor = victim.lineTarget;
 					
@@ -89,7 +91,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 						dist -= Distance2D(victimActor);
 						
 						if (victimActor != target) {
-							int dmg = 20 * Random(1, 10);
+							int dmg = 22.5 * Random(1, 10);
 							
 							victimActor.DamageMObj(self, target, dmg, "BFGSplash");
 							
@@ -102,7 +104,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 						}
 						
 						if (dist > 0) {
-							victimActor.AimLineAttack(ang, dist, victim, 512);
+							victimActor.AimLineAttack(ang, dist, victim, 1024);
 							victimActor = victim.lineTarget;
 						} else {
 							victimActor = null;
@@ -111,8 +113,8 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 				}
 			}
 			
-			NBFX BC 2 Bright;
-			NBFX DEFGHIJKL 4 Bright;
+			NEX4 BC 2 Bright;
+			NEX4 DEFGHIJKL 3 Bright;
 			Stop;
 	}
 }
@@ -120,7 +122,7 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 class NTM_BFGExtra : BFGExtra {
 	States {
 		Spawn:
-			NBFS ABCDE 4 Bright;
+			NBFS ABCDEFGH 3 Bright;
 			Stop;
 	}
 }

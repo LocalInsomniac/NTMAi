@@ -171,7 +171,7 @@ class NTM_FlyingGib1 : NTM_FlyingBlood {
 				A_QueueCorpse();
 				A_StartSound("NTM_FlyingGib/splat");
 				vel.xy *= 0;
-				scale.y = Abs(scale.y);
+				bYFlip = false;
 			}
 			
 			Stop;
@@ -193,60 +193,6 @@ class NTM_FlyingGib3 : NTM_FlyingGib1 {
 		Spawn:
 			NGI3 A 0;
 			Goto Spawn2;
-	}
-}
-
-// Real Gibs
-class NTM_RealGibs : RealGibs {
-	States {
-		Spawn:
-			TNT1 A 0 NoDelay {
-				A_XScream();
-				A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
-				Destroy();
-			}
-			
-			Goto Super::Spawn;
-	}
-}
-
-// Small Gibs
-class NTM_SmallGibs : RealGibs {
-	Default {
-		Radius 20;
-		FloatBobPhase 0;
-	}
-	
-	States {
-		Spawn:
-			NGIB A -1;
-			Stop;
-	}
-}
-
-// Medium Gibs
-class NTM_MediumGibs : NTM_SmallGibs {
-	Default {
-		Radius 32;
-	}
-	
-	States {
-		Spawn:
-			NGIB B -1;
-			Stop;
-	}
-}
-
-// Big Gibs
-class NTM_BigGibs : NTM_SmallGibs {
-	Default {
-		Radius 44;
-	}
-	
-	States {
-		Spawn:
-			NGIB C -1;
-			Stop;
 	}
 }
 

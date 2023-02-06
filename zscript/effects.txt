@@ -4,6 +4,9 @@
 
 // Gib Base
 class NTM_Gib : Actor {
+	private int gibFlags;
+	flagDef NoRandomFlip: gibFlags, 0;
+	
 	Default {
 		FloatBobPhase 0;
 		Health 10;
@@ -32,15 +35,19 @@ class NTM_Gib : Actor {
 	
 	override void PostBeginPlay() {
 		Super.PostBeginPlay();
-		scale.x *= FRandomPick(-1, 1);
-		scale.y *= FRandomPick(-1, 1);
+		
+		if (!bNoRandomFlip) {
+			bXFlip = Random(0, 1);
+			bYFlip = Random(0, 1);
+		}
 	}
 }
 
 // Bullet Puff
 class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	Default {
-		Scale 0.8;
+		Height 4;
+		Scale 0.666;
 		FloatBobPhase 0;
 		
 		+PuffOnActors
@@ -50,17 +57,69 @@ class NTM_BulletPuff : BulletPuff replaces BulletPuff {
 	
 	States {
 		Spawn:
-			PUFF A 4 Bright NoDelay A_StartSound("NTM_BulletPuff/miss");
-			PUFF BCD 4;
+			NPUF A 2 Bright NoDelay A_StartSound("NTM_BulletPuff/miss");
+			NPUF BCDEF 2;
 			Stop;
 			
 		Melee:
-			PUFF C 4 A_StartSound("player/male/fist");
-			PUFF D 4;
+			NPUF C 2 A_StartSound("player/male/fist");
+			NPUF DEF 2;
 			Stop;
 		
 		XDeath:
 			TNT1 A 0 A_StartSound("NTM_BulletPuff/hit");
 			Stop;
     }
+}
+
+// Teleport Fog
+class NTM_TeleportFog : Actor replaces TeleportFog {
+	Default {
+		Height 32;
+		Scale 0.622;
+		Speed 0.08;
+		RenderStyle "Add";
+		SeeSound "misc/teleport";
+		Translation "NTM_Fog_Green";
+		
+		+NoBlockMap
+		+NoTeleport
+		+NoGravity
+		+ZDoomTrans
+		+ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NFOG AB 2 Bright;
+			Loop;
+	}
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		
+		AddZ(height, false);
+		A_StartSound(seeSound);
+	}
+	
+	override void Tick() {
+		super.Tick();
+		
+		scale += (-speed, speed);
+		
+		if (scale.x <= 0) {
+			Destroy();
+		}
+	}
+}
+
+// Item Fog
+class NTM_ItemFog : NTM_TeleportFog replaces ItemFog {
+	Default {
+		Height 12;
+		Scale 0.411;
+		Speed 0.05;
+		SeeSound "";
+		Translation "NTM_Fog_Blue";
+	}
 }

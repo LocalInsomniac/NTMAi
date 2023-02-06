@@ -1,0 +1,101 @@
+class NTM_Afrit : NTM_Enemy {
+	Default {
+		Health 2500;
+		Speed 8;
+		Radius 20;
+		Height 64;
+		PainChance 30;
+		Mass 400;
+		SeeSound "NTM_Afrit/sight";
+		ActiveSound "NTM_Afrit/active";
+		PainSound "NTM_Afrit/pain";
+		DeathSound "NTM_Afrit/death";
+		Tag "Afrit";
+		Obituary "%o was possessed by an Afrit.";
+		Species "BaronOfHell";
+		BloodColor "Yellow";
+		NTM_Enemy.TicsPerChase 3;
+		
+		-FloorClip
+		+Float
+		+NoGravity
+	}
+	
+	States {
+		Spawn:
+			NAFR ABCD 10 Bright A_Look;
+			Loop;
+		
+		DukeSee:
+			NAFR AABBCCDD 3 Bright A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NAFR AABBCCDD 3 Bright A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NAFR A 1 Bright A_NTM_SWChase;
+			NAFR AA 1 Bright A_NTM_SWChase2;
+			NAFR A 1 Bright A_NTM_SWChase;
+			NAFR AA 1 Bright A_NTM_SWChase2;
+			NAFR B 1 Bright A_NTM_SWChase;
+			NAFR BB 1 Bright A_NTM_SWChase2;
+			NAFR B 1 Bright A_NTM_SWChase;
+			NAFR BB 1 Bright A_NTM_SWChase2;
+			NAFR C 1 Bright A_NTM_SWChase;
+			NAFR CC 1 Bright A_NTM_SWChase2;
+			NAFR C 1 Bright A_NTM_SWChase;
+			NAFR CC 1 Bright A_NTM_SWChase2;
+			NAFR D 1 Bright A_NTM_SWChase;
+			NAFR DD 1 Bright A_NTM_SWChase2;
+			NAFR D 1 Bright A_NTM_SWChase;
+			NAFR DD 1 Bright A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NAFR EF 6 Bright A_FaceTarget;
+			
+			NAFR G 10 Bright {
+				A_FaceTarget();
+				A_SpawnProjectile("NTM_AfritShot", angle: -45);
+				A_SpawnProjectile("NTM_AfritShot", angle: 45);
+				A_SpawnProjectile("NTM_MancubusShot");
+			}
+			
+			Goto See;
+		
+		Pain:
+			NAFR H 10 Bright A_Pain;
+			Goto See;
+		
+		Death:
+			NAFR I 1 Bright A_NTM_PreDeath;
+			NAFR I 4 Bright A_NTM_Death;
+			NAFR J 5 Bright A_NoBlocking;
+			NAFR KLMNOPQ 5 Bright;
+			
+			NAFR R 5 Bright {
+				A_BossDeath();
+				A_KeenDie();
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_AfritShot : NTM_MancubusShot {
+	Default {
+		Speed 12;
+		Damage 10;
+		SeeSound "NTM_Afrit/attack";
+		
+		+SeekerMissile
+	}
+	
+	States {
+		Spawn:
+			MANF AB 3 Bright A_Tracer2(8);
+			Loop;
+	}
+}

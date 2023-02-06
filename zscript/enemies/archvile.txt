@@ -27,37 +27,37 @@ class NTM_ArchVile : NTM_Enemy {
 			Loop;
 			
 		DukeSee:
-			NARC AABBCCDDEEFF 2 A_NTM_DukeChase(CHF_Resurrect);
+			NARC AABBCCDDEEFF 2 A_NTM_DukeChase(true);
 			Loop;
 		
 		BloodSee:
-			NARC AABBCCDDEEFF 2 A_NTM_BloodChase(CHF_Resurrect);
+			NARC AABBCCDDEEFF 2 A_NTM_BloodChase(true);
 			Loop;
 		
 		SWSee:
-			NARC A 1 A_NTM_Archvile_SWChase;
+			NARC A 1 A_NTM_SWChase(true);
 			NARC A 1 A_NTM_SWChase2;
-			NARC A 1 A_NTM_Archvile_SWChase;
+			NARC A 1 A_NTM_SWChase(true);
 			NARC A 1 A_NTM_SWChase2;
-			NARC B 1 A_NTM_Archvile_SWChase;
+			NARC B 1 A_NTM_SWChase(true);
 			NARC B 1 A_NTM_SWChase2;
-			NARC B 1 A_NTM_Archvile_SWChase;
+			NARC B 1 A_NTM_SWChase(true);
 			NARC B 1 A_NTM_SWChase2;
-			NARC C 1 A_NTM_Archvile_SWChase;
+			NARC C 1 A_NTM_SWChase(true);
 			NARC C 1 A_NTM_SWChase2;
-			NARC C 1 A_NTM_Archvile_SWChase;
+			NARC C 1 A_NTM_SWChase(true);
 			NARC C 1 A_NTM_SWChase2;
-			NARC D 1 A_NTM_Archvile_SWChase;
+			NARC D 1 A_NTM_SWChase(true);
 			NARC D 1 A_NTM_SWChase2;
-			NARC D 1 A_NTM_Archvile_SWChase;
+			NARC D 1 A_NTM_SWChase(true);
 			NARC D 1 A_NTM_SWChase2;
-			NARC E 1 A_NTM_Archvile_SWChase;
+			NARC E 1 A_NTM_SWChase(true);
 			NARC E 1 A_NTM_SWChase2;
-			NARC E 1 A_NTM_Archvile_SWChase;
+			NARC E 1 A_NTM_SWChase(true);
 			NARC E 1 A_NTM_SWChase2;
-			NARC F 1 A_NTM_Archvile_SWChase;
+			NARC F 1 A_NTM_SWChase(true);
 			NARC F 1 A_NTM_SWChase2;
-			NARC F 1 A_NTM_Archvile_SWChase;
+			NARC F 1 A_NTM_SWChase(true);
 			NARC F 1 A_NTM_SWChase2;
 			Goto See;
 			
@@ -119,10 +119,6 @@ class NTM_ArchVile : NTM_Enemy {
 			NARC TUVWX 6;
 			NARC Y -1;
 			Stop;
-	}
-	
-	void A_NTM_Archvile_SWChase() {
-		A_NTM_SWChase(CHF_Resurrect);
 	}
 }
 

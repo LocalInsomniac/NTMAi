@@ -146,8 +146,8 @@ class NTM_CyberdemonMissile : NTM_Rocket {
 	
 	States {
 		Spawn:
-			MISL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail");
-			MISL A 0 A_Tracer2(3);
+			NMSL A 2 Bright A_SpawnItemEx("NTM_RocketSmokeTrail");
+			NMSL A 0 A_Tracer2(3);
 			Loop;
 			
 		Death:

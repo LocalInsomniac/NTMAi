@@ -1,0 +1,135 @@
+class NTM_Gjenganger : NTM_Enemy {
+	Default {
+		Health 600;
+		Speed 12;
+		Radius 20;
+		Height 56;
+		ReactionTime 8;
+		PainChance 50;
+		Mass 500;
+		MaxTargetRange 896;
+		MeleeThreshold 128;
+		MeleeRange 80;
+		SeeSound "NTM_Gjenganger/sight";
+		ActiveSound "NTM_Gjenganger/active";
+		PainSound "NTM_Gjenganger/pain";
+		DeathSound "NTM_Gjenganger/death";
+		Obituary "%o's soul was claimed by a Gjenganger.";
+		HitObituary "%o looked into a Gjenganger's cannon.";
+		Tag "Gjenganger";
+		NTM_Enemy.TicsPerChase 3;
+	}
+	
+	States {
+		Spawn:
+			NGJE A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NGJE AABBCCDD 3 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NGJE AABBCCDD 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NGJE A 1 A_NTM_SWChase;
+			NGJE AA 1 A_NTM_SWChase2;
+			NGJE A 1 A_NTM_SWChase;
+			NGJE AA 1 A_NTM_SWChase2;
+			NGJE B 1 A_NTM_SWChase;
+			NGJE BB 1 A_NTM_SWChase2;
+			NGJE B 1 A_NTM_SWChase;
+			NGJE BB 1 A_NTM_SWChase2;
+			NGJE C 1 A_NTM_SWChase;
+			NGJE CC 1 A_NTM_SWChase2;
+			NGJE C 1 A_NTM_SWChase;
+			NGJE CC 1 A_NTM_SWChase2;
+			NGJE D 1 A_NTM_SWChase;
+			NGJE DD 1 A_NTM_SWChase2;
+			NGJE D 1 A_NTM_SWChase;
+			NGJE DD 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+			NGJE E 10 A_FaceTarget;
+			
+			NGJE F 5 Bright {
+				A_FaceTarget();
+				A_StartSound("NTM_Gjenganger/melee");
+				
+				if (target && Distance3D(target) < (meleeRange + target.radius)) {
+					target.DamageMObj(self, self, Random(1, 10) * 6, "None", DMG_Thrustless);
+					
+					if (target) {
+						double dir = AngleTo(target, true);
+						double force = 2000 / target.mass;
+						
+						target.vel.x += force * Cos(dir);
+						target.vel.y += force * Sin(dir);
+						target.vel.z += force * 0.5;
+					}
+				}
+			}
+			
+			NGJE E 15 A_FaceTarget;
+			Goto See;
+		
+		Missile:
+			NGJE E 10 A_FaceTarget;
+			
+			NGJE F 5 Bright {
+				A_FaceTarget();
+				A_SpawnProjectile("NTM_GjengangerMissile");
+			}
+			
+			NGJE E 15 A_FaceTarget;
+			Goto See;
+		
+		Pain:
+			NGJE G 10 A_Pain;
+			Goto See;
+		
+		Death:
+			NGJE H 1 A_NTM_PreDeath;
+			NGJE H 4 A_NTM_Death;
+			NGJE I 5 A_NoBlocking;
+			NGJE JK 5;
+			NGJE L -1;
+			Stop;
+		
+		Raise:
+			NGJE LKJIH 6;
+			Goto See;
+	}
+}
+
+class NTM_GjengangerMissile : NTM_RevenantTracer {
+	Default {
+		Scale 0.88;
+		Damage 0;
+		Speed 12;
+		RenderStyle "Normal";
+		SeeSound "NTM_Gjenganger/missile";
+		DeathSound "NTM_Gjenganger/missilex";
+		
+		-ZDoomTrans
+	}
+	
+	States {
+		Spawn:
+			NGJM A 4 Bright A_NTM_Tracer(16.875);
+			Loop;
+		
+		Death:
+			TNT1 A 0 A_SpawnItemEx("NTM_Explosion2");
+			
+			TNT1 A 0 {
+				NTMAi.Explode(self, 100, 128, XF_HurtSource);
+			}
+			
+			TNT1 A 15 A_Quake(2, 15, 0, 500, "");
+			Stop;
+	}
+}

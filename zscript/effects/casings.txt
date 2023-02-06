@@ -13,6 +13,7 @@ class NTM_BulletCasing : NTM_Gib {
 		+Missile
 		+CanBounceWater
 		+UseBounceState
+		+ForceXYBillboard
 	}
 	
 	States

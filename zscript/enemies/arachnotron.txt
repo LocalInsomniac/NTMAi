@@ -68,6 +68,7 @@ class NTM_Arachnotron : NTM_Enemy {
 			
 			NARA E 2 Bright {
 				A_StartSound("baby/attack", Chan_Weapon);
+				A_FaceTarget();
 				A_SpawnProjectile("NTM_ArachnotronBall", 64);
 			}
 			
