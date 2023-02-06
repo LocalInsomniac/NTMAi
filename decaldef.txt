@@ -92,6 +92,7 @@ generator NTM_Pistol BulletChip
 generator NTM_Shotgun BulletChip
 generator NTM_SuperShotgun BulletChip
 generator NTM_Chaingun BulletChip
+generator NTM_TommyGun BulletChip
 
 generator NTM_ZombieMan BulletChip
 generator NTM_ShotgunGuy BulletChip

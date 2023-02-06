@@ -335,6 +335,120 @@ $random NTM_LittleMarine/death {
 	NTM_LittleMarine/death2
 }
 
+// Rocket Warrior
+NTM_RocketWarrior/active NSRWLACT
+NTM_RocketWarrior/death DSBAREXP
+$attenuation NTM_RocketWarrior/death 0.666
+$limit NTM_RocketWarrior/death 0
+
+/* ===========
+   MAYHEM 2019
+   =========== */
+
+NTM_TommyGun/fire NSTOMMY
+NTM_TommyGun/out NSCLPOUT
+NTM_TommyGun/in NSTOMMYR
+
+NTM_NapalmLauncher/fire NSNAPALM
+
+NTM_Flamethrower/select NSFLATUP
+NTM_Flamethrower/fire NSFLAMET
+
+NTM_Zombie/sight NSZOMSIT
+
+NTM_Zombie/active1 NSZOACT1
+NTM_Zombie/active2 NSZOACT2
+
+$random NTM_Zombie/active {
+	NTM_Zombie/active1
+	NTM_Zombie/active2
+}
+
+NTM_Zombie/attack NSZOMATK
+NTM_Zombie/melee NSZOMHIT
+NTM_Zombie/pain NSZOMPAI
+
+NTM_Zombie/death1 NSZODIE1
+NTM_Zombie/death2 NSZODIE2
+NTM_Zombie/death3 NSZODIE3
+
+$random NTM_Zombie/death {
+	NTM_Zombie/death1
+	NTM_Zombie/death2
+	NTM_Zombie/death3
+}
+
+NTM_Zombie/burn NSZODIE3
+
+NTM_Cultist/sight1 NSCULSIT
+
+$random NTM_Cultist/sight {
+	NTM_Cultist/sight1
+	NTM_Cultist/active1
+	NTM_Cultist/active2
+	NTM_Cultist/active3
+	NTM_Cultist/active4
+	NTM_Cultist/active5
+}
+
+NTM_Cultist/active1 NSCUACT1
+NTM_Cultist/active2 NSCUACT2
+NTM_Cultist/active3 NSCUACT3
+NTM_Cultist/active4 NSCUACT4
+NTM_Cultist/active5 NSCUACT5
+
+$random NTM_Cultist/active {
+	NTM_Cultist/active1
+	NTM_Cultist/active2
+	NTM_Cultist/active3
+	NTM_Cultist/active4
+	NTM_Cultist/active5
+	0
+}
+
+NTM_Cultist/pain1 NSCUPAI1
+NTM_Cultist/pain2 NSCUPAI2
+NTM_Cultist/pain3 NSCUPAI3
+NTM_Cultist/pain4 NSCUPAI4
+NTM_Cultist/pain5 NSCUPAI5
+NTM_Cultist/pain6 NSCUPAI6
+
+$random NTM_Cultist/pain {
+	NTM_Cultist/pain1
+	NTM_Cultist/pain2
+	NTM_Cultist/pain3
+	NTM_Cultist/pain4
+	NTM_Cultist/pain5
+	NTM_Cultist/pain6
+}
+
+NTM_Cultist/death1 NSCUDIE1
+NTM_Cultist/death2 NSCUDIE2
+NTM_Cultist/death3 NSCUDIE3
+
+NTM_Cultist/burn1 NSCUBRN1
+NTM_Cultist/burn2 NSCUBRN2
+NTM_Cultist/burn3 NSCUBRN3
+
+$random NTM_Cultist/burn {
+	NTM_Cultist/burn1
+	NTM_Cultist/burn2
+	NTM_Cultist/burn3
+}
+
+NTM_LightningOrb/active NSORBACT
+NTM_LightningOrb/attack NSORBATK
+NTM_LightningOrb/death DSRXPLOD
+$attenuation NTM_LightningOrb/death 0.666
+$limit NTM_LightningOrb/death 0
+
+NTM_DeathCube/active DSBOSCUB
+NTM_DeathCube/death DSBAREXP
+$attenuation NTM_DeathCube/death 0.666
+$limit NTM_DeathCube/death 0
+
+NTM_Hothead/attack DSFIRSHT
+
 /* ========
    SCYTHE 2
    ======== */

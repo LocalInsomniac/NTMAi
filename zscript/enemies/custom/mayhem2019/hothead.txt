@@ -1,0 +1,74 @@
+class NTM_Hothead : NTM_PainElemental {
+	Default {
+		Health 150;
+		Speed 10;
+		DeathSound "";
+		Obituary "%o was incinerated by a Hothead.";
+		HitObituary "%o got third-degree burns from a Hothead.";
+		Tag "Hothead";
+	}
+	
+	States {
+		Spawn:
+			NHOT A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NHOT A 3 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NHOT A 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NHOT A 1 A_NTM_SWChase;
+			NHOT AA 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+			NHOT BC 6 A_FaceTarget;
+			NHOT D 6 A_CustomMeleeAttack(Random(1, 6) * 10, "pain/melee");
+			Goto See;
+		
+		Missile:
+			NHOT B 7 A_FaceTarget;
+			NHOT C 7 Bright A_FaceTarget;
+			NHOT D 7 Bright A_SpawnProjectile("NTM_HotheadShot");
+			Goto See;
+		
+		Pain:
+			NHOT E 12 A_Pain;
+			Goto See;
+			
+		Death:
+			NHOT F 1 Bright A_NTM_PreDeath;
+			NHOT F 7 Bright A_NTM_Death;
+			NHOT G 8 Bright;
+			
+			TNT1 A 15 {
+				Actor boom = Spawn("NTM_Explosion", pos + (0, 0, 32));
+				
+				if (boom != null) {
+					boom.scale *= 1.25;
+				}
+				
+				NTMAi.Explode(self, mod: "Fire");
+				A_Quake(2, 15, 0, 512, "");
+				A_StartSound("world/barrelx");
+				
+				if (health >= GetGibHealth()) {
+					A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8));
+					A_SpawnItemEx("NTM_FlyingGib3", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8));
+				}
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_HotheadShot : NTM_MancubusShot {
+	Default {
+		SeeSound "NTM_Hothead/attack";
+	}
+}

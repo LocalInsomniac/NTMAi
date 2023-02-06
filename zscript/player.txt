@@ -27,10 +27,10 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 1, "NTM_Fists", "NTM_Chainsaw";
 		Player.WeaponSlot 2, "NTM_Pistol";
 		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
-		Player.WeaponSlot 4, "NTM_Chaingun";//, "NTM_TommyGun";
-		Player.WeaponSlot 5, "NTM_RocketLauncher";//, "NTM_NapalmLauncher";
-		Player.WeaponSlot 6, "NTM_PlasmaRifle";//, "NTM_Flamethrower";
-		Player.WeaponSlot 7, "NTM_BFG9000";
+		Player.WeaponSlot 4, "NTM_TommyGun", "NTM_Chaingun";
+		Player.WeaponSlot 5, "NTM_NapalmLauncher", "NTM_RocketLauncher";
+		Player.WeaponSlot 6, "NTM_Flamethrower", "NTM_PlasmaRifle";
+		Player.WeaponSlot 7, "BFG9000", "NTM_BFG9000";
 		Player.CrouchSprite "NPLC";
 		Player.ViewHeight 46;
 		Scale 0.666;
@@ -96,16 +96,17 @@ class NTM_Player : DoomPlayer {
 			NPLA I 7 A_PlayerScream;
 			NPLA J 7 A_NoBlocking;
 			NPLA K 7;
-			NPLA L -1;
-			Stop;
+			NPLA L 16 A_CheckPlayerDone;
+			Wait;
 		
 		XDeath:
+		XDeath.Fire:
 			NMGI A 1 A_XScream;
 			NMGI A 4 A_SkullPop("NTM_PlayerHead");
 			NMGI B 5 A_NoBlocking;
 			NMGI CDEFG 5;
-			NMGI H -1;
-			Stop;
+			NMGI H 16 A_CheckPlayerDone;
+			Wait;
 		
 		FireHands:
 			NITB ABCD 3 Bright;
@@ -360,33 +361,22 @@ class NTM_Player : DoomPlayer {
 	}
 }
 
-class NTM_PlayerHead : PlayerChunk {
+class NTM_PlayerHead : BloodySkull {
 	Default {
-		Scale 0.625;
+		Scale 0.666;
 		Gravity 0.36;
 		BounceType "Doom";
-		Radius 4;
-		Height 4;
 		
-		+CanBounceWater
 		+Missile
 		+UseBounceState
+		+CanBounceWater
+		-DontBounceOnSky
 	}
 	
 	States {
 		Spawn:
-			NHEA A 0 NoDelay {
-				viewBob = 0;
-				
-				if (player) {
-					player.attacker = null;
-				}
-				
-				scale.x *= FRandomPick(-1, 1);
-			}
-			
-			NHEA ABCD 3 A_JumpIf(pos.z <= floorZ && vel.z == 0, "Death");
-			Goto Spawn + 2;
+			NHEA ABCD 4 A_JumpIf(pos.z <= floorZ && vel.z == 0, "Death");
+			Loop;
 		
 		Bounce.Floor:
 			NHEA A 0 {
@@ -397,10 +387,20 @@ class NTM_PlayerHead : PlayerChunk {
 				}
 			}
 			
-			Goto Spawn + 1;
+			Goto Spawn;
 		
 		Death:
 			NHEA E 16 A_CheckPlayerDone;
 			Wait;
+	}
+	
+	override void PostBeginPlay() {
+		viewBob = 0;
+		
+		if (player) {
+			player.attacker = null;
+		}
+		
+		bXFlip = Random(0, 1);
 	}
 }

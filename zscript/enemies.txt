@@ -22,6 +22,14 @@
 #include "zscript/enemies/custom/admortem/skeleton.txt"
 #include "zscript/enemies/custom/admortem/gjenganger.txt"
 #include "zscript/enemies/custom/admortem/littlemarine.txt"
+#include "zscript/enemies/custom/admortem/rocketwarrior.txt"
+
+#include "zscript/enemies/custom/mayhem2019/zombie.txt"
+#include "zscript/enemies/custom/mayhem2019/shotguncultist.txt"
+#include "zscript/enemies/custom/mayhem2019/tommyguncultist.txt"
+#include "zscript/enemies/custom/mayhem2019/lightningorb.txt"
+#include "zscript/enemies/custom/mayhem2019/hothead.txt"
+#include "zscript/enemies/custom/mayhem2019/deathcube.txt"
 
 #include "zscript/enemies/custom/scythe2/evilmarine.txt"
 #include "zscript/enemies/custom/scythe2/afrit.txt"
@@ -185,7 +193,7 @@ class NTM_Enemy : Actor {
 	   NTMAi monster actions
 	   ===================== */
 	
-	void A_NTM_DukeChase(bool resurrect = false) {
+	void A_NTM_DukeChase(bool vile = false) {
 		bool beDropoff = bDropoff;
 		Vector3 oldPos = pos;
 		
@@ -197,7 +205,7 @@ class NTM_Enemy : Actor {
 			++chaseStuck;
 		}
 		
-		if (resurrect) {
+		if (vile) {
 			A_VileChase();
 		} else {
 			A_Chase();
@@ -215,7 +223,7 @@ class NTM_Enemy : Actor {
 		TryLeap();
 	}
 	
-	void A_NTM_BloodChase(bool resurrect = false) {
+	void A_NTM_BloodChase(bool vile = false) {
 		// Source: https://github.com/caligari87/HideousDestructor/blob/master/zscript/mob.txt#L360
 		if (!target) {
 			A_ClearTarget();
@@ -250,7 +258,7 @@ class NTM_Enemy : Actor {
 		
 		Vector3 oldPos = pos;
 		
-		if (resurrect) {
+		if (vile) {
 			A_VileChase();
 		} else {
 			A_Chase();
@@ -280,12 +288,12 @@ class NTM_Enemy : Actor {
 		TryLeap();
 	}
 	
-	void A_NTM_SWChase(bool resurrect = false) {
+	void A_NTM_SWChase(bool vile = false) {
 		if (CheckMove(pos.xy)) {
 			int tpc = NTM_Enemy(self).ticsPerChase;
 			
 			speed /= tpc;
-			A_NTM_DukeChase(resurrect);
+			A_NTM_DukeChase(vile);
 			speed *= tpc;
 		} else {
 			A_Wander();
@@ -311,12 +319,30 @@ class NTM_Enemy : Actor {
 		bNoDropoff = default.bNoDropoff;
 	}
 	
-	action void A_NTM_Death() {
-		A_Scream();
+	void A_NTM_CommonDeath() {
 		height = GetDeathHeight();
 		bCorpse = true;
 		bSolid = false;
 		bShootable = false;
+	}
+	
+	void A_NTM_Death(Sound high = "", Sound normal = "", Sound wimp = "") {
+		if (high != "") {
+			// Play different scream based on severity
+			if (health <= GetGibHealth() * 0.5) {
+				A_StartSound(high, Chan_Voice);
+			} else {
+				if (health < -1) {
+					A_StartSound(normal, Chan_Voice);
+				} else {
+					A_StartSound(wimp, Chan_Voice);
+				}
+			}
+		} else {
+			A_Scream();
+		}
+		
+		A_NTM_CommonDeath();
 	}
 	
 	void A_NTM_XDeath() {
@@ -326,10 +352,7 @@ class NTM_Enemy : Actor {
 			A_XScream();
 		}
 		
-		height = GetDeathHeight();
-		bCorpse = true;
-		bSolid = false;
-		bShootable = false;
+		A_NTM_CommonDeath();
 	}
 	
 	action void A_NTM_PainEnable() {

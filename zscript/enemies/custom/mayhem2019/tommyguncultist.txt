@@ -1,0 +1,91 @@
+class NTM_TommyGunCultist : NTM_ChaingunGuy {
+	Default {
+		DamageFactor "NTM_CultistBullet", 0;
+		SeeSound "NTM_Cultist/sight";
+		ActiveSound "NTM_Cultist/active";
+		AttackSound "NTM_TommyGun/fire";
+		PainSound "NTM_Cultist/pain";
+		DeathSound "";
+		NTM_Humanoid.BurnSound "NTM_Cultist/burn";
+		Translation "NTM_German_Gray";
+		Tag "Tommy Gun Cultist";
+		Obituary "%o was perforated by a Tommy Gun Cultist.";
+	}
+	
+	States {
+		Spawn:
+			NCUL A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NCUL AABBCCDD 3 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NCUL AABBCCDD 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NCUL A 1 A_NTM_SWChase;
+			NCUL AA 1 A_NTM_SWChase2;
+			NCUL A 1 A_NTM_SWChase;
+			NCUL AA 1 A_NTM_SWChase2;
+			NCUL B 1 A_NTM_SWChase;
+			NCUL BB 1 A_NTM_SWChase2;
+			NCUL B 1 A_NTM_SWChase;
+			NCUL BB 1 A_NTM_SWChase2;
+			NCUL C 1 A_NTM_SWChase;
+			NCUL CC 1 A_NTM_SWChase2;
+			NCUL C 1 A_NTM_SWChase;
+			NCUL CC 1 A_NTM_SWChase2;
+			NCUL D 1 A_NTM_SWChase;
+			NCUL DD 1 A_NTM_SWChase2;
+			NCUL D 1 A_NTM_SWChase;
+			NCUL DD 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NCUL E 10 A_FaceTarget;
+			NCUL F 2 Bright A_NTM_TommyGunCultistAttack;
+			NCUL E 2;
+			NCUL F 2 Bright A_NTM_TommyGunCultistAttack;
+			NCUL E 2;
+			NCUL F 2 Bright A_NTM_TommyGunCultistAttack;
+			NCUL E 2;
+			NCUL F 2 Bright A_NTM_TommyGunCultistAttack;
+			NCUL E 2;
+			NCUL F 2 Bright A_NTM_TommyGunCultistAttack;
+			NCUL E 2 A_CPosRefire;
+			NCUL E 0 A_Jump(100, "See");
+			Goto Missile + 1;
+		
+		Pain:
+			NCUL G 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NCUL H 1 A_NTM_PreDeath;
+			NCUL H 4 A_NTM_Death("NTM_Cultist/death1", "NTM_Cultist/death2", "NTM_Cultist/death3");
+			NCUL I 5 A_NoBlocking;
+			NCUL JK 5;
+			NCUL L -1;
+			Stop;
+		
+		Raise:
+			NCUL LKJIH 5;
+			Goto See;
+	}
+	
+	void A_NTM_TommyGunCultistAttack() {
+		A_CustomBulletAttack(30, 0, 1, Random(1, 5), "NTM_CultistPuff", 0, CBAF_NoRandom);
+		A_StartSound(attackSound, Chan_Weapon);
+	}
+}
+
+class NTM_TommyGunCultist2 : NTM_TommyGunCultist {
+	Default {
+		Health 50;
+		DropItem "Clip";
+		Species "WolfensteinSS";
+	}
+}

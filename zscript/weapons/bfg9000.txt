@@ -1,4 +1,4 @@
-class NTM_BFG9000 : BFG9000 replaces BFG9000 {
+class NTM_BFG9000 : BFG9000 {
 	Default {
 		Scale 0.75;
 		Weapon.SlotNumber 7;
@@ -59,7 +59,8 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 			Loop;
 		
 		Death:
-			NBFX A 2 Bright {
+			NEX4 A 2 Bright {
+				A_SetTranslation("NTM_Fog_Green");
 				A_Quake(3, 20, 0, 1024, "");
 				
 				// Gib all nearby corpses
@@ -112,8 +113,8 @@ class NTM_BFGBall : BFGBall replaces BFGBall {
 				}
 			}
 			
-			NBFX BC 2 Bright;
-			NBFX DEFGHIJKL 3 Bright;
+			NEX4 BC 2 Bright;
+			NEX4 DEFGHIJKL 3 Bright;
 			Stop;
 	}
 }

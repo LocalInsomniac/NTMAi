@@ -1,4 +1,4 @@
-class NTM_Chaingun : Chaingun replaces Chaingun {
+class NTM_Chaingun : Chaingun {
 	Default {
 		Scale 0.75;
 		Weapon.SlotNumber 4;
