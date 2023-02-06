@@ -4,7 +4,6 @@ class NTM_Humanoid : NTM_Enemy {
 	
 	States {
 		Death.Fire:
-		XDeath.Fire:
 			TNT1 A 1 {
 				A_NoBlocking();
 				
@@ -19,6 +18,15 @@ class NTM_Humanoid : NTM_Enemy {
 				}
 			}
 			
+			Stop;
+		
+		XDeath:
+		XDeath.Fire:
+			NMGI A 1 A_NTM_PreDeath;
+			NMGI A 4 A_NTM_XDeath;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
 			Stop;
 	}
 }

@@ -105,14 +105,6 @@ class NTM_ChaingunGuy : NTM_Humanoid {
 			NCGZ L -1 A_NoBlocking;
 			Stop;
 		
-		XDeath:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
-			NMGI H -1;
-			Stop;
-		
 		Raise:
 			NCGZ KJIH 5;
 			Goto See;

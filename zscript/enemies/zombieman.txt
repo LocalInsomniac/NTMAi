@@ -163,14 +163,9 @@ class NTM_Zombieman : NTM_Humanoid {
 			NZOM ] -1;
 			Stop;
 		
-		XDeath:
 		XDeath.Chainsaw:
-			NMGI A 1 A_NTM_PreDeath;
-			NMGI A 4 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
-			NMGI H -1;
-			Stop;
+			NMGI A 0;
+			Goto XDeath;
 		
 		Raise:
 			NZOM KJIH 5;
