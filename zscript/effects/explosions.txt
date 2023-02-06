@@ -12,11 +12,12 @@ class NTM_Explosion : Actor {
 		+NotOnAutomap
 		+ForceXYBillboard
 		+ZDoomTrans
+		+Bright
 	}
 	
 	States {
 		Spawn:
-			NEXP ABCDEFGHIJ 3 Bright;
+			NEXP ABCDEFGHIJ 3;
 			Stop;
 	}
 }
@@ -29,7 +30,16 @@ class NTM_Explosion2 : NTM_Explosion {
 	
 	States {
 		Spawn:
-			NEX2 ABCDEFGHIJKLMNOPQRSTU 2 Bright;
+			NEX2 ABCDEFGHIJKLMNOPQRSTU 2;
+			Stop;
+	}
+}
+
+// Explosion 4
+class NTM_Explosion4 : NTM_Explosion {
+	States {
+		Spawn:
+			NEX4 ABCDEFGHIJKL 3;
 			Stop;
 	}
 }
