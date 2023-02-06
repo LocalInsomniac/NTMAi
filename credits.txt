@@ -16,9 +16,9 @@ Ac!d, RoastBeefo • HUD Graphics
 
 Amuscaria, osjclatchford • "Major Crisis" Zombie
 
-Can't Sleep, David G, DenisBelmondo, ElectricPulse, Enjay, • Graphics Editing
-	   Gifty, Hellfire, HorrorMovieGuy, horselessheadsman, •
-				   KaZudra, neoworm, osjclatchford, Xaser, •
+Can't Sleep, David G, DenisBelmondo, ElectricPulse, Gifty, • Graphics Editing
+	 Hellfire, HorrorMovieGuy, horselessheadsman, KaZudra, •
+							neoworm, osjclatchford, Xaser, •
 
 Captain Toenail • "Forgotten One" Lost Soul
 
@@ -74,8 +74,6 @@ silentzora • "Project: Redux - DOOM 64 Main Theme"
 3saster • "GZDoom Utilities"
 
 Can't Sleep, Kinsie • Base Programming
-
-Enjay • "Revised Splashes"
 
 Matt • "Hideous Destructor" Monster Movement
 
