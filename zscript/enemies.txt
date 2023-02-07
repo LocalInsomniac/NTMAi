@@ -157,7 +157,6 @@ class NTM_Enemy : Actor {
 			if (dist > (meleeThreshold + radius) && dist < (leapDistance - radius)) {
 				dist -= (target.radius * 2) + (radius * 2);
 				maxStepHeight = maxDropOffHeight * 1.6;
-				bNoDropOff = false;
 				bCanPass = false;
 						
 				bool canJump = true;
