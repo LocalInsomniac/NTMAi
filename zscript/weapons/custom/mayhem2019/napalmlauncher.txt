@@ -6,14 +6,42 @@ class NTM_NapalmLauncher : NTM_RocketLauncher {
 	}
 	
 	States {
+		Ready:
+			NNAP A 1 A_WeaponReady;
+			Loop;
+			
+		Deselect:
+			NNAP A 1 A_Lower(12);
+			Loop;
+			
+		Select:
+			NNAP A 1 A_Raise(12);
+			Loop;
+			
 		Fire:
-			NROC B 3 Bright {
-				A_FireProjectile("NTM_Napalm", 0, true, 6, 2);
+			NNAP B 3 Bright {
+				A_FireProjectile("NTM_Napalm", 0, true, 7, 3);
 				A_GunFlash();
 				A_WeaponOffset(12, 50, WOF_Interpolate);
 			}
 			
-			Goto Super::Fire + 1;
+			NNAP C 3 Bright A_WeaponOffset(16, 56, WOF_Interpolate);
+			NNAP D 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
+			NNAP A 3 A_WeaponOffset(12, 50, WOF_Interpolate);
+			NNAP A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
+			NNAP A 3 A_WeaponOffset(flags: WOF_Interpolate);
+			NNAP A 0 A_Refire;
+			Goto Ready;
+		
+		Flash:
+			TNT1 A 3 A_Light1;
+			TNT1 A 3 A_Light2;
+			TNT1 A 3 A_Light1;
+			Goto LightDone;
+		
+		Spawn:
+			NNAP E -1;
+			Stop;
 	}
 }
 
@@ -66,7 +94,7 @@ class NTM_NapalmAmmo : RocketAmmo {
 	
 	States {
 		Spawn:
-			NNAP A -1;
+			NNPS A -1;
 			Stop;
 	}
 }

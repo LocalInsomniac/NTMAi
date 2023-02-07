@@ -51,7 +51,7 @@ class NTM_TommyGun : NTM_Chaingun {
 		A_StartSound("NTM_TommyGun/fire", Chan_Weapon);
 		A_FireBullets(5.6, 0, 1, 5, "BulletPuff");
 		A_GunFlash();
-		A_WeaponOffset(Random(-1, 3), Random(32, 37), WOF_Interpolate);
+		A_WeaponOffset(Random(0, 5), Random(32, 37), WOF_Interpolate);
 	}
 	
 	action void A_NTM_TommyGun2() {

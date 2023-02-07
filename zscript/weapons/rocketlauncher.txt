@@ -8,7 +8,7 @@ class NTM_RocketLauncher : RocketLauncher {
 	
 	States {
 		Ready:
-			NROC A 1 A_WeaponReady(WRF_AllowUser1);
+			NROC A 1 A_WeaponReady;
 			Loop;
 			
 		Deselect:
