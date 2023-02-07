@@ -8,11 +8,11 @@ class NTM_TommyGun : NTM_Chaingun {
 	
 	States {
 		Spawn:
-			NTOM E -1;
+			NTOM F -1;
 			Stop;
 			
 		Ready:
-			NTOM A 1 A_WeaponReady(WRF_AllowReload);
+			NTOM A 1 A_WeaponReady;
 			Loop;
 		
 		Deselect:
@@ -26,18 +26,26 @@ class NTM_TommyGun : NTM_Chaingun {
 		Fire:
 			NTOM A 0 A_Jump(128, "Fire2");
 			NTOM B 2 Bright A_NTM_TommyGun;
-			NTOM A 2 A_NTM_TommyGun2;
-			NTOM A 0 A_Refire;
-			Goto Ready;
+			Goto FireEnd;
 		
 		Fire2:
 			NTOM A 0 A_Jump(128, "Fire3");
 			NTOM C 2 Bright A_NTM_TommyGun;
-			Goto Fire + 2;
+			Goto FireEnd;
 		
 		Fire3:
+			NTOM A 0 A_Jump(128, "Fire4");
 			NTOM D 2 Bright A_NTM_TommyGun;
-			Goto Fire + 2;
+			Goto FireEnd;
+		
+		Fire4:
+			NTOM E 2 Bright A_NTM_TommyGun;
+			Goto FireEnd;
+		
+		FireEnd:
+			NTOM A 1 A_NTM_TommyGun2;
+			NTOM A 0 A_Refire;
+			Goto Ready;
 		
 		Flash:
 			TNT1 A 0 A_Jump(128, 2);
