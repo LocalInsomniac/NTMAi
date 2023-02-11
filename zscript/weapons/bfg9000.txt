@@ -32,7 +32,7 @@ class NTM_BFG9000 : BFG9000 {
 			NBFG F 3 Bright A_WeaponOffset(12, 64, WOF_Interpolate);
 			
 			NBFG G 2 Bright {
-				A_FireBFG();
+				A_FireProjectile("NTM_BFGBall", 0, true);
 				A_Recoil(cos(pitch) * 10);
 				A_WeaponOffset(15, 68, WOF_Interpolate);
 			}
