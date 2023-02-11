@@ -1028,8 +1028,7 @@ class NTM_System_Actor : NTM_System {
 						if (frame > 0 && owner.waterLevel == 0) {
 							double jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
 							
-							owner.SetOrigin(owner.pos + (0, 0, owner.scale.y * jitter), false);
-							owner.ClearInterpolation();
+							owner.AddZ(owner.scale.y * jitter, false);
 						}
 						
 						deathLastFrame = frame;
