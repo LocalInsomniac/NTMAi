@@ -56,7 +56,7 @@ class NTMAi : EventHandler {
 		   Revenant = Vampire ✓
 		   Demon = Skeleton ✓
 		   Spectre = Shadow Imp ✓
-		   HellKnight = Arachnorb
+		   HellKnight = Arachnorb ✓
 		   BaronOfHell = Mother Brain
 		   LostSoul = Lightning Ball ✓
 		   SpiderMastermind = Abbot
@@ -240,7 +240,7 @@ class NTMAi : EventHandler {
 	override void WorldLoaded(WorldEvent e) {
 		Name checksum = level.GetCheckSum();
 		
-		Console.PrintF(checksum);
+		Console.PrintF("Level checksum is '" .. checksum .. "'");
 		
 		switch (checksum) {
 			case 'acf3adec8c02b9431f347231354db5ad': // MAYhem 2019, MAP02
@@ -623,7 +623,7 @@ class NTMAi : EventHandler {
 			case 'HellKnight':
 				if (sv_ntm_r_hellKnight) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
-						//e.replacement = "NTM_Arachnorb";
+						e.replacement = "NTM_Arachnorb";
 						
 						break;
 					}

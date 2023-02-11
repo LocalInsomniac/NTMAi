@@ -449,6 +449,13 @@ $limit NTM_DeathCube/death 0
 
 NTM_Hothead/attack DSFIRSHT
 
+NTM_Arachnorb/sight NSACNACT
+NTM_Arachnorb/active NSACNACT
+NTM_Arachnorb/attack NSORBATK
+$attenuation NTM_Arachnorb/attack 2
+NTM_Arachnorb/pain NSACNPAI
+NTM_Arachnorb/death NSACNDIE
+
 /* ========
    SCYTHE 2
    ======== */
