@@ -14,6 +14,7 @@ class NTM_Humanoid : NTM_Enemy {
 					burn.A_SetSpecial(special, args[0], args[1], args[2], args[3], args[4]);
 					burn.CopyFriendliness(self, true);
 					burn.angle = angle;
+					burn.vel = vel;
 					burn.original = GetClass();
 				}
 			}
