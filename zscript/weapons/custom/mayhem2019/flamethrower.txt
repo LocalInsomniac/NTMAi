@@ -21,16 +21,17 @@ class NTM_Flamethrower : NTM_PlasmaRifle {
 			Goto Deselect + 1;
 		
 		Ready:
-			NFTR A 0 A_StopSound(Chan_Weapon);
 			NFTR A 1 A_WeaponReady;
-			Goto Ready + 1;
+			Loop;
 		
 		Fire:
-			NFTR B 0 A_GunFlash;
-			NFTR B 1 Bright A_NTM_Flamethrower(true);
-			NFTR CB 1 Bright A_NTM_Flamethrower;
-			NFTR A 1 Bright A_WeaponOffset(0, 32, WOF_Interpolate);
-			NFTR A 0 A_Refire;
+			NFTR D 0 A_GunFlash;
+			NFTR D 1 Bright A_NTM_Flamethrower(true);
+			NFTR ED 1 Bright A_NTM_Flamethrower;
+			NFTR C 1 Bright A_WeaponOffset(0, 32, WOF_Interpolate);
+			NFTR C 1 A_Refire;
+			NFTR C 0 A_StopSound(Chan_Weapon);
+			NFTR CCCCBBBBB 1 A_Refire;
 			Goto Ready;
 		
 		Flash:
