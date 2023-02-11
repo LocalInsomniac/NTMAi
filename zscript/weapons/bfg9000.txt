@@ -52,7 +52,7 @@ class NTM_BFG9000 : BFG9000 {
 	}
 }
 
-class NTM_BFGBall : BFGBall replaces BFGBall {
+class NTM_BFGBall : BFGBall {
 	States {
 		Spawn:
 			NBFB ABCD 2 Bright;

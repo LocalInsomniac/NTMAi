@@ -2,7 +2,6 @@ $attenuation weapons/rocklx 0.666
 $attenuation weapons/bfgx 0.5
 $attenuation world/barrelx 0.666
 $limit weapons/rocklx 0
-weapons/plasmax NSZAPHIT
 $limit weapons/plasmax 0
 $limit weapons/bfgx 0
 $limit world/barrelx 0
@@ -29,6 +28,7 @@ menu/choose	NSBULHIT
 menu/clear DSEMPTY
 
 weapons/chngun DSCHNGUN
+weapons/plasmax NSZAPHIT
 
 grunt/burn DSPOBURN
 
@@ -347,6 +347,10 @@ $limit NTM_RocketWarrior/death 0
    MAYHEM 2019
    =========== */
 
+// Pumpkin
+NTM_Pumpkin/death NSGARDIE
+$pitchset NTM_Pumpkin/death 1.25
+
 // Tommy Gun
 NTM_TommyGun/fire NSTOMMY
 NTM_TommyGun/out NSCLPOUT
@@ -465,6 +469,14 @@ NTM_Arachnorb/active NSACNACT
 NTM_Arachnorb/attack NSZAP
 NTM_Arachnorb/pain NSACNPAI
 NTM_Arachnorb/death NSACNDIE
+
+// Mother Brain
+NTM_MotherBrain/sight NSMOBSIT
+NTM_MotherBrain/active NSMOBACT
+NTM_MotherBrain/attack NSORBATK
+NTM_MotherBrain/ballx DSRXPLOD
+NTM_MotherBrain/pain NSMOBPAI
+NTM_MotherBrain/death NSMOBDIE
 
 /* ========
    SCYTHE 2

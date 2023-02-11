@@ -43,3 +43,46 @@ class NTM_BarrelGib : NTM_Gib {
 			Loop;
 	}
 }
+
+// Pumpkin
+class NTM_Pumpkin : SkullColumn {
+	Default {
+		Health 10;
+		Height 30;
+		DeathSound "NTM_Pumpkin/death";
+		
+		+DontThrust
+		+NotAutoAimed
+		+NoBlood
+		+NoBloodDecals
+		+Shootable
+		-Solid
+	}
+	
+	States {
+		Spawn:
+			NPMP A -1;
+			Stop;
+		
+		Death:
+			NPMP A 0 A_Scream;
+			NPMP A 0 A_SpawnDebris("NTM_PumpkinGib", false, 1.4, 0.7);
+			Stop;
+	}
+}
+
+// Pumpkin Gib
+class NTM_PumpkinGib : NTM_Gib {
+	Default {
+		Health 6;
+		Scale 0.5;
+		
+		+ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NPMG ABCDEFGH 3;
+			Loop;
+	}
+}

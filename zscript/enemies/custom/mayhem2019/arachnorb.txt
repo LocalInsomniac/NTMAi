@@ -38,7 +38,7 @@ class NTM_Arachnorb : NTM_Enemy {
 		Missile:
 			NACN B 12 A_FaceTarget;
 			
-			NACN C 5 Bright {
+			NACN C 3 Bright {
 				A_FaceTarget();
 				
 				for (double i = -90; i <= 90; i += 180) {
@@ -52,7 +52,7 @@ class NTM_Arachnorb : NTM_Enemy {
 				}
 			}
 			
-			NACN B 5 A_FaceTarget;
+			NACN B 7 A_FaceTarget;
 			NACN B 0 A_SpidRefire;
 			Goto Missile + 1;
 		

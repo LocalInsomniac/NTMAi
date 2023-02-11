@@ -1,4 +1,4 @@
-#include "zscript/objects/barrel.txt"
+#include "zscript/objects/props.txt"
 #include "zscript/objects/items.txt"
 #include "zscript/objects/spheres.txt"
 

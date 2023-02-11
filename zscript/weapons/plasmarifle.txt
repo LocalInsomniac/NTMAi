@@ -43,16 +43,17 @@ class NTM_PlasmaRifle : PlasmaRifle {
 class NTM_PlasmaBall : PlasmaBall {
 	Default {
 		+ForceXYBillboard
+		+Bright
 	}
 	
 	States {
 		Spawn:
 			NPLB A 0 NoDelay A_Jump(128, 2);
-			NPLB ABCD 1 Bright;
+			NPLB ABCD 1;
 			Goto Spawn + 1;
 			
 		Death:
-			NPLB EEFGHIJ 2 Bright;
+			NPLB EEFGHIJ 2;
 			Stop;
 	}
 }

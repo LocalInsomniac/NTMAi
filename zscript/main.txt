@@ -53,11 +53,10 @@ class NTMAi : EventHandler {
 		   PainElemental = Hothead ✓
 		   ChaingunGuy, WolfensteinSS = Tommy Gun Cultist ✓
 		   ShotgunGuy = Shotgun Cultist ✓
-		   Revenant = Vampire ✓
 		   Demon = Skeleton ✓
 		   Spectre = Shadow Imp ✓
 		   HellKnight = Arachnorb ✓
-		   BaronOfHell = Mother Brain
+		   BaronOfHell = Mother Brain ✓
 		   LostSoul = Lightning Ball ✓
 		   SpiderMastermind = Abbot
 		   Arachnotron = Death Cube ✓
@@ -489,6 +488,12 @@ class NTMAi : EventHandler {
 	
 	override void CheckReplacement(ReplaceEvent e) {
 		switch (e.replacee.GetClassName()) {
+			case 'SkullColumn':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Pumpkin";
+				}
+			break;
+			
 			case 'RocketAmmo':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_NapalmAmmo";
@@ -636,13 +641,13 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_baronOfHell) {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
-							//e.replacement = NTM_Cybruiser;
+							//e.replacement = "NTM_Cybruiser";
 							
 							break;
 						}
 						
 						if (bMAYhem2019) {
-							//e.replacement = NTM_MotherBrain;
+							e.replacement = "NTM_MotherBrain";
 							
 							break;
 						}
@@ -880,10 +885,12 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_HellKnight':
+			case 'NTM_Arachnorb':
 				e.replacee = "HellKnight";
 			break;
 			
 			case 'NTM_BaronOfHell':
+			case 'NTM_MotherBrain':
 				e.replacee = "BaronOfHell";
 			break;
 			
