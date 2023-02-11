@@ -2,6 +2,8 @@ $attenuation weapons/rocklx 0.666
 $attenuation weapons/bfgx 0.5
 $attenuation world/barrelx 0.666
 $limit weapons/rocklx 0
+weapons/plasmax NSZAPHIT
+$limit weapons/plasmax 0
 $limit weapons/bfgx 0
 $limit world/barrelx 0
 
@@ -345,15 +347,19 @@ $limit NTM_RocketWarrior/death 0
    MAYHEM 2019
    =========== */
 
+// Tommy Gun
 NTM_TommyGun/fire NSTOMMY
 NTM_TommyGun/out NSCLPOUT
 NTM_TommyGun/in NSTOMMYR
 
+// Napalm Launcher
 NTM_NapalmLauncher/fire NSNAPALM
 
+// Flamethrower
 NTM_Flamethrower/select NSFLATUP
 NTM_Flamethrower/fire NSFLAMET
 
+// Zombie
 NTM_Zombie/sight NSZOMSIT
 
 NTM_Zombie/active1 NSZOACT1
@@ -380,6 +386,7 @@ $random NTM_Zombie/death {
 
 NTM_Zombie/burn NSZODIE3
 
+// Cultist
 NTM_Cultist/sight1 NSCULSIT
 
 $random NTM_Cultist/sight {
@@ -436,23 +443,26 @@ $random NTM_Cultist/burn {
 	NTM_Cultist/burn3
 }
 
+// Lightning Orb
 NTM_LightningOrb/active NSORBACT
 NTM_LightningOrb/attack NSORBATK
 NTM_LightningOrb/death DSRXPLOD
 $attenuation NTM_LightningOrb/death 0.666
 $limit NTM_LightningOrb/death 0
 
+// Death Cube
 NTM_DeathCube/active DSBOSCUB
 NTM_DeathCube/death DSBAREXP
 $attenuation NTM_DeathCube/death 0.666
 $limit NTM_DeathCube/death 0
 
+// Hothead
 NTM_Hothead/attack DSFIRSHT
 
+// Arachnorb
 NTM_Arachnorb/sight NSACNACT
 NTM_Arachnorb/active NSACNACT
-NTM_Arachnorb/attack NSORBATK
-$attenuation NTM_Arachnorb/attack 2
+NTM_Arachnorb/attack NSZAP
 NTM_Arachnorb/pain NSACNPAI
 NTM_Arachnorb/death NSACNDIE
 
