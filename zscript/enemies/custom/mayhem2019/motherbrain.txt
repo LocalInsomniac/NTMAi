@@ -11,6 +11,8 @@ class NTM_MotherBrain : NTM_Boss {
 		PainSound "NTM_MotherBrain/pain";
 		DeathSound "NTM_MotherBrain/death";
 		NTM_Enemy.TicsPerChase 3;
+		Tag "Mother Brain";
+		Obituary "%o was evaporated by a Mother Brain.";
 		
 		+NoGravity
 		+Float

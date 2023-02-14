@@ -7,6 +7,8 @@ class NTM_DeathCube : NTM_Enemy {
 		PainChance 50;
 		ActiveSound "NTM_DeathCube/active";
 		DeathSound "NTM_DeathCube/death";
+		Tag "Death Cube";
+		Obituary "%o was executed by the Death Cube.";
 		
 		+DontThrust
 		+Float

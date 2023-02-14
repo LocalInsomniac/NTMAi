@@ -8,7 +8,7 @@ class NTM_Flamethrower : NTM_PlasmaRifle {
 	
 	States {
 		Spawn:
-			NFTR D -1;
+			NFTR F -1;
 			Stop;
 		
 		Select:

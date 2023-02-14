@@ -10,6 +10,8 @@ class NTM_Arachnorb : NTM_Enemy {
 		PainSound "NTM_Arachnorb/pain";
 		DeathSound "NTM_Arachnorb/death";
 		NTM_Enemy.TicsPerChase 4;
+		Tag "Arachnorb";
+		Obituary "%o's brain was melted by an Arachnorb.";
 		
 		+NoGravity
 		+Float
@@ -61,21 +63,21 @@ class NTM_Arachnorb : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NACN E 5 {
+			NACN E 6 {
 				bFloatBob = false;
 				A_NTM_Death();
 			}
 			
-			NACN F 5 A_NoBlocking;
-			NACN GH 5;
+			NACN F 6 A_NoBlocking;
+			NACN GH 6;
 			NACN I -1 A_SetFloorClip;
 			Stop;
 		
 		Raise:
-			NACN I 5 A_UnsetFloorClip;
-			NACN HGF 5;
+			NACN I 6 A_UnsetFloorClip;
+			NACN HGF 6;
 			
-			NACN E 5 {
+			NACN E 6 {
 				bFloatBob = true;
 			}
 			

@@ -85,6 +85,5 @@ class NTM_TommyGunCultist2 : NTM_TommyGunCultist {
 	Default {
 		Health 50;
 		DropItem "Clip";
-		Species "WolfensteinSS";
 	}
 }

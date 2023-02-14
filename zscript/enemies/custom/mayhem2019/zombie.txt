@@ -13,6 +13,7 @@ class NTM_Zombie : NTM_Humanoid {
 		HitObituary "%o was eaten by a Zombie.";
 		NTM_Enemy.TicsPerChase 3;
 		Species "Zombieman";
+		Tag "Zombie";
 	}
 	
 	States {
