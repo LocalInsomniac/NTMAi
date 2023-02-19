@@ -1,0 +1,93 @@
+class NTM_Arachnorb : NTM_Enemy {
+	Default {
+		Health 80;
+		Speed 10;
+		Radius 16;
+		Height 54;
+		PainChance 128;
+		SeeSound "NTM_Arachnorb/sight";
+		ActiveSound "NTM_Arachnorb/active";
+		PainSound "NTM_Arachnorb/pain";
+		DeathSound "NTM_Arachnorb/death";
+		NTM_Enemy.TicsPerChase 4;
+		Tag "Arachnorb";
+		Obituary "%o's brain was melted by an Arachnorb.";
+		
+		+NoGravity
+		+Float
+		+FloatBob
+		-FloorClip
+	}
+	
+	States {
+		Spawn:
+			NACN A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NACN A 4 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NACN A 4 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NACN A 1 A_NTM_SWChase;
+			NACN AAA 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NACN B 12 A_FaceTarget;
+			
+			NACN C 3 Bright {
+				A_FaceTarget();
+				
+				for (double i = -90; i <= 90; i += 180) {
+					Actor missile = A_SpawnProjectile("NTM_ArachnorbBall", 44);
+					
+					if (missile) {
+						double ang = angle - i;
+						
+						missile.SetOrigin(missile.pos + (Cos(ang) * 10, Sin(ang) * 10, 0), false);
+					}
+				}
+			}
+			
+			NACN B 7 A_FaceTarget;
+			NACN B 0 A_SpidRefire;
+			Goto Missile + 1;
+		
+		Pain:
+			NACN D 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NACN E 6 {
+				bFloatBob = false;
+				A_NTM_Death();
+			}
+			
+			NACN F 6 A_NoBlocking;
+			NACN GH 6;
+			NACN I -1 A_SetFloorClip;
+			Stop;
+		
+		Raise:
+			NACN I 6 A_UnsetFloorClip;
+			NACN HGF 6;
+			
+			NACN E 6 {
+				bFloatBob = true;
+			}
+			
+			Goto See;
+	}
+}
+
+class NTM_ArachnorbBall : NTM_ArachnotronBall {
+	Default {
+		Scale 0.8;
+		SeeSound "NTM_Arachnorb/attack";
+	}
+}

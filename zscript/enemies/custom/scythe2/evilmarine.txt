@@ -1,0 +1,61 @@
+class NTM_EvilMarine : NTM_PumpkinMarine {
+	Default {
+		Translation 2;
+		SeeSound "NTM_EvilMarine/sight";
+		ActiveSound "NTM_EvilMarine/active";
+		AttackSound "NTM_EvilMarine/attack";
+		PainSound "NTM_EvilMarine/pain";
+		DeathSound "NTM_EvilMarine/death";
+		NTM_Humanoid.BurnSound "NTM_EvilMarine/burn";
+		Obituary "%o was betrayed by an Evil Marine.";
+		Tag "Evil Marine";
+		DropItem "Clip";
+		Species "WolfensteinSS";
+	}
+	
+	States {
+		Spawn:
+			NPLA A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NPLA AABBCCDD 1 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NPLA AABBCCDD 1 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NPLA AABBCCDD 1 A_NTM_SWChase;
+			Loop;
+		
+		Missile:
+			NPLA E 2 A_FaceTarget;
+			NPLA F 1 Bright A_NTM_PumpkinAttack;
+			NPLA E 2 A_FaceTarget;
+			NPLA F 1 Bright A_NTM_PumpkinAttack;
+			NPLA E 2 A_FaceTarget;
+			NPLA F 1 Bright A_NTM_PumpkinAttack;
+			Goto See;
+		
+		Pain:
+			NPLA G 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NPLA H 5 A_NTM_Death;
+			NPLA I 5 A_NoBlocking;
+			NPLA JK 5;
+			NPLA L -1;
+			Stop;
+		
+		Raise:
+			NPLA LKJIH 5;
+			Goto See;
+		
+		Leap:
+			NPLA M 1 A_NTM_Leap(false);
+			Loop;
+	}
+}

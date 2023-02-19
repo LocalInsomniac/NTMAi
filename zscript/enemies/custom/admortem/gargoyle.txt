@@ -1,0 +1,153 @@
+class NTM_Gargoyle : NTM_Enemy {
+	Default {
+		Radius 19;
+		Height 40;
+		Mass 50;
+		Speed 10;
+		Health 25;
+		PainChance 256;
+		ReactionTime 8;
+		SeeSound "NTM_Gargoyle/sight";
+		ActiveSound "NTM_Gargoyle/active";
+		PainSound "NTM_Gargoyle/pain";
+		NTM_Enemy.TicsPerChase 2;
+		Tag "Gargoyle";
+		Obituary "%o was stung by a Gargoyle.";
+		HitObituary "%o's nose was bit by a Gargoyle.";
+		
+		-FloorClip
+		+Float
+		+NoGravity
+		+SpawnCeiling
+	}
+	
+	States {
+		Spawn:
+			NGAR ABCB 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NGAR AABBCCBB 2 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NGAR AABBCCBB 2 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NGAR A 1 A_NTM_SWChase;
+			NGAR A 1 A_NTM_SWChase2;
+			NGAR A 1 A_NTM_SWChase;
+			NGAR A 1 A_NTM_SWChase2;
+			NGAR B 1 A_NTM_SWChase;
+			NGAR B 1 A_NTM_SWChase2;
+			NGAR B 1 A_NTM_SWChase;
+			NGAR B 1 A_NTM_SWChase2;
+			NGAR C 1 A_NTM_SWChase;
+			NGAR C 1 A_NTM_SWChase2;
+			NGAR C 1 A_NTM_SWChase;
+			NGAR C 1 A_NTM_SWChase2;
+			NGAR B 1 A_NTM_SWChase;
+			NGAR B 1 A_NTM_SWChase2;
+			NGAR B 1 A_NTM_SWChase;
+			NGAR B 1 A_NTM_SWChase2;
+			Loop;
+		
+		Melee:
+		Missile:
+			NGAR DE 4 A_FaceTarget;
+			NGAR F 4 A_CustomComboAttack("NTM_GargoyleBall", 20, 3, "NTM_Gargoyle/melee");
+			Goto See;
+		
+		Pain:
+			NGAR G 8 A_Pain;
+			Goto See;
+		
+		Death:
+			NGAR H 5 A_NTM_Death;
+			NGAR H 0 A_NoBlocking;
+			NGAR H 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
+			Wait;
+			NGAR I 0 A_SetFloorClip;
+			NGAR I 5 A_StartSound("NTM_Gargoyle/death");
+			NGAR JK 5;
+			NGAR L -1;
+			Stop;
+		
+		XDeath:
+			NGAR I 0 {
+				A_SetFloorClip();
+				A_SpawnItemEx("NTM_GargoyleWing", -8, 16, 10, FRandom(-10, 10), FRandom(-2, 10), FRandom(8, 16));
+				A_SpawnItemEx("NTM_GargoyleWing2", -8, -16, 10, FRandom(-10, 10), FRandom(-10, 2), FRandom(8, 16));
+			}
+			
+			NGAR I 5 A_NTM_XDeath;
+			NGAR J 5 A_NoBlocking;
+			NGAR K 5;
+			NGAR L -1;
+			Stop;
+		
+		Raise:
+			NGAR KJI 5;
+			NGAR H 5 A_UnsetFloorClip;
+			Goto See;
+	}
+}
+
+class NTM_Gargoyle2 : NTM_Gargoyle {
+	Default {
+		-SpawnCeiling
+	}
+}
+
+class NTM_GargoyleBall : NTM_ImpBall {
+	Default {
+		Speed 13;
+		FastSpeed 25;
+		
+		-ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NGAB AB 4 Bright;
+			Loop;
+			
+		Death:
+			NEXP A 2 Bright {
+				scale *= 0.3;
+				A_SetTranslation("NTM_Explosion");
+			}
+			
+			Goto Super::Death + 1;
+	}
+}
+
+class NTM_GargoyleWing : NTM_Gib {
+	Default {
+		Scale 0.666;
+		Gravity 0.666;
+		
+		+NTM_Gib.NoRandomFlip
+	}
+	
+	States {
+		Spawn:
+			NGAW ABCDEFGH 3;
+			Loop;
+		
+		Crash:
+			NGAW I -1 {
+				vel.xy *= 0;
+				A_QueueCorpse();
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_GargoyleWing2 : NTM_GargoyleWing {
+	Default {
+		+XFlip
+	}
+}

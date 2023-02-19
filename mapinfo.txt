@@ -1,0 +1,45 @@
+GameInfo {
+	AddEventHandlers = "NTMAI"
+    PlayerClasses = "NTM_Player"
+	QuitSound = ""
+	BorderFlat = "AG128_1"
+	TitlePage = "NTMPIC"
+	TitleMusic = "$MUSIC_NTMAI"
+}
+
+Skill Baby {
+	AutoUseHealth
+	AmmoFactor = 2
+	DamageFactor = 0.5
+	EasyBossBrain
+	SpawnFilter = Baby
+	Name = "Too Young To Die"
+	Key = "i"
+}
+
+skill Easy {
+	EasyBossBrain
+	SpawnFilter = Easy
+	Name = "Not Too Rough"
+	Key = "h"
+}
+
+skill Normal {
+	SpawnFilter = Normal
+	Key = "h"
+	Name = "Hurt Me Plenty"
+	DefaultSkill
+}
+
+Skill Hard {
+	SpawnFilter = Hard
+	Name = "Ultra-Violence"
+	Key = "u"
+}
+
+Skill Nightmare {
+	Aggressiveness = 0.666
+	SpawnFilter = Nightmare
+	Name = "Nightmare"
+	Key = "n"
+}

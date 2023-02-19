@@ -1,0 +1,100 @@
+class NTM_NapalmLauncher : NTM_RocketLauncher {
+	Default {
+		Inventory.PickUpMessage "Napalm Launcher!";
+		Obituary "%o went up in flames from %k's Napalm Launcher.";
+		Tag "Napalm Launcher";
+	}
+	
+	States {
+		Ready:
+			NNAP A 1 A_WeaponReady;
+			Loop;
+			
+		Deselect:
+			NNAP A 1 A_Lower(12);
+			Loop;
+			
+		Select:
+			NNAP A 1 A_Raise(12);
+			Loop;
+			
+		Fire:
+			NNAP B 3 Bright {
+				A_FireProjectile("NTM_Napalm", 0, true, 7, -4);
+				A_GunFlash();
+				A_WeaponOffset(12, 50, WOF_Interpolate);
+			}
+			
+			NNAP C 3 Bright A_WeaponOffset(16, 56, WOF_Interpolate);
+			NNAP D 3 Bright A_WeaponOffset(18, 58, WOF_Interpolate);
+			NNAP A 3 A_WeaponOffset(12, 50, WOF_Interpolate);
+			NNAP A 3 A_WeaponOffset(4, 38, WOF_Interpolate);
+			NNAP A 3 A_WeaponOffset(flags: WOF_Interpolate);
+			NNAP A 0 A_Refire;
+			Goto Ready;
+		
+		Flash:
+			TNT1 A 3 A_Light1;
+			TNT1 A 3 A_Light2;
+			TNT1 A 3 A_Light1;
+			Goto LightDone;
+		
+		Spawn:
+			NNAP E -1;
+			Stop;
+	}
+}
+
+class NTM_Napalm : NTM_Rocket {
+	Default {
+		Scale 1;
+		Translation "168:175=208:215", "176:191=176:191";
+		SeeSound "NTM_NapalmLauncher/fire";
+		DamageType "Fire";
+	}
+	
+	States {
+		Spawn:
+			NBRB AB 2 Bright A_SpawnItemEx("NTM_NapalmTrail");
+			Loop;
+		
+		Death:
+			TNT1 A 15 {
+				Spawn("NTM_Explosion2", pos);
+				NTMAi.Explode(self, 128, 128, XF_HurtSource, "Fire");
+				A_Quake(2, 15, 0, 512, "");
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_NapalmTrail : RocketSmokeTrail {
+	Default {
+		RenderStyle "Add";
+		Alpha 1;
+		Translation "NTM_Explosion";
+		
+		+ZDoomTrans
+		+ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NFI3 ABCDE 2 Bright;
+			Stop;
+	}
+}
+
+class NTM_NapalmAmmo : RocketAmmo {
+	Default {
+		Inventory.PickUpMessage "Napalm Shell";
+		Inventory.Icon "NNAPA0";
+	}
+	
+	States {
+		Spawn:
+			NNPS A -1;
+			Stop;
+	}
+}

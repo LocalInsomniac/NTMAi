@@ -1,0 +1,76 @@
+class NTM_Satyr : NTM_HellKnight {
+	Default {
+		Mass 500;
+		Speed 12;
+		Health 300;
+		PainChance 200;
+		ReactionTime 8;
+		Translation "16:47=64:79";
+		SeeSound "NTM_Satyr/sight";
+		ActiveSound "NTM_Satyr/active";
+		PainSound "NTM_Satyr/pain";
+		DeathSound "NTM_Satyr/death";
+		Tag "Satyr";
+		Obituary "%o was scorched by a Satyr.";
+		HitObituary "%o was mauled by a Satyr.";
+		
+		+MissileEvenMore
+	}
+	
+	States {
+		Melee:
+		Missile:
+			NBRS EF 5 A_FaceTarget;
+			NBRS G 6 A_NTM_SatyrAttack;
+			NBRS TL 5 A_FaceTarget;
+			NBRS U 6 A_NTM_SatyrAttack;
+			Goto See;
+		
+		Charge:
+			NBRS K 7 {
+				A_NTM_PainDisable();
+				A_FaceTarget();
+			}
+			
+			NBRS L 9 {
+				A_Recoil(-20);
+				A_StartSound("baron/charge");
+			}
+			
+			NBRS M 5 A_CustomMeleeAttack(6 * Random(1, 8), "baron/melee");
+			NBRS M 0 A_NTM_PainEnable;
+			Goto See;
+	}
+	
+	action void A_NTM_SatyrAttack() {
+		A_CustomComboAttack("NTM_SatyrBall", 32, 6 * Random(1, 8), "baron/melee");
+	}
+}
+
+class NTM_Satyr2 : NTM_Satyr {
+	Default {
+		MaxTargetRange 16;
+		Health 320;
+		PainChance 100;
+	}
+}
+
+class NTM_SatyrBall : NTM_BaronBall {
+	Default {
+		Damage 5;
+		DamageType "Fire";
+		Translation "168:176=208:216";
+		Scale 0.85;
+	}
+	
+	States {
+		Death:
+			NEXP A 2 {
+				bForceXYBillboard = true;
+				scale *= 0.48;
+				A_SetTranslation("NTM_Explosion");
+			}
+			
+			Goto Super::Death + 1;
+	}
+}

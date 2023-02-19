@@ -1,0 +1,29 @@
+class NTM_Kick : CustomInventory {
+	Default {
+		+Inventory.Undroppable
+		+Inventory.Untossable
+	}
+	
+	States {
+		Use:
+			TNT1 A 0 A_Overlay(-2, "Kick", true);
+			TNT1 A 0 A_OverlayOffset(-2, 0, 32);
+			Fail;
+		
+		Kick:
+			TNT1 A 3;
+			NKIK AB 2;
+			
+			NKIK C 6 {
+				if (CountInv("PowerStrength") || CountInv("NTM_PowerBerserk")) {
+					A_CustomPunch(20 * Random(1, 10), true, CPF_NoTurn, "NTM_BerserkPuff", 0, 0.25, 100, "", "player/male/fist");
+				} else {
+					A_CustomPunch(2 * Random(1, 10), true, CPF_NoTurn, "NTM_FistPuff", 0, 0, 0, "", "player/male/fist");
+				}
+			}
+			
+			NKIK BA 4;
+			TNT1 A 0 A_TakeInventory("NTM_Kick");
+			Stop;
+	}
+}

@@ -1,0 +1,198 @@
+// Backpack
+class NTM_Backpack : CustomInventory replaces Backpack {
+	Default {
+		Height 26;
+		Inventory.PickupMessage "Backpack full of ammo!";
+		
+		+Inventory.AlwaysPickUp
+	}
+	
+	States {
+		Spawn:
+			BPAK A -1;
+			Stop;
+			
+		Pickup:
+			TNT1 A 0 {
+				A_GiveInventory("NTM_GrenadeItem", 1);
+				A_GiveInventory("Backpack", 1);
+			}
+			
+			Stop;
+	}
+}
+
+// Portable Medkit
+class NTM_PortableMedkit : CustomInventory {
+	Default {
+		Inventory.Amount 100;
+		Inventory.MaxAmount 100;
+		Inventory.InterHubAmount 0x7FFFFFFF;
+		Inventory.PickupMessage "Portable Medkit";
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.Icon "NPMKB0";
+		Tag "Portable Medkit";
+		
+		+Inventory.BigPowerup
+		+Inventory.IsHealth
+		+Inventory.InvBar
+	}
+	
+	States {
+		Spawn:
+			NPMK A -1 Bright;
+			Stop;
+			
+		Use:
+			TNT1 A 0 {
+				if (health >= 100) {
+					return;
+				}
+				
+				A_Log("Portable Medkit used", true);
+				A_StartSound("misc/i_pkup", Chan_Body, ChanF_Overlap | ChanF_Maybe_Local);
+				
+				while (health < 100 && CountInv("NTM_PortableMedkit")) {
+					GiveBody(1);
+					A_TakeInventory("NTM_PortableMedkit", 1);
+				}
+			}
+			
+			Fail;
+	}
+}
+
+// Berserk Pack
+class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
+	Default {
+		NTM_ToggleableInventory.Type "NTM_PowerBerserk";
+		NTM_ToggleableInventory.ActivateSound "misc/p_pkup";
+		Inventory.PickupMessage "Berserk Pack";
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.Icon "NBERB0";
+		
+		+Inventory.IsHealth
+		+NTM_ToggleableInventory.ActiveOnly
+	}
+	
+	States {
+		Spawn:
+			NBER A -1 Bright;
+			Stop;
+	}
+	
+	override void ActivatePowerup() {
+		super.ActivatePowerup();
+		
+		owner.A_Log("Rip and tear!", true);
+		owner.GiveBody(amount);
+		
+		if (owner.CountInv("NTM_Fists")) {
+			owner.A_SelectWeapon("NTM_Fists");
+		} else {
+			owner.A_SelectWeapon("Fist");
+		}
+	}
+}
+
+// Berserk Pack Power
+class NTM_PowerBerserk : PowerSpeed {
+	Default {
+		Powerup.Duration 0x7FFFFFFF;
+		Powerup.Color "Red";
+		Speed 1.2;
+		
+		+PowerSpeed.NoTrail
+		+Inventory.HubPower
+		-Inventory.NoTeleportFreeze
+	}
+}
+
+// Radiation Suit
+class NTM_RadSuit : NTM_ToggleableInventory replaces RadSuit {
+	Default {
+		Height 46;
+		Tag "Radiation Suit";
+		NTM_ToggleableInventory.Type "NTM_PowerRadSuit";
+		NTM_ToggleableInventory.ActivateSound "NTM_Radsuit/use";
+		NTM_ToggleableInventory.DeactivateSound "NTM_Radsuit/use";
+		Inventory.PickupMessage "Radiation Suit";
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.Icon "NSUIA0";
+		
+		+Inventory.InvBar
+	}
+	
+	States {
+		Spawn:
+			SUIT A -1 Bright;
+			Stop;
+	}
+	
+	override void ActivatePowerup() {
+		super.ActivatePowerup();
+		
+		owner.A_Log("Radiation Suit ON", true);
+	}
+	
+	override void DeactivatePowerup() {
+		super.DeactivatePowerup();
+		
+		owner.A_Log("Radiation Suit OFF", true);
+	}
+}
+
+// Radiation Suit Power
+class NTM_PowerRadSuit : PowerIronFeet {
+	Default {
+		Powerup.Duration 0x7FFFFFFF;
+		Powerup.Color "";
+		
+		+Inventory.HubPower
+	}
+}
+
+// Infrared
+class NTM_Infrared : NTM_ToggleableInventory replaces Infrared {
+	Default {
+		Scale 0.9;
+		Tag "Light Amplification Visor";
+		NTM_ToggleableInventory.Type "NTM_PowerInfrared";
+		NTM_ToggleableInventory.ActivateSound "NTM_Infrared/use";
+		NTM_ToggleableInventory.DepletePeriod 45;
+		Inventory.PickupMessage "Light Amplification Visor";
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.Icon "NINFC0";
+		
+		+Inventory.InvBar
+	}
+	
+	States {
+		Spawn:
+			NINF A 12;
+			NINF B 12 Bright;
+			Loop;
+	}
+	
+	override void ActivatePowerup() {
+		super.ActivatePowerup();
+		
+		owner.A_Log("Light Amplification Visor ON", true);
+	}
+	
+	override void DeactivatePowerup() {
+		super.DeactivatePowerup();
+		
+		owner.A_Log("Light Amplification Visor OFF", true);
+	}
+}
+
+// Infrared Power
+class NTM_PowerInfrared : PowerLightAmp {
+	Default {
+		Powerup.Duration 0x7FFFFFFF;
+		Powerup.ColorMap 0.0, 0.0, 0.0, 0.2, 1.0, 0.2;
+		
+		+Inventory.HubPower
+	}
+}

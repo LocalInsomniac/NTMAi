@@ -1,0 +1,236 @@
+class NTM_Revenant : NTM_Enemy {
+	int lastFlyTime;
+    bool stopFlying;
+	
+	Default {
+		Health 300;
+		Radius 20;
+		Height 56;
+		Mass 500;
+		Speed 10;
+		PainChance 100;
+		MeleeThreshold 196;
+		SeeSound "skeleton/sight";
+		PainSound "skeleton/pain";
+		DeathSound "skeleton/death";
+		ActiveSound "skeleton/active";
+		MeleeSound "skeleton/melee";
+		HitObituary "$OB_UNDEADHIT";
+		Obituary "$OB_UNDEAD";
+		Tag "$FN_REVEN";
+		Species "Revenant";
+		NTM_Enemy.TicsPerChase 2;
+		
+		+MissileMore
+	}
+	
+	States {
+		Spawn:
+			NREV A 0 A_JumpIf(bNoGravity, "SpawnFly");
+			NREV A 10 A_Look;
+			Goto Spawn + 1;
+		
+		SpawnFly:
+			NREV S 10 A_Look;
+			Loop;
+		
+		See:
+			#### # 0 {
+				if (sv_ntm_enemyFly) {
+					if (stopFlying) {
+						if ((pos.z - GetGroundHeight()) < maxStepHeight) {
+							A_StopSound(Chan_Item);
+							bNoGravity = false;
+							lastFlyTime = level.time;
+							stopFlying = false;
+							A_SetFloorClip();
+							SetStateLabel("See");
+						} else {
+							vel.z = Max(-4, vel.z - 4);
+						}
+					} else {
+						int flyTime = level.time;
+						
+						if ((flyTime - lastFlyTime) > 175 && !Random(0, 16)) {
+							if (bNoGravity) {
+								stopFlying = true;
+								A_UnsetFloat();
+							} else {
+								A_StartSound("skeleton/fly", Chan_Item, ChanF_Loop, 0.96);
+								lastFlyTime = flyTime;
+								bNoGravity = true;
+								A_SetFloat();
+								A_UnsetFloorClip();
+								SetStateLabel("Fly");
+								vel.z += 4;
+							}
+						}
+					}
+				}
+			}
+			
+			#### # 0 A_JumpIf(bNoGravity, "Fly");
+			Goto Super::See;
+		
+		Fly:
+			#### # 0 {
+				switch (sv_ntm_enemyMove) {
+					case 0:
+						SetStateLabel("DukeFly");
+					break;
+					
+					case 1:
+						SetStateLabel("BloodFly");
+					break;
+					
+					case 2:
+					default:
+						SetStateLabel("SWFly");
+					break;
+				}
+			}
+			
+			Stop;
+		
+		DukeSee:
+			NREV AABBCCDDEEFF 2 A_NTM_DukeChase;
+			Goto See;
+		
+		BloodSee:
+			NREV AABBCCDDEEFF 2 A_NTM_BloodChase;
+			Goto See;
+		
+		SWSee:
+			NREV A 1 A_NTM_SWChase;
+			NREV A 1 A_NTM_SWChase2;
+			NREV A 1 A_NTM_SWChase;
+			NREV A 1 A_NTM_SWChase2;
+			NREV B 1 A_NTM_SWChase;
+			NREV B 1 A_NTM_SWChase2;
+			NREV B 1 A_NTM_SWChase;
+			NREV B 1 A_NTM_SWChase2;
+			NREV C 1 A_NTM_SWChase;
+			NREV C 1 A_NTM_SWChase2;
+			NREV C 1 A_NTM_SWChase;
+			NREV C 1 A_NTM_SWChase2;
+			NREV D 1 A_NTM_SWChase;
+			NREV D 1 A_NTM_SWChase2;
+			NREV D 1 A_NTM_SWChase;
+			NREV D 1 A_NTM_SWChase2;
+			NREV E 1 A_NTM_SWChase;
+			NREV E 1 A_NTM_SWChase2;
+			NREV E 1 A_NTM_SWChase;
+			NREV E 1 A_NTM_SWChase2;
+			NREV F 1 A_NTM_SWChase;
+			NREV F 1 A_NTM_SWChase2;
+			NREV F 1 A_NTM_SWChase;
+			NREV F 1 A_NTM_SWChase2;
+			Goto See;
+		
+		DukeFly:
+			NREV S 2 Bright A_NTM_DukeChase;
+			Goto See;
+		
+		BloodFly:
+			NREV S 2 Bright A_NTM_BloodChase;
+			Goto See;
+		
+		SWFly:
+			NREV S 1 Bright A_NTM_SWChase;
+			NREV S 1 Bright A_NTM_SWChase2;
+			Goto See;
+		
+		Melee:
+			NREV G 0 A_FaceTarget;
+			NREV G 6 A_SkelWhoosh;
+			NREV H 6 A_FaceTarget;
+			NREV I 6 A_SkelFist;
+			Goto See;
+		
+		Missile:
+			NREV J 10 A_FaceTarget;
+			
+			NREV K 6 Bright {
+				A_FaceTarget();
+				
+				for (double i = -90; i <= 90; i += 180) {
+					Actor missile = A_SpawnProjectile("NTM_RevenantTracer", 56);
+					
+					if (missile) {
+						double ang = angle + i;
+						
+						missile.SetOrigin(missile.pos + (cos(ang) * 14, sin(ang) * 14), false);
+					}
+				}
+			}
+			
+			NREV L 10 A_FaceTarget;
+			Goto See;
+		
+		Pain:
+			NREV M 10 A_Pain;
+			Goto See;
+			
+		Death:
+			NREV N 6 {
+				A_StopSound(Chan_Item);
+				A_SetFloorClip();
+				A_NTM_Death();
+			}
+			
+			NREV O 6 A_NoBlocking;
+			NREV P 6;
+			NREV Q 6;
+			NREV R -1;
+			Stop;
+			
+		Raise:
+			NREV RQPON 5;
+			Goto See;
+	}
+}
+
+class NTM_RevenantTracer : RevenantTracer {
+	Default {
+		Damage 5;
+	}
+	
+	States {
+		Spawn:
+			NRTR AB 2 Bright A_NTM_Tracer;
+			Loop;
+			
+		Death:
+			NEXP A 2 Bright {
+				bForceXYBillboard = true;
+				scale *= 0.48;
+				A_SetTranslation("NTM_Explosion");
+			}
+			
+			NEXP BCDEFGHIJ 2 Bright;
+			Stop;
+	}
+	
+	void A_NTM_Tracer(double turn = 5) {
+		Actor smoke = Spawn("NTM_RevenantTracerSmoke", Vec3Offset(-vel.x, -vel.y, 0));
+		
+		if (smoke != null) {
+			smoke.tics -= Random[tracer](0, 3);
+			
+			if (smoke.tics < 1) {
+				smoke.tics = 1;
+			}
+		}
+		
+		A_Tracer2(turn);
+	}
+}
+
+class NTM_RevenantTracerSmoke : RocketSmokeTrail {
+	Default {
+		Scale 0.5;
+		Alpha 0.4;
+		
+		+ForceXYBillboard
+	}
+}

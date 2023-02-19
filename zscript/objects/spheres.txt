@@ -1,0 +1,115 @@
+// Partial Invisibility
+class NTM_BlurSphere : CustomInventory replaces BlurSphere {
+	Default {
+		RenderStyle "Translucent";
+		Inventory.MaxAmount 0;
+		Inventory.PickupMessage "Partial Invisibility!";
+		
+		+CountItem
+		+VisibilityPulse
+		+ZDoomTrans
+		+ForceXYBillboard
+		+Inventory.AutoActivate
+		+Inventory.AlwaysPickUp
+		+Inventory.BigPowerUp
+	}
+	
+	States {
+		Spawn:
+			PINS ABCD 6 Bright;
+			Loop;
+		
+		Pickup:
+			TNT1 A 0 A_StartSound("misc/p_pkup", Chan_Body, ChanF_Overlap | ChanF_Maybe_Local);
+			TNT1 A 0 A_GiveInventory("PowerInvisibility", 1);
+			TNT1 A 0 A_SetBlend("Black", 0.5, 35); 
+			Stop;
+	}
+}
+
+// Soulsphere
+class NTM_Soulsphere : CustomInventory replaces Soulsphere {
+	Default {
+		Inventory.PickupMessage "Soulsphere!";
+		Inventory.PickupSound "";
+		
+		+CountItem
+		+ForceXYBillboard
+		+Inventory.AutoActivate
+		+Inventory.AlwaysPickUp
+		+Inventory.FancyPickupSound
+	}
+	
+	States {
+		Spawn:
+			SOUL ABCDCB 6 Bright;
+			Loop;
+			
+		Pickup:
+			TNT1 A 0 A_StartSound("misc/p_pkup", Chan_Body, ChanF_Overlap | ChanF_Maybe_Local);
+			TNT1 A 0 A_GiveInventory("NTM_SoulsphereHealth", 1);
+			TNT1 A 0 A_SetBlend("Blue", 0.5, 35); 
+			Stop;
+	}
+	
+	override void PostBeginPlay() {
+		Super.PostBeginPlay();
+		
+		NTMAI.ReplaceSecret(self, "NTM_PortableMedkit", sv_ntm_soulsphere);
+	}
+}
+
+// Health for Soulsphere (gross hack?)
+class NTM_SoulsphereHealth : Health {
+	Default {
+		Inventory.Amount 100;
+		Inventory.MaxAmount 200;
+		
+		+Inventory.AlwaysPickup
+	}
+}
+
+// Megasphere
+class NTM_Megasphere : Megasphere replaces Megasphere {
+	Default {
+		Inventory.PickupMessage "Megasphere!";
+		Inventory.PickupSound "";
+		
+		+ForceXYBillboard
+	}
+	
+	States {
+		Pickup:
+			TNT1 A 0 A_StartSound("misc/p_pkup", Chan_Body, ChanF_Overlap | ChanF_Maybe_Local);
+			TNT1 A 0 A_GiveInventory("BlueArmorForMegasphere", 1);
+			TNT1 A 0 A_GiveInventory("MegasphereHealth", 1);
+			TNT1 A 0 A_SetBlend("White", 0.5, 35); 
+			Stop;
+	}
+}
+
+// Invulnerability Sphere
+class NTM_InvulnerabilitySphere : CustomInventory replaces InvulnerabilitySphere {
+	Default {
+		Inventory.MaxAmount 0;
+		Inventory.PickupMessage "Invulnerability!";
+		
+		+CountItem
+		+ForceXYBillboard
+		+Inventory.AutoActivate
+		+Inventory.AlwaysPickUp
+		+Inventory.BigPowerUp
+	}
+	
+	States {
+		Spawn:
+			PINV ABCD 6 Bright;
+			Loop;
+			
+		Pickup:
+			TNT1 A 0 A_StartSound("misc/p_pkup", Chan_Body, ChanF_Overlap | ChanF_Maybe_Local);
+			TNT1 A 0 A_GiveInventory("InvulnerabilitySphere", 1);
+			TNT1 A 0 A_SetBlend("White", 1, 70); 
+			Stop;
+	}
+}

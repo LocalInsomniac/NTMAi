@@ -1,0 +1,91 @@
+class NTM_LightningOrb : NTM_LostSoul {
+	Default {
+		Health 40;
+		Speed 6;
+		Scale 0.5;
+		ActiveSound "NTM_LightningOrb/active";
+		AttackSound "NTM_LightningOrb/attack";
+		DeathSound "NTM_LightningOrb/death";
+		Obituary "%o was blasted by a Lightning Orb.";
+		HitObituary "%o got zapped by a Lightning Orb.";
+		Tag "Lightning Orb";
+		RenderStyle "Add";
+		NTM_Enemy.TicsPerChase 2;
+		
+		+ZDoomTrans
+		+LookAllAround
+		+Bright
+		+NoPain
+		+ForceXYBillboard
+		-MissileMore
+		-MissileEvenMore
+	}
+	
+	States {
+		Spawn:
+			NORB ABCD 2 {
+				A_Look();
+				
+				if (Random(0, 256) < 10) {
+					A_StartSound(activeSound, Chan_Voice, ChanF_NoStop);
+				}
+			}
+			
+			Loop;
+		
+		DukeSee:
+			NORB ABCD 2 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NORB ABCD 2 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NORB A 1 A_NTM_SWChase;
+			NORB A 1 A_NTM_SWChase2;
+			NORB B 1 A_NTM_SWChase;
+			NORB B 1 A_NTM_SWChase2;
+			NORB C 1 A_NTM_SWChase;
+			NORB C 1 A_NTM_SWChase2;
+			NORB D 1 A_NTM_SWChase;
+			NORB D 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NORB ABC 2 A_FaceTarget;
+			NORB D 2 A_SkullAttack;
+			
+		Missile2:
+			NORB A 2 A_JumpIf(vel.xy.Length() < 10, 4);
+			NORB BCD 2;
+			Loop;
+			
+			NORB A 0 {
+				bSkullFly = false;
+			}
+			
+			Goto See;
+		
+		Melee:
+			NORB A 0 A_Die;
+			
+		Death:
+			NORB A 1;
+			
+			TNT1 A 15 {
+				A_NTM_Death();
+				
+				Actor boom = Spawn("NTM_Explosion4", pos + (0, 0, 12));
+				
+				if (boom != null) {
+					boom.A_SetTranslation("NTM_Explosion_LightningOrb");
+				}
+				
+				NTMAi.Explode(self);
+				A_Quake(2, 15, 0, 512, "");
+			}
+			
+			Stop;
+	}
+}

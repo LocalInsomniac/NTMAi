@@ -1,0 +1,2 @@
+[default]
+MUSIC_NTMAI = "NTMAI";

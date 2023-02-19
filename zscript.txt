@@ -1,0 +1,6 @@
+version "4.10"
+#include "zscript/main.txt"
+#include "zscript/player.txt"
+#include "zscript/objects.txt"
+#include "zscript/enemies.txt"
+#include "zscript/effects.txt"

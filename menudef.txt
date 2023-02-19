@@ -1,0 +1,132 @@
+// Main Menu
+ListMenu "MainMenu" {
+	StaticPatch 94, 2, "M_DOOM"
+	Position 96, 72
+	
+	IfOption(ReadThis) {
+		Position 96, 64
+	}
+	
+	PatchItem "M_NGAME", "n", "PlayerClassMenu"
+	
+	IfOption(SwapMenu) {
+		PatchItem "M_LOADG", "l", "LoadGameMenu"
+		PatchItem "M_SAVEG", "s", "SaveGameMenu"
+		PatchItem "M_OPTION", "o", "OptionsMenu"
+		TextItem "NTMAi Options", "o", "NTM_Options"
+	} else {
+		PatchItem "M_OPTION","o", "OptionsMenu"
+		TextItem "NTMAi Options", "o", "NTM_Options"
+		PatchItem "M_LOADG", "l", "LoadGameMenu"
+		PatchItem "M_SAVEG", "s", "SaveGameMenu"
+	}
+	
+	IfOption(ReadThis) {
+		PatchItem "M_RDTHIS", "r", "ReadThisMenu"
+	}
+	
+	PatchItem "M_QUITG", "q", "QuitMenu"
+}
+
+// Player Class Menu
+ListMenu "PlayerClassMenu" {
+	NetgameMessage "$NEWGAME"
+	StaticTextCentered 160, 16, "Class"
+	Position 48, 64
+	PlayerDisplay 220, 64, "20 00 00", "80 00 40"
+	MouseWindow 0, 220
+}
+
+// Episode Menu
+ListMenu "EpisodeMenu" {
+	NetgameMessage "$NEWGAME"
+	StaticTextCentered 160, 38, "Episode"
+	Position 48, 64
+}
+
+// Skill Menu
+ListMenu "SkillMenu" {
+	StaticTextCentered 160, 38, "Difficulty"
+	Position 72, 64
+}
+
+// NTMAi Options
+OptionValue "NTM_Options_Soulsphere" {
+	0, "No"
+	1, "Yes"
+	2, "Outside Secrets"
+}
+
+OptionValue "NTM_Options_EnemyMovementStyle" {
+    0, "Duke Nukem 3D"
+    1, "Blood (Experimental)"
+	2, "Shadow Warrior"
+}
+
+OptionValue "NTM_ActorOptions_Toggle" {
+	0, "Don't Replace"
+	1, "Replace"
+}
+
+OptionMenu "NTM_Options" {
+    Title "NTMAI Options"
+	StaticText "Changes will take full effect on level restart.", "White"
+	StaticText ""
+	Submenu "Enemy Replacement Options", "NTM_ActorOptions"
+	StaticText ""
+	Submenu "Customize Controls", "CustomizeControls"
+	StaticText ""
+    StaticText "Visual Options", "Yellow"
+	Option "Show Title On Level Start", "sv_ntm_startTitle", "YesNo"
+	Option "Twitch On Level Start", "sv_ntm_startTwitch", "YesNo"
+	Option "Gore Effects", "sv_ntm_gore", "OnOff"
+	StaticText ""
+	StaticText "Gameplay Options", "Yellow"
+	Option "Flinch From Long Falls", "sv_ntm_flinch", "YesNo"
+	Option "Play Keycard Animation On Locked Doors", "sv_ntm_keycard", "YesNo"
+	Option "Auto-Activate Radiation Suit On Hazards", "cl_ntm_autoRadSuit", "YesNo"
+	Option "Replace Soulspheres With Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
+	Option "Blood Explosion Damage (Experimental)", "sv_ntm_blast", "OnOff"
+	StaticText ""
+	Option "Enemy Movement Style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
+	Option "Zombies Throw Grenades On Hard Difficulties", "sv_ntm_grenadiers", "YesNo"
+	Option "Imps Leap Over Ledges", "sv_ntm_enemyLeap", "YesNo"
+	Option "Flying Revenants", "sv_ntm_enemyFly", "OnOff"
+}
+
+OptionMenu "NTM_ActorOptions" {
+	Title "Enemy Replacement Options"
+	StaticText "These options control which enemies will be replaced with", "White"
+	StaticText "NTMAi's enemies. This is useful for retaining new enemies", "White"
+	StaticText "in map packs that use DeHackEd and/or replace vanilla enemies.", "White"
+	StaticText ""
+	StaticText "These changes will take full effect on level restart.", "White"
+	StaticText ""
+	Option "Zombieman", "sv_ntm_r_zombieman", "NTM_ActorOptions_Toggle"
+	Option "Shotgun Guy", "sv_ntm_r_shotgunGuy", "NTM_ActorOptions_Toggle"
+	Option "Heavy Weapon Dude", "sv_ntm_r_heavyWeaponDude", "NTM_ActorOptions_Toggle"
+	Option "Imp", "sv_ntm_r_imp", "NTM_ActorOptions_Toggle"
+	Option "Demon", "sv_ntm_r_demon", "NTM_ActorOptions_Toggle"
+	Option "Spectre", "sv_ntm_r_spectre", "NTM_ActorOptions_Toggle"
+	Option "Lost Soul", "sv_ntm_r_lostSoul", "NTM_ActorOptions_Toggle"
+	Option "Cacodemon", "sv_ntm_r_cacodemon", "NTM_ActorOptions_Toggle"
+	Option "Hell Knight", "sv_ntm_r_hellKnight", "NTM_ActorOptions_Toggle"
+	Option "Baron of Hell", "sv_ntm_r_baronOfHell", "NTM_ActorOptions_Toggle"
+	Option "Arachnotron", "sv_ntm_r_arachnotron", "NTM_ActorOptions_Toggle"
+	Option "Pain Elemental", "sv_ntm_r_painElemental", "NTM_ActorOptions_Toggle"
+	Option "Revenant", "sv_ntm_r_revenant", "NTM_ActorOptions_Toggle"
+	Option "Mancubus", "sv_ntm_r_mancubus", "NTM_ActorOptions_Toggle"
+	Option "Arch-vile", "sv_ntm_r_archVile", "NTM_ActorOptions_Toggle"
+	Option "Spider Mastermind", "sv_ntm_r_spiderMastermind", "NTM_ActorOptions_Toggle"
+	Option "Cyberdemon", "sv_ntm_r_cyberdemon", "NTM_ActorOptions_Toggle"
+	Option "SS", "sv_ntm_r_ss", "NTM_ActorOptions_Toggle"
+	StaticText ""
+	StaticText "NTMAi will automatically replace custom enemies from AD MORTEM and Scythe 2.", "White"
+	StaticText "You can disable this option if you want to play with the original enemies.", "White"
+	StaticText ""
+	Option "Custom Enemies", "sv_ntm_r_custom", "NTM_ActorOptions_Toggle"
+}
+
+AddOptionMenu "OptionsMenu" {
+    Submenu "NTMAi Options", "NTM_Options"
+}

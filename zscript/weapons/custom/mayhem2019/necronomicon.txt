@@ -1,0 +1,150 @@
+class NTM_Necronomicon : DoomWeapon {
+	Default {
+		Height 20;
+		Weapon.SelectionOrder 2800;
+		Weapon.UpSound "NTM_Necronomicon/up";
+		Inventory.PickupMessage "The Necronomicon! Maybe you shouldn't...";
+		Tag "Necronomicon";
+		Obituary "%o's soul was evaporated by %k's Necronomicon.";
+		
+		+Weapon.NoAutoFire
+		+FloatBob
+		+NoGravity
+	}
+	
+	States {
+		Select:
+			NNEC AA 1 A_Raise(12);
+			NNEC BB 1 A_Raise(12);
+			NNEC CC 1 A_Raise(12);
+			
+		SelectLoop:
+			NNEC D 1 A_Raise(12);
+			Loop;
+		
+		Deselect:
+			NNEC D 0 A_Overlay(2, null);
+			NNEC DD 1 A_Lower(12);
+			NNEC CC 1 A_Lower(12);
+			NNEC BB 1 A_Lower(12);
+			
+		DeselectLoop:
+			NNEC A 1 A_Lower(12);
+			Loop;
+		
+		Ready:
+			NNEC E 1 A_WeaponReady;
+			Loop;
+		
+		Fire:
+			NNEC E 0 A_Overlay(2, "Fire2");
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, -8, 34, WOF_Interpolate);
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, -16, 38, WOF_Interpolate);
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, -32, 44, WOF_Interpolate);
+			NNEC E 16 A_OverlayOffset(PSP_Weapon, -36, 46, WOF_Interpolate);
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, -28, 42, WOF_Interpolate);
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, -16, 38, WOF_Interpolate);
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, -8, 34, WOF_Interpolate);
+			NNEC E 2 A_OverlayOffset(PSP_Weapon, 0, 32, WOF_Interpolate);
+			NNEC E 8;
+			NNEC E 0 A_Refire;
+			Goto Ready;
+		
+		Fire2:
+			NNEC G 2 A_OverlayOffset(2, 64, 96, WOF_Interpolate);
+			NNEC G 2 A_OverlayOffset(2, 32, 48, WOF_Interpolate);
+			NNEC G 2 A_OverlayOffset(2, 16, 16, WOF_Interpolate);
+			NNEC G 2 A_OverlayOffset(2, 8, 8, WOF_Interpolate);
+			
+			NNEC H 3 Bright {
+				A_StartSound("NTM_Necronomicon/fire", Chan_Weapon, ChanF_Overlap);
+				A_OverlayOffset(2, 0, 0, WOF_Interpolate);
+				A_GunFlash();
+			}
+			
+			NNEC I 8 Bright {
+				A_DamageSelf(20);
+				A_FireProjectile("NTM_NecronomiconBall");
+			}
+			
+			NNEC H 1 Bright;
+			NNEC H 2 Bright A_OverlayOffset(2, 8, 8, WOF_Interpolate);
+			NNEC G 2 A_OverlayOffset(2, 16, 16, WOF_Interpolate);
+			NNEC G 2 A_OverlayOffset(2, 32, 48, WOF_Interpolate);
+			NNEC G 2 A_OverlayOffset(2, 64, 96, WOF_Interpolate);
+			Stop;
+		
+		Flash:
+			TNT1 A 3 A_Light1;
+			TNT1 A 8 A_Light2;
+			TNT1 A 3 A_Light1;
+			Goto LightDone;
+		
+		Spawn:
+			NNEC F -1 Bright;
+			Loop;
+	}
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		
+		AddZ(12, false);
+	}
+}
+
+class NTM_NecronomiconBall : BFGBall {
+	Default {
+		DeathSound "NTM_Necronomicon/firex";
+		
+		+ForceXYBillboard
+		+Bright
+	}
+	
+	States {
+		Spawn:
+			NNEB ABCD 2;
+			Loop;
+		
+		Death:
+			NNEB E 2 {
+				NTMAi.Explode(self, 256, 256);
+				
+				for (double i; i < 360; i += 45) {
+					A_SpawnItemEx("NTM_NecronomiconBall2", angle: i, flags: SXF_NoCheckPosition);
+				}
+			}
+			
+			NNEB FG 2;
+			NNEB HIJKLMNOP 3;
+			Stop;
+	}
+}
+
+class NTM_NecronomiconBall2 : NTM_NecronomiconBall {
+	Default {
+		Scale 0.5;
+		DeathSound "NTM_Necronomicon/firex2";
+		
+		+SeekerMissile
+	}
+	
+	States {
+		Spawn:
+			NNEB ABCD 2 {
+				A_SeekerMissile(360, 5, SMF_Look | SMF_Precise, 256);
+				
+				if (vel.Length() < 0.01) {
+					vel.xy = AngleToVector(angle, speed);
+				}
+			}
+			
+			Loop;
+			
+		Death:
+			NNEB E 2 {
+				NTMAi.Explode(self, 128, 128);
+			}
+			
+			Goto Super::Death + 1;
+	}
+}
