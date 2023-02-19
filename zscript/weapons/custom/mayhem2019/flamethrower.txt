@@ -1,0 +1,113 @@
+class NTM_Flamethrower : NTM_PlasmaRifle {
+	Default {
+		Weapon.UpSound "NTM_Flamethrower/select";
+		Inventory.PickUpMessage "Flamethrower!";
+		Obituary "%o was barbecued by %k's Flamethrower.";
+		Tag "Flamethrower";
+	}
+	
+	States {
+		Spawn:
+			NFTR D -1;
+			Stop;
+		
+		Select:
+			NFTR A 1 A_Raise(12);
+			Loop;
+		
+		Deselect:
+			NFTR A 0 A_StopSound(Chan_Weapon);
+			NFTR A 1 A_Lower(12);
+			Goto Deselect + 1;
+		
+		Ready:
+			NFTR A 0 A_StopSound(Chan_Weapon);
+			NFTR A 1 A_WeaponReady;
+			Goto Ready + 1;
+		
+		Fire:
+			NFTR B 0 A_GunFlash;
+			NFTR B 1 Bright A_NTM_Flamethrower(true);
+			NFTR CB 1 Bright A_NTM_Flamethrower;
+			NFTR A 1 Bright A_WeaponOffset(0, 32, WOF_Interpolate);
+			NFTR A 0 A_Refire;
+			Goto Ready;
+		
+		Flash:
+			TNT1 A 2 A_Light1;
+			TNT1 A 2 A_Light2;
+			TNT1 A 2 A_Light1;
+			Goto LightDone;
+	}
+	
+	action void A_NTM_Flamethrower(bool useAmmo = false) {
+		Actor fire;
+		Actor fire2;
+		
+		[fire, fire2] = A_FireProjectile("NTM_FlamethrowerFire", FRandom(-5, 5), useAmmo, 5, 6, 0, FRandom(-5, 5));
+		
+		if (fire) {
+			fire.SetOrigin(fire.pos + fire.vel, false);
+		}
+		
+		A_WeaponOffset(Random(0, 3), Random(32, 35), WOF_Interpolate);
+		A_StartSound("NTM_Flamethrower/fire", Chan_Weapon, ChanF_Looping);
+	}
+}
+
+class NTM_FlamethrowerFire : Actor {
+	Default {
+		Radius 10;
+		Height 20;
+		Damage 1;
+		DamageType "Fire";
+		Speed 15;
+		Scale 0.666;
+		RenderStyle "Add";
+		Translation "NTM_Explosion";
+		BounceFactor 0.1;
+		Projectile;
+		
+		+ZDoomTrans
+		+Ripper
+		+BloodlessImpact
+		+DontSplash
+		+BounceOnWalls
+		+BounceOnFloors
+		+BounceOnCeilings
+		+ForceXYBillboard
+	}
+	
+	States {
+		Spawn:
+			NFI2 A 3 Bright A_NTM_Fire;
+			NFI2 B 2 Bright A_NTM_Fire;
+			NFI2 C 3 Bright A_NTM_Fire;
+			NFI2 D 2 Bright A_NTM_Fire;
+			NFI2 E 3 Bright A_NTM_Fire;
+			NFI2 F 2 Bright A_NTM_Fire;
+			NFI2 G 3 Bright A_NTM_Fire;
+			NFI2 H 2 Bright A_NTM_Fire;
+			Stop;
+	}
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		
+		bXFlip = Random(0, 1);
+		
+		if (Random(0, 255) > 32) {
+			bPainless = true;
+		}
+	}
+	
+	action void A_NTM_Fire() {
+		A_SpawnItemEx("NTM_FlamethrowerFireTrail", 0, 0, 0, FRandom(-1, 1), FRandom(-1, 1), FRandom(-1, 1));
+	}
+}
+
+class NTM_FlamethrowerFireTrail : NTM_NapalmTrail {
+	Default {
+		Scale 0.75;
+	}
+}

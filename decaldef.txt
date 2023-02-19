@@ -1,0 +1,101 @@
+decal BulletChip {
+	Pic NBULLET
+	X-Scale 0.4
+	Y-Scale 0.4
+    RandomFlipX
+    RandomFlipY
+}
+
+slider NTM_BloodSlide {
+	DistY -10
+	SlideTime 8
+}
+
+stretcher NTM_BloodStretch {
+	GoalY 0.8
+	StretchTime 8
+}
+
+combiner NTM_BloodSmear {
+	NTM_BloodSlide
+	NTM_BloodStretch
+}
+
+decal BloodSplat1 {
+	Pic NBLOOD1
+	X-Scale 0.45
+	Y-Scale 0.45
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+}
+
+decal BloodSplat2 {
+	Pic NBLOOD2
+	X-Scale 0.45
+	Y-Scale 0.45
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+}
+
+decal BloodSplat3 {
+	Pic NBLOOD3
+	X-Scale 0.45
+	Y-Scale 0.45
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+}
+
+decal BloodSplat4 {
+	Pic NBLOOD1
+	X-Scale 0.45
+	Y-Scale 0.45
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+	Animator NTM_BloodSmear
+}
+
+decal BloodSplat5 {
+	Pic NBLOOD2
+	X-Scale 0.45
+	Y-Scale 0.45
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+	Animator NTM_BloodSmear
+}
+
+decal BloodSplat6 {
+	Pic NBLOOD3
+	X-Scale 0.45
+	Y-Scale 0.45
+    RandomFlipX
+    RandomFlipY
+	OpaqueBlood
+	Animator NTM_BloodSmear
+}
+
+decalGroup BloodSplat {
+	BloodSplat1 3
+	BloodSplat2 3
+	BloodSplat3 3
+	BloodSplat4 1
+	BloodSplat5 1
+	BloodSplat6 1
+}
+
+generator NTM_Chainsaw BulletChip
+generator NTM_Pistol BulletChip
+generator NTM_Shotgun BulletChip
+generator NTM_SuperShotgun BulletChip
+generator NTM_Chaingun BulletChip
+generator NTM_TommyGun BulletChip
+
+generator NTM_ZombieMan BulletChip
+generator NTM_ShotgunGuy BulletChip
+generator NTM_ChaingunGuy BulletChip
+generator NTM_SpiderMastermind BulletChip
+generator NTM_German BulletChip

@@ -1,0 +1,406 @@
+#include "zscript/weapons/fists.txt"
+#include "zscript/weapons/chainsaw.txt"
+#include "zscript/weapons/pistol.txt"
+#include "zscript/weapons/shotgun.txt"
+#include "zscript/weapons/supershotgun.txt"
+#include "zscript/weapons/chaingun.txt"
+#include "zscript/weapons/rocketlauncher.txt"
+#include "zscript/weapons/plasmarifle.txt"
+#include "zscript/weapons/bfg9000.txt"
+#include "zscript/weapons/kick.txt"
+#include "zscript/weapons/grenade.txt"
+#include "zscript/weapons/keys.txt"
+
+#include "zscript/weapons/custom/mayhem2019/tommygun.txt"
+#include "zscript/weapons/custom/mayhem2019/napalmlauncher.txt"
+#include "zscript/weapons/custom/mayhem2019/flamethrower.txt"
+
+class NTM_Player : DoomPlayer {
+	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
+	double hNewAngle;
+	Line door;
+	
+	Default {
+		Player.StartItem "NTM_Pistol";
+		Player.StartItem "NTM_Fists";
+		Player.StartItem "Clip", 50;
+		Player.WeaponSlot 1, "NTM_Fists", "NTM_Chainsaw";
+		Player.WeaponSlot 2, "NTM_Pistol";
+		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
+		Player.WeaponSlot 4, "NTM_TommyGun", "NTM_Chaingun";
+		Player.WeaponSlot 5, "NTM_NapalmLauncher", "NTM_RocketLauncher";
+		Player.WeaponSlot 6, "NTM_Flamethrower", "NTM_PlasmaRifle";
+		Player.WeaponSlot 7, "BFG9000", "NTM_BFG9000";
+		Player.CrouchSprite "NPLC";
+		Player.ViewHeight 46;
+		Scale 0.666;
+	}
+	
+	States {
+		Spawn:
+			NPLA A 1 A_PlayerJump;
+			Loop;
+		
+		See:
+			NPLA ABCD 4 A_PlayerJump;
+			Loop;
+		
+		Jump:
+			NPLA M 1;
+			NPLA M 0 A_JumpIf(CantJump(), "Spawn");
+			NPLA M 0 A_JumpIf(vel.z <= 0, "Fall");
+			Loop;
+		
+		Fall:
+			NPLA N 1;
+			NPLA N 0 A_JumpIf(CantJump() || pos.z <= floorZ || bOnMObj, "Spawn");
+			NPLA N 0 A_JumpIf(vel.z > 0, "Jump");
+			Loop;
+		
+		Missile:
+			NPLA E 12;
+			Goto Spawn;
+		
+		Melee:
+			NPLA F 6 Bright;
+			Goto Missile;
+		
+		Pain:
+			NPLA G 8 {
+				if (painTics <= 0) {
+					int deltaHealth = oldHealth - health;
+					
+					if (deltaHealth > 20 || health < 64) {
+						if (deltaHealth > 40) {
+							A_StartSound("NTM_Player/painx", Chan_Voice);
+						} else {
+							A_StartSound("NTM_Player/painb", Chan_Voice);
+						}
+					} else {
+						A_StartSound("NTM_Player/paina", Chan_Voice);
+					}
+					
+					painTics = Random(20, 35);
+				}
+				
+				oldHealth = health;
+			}
+			
+			Goto Spawn;
+		
+		Death.Fire:
+			NPLA G 12 A_ItBurnsItBurns;
+			NPLA G 1 A_CrispyPlayer;
+		Death:
+			NPLA H 7;
+			NPLA I 7 A_PlayerScream;
+			NPLA J 7 A_NoBlocking;
+			NPLA K 7;
+			NPLA L 16 A_CheckPlayerDone;
+			Wait;
+		
+		XDeath:
+		XDeath.Fire:
+			NMGI A 1 A_XScream;
+			NMGI A 4 A_SkullPop("NTM_PlayerHead");
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H 16 A_CheckPlayerDone;
+			Wait;
+		
+		FireHands:
+			NITB ABCD 3 Bright;
+			Loop;
+			
+		FireHandsLower:
+			NITB AAABBBCCCDDD 1 Bright A_HandLower;
+			Loop;
+	}
+	
+	void A_PlayerJump() {
+		if (!CantJump()) {
+			double velZ = vel.z;
+			
+			if (velZ > 0) {
+				SetStateLabel("Jump");
+			}
+			
+			if (velZ < 0) {
+				SetStateLabel("Fall");
+			}
+		}
+	}
+	
+	bool CantJump() {
+		return (bNoClip || bFly || waterLevel > 0);
+	}
+	
+	override void PlayerThink() {
+		super.PlayerThink();
+		
+		// Less slippery movement
+		if (!curSector || !(curSector.flags & 16)) {
+			level.airControl = 0.64;
+			A_SetSpeed(2.24);
+			vel.xy *= 0.88;
+		} else {
+			level.airControl = 0.00390625;
+			A_SetSpeed(1);
+		}
+		
+		// Keycard animations
+		if (doorTics > 0) {
+			A_SetSpeed(0);
+			--doorTics;
+			
+			if (doorTics <= 0 && door) {
+				door.Activate(self, 1, SPAC_Use);
+			}
+		}
+		
+		// Flinch when falling
+		if (sv_ntm_flinch && !waterLevel && !bFly) {
+			switch (fallState) {
+				case (0): // Falling
+					if (vel.z < 0) {
+						if (fallTics <= 8000 / sv_gravity) {
+							++fallTics;
+						} else {
+							fallState = 1;
+						}
+					} else {
+						fallTics = 0;
+					}
+				break;
+				
+				case (1): // Thud
+					if (pos.z <= floorZ || bOnMObj) {
+						A_SetViewPitch(viewPitch + 15, SPF_Interpolate);
+						fallState = 2;
+						fallTics = 0;
+						fallTics2 += 10;
+					}
+				break;
+				
+				case (2): // Flinch
+					if (fallTics2 > 0) {
+						if (fallTics2 >= 9) {
+							vel.xy *= 0.16;
+						}
+						
+						A_SetViewPitch(viewPitch - 1.5, SPF_Interpolate);
+						--fallTics2;
+					} else {
+						fallState = 0;
+					}
+				break;
+			}
+		}
+		
+		// Level start twitch like Duke3D
+		if (sv_ntm_startTwitch) {
+			int time = level.mapTime;
+			
+			if (time <= 26) {
+				if (time == 26) {
+					A_SetViewAngle(0, SPF_Interpolate);
+				} else {
+					double f = (26 - time) * 0.0384615384615385;
+					
+					A_SetViewAngle(Round(DeltaAngle(angle, 0) * (f * f * f)), SPF_Interpolate);
+				}
+			}
+		}
+	}
+	
+	override void Tick() {
+		// GROSS HACK: Do not let the player be able to select temporary
+		//             animations!
+		if (player) {
+			let r = player.readyWeapon;
+			let l = player.pendingWeapon;
+			
+			if (!(r is "NTM_Key") && !(l is "NTM_Key")) {
+				A_TakeInventory("NTM_Key_RedCard");
+				A_TakeInventory("NTM_Key_YellowCard");
+				A_TakeInventory("NTM_Key_BlueCard");
+				A_TakeInventory("NTM_Key_RedSkull");
+				A_TakeInventory("NTM_Key_YellowSkull");
+				A_TakeInventory("NTM_Key_BlueSkull");
+			}
+			
+			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
+				A_TakeInventory("NTM_GrenadeThrow");
+			}
+		}
+		
+		// Pain timer to avoid voice spam
+		if (painTics > 0) {
+			--painTics;
+		}
+		
+		// Auto-activate radiation suit if allowed
+		if (CVar.FindCVar("cl_ntm_autoRadSuit").GetBool()) {
+			NTM_ToggleableInventory suit = NTM_ToggleableInventory(FindInventory("NTM_RadSuit"));
+			
+			if (suit) {
+				// The suit will automatically ¨be used underwater and on slime
+				if (waterLevel >=3 || (curSector && curSector.damageType)) {
+					if (!suit.active) {
+						suit.automatic = false;
+						UseInventory(suit);
+					}
+				} else {
+					if (suit.active) {
+						suit.automatic = false;
+						UseInventory(suit);
+					}
+				}
+				
+				suit.automatic = true;
+			}
+		} else {
+			NTM_ToggleableInventory suit = NTM_ToggleableInventory(FindInventory("NTM_RadSuit"));
+			
+			if (suit) {
+				suit.automatic = false;
+			}
+		}
+		
+		super.Tick();
+	}
+	
+	// Shadow Warrior-styled weapon bobbing
+	override Vector2 BobWeapon(double ticFrac) {
+		if (multiplayer) {
+			return Super.BobWeapon(ticFrac);
+		}
+		
+		Vector2 p[2];
+		Weapon w = player ? player.readyWeapon : null;
+		
+		if (!w || w.bDontBob) {
+			return (0, 0);
+		}
+		
+		for (int i = 0; i < 2; i++) {
+			p[i] = (0, 0);
+			
+			let angle = w.bobSpeed * 128 * player.GetWBobSpeed() * (level.mapTime - 1 + i) * 360 * 0.0001220703125;
+			double hAngle = (player.vel.Length() > 0) ? (3, 3) dot (3, 3) : 0;
+			
+			hNewAngle = NTMAI.Lerp(hNewAngle, hAngle, 0.1);
+			
+			// Add weapon panning like Duke3D
+			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle)) + ((Normalize180(viewAngle) * 0.0111111111111111) * 320);
+			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle))) + Max(fallTics2 - 5, 0) * 5;
+		}
+		
+		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
+	}
+	
+	void A_ItBurnsItBurns() {
+		if (player != null && player.mo == self) {
+			player.SetPSprite(PSP_StrifeHands, FindState("FireHands"));
+			
+			player.readyWeapon = null;
+			player.pendingWeapon = WP_NoChange;
+			player.playerState = PST_Live;
+			player.extraLight = 3;
+		}
+	}
+	
+	void A_CrispyPlayer() {
+		if (player != null && player.mo == self) {
+			PSprite psp = player.GetPSprite(PSP_StrifeHands);
+			
+			State fireHandsLower = FindState("FireHandsLower");
+			State fireHands = FindState("FireHands");
+			
+			if (psp) {
+				if (psp.curState != null && fireHandsLower != null && fireHands != null) {
+					// Calculate state to go to.
+					int dist = fireHands.DistanceTo(psp.curState);
+					
+					if (dist > 0) {
+						player.playerState = PST_Dead;
+						psp.SetState(fireHandsLower + dist);
+						
+						return;
+					}
+				}
+				
+				player.playerState = PST_Dead;
+				psp.SetState(null);
+			}
+		}
+	}
+	
+	void A_HandLower() {
+		if (player != null) {
+			PSprite psp = player.GetPSprite(PSP_StrifeHands);
+			
+			if (psp) {
+				if (psp.curState == null) {
+					psp.SetState(null);
+					
+					return;
+				}
+				
+				psp.y += 3;
+				
+				if (psp.y > weaponBottom * 4) {
+					psp.SetState(null);
+				}
+			}
+			
+			if (player.extraLight > 0) {
+				--player.extraLight;
+			}
+		}
+	}
+}
+
+class NTM_PlayerHead : BloodySkull {
+	Default {
+		Scale 0.666;
+		Gravity 0.36;
+		BounceType "Doom";
+		
+		+Missile
+		+UseBounceState
+		+CanBounceWater
+		-DontBounceOnSky
+	}
+	
+	States {
+		Spawn:
+			NHEA ABCD 4 A_JumpIf(pos.z <= floorZ && vel.z == 0, "Death");
+			Loop;
+		
+		Bounce.Floor:
+			NHEA A 0 {
+				A_SpawnItem("NTM_FlyingBlood");
+				
+				if (Abs(vel.z) >= 3) {
+					A_StartSound("NTM_FlyingGib/splat");
+				}
+			}
+			
+			Goto Spawn;
+		
+		Death:
+			NHEA E 16 A_CheckPlayerDone;
+			Wait;
+	}
+	
+	override void PostBeginPlay() {
+		viewBob = 0;
+		
+		if (player) {
+			player.attacker = null;
+		}
+		
+		bXFlip = Random(0, 1);
+	}
+}

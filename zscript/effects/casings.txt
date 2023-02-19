@@ -1,0 +1,55 @@
+// Bullet Casing
+class NTM_BulletCasing : NTM_Gib {
+	Default {
+		Scale 0.16;
+		Radius 1;
+		Height 1;
+		Gravity 1;
+		BounceSound "NTM_BulletCasing/bounce";
+		BounceType "Doom";
+		BounceFactor 0.75;
+		
+		-Corpse
+		+Missile
+		+CanBounceWater
+		+UseBounceState
+		+ForceXYBillboard
+	}
+	
+	States
+	{
+		Spawn:
+			NBUL A 0;
+		Roll:
+			#### ABCDEFGH 2;
+			Loop;
+			
+		Bounce:
+			#### A 0;
+			Goto Roll;
+			
+		Death:
+			#### # 0 {
+				bMissile = false;
+				A_SetFloorClip();
+			}
+			
+			#### C 350 A_Jump(128, 1);
+			Stop;
+			#### G 350;
+			Stop;
+	}
+}
+
+// Shell Casing
+class NTM_ShellCasing : NTM_BulletCasing {
+	Default {
+		BounceSound "NTM_ShellCasing/bounce";
+	}
+	
+	States {
+		Spawn:
+			NSHE A 0;
+			Goto Roll;
+	}
+}

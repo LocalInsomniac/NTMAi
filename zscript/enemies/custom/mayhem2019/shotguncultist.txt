@@ -1,0 +1,80 @@
+class NTM_ShotgunCultist : NTM_ShotgunGuy {
+	Default {
+		DamageFactor "NTM_CultistBullet", 0;
+		SeeSound "NTM_Cultist/sight";
+		ActiveSound "NTM_Cultist/active";
+		PainSound "NTM_Cultist/pain";
+		DeathSound "";
+		NTM_Humanoid.BurnSound "NTM_Cultist/burn";
+		Translation "NTM_German_Brown";
+		Tag "Shotgun Cultist";
+		Obituary "%o was shot by a Shotgun Cultist.";
+	}
+	
+	States {
+		Spawn:
+			NCUL A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NCUL AABBCCDD 3 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NCUL AABBCCDD 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NCUL A 1 A_NTM_SWChase;
+			NCUL AA 1 A_NTM_SWChase2;
+			NCUL A 1 A_NTM_SWChase;
+			NCUL AA 1 A_NTM_SWChase2;
+			NCUL B 1 A_NTM_SWChase;
+			NCUL BB 1 A_NTM_SWChase2;
+			NCUL B 1 A_NTM_SWChase;
+			NCUL BB 1 A_NTM_SWChase2;
+			NCUL C 1 A_NTM_SWChase;
+			NCUL CC 1 A_NTM_SWChase2;
+			NCUL C 1 A_NTM_SWChase;
+			NCUL CC 1 A_NTM_SWChase2;
+			NCUL D 1 A_NTM_SWChase;
+			NCUL DD 1 A_NTM_SWChase2;
+			NCUL D 1 A_NTM_SWChase;
+			NCUL DD 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NCUL E 10 A_FaceTarget;
+			
+			NCUL F 6 Bright {
+				A_StartSound("shotguy/attack", Chan_Weapon);
+				A_CustomBulletAttack(22.5, 0, 3, Random(1, 5) * 3, "NTM_CultistPuff", 0, CBAF_NoRandom);
+			}
+			
+			NCUL E 14;
+			Goto See;
+		
+		Pain:
+			NCUL G 6 A_Pain;
+			Goto See;
+		
+		Death:
+		Death.Chainsaw:
+			NCUL H 1 A_NTM_PreDeath;
+			NCUL H 4 A_NTM_Death("NTM_Cultist/death1", "NTM_Cultist/death2", "NTM_Cultist/death3");
+			NCUL I 5 A_NoBlocking;
+			NCUL JK 5;
+			NCUL L -1;
+			Stop;
+		
+		Raise:
+			NCUL LKJIH 5;
+			Goto See;
+	}
+}
+
+class NTM_CultistPuff : NTM_BulletPuff {
+	Default {
+		DamageType "NTM_CultistBullet";
+	}
+}

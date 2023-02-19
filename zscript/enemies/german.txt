@@ -1,0 +1,109 @@
+class NTM_German : NTM_Humanoid {
+	Default {
+		Health 50;
+		Radius 20;
+		Height 56;
+		Speed 10;
+		PainChance 170;
+		PainChance "NTM_GermanBullet", 0;
+		SeeSound "NTM_German/sight";
+		AttackSound "NTM_German/attack";
+		PainSound "NTM_German/pain";
+		NTM_Humanoid.BurnSound "NTM_German/burn";
+		Obituary "%o was shot by a German.";
+		Tag "German";
+		DropItem "Clip";
+		Translation "NTM_German_Brown";
+		DamageFactor "NTM_GermanBullet", 0;
+		Species "WolfensteinSS";
+		NTM_Enemy.TicsPerChase 3;
+	}
+	
+	States {
+		Spawn:
+			NGER A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NGER BBCCDDEE 3 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NGER BBCCDDEE 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NGER B 1 A_NTM_SWChase;
+			NGER BB 1 A_NTM_SWChase2;
+			NGER B 1 A_NTM_SWChase;
+			NGER BB 1 A_NTM_SWChase2;
+			NGER C 1 A_NTM_SWChase;
+			NGER CC 1 A_NTM_SWChase2;
+			NGER C 1 A_NTM_SWChase;
+			NGER CC 1 A_NTM_SWChase2;
+			NGER D 1 A_NTM_SWChase;
+			NGER DD 1 A_NTM_SWChase2;
+			NGER D 1 A_NTM_SWChase;
+			NGER DD 1 A_NTM_SWChase2;
+			NGER E 1 A_NTM_SWChase;
+			NGER EE 1 A_NTM_SWChase2;
+			NGER E 1 A_NTM_SWChase;
+			NGER EE 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NGER F 10 A_FaceTarget;
+			NGER G 2 Bright A_NTM_GermanAttack;
+			NGER F 3 A_FaceTarget;
+			NGER G 2 Bright A_NTM_GermanAttack;
+			NGER F 3 A_FaceTarget;
+			NGER G 2 Bright A_NTM_GermanAttack;
+			NGER F 3 A_FaceTarget;
+			NGER G 2 Bright A_NTM_GermanAttack;
+			NGER F 3 A_FaceTarget;
+			NGER G 2 Bright A_NTM_GermanAttack;
+			NGER F 10 A_CPosRefire;
+			NGER F 0 A_Jump(128, "See");
+			Goto Missile + 1;
+		
+		Pain:
+			NGER H 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NGER I 1 A_NTM_PreDeath;
+			
+			NGER I 4 A_NTM_Death("NTM_German/death1", "NTM_German/death2", "NTM_German/death3");
+			NGER J 5 A_NoBlocking;
+			NGER KL 5;
+			NGER M -1 A_Jump(100, 1);
+			Stop;
+			NGER M Random(30, 180);
+			NGER NMN 3;
+			NGER M -1;
+			Stop;
+		
+		XDeath:
+			NMGI A 1 A_NTM_PreDeath;
+			NMGI A 4 A_NTM_XDeath;
+			NMGI B 5 A_NoBlocking;
+			NMGI CDEFG 5;
+			NMGI H -1;
+			Stop;
+		
+		Raise:
+			NGER LKJI 5;
+			Goto See;
+	}
+	
+	action void A_NTM_GermanAttack () {
+		A_CustomBulletAttack(30, 0, 1, Random(1, 5), "NTM_GermanBulletPuff");
+		A_StartSound(attackSound, Chan_Weapon);
+	}
+}
+
+class NTM_GermanBulletPuff : NTM_BulletPuff {
+	Default {
+		DamageType "NTM_GermanBullet";
+	}
+}

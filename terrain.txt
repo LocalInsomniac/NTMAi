@@ -1,0 +1,98 @@
+splash NTM_Blood {
+	Sound NTM_World/splash
+	NoAlert
+}
+
+splash NTM_Water {
+	Sound NTM_World/splash
+	NoAlert
+}
+
+splash NTM_Lava {
+	Sound NTM_World/lava
+	NoAlert
+}
+
+splash NTM_Nuke {
+	Sound NTM_World/lava
+	NoAlert
+}
+
+splash NTM_LavaSmoke {
+	Sound NTM_World/sizzle
+	NoAlert
+}
+
+splash NTM_Slime {
+	Sound NTM_World/splash
+	NoAlert
+}
+
+terrain NTM_Blood {
+	Splash NTM_Blood
+	FootClip 10
+	Liquid
+}
+
+terrain NTM_Water {
+	Splash NTM_Water
+	FootClip 10
+	Liquid
+}
+
+terrain NTM_Lava {
+	Splash NTM_Lava
+	FootClip 10
+	Liquid
+}
+
+terrain NTM_Nuke {
+	Splash NTM_Nuke
+	FootClip 10
+	Liquid
+}
+
+terrain NTM_LavaSmoke {
+	Splash NTM_LavaSmoke
+	FootClip 0
+	Liquid
+}
+
+terrain NTM_Slime {
+	Splash NTM_Slime
+	FootClip 10
+	Liquid
+}
+
+floor BLOOD1 NTM_Blood
+floor BLOOD2 NTM_Blood
+floor BLOOD3 NTM_Blood
+floor FWATER1 NTM_Water
+floor FWATER2 NTM_Water
+floor FWATER3 NTM_Water
+floor FWATER4 NTM_Water
+floor LAVA1 NTM_Lava
+floor LAVA2 NTM_Lava
+floor LAVA3 NTM_Lava
+floor LAVA4 NTM_Lava
+floor NUKAGE1 NTM_Nuke
+floor NUKAGE2 NTM_Nuke
+floor NUKAGE3 NTM_Nuke
+floor RROCK01 NTM_LavaSmoke
+floor RROCK02 NTM_LavaSmoke
+floor RROCK05 NTM_LavaSmoke
+floor RROCK06 NTM_LavaSmoke
+floor RROCK07 NTM_LavaSmoke
+floor RROCK08 NTM_LavaSmoke
+floor SLIME01 NTM_Slime
+floor SLIME02 NTM_Slime
+floor SLIME03 NTM_Slime
+floor SLIME04 NTM_Slime
+floor SLIME05 NTM_Slime
+floor SLIME06 NTM_Slime
+floor SLIME07 NTM_Slime
+floor SLIME08 NTM_Slime
+floor SLIME09 NTM_LavaSmoke
+floor SLIME10 NTM_LavaSmoke
+floor SLIME11 NTM_LavaSmoke
+floor SLIME12 NTM_LavaSmoke

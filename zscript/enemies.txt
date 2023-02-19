@@ -1,0 +1,438 @@
+#include "zscript/enemies/humanoid.txt"
+#include "zscript/enemies/zombieman.txt"
+#include "zscript/enemies/shotgunguy.txt"
+#include "zscript/enemies/chaingunguy.txt"
+#include "zscript/enemies/imp.txt"
+#include "zscript/enemies/demon.txt"
+#include "zscript/enemies/lostsoul.txt"
+#include "zscript/enemies/cacodemon.txt"
+#include "zscript/enemies/baronofhell.txt"
+#include "zscript/enemies/arachnotron.txt"
+#include "zscript/enemies/mancubus.txt"
+#include "zscript/enemies/painelemental.txt"
+#include "zscript/enemies/revenant.txt"
+#include "zscript/enemies/archvile.txt"
+#include "zscript/enemies/cyberdemon.txt"
+#include "zscript/enemies/spidermastermind.txt"
+#include "zscript/enemies/german.txt"
+
+#include "zscript/enemies/custom/admortem/pumpkinmarine.txt"
+#include "zscript/enemies/custom/admortem/gargoyle.txt"
+#include "zscript/enemies/custom/admortem/satyr.txt"
+#include "zscript/enemies/custom/admortem/skeleton.txt"
+#include "zscript/enemies/custom/admortem/gjenganger.txt"
+#include "zscript/enemies/custom/admortem/littlemarine.txt"
+#include "zscript/enemies/custom/admortem/rocketwarrior.txt"
+
+#include "zscript/enemies/custom/mayhem2019/zombie.txt"
+#include "zscript/enemies/custom/mayhem2019/shotguncultist.txt"
+#include "zscript/enemies/custom/mayhem2019/tommyguncultist.txt"
+#include "zscript/enemies/custom/mayhem2019/lightningorb.txt"
+#include "zscript/enemies/custom/mayhem2019/hothead.txt"
+#include "zscript/enemies/custom/mayhem2019/deathcube.txt"
+
+#include "zscript/enemies/custom/scythe2/evilmarine.txt"
+#include "zscript/enemies/custom/scythe2/afrit.txt"
+
+class NTM_Enemy : Actor {
+	enum EJumpFlags {
+        JF_Forward = (1 << 0),
+        JF_Up = (1 << 1),
+        JF_All = JF_Forward | JF_Up,
+    }
+	
+	int oldLeap, chaseStuck;
+	double leapSpeed;
+	
+	int ticsPerChase;
+	property TicsPerChase: ticsPerChase;
+	
+	double leapDistance;
+	property LeapDistance: leapDistance;
+	
+	Sound xDeathSound;
+	property XDeathSound: xDeathSound;
+	
+	Default {
+		Scale 0.666;
+		Monster;
+		
+		+FloorClip
+		+DontCorpse
+		+SlidesOnWalls
+	}
+	
+	States {
+		See:
+			#### # 0 {
+				switch (sv_ntm_enemyMove) {
+					case 0:
+						SetStateLabel("DukeSee");
+					break;
+					
+					case 1:
+						SetStateLabel("BloodSee");
+					break;
+					
+					case 2:
+					default:
+						SetStateLabel("SWSee");
+					break;
+				}
+			}
+			
+			Stop;
+	}
+	
+	/* =====================
+	   NTMAI actor functions
+	   ===================== */
+	
+	double GetGroundHeight(bool includeMObj = true) {
+        double _floorZ = floorZ;
+		
+		if (includeMObj) {
+			bool ok;
+			Actor pOnMObj;
+			
+			[ok, pOnMObj] = TestMObjZ(true);
+			
+			if (!pOnMObj) {
+				return _floorZ;
+			}
+			
+			double _actorZ = pOnMObj.pos.z + pOnMObj.height;
+			
+			return Max(_floorZ, _actorZ);
+		}
+		
+		return _floorZ;
+    }
+	
+	bool CheckOnGround(bool includeMObj = true) {
+        return vel.z <= 0 && Abs(GetGroundHeight(includeMObj) - pos.z) < 1;
+    }
+	
+	bool CheckPitBeforeTarget() {
+        if (!target || !CheckSight(target)) {
+			return false;
+		}
+        
+        int step = int(radius * 0.5);
+        Vector3 checkDir = (target.pos - pos).Unit() * step;
+        int steps = min(Distance2D(target), leapDistance) / step;
+        double curZ = pos.z;
+		
+        SetXYZ((pos.x, pos.y, pos.z + 64));
+        
+		for (int i = 0; i < steps; i++) {
+			double zAt = GetZAt(pos.x + checkDir.x * i, pos.y + checkDir.y * i, 0, GZF_AbsolutePos | GZF_AbsoluteAng);
+            
+            if (curZ - zAt > maxStepHeight * 2 || zAt - curZ > maxStepHeight) {
+                SetXYZ((pos.x, pos.y, curZ));
+				
+                return true;
+            }
+        }
+        
+        SetXYZ((pos.x, pos.y, curZ));
+		
+        return false;
+    }
+	
+	bool TryLeap(EJumpFlags flags = JF_All) {
+		if (!sv_ntm_enemyLeap || leapDistance <= 0 || !target) {
+			return false;
+		}
+		
+		/* 1. If we are standing
+		   2. and there is a 1/20 chance
+		   3a. we can jump upwards and the target has a bigger height
+		       difference than maxStepHeight
+		   3b. we can jump forwards and there's a deep pit in front of us
+		   4. and the target is within max jump radius
+		   5. and there are no obstacles in front of us */
+        if (CheckOnGround(false) && !Random(0, 20) && ((flags & JF_Up && Abs(target.pos.z - pos.z) > default.maxStepHeight) || (flags & JF_Forward && CheckPitBeforeTarget()))) {
+			double dist = Distance3D(target);
+			
+			if (dist > (meleeThreshold + radius) && dist < (leapDistance - radius)) {
+				dist -= (target.radius * 2) + (radius * 2);
+				maxStepHeight = maxDropOffHeight * 1.6;
+				bNoDropOff = false;
+				bCanPass = false;
+						
+				bool canJump = true;
+				Vector2 deltaPos = AngleToVector(AngleTo(target, true), radius);
+				Vector3 checkPos = pos;
+				
+				for (int i = 0; i < dist; i += radius) {
+					checkPos += deltaPos;
+					
+					if (!CheckMove(checkPos.xy)) {
+						maxStepHeight = default.maxStepHeight;
+						bCanPass = true;
+						
+						return false;
+					}
+				}
+				
+				A_NTM_PainDisable();
+				maxStepHeight = default.maxStepHeight;
+				bCanPass = true;
+				oldLeap = 0;
+				SetStateLabel("Leap");
+				
+				return true;
+			}
+        }
+        
+        return false;
+    }
+	
+	/* =====================
+	   NTMAi monster actions
+	   ===================== */
+	
+	void A_NTM_DukeChase(bool vile = false) {
+		bool beDropoff = bDropoff;
+		Vector3 oldPos = pos;
+		
+		if (chaseStuck > 0) {
+			if (chaseStuck > 1) {
+				bDropoff = true;
+			}
+			
+			++chaseStuck;
+		}
+		
+		if (vile) {
+			A_VileChase();
+		} else {
+			A_Chase();
+		}
+		
+		bDropoff = beDropoff;
+		
+		if (pos == oldPos) {
+			++chaseStuck;
+			
+			return;
+		}
+		
+		chaseStuck = 0;
+		TryLeap();
+	}
+	
+	void A_NTM_BloodChase(bool vile = false) {
+		// Source: https://github.com/caligari87/HideousDestructor/blob/master/zscript/mob.txt#L360
+		if (!target) {
+			A_ClearTarget();
+			SetStateLabel("Spawn");
+			
+			return;
+		}
+		
+		if (!CheckMove(pos.xy)) {
+			A_Wander();
+			
+			return;
+		}
+		
+		bool beDropoff = bDropoff;
+		
+		if (chaseStuck > 0) {
+			if (chaseStuck > 1) {
+				bDropoff = true;
+			}
+			
+			++chaseStuck;
+		}
+		
+		if (vel.xy.Length() == 0) {
+			if (target) {
+				NewChaseDir();
+			} else {
+				RandomChaseDir();
+			}
+		}
+		
+		Vector3 oldPos = pos;
+		
+		if (vile) {
+			A_VileChase();
+		} else {
+			A_Chase();
+		}
+		
+		bDropoff = beDropoff;
+		
+		if (pos == oldPos) {
+			++chaseStuck;
+			
+			return;
+		}
+		
+		if (curState == FindState("Melee") || curState == FindState("Missile") || curState == FindState("Heal")) {
+			return;
+		}
+		
+		Vector3 posDiff = pos - oldPos;
+		
+		if (posDiff dot posDiff < 10000) {
+			SetOrigin(oldPos, true);
+			vel *= 0.7;
+			vel += posDiff.Unit() * speed * 0.18;
+		}
+		
+		chaseStuck = 0;
+		TryLeap();
+	}
+	
+	void A_NTM_SWChase(bool vile = false) {
+		if (CheckMove(pos.xy)) {
+			int tpc = NTM_Enemy(self).ticsPerChase;
+			
+			speed /= tpc;
+			A_NTM_DukeChase(vile);
+			speed *= tpc;
+		} else {
+			A_Wander();
+		}
+		
+		TryLeap();
+	}
+	
+	action void A_NTM_SWChase2() {
+		int tpc = NTM_Enemy(self).ticsPerChase;
+		
+		speed /= tpc;
+		A_Chase(null, null, CHF_NoPlayActive | CHF_NoDirectionTurn | CHF_DontTurn);
+		speed *= tpc;
+	}
+	
+	action void A_NTM_PreDeath() {
+		A_NTM_PainEnable();
+		gravity = default.gravity;
+		height = default.height;
+		bSolid = true;
+		bShootable = true;
+		bNoDropoff = default.bNoDropoff;
+	}
+	
+	void A_NTM_CommonDeath() {
+		height = GetDeathHeight();
+		bCorpse = true;
+		bSolid = false;
+		bShootable = false;
+	}
+	
+	void A_NTM_Death(Sound high = "", Sound normal = "", Sound wimp = "") {
+		if (high != "") {
+			// Play different scream based on severity
+			if (health <= GetGibHealth() * 0.5) {
+				A_StartSound(high, Chan_Voice);
+			} else {
+				if (health < -1) {
+					A_StartSound(normal, Chan_Voice);
+				} else {
+					A_StartSound(wimp, Chan_Voice);
+				}
+			}
+		} else {
+			A_Scream();
+		}
+		
+		A_NTM_CommonDeath();
+	}
+	
+	void A_NTM_XDeath() {
+		if (xDeathSound) {
+			A_StartSound(xDeathSound);
+		} else {
+			A_XScream();
+		}
+		
+		A_NTM_CommonDeath();
+	}
+	
+	action void A_NTM_PainEnable() {
+		painChance = default.painChance;
+		
+	}
+	
+	action void A_NTM_PainDisable() {
+		painChance = 0;
+	}
+	
+	void A_NTM_Leap(bool threeFrames = true) {
+		if (CheckOnGround()) {
+            if (!oldLeap) {
+				if (!target) {
+					return;
+				}
+				
+                A_FaceTarget();
+				
+                double vertical = 10;
+                double horizontal = Max(Distance3D(target) - radius - target.radius, 0.1) / leapDistance;
+				
+				leapSpeed = horizontal * 0.2;
+				horizontal *= speed * 0.96;
+				vertical *= Clamp((target.floorZ - floorZ) * 0.024, 0.9, 1.5);
+				gravity = 0.75;
+                vel = (cos(angle) * horizontal, sin(angle) * horizontal, vel.z + vertical);
+                oldLeap = frame;
+            } else {
+				if (sv_ntm_enemyMove != 1) {
+					vel.xy *= 0;
+				}
+				
+				gravity = default.gravity;
+				A_NTM_PainEnable();
+				A_FaceTarget();
+                SetStateLabel("See");
+				
+                return;
+            }
+        } else {
+			if (vel.z > 0) {
+				vel += (cos(angle) * leapSpeed, sin(angle) * leapSpeed, 0);
+				
+				if (threeFrames && vel.z < 4) {
+					frame = oldLeap + 1;
+				}
+			} else {
+				if (threeFrames) {
+					if (vel.z > -4) {
+						frame = oldLeap + 1;
+					} else {
+						frame = oldLeap + 2;
+					}
+				} else {
+					frame = oldLeap + 1;
+				}
+			}
+		}
+    }
+}
+
+class NTM_Boss : NTM_Enemy {
+	Default {
+		+Boss
+		+MissileMore
+		+NoRadiusDmg
+		+DontMorph
+		+BossDeath
+	}
+	
+	action void A_NTM_BossDeath() {
+		Actor boom = Spawn("NTM_Explosion", pos + (Random(-radius, radius), Random(-radius, radius), Random(height * 0.5, height * 2)));
+		
+		if (boom) {
+			boom.scale *= 0.64;
+			boom.A_StartSound("world/barrelx", Chan_Body, ChanF_Default, 0.666);
+		}
+		
+		A_Quake(2, 35, 0, 1024, "");
+	}
+}

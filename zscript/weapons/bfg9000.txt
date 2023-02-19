@@ -1,0 +1,128 @@
+class NTM_BFG9000 : BFG9000 {
+	Default {
+		Scale 0.75;
+		Weapon.SlotNumber 7;
+		Weapon.UpSound "NTM_Weapon/select";
+		Inventory.PickupMessage "The BFG 9000! Oh, yes.";
+	}
+	
+	States {
+		Ready:
+			NBFG A 1 A_WeaponReady;
+			Loop;
+			
+		Deselect:
+			NBFG A 1 A_Lower(12);
+			Loop;
+			
+		Select:
+			NBFG A 1 A_Raise(12);
+			Loop;
+			
+		Fire:
+			NBFG B 2 Bright {
+				A_StartSound("weapons/bfgf", Chan_Weapon, ChanF_Overlap);
+				A_GunFlash();
+			}
+			
+			NBFG CDBCDBCDB 2 Bright;
+			NBFG C 2 Bright A_WeaponOffset(3, 40, WOF_Interpolate);
+			NBFG D 3 Bright A_WeaponOffset(6, 48, WOF_Interpolate);
+			NBFG E 2 Bright A_WeaponOffset(9, 56, WOF_Interpolate);
+			NBFG F 3 Bright A_WeaponOffset(12, 64, WOF_Interpolate);
+			
+			NBFG G 2 Bright {
+				A_FireBFG();
+				A_Recoil(cos(pitch) * 10);
+				A_WeaponOffset(15, 68, WOF_Interpolate);
+			}
+			
+			NBFG H 3 Bright A_WeaponOffset(18, 72, WOF_Interpolate);
+			NBFG I 2 A_WeaponOffset(12, 64, WOF_Interpolate);
+			NBFG A 3 A_WeaponOffset(6, 48, WOF_Interpolate);
+			NBFG A 2 A_WeaponOffset(3, 40, WOF_Interpolate);
+			NBFG A 8 A_WeaponOffset(flags: WOF_Interpolate);
+			NBFG A 5 A_ReFire;
+			Goto Ready;
+		Flash:
+			TNT1 A 20 A_Light1;
+			TNT1 A 10 A_Light2;
+			TNT1 A 5 A_Light1;
+			Goto LightDone;
+	}
+}
+
+class NTM_BFGBall : BFGBall replaces BFGBall {
+	States {
+		Spawn:
+			NBFB ABCD 2 Bright;
+			Loop;
+		
+		Death:
+			NEX4 A 2 Bright {
+				A_SetTranslation("NTM_Fog_Green");
+				A_Quake(3, 20, 0, 1024, "");
+				
+				// Gib all nearby corpses
+				BlockThingsIterator it = BlockThingsIterator.Create(self, 128);
+				
+				while (it.Next()) {
+					let mObj = it.thing;
+					
+					if (mObj is "NTM_Dummy_Gib" && Distance3D(mObj) < 128 && CheckSight(mObj)) {
+						mObj.A_Die();
+					}
+				}
+				
+				// Spray from the projectile instead of the shooter
+				FTranslatedLineTarget victim;
+				
+				for (int i = 0; i < 40; ++i) {
+					double ang = i * 9;
+					double dist = 1024;
+					
+					AimLineAttack(ang, 1024, victim, 1024);
+					
+					let victimActor = victim.lineTarget;
+					
+					// Iterate through every hit actor and penetrate
+					// until the max distance is reached
+					while (victimActor != null) {
+						dist -= Distance2D(victimActor);
+						
+						if (victimActor != target) {
+							int dmg = 22.5 * Random(1, 10);
+							
+							victimActor.DamageMObj(self, target, dmg, "BFGSplash");
+							
+							// Fit spray effect to victim's size
+							Actor spray = Spawn("NTM_BFGExtra", victimActor.pos + (0, 0, victimActor.height * 0.25));
+							
+							if (spray) {
+								spray.scale *= Clamp((victimActor.radius * 2) * 0.0238095238095238, 0.48, 2.5);
+							}
+						}
+						
+						if (dist > 0) {
+							victimActor.AimLineAttack(ang, dist, victim, 1024);
+							victimActor = victim.lineTarget;
+						} else {
+							victimActor = null;
+						}
+					}
+				}
+			}
+			
+			NEX4 BC 2 Bright;
+			NEX4 DEFGHIJKL 3 Bright;
+			Stop;
+	}
+}
+
+class NTM_BFGExtra : BFGExtra {
+	States {
+		Spawn:
+			NBFS ABCDEFGH 3 Bright;
+			Stop;
+	}
+}

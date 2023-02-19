@@ -1,0 +1,72 @@
+class NTM_RocketWarrior : NTM_Enemy {
+	Default {
+		Health 20;
+		Speed 10;
+		Radius 30;
+		Height 56;
+		Mass 400;
+		MeleeRange 96;
+		NTM_Enemy.TicsPerChase 1;
+		DeathSound "NTM_RocketWarrior/death";
+		Tag "Rocket Warrior";
+		Obituary "%o was slain by a Rocket Warrior.";
+		
+		+NoBlood
+	}
+	
+	States {
+		Spawn:
+			NRWL A 10 A_Look;
+			Loop;
+		
+		See:
+			NRWL A 0 {
+				A_StartSound("NTM_RocketWarrior/active");
+				
+				if (sv_ntm_enemyMove == 1) {
+					speed = 20;
+				} else {
+					speed = 10;
+				}
+			}
+			
+			Goto Super::See;
+		
+		DukeSee:
+			NRWL AABBCCDDEEFF 1 A_NTM_DukeChase;
+			Goto See;
+		
+		BloodSee:
+			NRWL AABBCCDDEEFF 1 A_NTM_BloodChase;
+			Goto See;
+		
+		SWSee:
+			NRWL AABBCCDDEEFF 1 A_NTM_SWChase;
+			Goto See;
+		
+		Melee:
+			NRWL G 0 A_StopSound(Chan_Body);
+			NRWL G 4 A_FaceTarget;
+			NRWL A 0 A_Die;
+		
+		Death:
+			NRWL A 1 A_NTM_PreDeath;
+			
+			TNT1 A 15 {
+				A_StopSound(Chan_Body);
+				A_NTM_Death();
+				
+				Actor boom = Spawn("NTM_Explosion2", pos + (0, 0, 32));
+				
+				if (boom) {
+					boom.scale *= 1.25;
+				}
+				
+				NTMAi.Explode(self);
+				A_Quake(2, 15, 0, 512, "");
+				A_SpawnDebris("NTM_LostSoulGib", false, 1.5);
+			}
+			
+			Stop;
+	}
+}

@@ -1,0 +1,94 @@
+class NTM_Key : Weapon {
+	class<Weapon> prevWeapon;
+	
+	Default {
+		Tag "Hold on...";
+		Weapon.SlotNumber 0;
+		
+		+Weapon.CheatNotWeapon
+		+Weapon.No_Auto_Switch
+		+Weapon.NoAlert
+		+Inventory.Undroppable
+		+Inventory.Untossable
+	}
+	
+	States {
+		Select:
+		Ready:
+		Fire:
+			NRKE A 0;
+			Goto Animation;
+		
+		Animation:
+			#### A 0 A_WeaponOffset(0, 131);
+			#### ######### 1 A_WeaponOffset(0, -11, WOF_Add);
+			#### B 1 A_StartSound("misc/k_pkup");
+			#### ######### 1 Bright;
+			#### ######### 1 Bright A_WeaponOffset(0, 11, WOF_Add);
+		
+		Deselect:
+			NRKE B 0 {
+				A_SelectWeapon(invoker.prevWeapon, SWF_SelectPriority);
+				A_TakeInventory(invoker.GetClassName());
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_Key_RedCard : NTM_Key {}
+
+class NTM_Key_YellowCard : NTM_Key {
+	States {
+		Select:
+		Deselect:
+		Ready:
+		Fire:
+			NYKE A 0;
+			Goto Animation;
+	}
+}
+
+class NTM_Key_BlueCard : NTM_Key {
+	States {
+		Select:
+		Deselect:
+		Ready:
+		Fire:
+			NBKE A 0;
+			Goto Animation;
+	}
+}
+
+class NTM_Key_RedSkull : NTM_Key {
+	States {
+		Select:
+		Deselect:
+		Ready:
+		Fire:
+			NRSK A 0;
+			Goto Animation;
+	}
+}
+
+class NTM_Key_YellowSkull : NTM_Key {
+	States {
+		Select:
+		Deselect:
+		Ready:
+		Fire:
+			NYSK A 0;
+			Goto Animation;
+	}
+}
+
+class NTM_Key_BlueSkull : NTM_Key {
+	States {
+		Select:
+		Deselect:
+		Ready:
+		Fire:
+			NBSK A 0;
+			Goto Animation;
+	}
+}

@@ -1,0 +1,32 @@
+server bool sv_ntm_startTitle = true;
+server bool sv_ntm_startTwitch = false;
+server bool sv_ntm_flinch = true;
+server bool sv_ntm_keycard = true;
+user bool cl_ntm_autoRadSuit = true;
+server int sv_ntm_soulsphere = 2;
+server bool sv_ntm_blast = false;
+server int sv_ntm_enemyMove = 2;
+server bool sv_ntm_enemyLeap = true;
+server bool sv_ntm_grenadiers = true;
+server bool sv_ntm_enemyFly = true;
+
+// Enemy Replacement
+server bool sv_ntm_r_zombieman = true;
+server bool sv_ntm_r_shotgunGuy = true;
+server bool sv_ntm_r_heavyWeaponDude = true;
+server bool sv_ntm_r_imp = true;
+server bool sv_ntm_r_demon = true;
+server bool sv_ntm_r_spectre = true;
+server bool sv_ntm_r_lostSoul = true;
+server bool sv_ntm_r_cacodemon = true;
+server bool sv_ntm_r_hellKnight = true;
+server bool sv_ntm_r_baronOfHell = true;
+server bool sv_ntm_r_arachnotron = true;
+server bool sv_ntm_r_painElemental = true;
+server bool sv_ntm_r_revenant = true;
+server bool sv_ntm_r_mancubus = true;
+server bool sv_ntm_r_archVile = true;
+server bool sv_ntm_r_spiderMastermind = true;
+server bool sv_ntm_r_cyberdemon = true;
+server bool sv_ntm_r_ss = true;
+server bool sv_ntm_r_custom = true;
