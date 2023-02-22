@@ -117,7 +117,9 @@ class NTM_BaronOfHell : NTM_Enemy {
 	}
 }
 
-class NTM_HellKnight : NTM_BaronOfHell replaces HellKnight {
+class NTM_BaronOfHell2 : NTM_BaronOfHell {}
+
+class NTM_HellKnight : NTM_BaronOfHell {
 	Default {
 		Health 500;
 		Translation "16:47=48:79";
