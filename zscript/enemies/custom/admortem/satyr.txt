@@ -49,7 +49,6 @@ class NTM_Satyr : NTM_HellKnight {
 
 class NTM_Satyr2 : NTM_Satyr {
 	Default {
-		MaxTargetRange 16;
 		Health 320;
 		PainChance 100;
 	}
