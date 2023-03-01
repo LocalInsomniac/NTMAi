@@ -7,7 +7,7 @@ class NTM_Blood : Blood {
 	
 	States {
 		Spawn:
-			BLUD C 8 NoDelay A_SpawnDebris("NTM_FlyingBlood", true, 1, 0.5);
+			BLUD C 8 NoDelay A_SpawnDebris("NTM_FlyingBlood", true, 1, 0.6);
 			BLUD B 8;
 			BLUD A 8;
 			Stop;
@@ -52,7 +52,7 @@ class NTM_FlyingBlood : NTM_Gib {
 // Blood Trail
 class NTM_BloodTrail : NTM_FlyingBlood {
 	Default {
-		Gravity 0.36;
+		Gravity 0.325;
 	}
 	
 	States {
