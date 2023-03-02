@@ -18,12 +18,12 @@ $random menu/activate {
 	misc/spawn
 }
 
-menu/backup	NSMENBAK
+menu/backup	NSCHAT
 menu/prompt	NSBULHIT
 menu/cursor NSMENCUR
 menu/change	NSBULHIT
 menu/invalid DSOOF
-menu/dismiss NSMENBAK
+menu/dismiss NSCHAT
 menu/choose	NSBULHIT
 menu/clear DSEMPTY
 
@@ -111,6 +111,8 @@ $alias intermission/tick weapons/chngun
 /* =============
    CUSTOM SOUNDS
    ============= */
+
+NTMAi/chat NSCHAT
 
 // World
 NTM_World/splash NSSPLASH

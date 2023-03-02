@@ -5,6 +5,7 @@ GameInfo {
 	BorderFlat = "AG128_1"
 	TitlePage = "NTMPIC"
 	TitleMusic = "$MUSIC_NTMAI"
+	ChatSound = "NTMAi/chat"
 }
 
 Skill Baby {
