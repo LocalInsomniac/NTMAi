@@ -174,7 +174,7 @@ class NTM_Zombieman : NTM_Humanoid {
 	}
 	
 	action void A_NTM_PosDuck() {
-		if (Random(0, 1)) {
+		if (!target || Random(0, 1)) {
 			SetStateLabel("See");
 		}
 		
