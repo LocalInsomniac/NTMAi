@@ -357,6 +357,9 @@ class NTMAi : EventHandler {
 			actorSystem.dead = false;
 			actorSystem.gibbed = false;
 			actorSystem.crushed = false;
+			actorSystem.chopped = false;
+			actorSystem.rKO = false;
+			actorSystem.corpseGibbed = false;
 		}
 		
 		mo.bXFlip = mo.default.bXFlip;
@@ -1033,7 +1036,7 @@ class NTM_System : Inventory {
 
 // Actor System
 class NTM_System_Actor : NTM_System {
-	bool dead, gibbed, crushed, chopped, rKO;
+	bool dead, gibbed, crushed, chopped, rKO, corpseGibbed;
 	int fallTics, footprintState, footprintTics, footprintSide, deathLastFrame;
 	double deathLastHeight;
 	Actor gibDummy, bloodPool, footprintBloodPool;
@@ -1141,7 +1144,7 @@ class NTM_System_Actor : NTM_System {
 				}
 				
 				// Common: Gibbable corpses
-				bool isGibbable = dead && !gibbed && !crushed && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss;
+				bool isGibbable = dead && !corpseGibbed && !crushed && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss;
 				
 				if (gibDummy) {
 					if (!isGibbable) {
@@ -1269,20 +1272,26 @@ class NTM_Dummy_Gib : Actor {
 						tracer.translation = tracer.bloodTranslation;
 					}
 					
-					tracer.health = tracer.GetGibHealth() - 1;
+					int gibHealth = tracer.GetGibHealth() - 1;
+					
+					if (tracer.health > gibHealth) {
+						tracer.health = gibHealth;
+					}
 					
 					for (int i; i < Random(5, 8); i++) {
-						if (i >= 0 && i <= 2) {
-							tracer.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
-						}
-						
 						tracer.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 					}
 					
 					let actorSystem = NTM_System_Actor(tracer.FindInventory("NTM_System_Actor"));
 					
 					if (actorSystem) {
-						actorSystem.gibbed = true;
+						if (!actorSystem.gibbed) {
+							tracer.A_SpawnItemEx("NTM_FlyingGib1", 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+							tracer.A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+							tracer.A_SpawnItemEx("NTM_FlyingGib3", 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+						}
+						
+						actorSystem.corpseGibbed = true;
 					}
 				}
 			}
