@@ -41,7 +41,7 @@ class NTM_Chainsaw : Chainsaw replaces Chainsaw {
 	
 	action void A_NTM_SawIdle() {
 		A_WeaponReady();
-		A_WeaponOffset(0, Random(32, 34), WOF_Interpolate);
+		A_WeaponOffset(Random(0, 2), Random(32, 34), WOF_Interpolate);
 	}
 	
 	action void A_NTM_Saw() {
