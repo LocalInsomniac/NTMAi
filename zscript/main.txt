@@ -64,7 +64,7 @@ class NTMAi : EventHandler {
 		   HangTSkull = Hellhound
 		   CommanderKeen = Shadow Hellhound
 		   Stalagtite = Satyr ✓
-		   DeadLostSoul = Bat
+		   DeadLostSoul = Bat ✓
 		   HangBNoBrain = Mummy
 		   HangTLookingDown = Ghost
 		   HangTLookingUp = Tesla Coil
@@ -838,6 +838,14 @@ class NTMAi : EventHandler {
 					break;
 				}
 			break;
+			
+			case 'DeadLostSoul':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Bat";
+					
+					break;
+				}
+			break;
 		}
 	}
 	
@@ -1004,6 +1012,10 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_BaronOfHell2':
 				e.replacee = "HangTNoBrain";
+			break;
+			
+			case 'NTM_Bat':
+				e.replacee = "DeadLostSoul";
 			break;
 		}
 	}

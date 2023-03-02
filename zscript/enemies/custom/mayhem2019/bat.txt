@@ -1,0 +1,82 @@
+class NTM_Bat : NTM_Enemy {
+	Default {
+		Health 10;
+		PainChance 256;
+		Speed 24;
+		Radius 10;
+		Height 20;
+		Mass 10;
+		SeeSound "NTM_Bat/sight";
+		ActiveSound "NTM_Bat/active";
+		PainSound "NTM_Bat/pain";
+		DeathSound "NTM_Bat/death";
+		Tag "Bat";
+		Obituary "%o was nibbled to death by a Bat.";
+		
+		-Solid
+		-FloorClip
+		+Float
+		+NoGravity
+		+SpawnCeiling
+	}
+	
+	States {
+		Spawn:
+			NBAT I 0 A_JumpIf((pos.z + height) < ceilingZ, "Rest");
+			NBAT I 10 A_Look;
+			Loop;
+		
+		Rest:
+			NBAT ABCB 3 {
+				vel.z = 3;
+				
+				if ((pos.z + height) >= ceilingZ && ceilingPic != skyFlatNum) {
+					A_ScaleVelocity(0);
+					SetStateLabel("Spawn");
+				}
+			}
+			
+			Loop;
+		
+		See2:
+			NBAT A 0 A_CustomMeleeAttack(3, "NTM_Bat/melee");
+			Goto See;
+		
+		DukeSee:
+			NBAT ABCB 3 A_NTM_DukeChase;
+			Goto See2;
+		
+		BloodSee:
+			NBAT ABCB 3 A_NTM_BloodChase;
+			Goto See2;
+		
+		SWSee:
+			NBAT A 1 A_NTM_SWChase;
+			NBAT AA 1 A_NTM_SWChase2;
+			NBAT B 1 A_NTM_SWChase;
+			NBAT BB 1 A_NTM_SWChase2;
+			NBAT C 1 A_NTM_SWChase;
+			NBAT CC 1 A_NTM_SWChase2;
+			NBAT B 1 A_NTM_SWChase;
+			NBAT BB 1 A_NTM_SWChase2;
+			Goto See2;
+		
+		Pain:
+			NBAT D 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NBAT D 5 A_NTM_Death;
+			NBAT E 5 A_NoBlocking;
+			NBAT FGH 5;
+			Stop;
+	}
+	
+	override bool CanCollideWith(Actor other, bool passive) {
+		if (other.bIsMonster || other.bMissile) {
+			return false;
+		}
+		
+		return true;
+	}
+}

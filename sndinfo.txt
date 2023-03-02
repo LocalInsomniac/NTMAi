@@ -486,6 +486,13 @@ NTM_MotherBrain/ballx DSRXPLOD
 NTM_MotherBrain/pain NSMOBPAI
 NTM_MotherBrain/death NSMOBDIE
 
+// Bat
+NTM_Bat/sight NSBATACT
+NTM_Bat/active NSBATACT
+NTM_Bat/melee NSBATATK
+NTM_Bat/pain NSBATATK
+NTM_Bat/death NSBATDIE
+
 /* ========
    SCYTHE 2
    ======== */
