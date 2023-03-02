@@ -77,6 +77,6 @@ class NTM_Bat : NTM_Enemy {
 			return false;
 		}
 		
-		return true;
+		return super.CanCollideWith(other, passive);
 	}
 }
