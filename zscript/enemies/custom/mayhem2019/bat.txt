@@ -12,6 +12,7 @@ class NTM_Bat : NTM_Enemy {
 		DeathSound "NTM_Bat/death";
 		Tag "Bat";
 		Obituary "%o was nibbled to death by a Bat.";
+		NTM_Enemy.TicsPerChase 3;
 		
 		-Solid
 		-FloorClip

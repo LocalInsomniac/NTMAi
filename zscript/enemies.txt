@@ -33,6 +33,7 @@
 #include "zscript/enemies/custom/mayhem2019/arachnorb.txt"
 #include "zscript/enemies/custom/mayhem2019/motherbrain.txt"
 #include "zscript/enemies/custom/mayhem2019/bat.txt"
+#include "zscript/enemies/custom/mayhem2019/hellhound.txt"
 
 #include "zscript/enemies/custom/scythe2/evilmarine.txt"
 #include "zscript/enemies/custom/scythe2/afrit.txt"

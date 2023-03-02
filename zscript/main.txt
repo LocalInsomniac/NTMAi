@@ -61,8 +61,8 @@ class NTMAi : EventHandler {
 		   SpiderMastermind = Abbot
 		   Arachnotron = Death Cube ✓
 		   Cyberdemon = Minotaur
-		   HangTSkull = Hellhound
-		   CommanderKeen = Shadow Hellhound
+		   HangTSkull = Hellhound ✓
+		   CommanderKeen = Shadow Hellhound ✓
 		   Stalagtite = Satyr ✓
 		   DeadLostSoul = Bat ✓
 		   HangBNoBrain = Mummy
@@ -765,6 +765,12 @@ class NTMAi : EventHandler {
 						break;
 					}
 					
+					if (bMAYhem2019) {
+						e.replacement = "NTM_ShadowHellhound";
+						
+						break;
+					}
+					
 					if (bScythe2) {
 						e.replacement = "NTM_Afrit";
 						
@@ -842,6 +848,14 @@ class NTMAi : EventHandler {
 			case 'DeadLostSoul':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Bat";
+					
+					break;
+				}
+			break;
+			
+			case 'HangTSkull':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_HellHound";
 					
 					break;
 				}
@@ -960,6 +974,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			//case 'NTM_AstralCacodemon':
+			case 'NTM_ShadowHellHound':
 			case 'NTM_Afrit':
 				e.replacee = "CommanderKeen";
 			break;
@@ -1016,6 +1031,10 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_Bat':
 				e.replacee = "DeadLostSoul";
+			break;
+			
+			case 'NTM_Hellhound':
+				e.replacee = "HangTSkull";
 			break;
 		}
 	}
