@@ -70,7 +70,7 @@ class NTMAi : EventHandler {
 		   HangTLookingUp = Tesla Coil
 		   Meat2 = Inactive Tesla Coil
 		   HangTNoBrain = Baron of Hell ✓
-		   MBFHelperDog = Chainsaw Man
+		   MBFHelperDog = Chainsaw Maniac ✓
 		   UnholyBible = Lich */
 		bMAYhem2019 = NTMAi.LumpHasHash("DSTINK", "3ab1f8e2c9fd05ab647881bc7f5a3fc9");
 		
@@ -832,32 +832,30 @@ class NTMAi : EventHandler {
 			case 'Stalagtite':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Satyr2";
-					
-					break;
 				}
 			break;
 			
 			case 'HangTNoBrain':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_BaronOfHell2";
-					
-					break;
 				}
 			break;
 			
 			case 'DeadLostSoul':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Bat";
-					
-					break;
 				}
 			break;
 			
 			case 'HangTSkull':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_HellHound";
-					
-					break;
+				}
+			break;
+			
+			case 'MBFHelperDog':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_ChainsawManiac";
 				}
 			break;
 		}
@@ -1035,6 +1033,10 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_Hellhound':
 				e.replacee = "HangTSkull";
+			break;
+			
+			case 'NTM_ChainsawManiac':
+				e.replacee = "MBFHelperDog";
 			break;
 		}
 	}

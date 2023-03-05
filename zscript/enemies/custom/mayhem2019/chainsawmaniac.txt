@@ -1,0 +1,102 @@
+class NTM_ChainsawManiac : NTM_Humanoid {
+	Default {
+		Health 140;
+		Radius 20;
+		Height 56;
+		Speed 14;
+		PainChance 40;
+		SeeSound "NTM_ChainsawManiac/sight";
+		PainSound "NTM_ChainsawManiac/pain";
+		DeathSound "NTM_ChainsawManiac/death";
+		NTM_Humanoid.BurnSound "NTM_ChainsawManiac/burn";
+		Obituary "%o was chopped to bits by a Chainsaw Maniac.";
+		Tag "Chainsaw Maniac";
+		DropItem "Chainsaw";
+		NTM_Enemy.TicsPerChase 2;
+	}
+	
+	States {
+		Spawn:
+			NCSM A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NCSM AABB 2 A_NTM_DukeChase;
+			NCSM A 0 A_NTM_CSMActive;
+			NCSM CCDD 2 A_NTM_DukeChase;
+			NCSM D 0 A_NTM_CSMActive;
+			Loop;
+		
+		BloodSee:
+			NCSM AABB 2 A_NTM_BloodChase;
+			NCSM B 0 A_NTM_CSMActive;
+			NCSM CCDD 2 A_NTM_BloodChase;
+			NCSM D 0 A_NTM_CSMActive;
+			Loop;
+		
+		SWSee:
+			NCSM A 1 A_NTM_SWChase;
+			NCSM A 1 A_NTM_SWChase2;
+			NCSM A 1 A_NTM_SWChase;
+			NCSM A 1 A_NTM_SWChase2;
+			NCSM B 1 A_NTM_SWChase;
+			NCSM B 1 A_NTM_SWChase2;
+			NCSM B 1 A_NTM_SWChase;
+			NCSM B 1 A_NTM_SWChase2;
+			NCSM B 0 A_NTM_CSMActive;
+			NCSM C 1 A_NTM_SWChase;
+			NCSM C 1 A_NTM_SWChase2;
+			NCSM C 1 A_NTM_SWChase;
+			NCSM C 1 A_NTM_SWChase2;
+			NCSM D 1 A_NTM_SWChase;
+			NCSM D 1 A_NTM_SWChase2;
+			NCSM D 1 A_NTM_SWChase;
+			NCSM D 1 A_NTM_SWChase2;
+			NCSM D 0 A_NTM_CSMActive;
+			Loop;
+		
+		Melee:
+			NCSM E 2 A_FaceTarget;
+			NCSM E 2 A_NTM_CSMAttack;
+			NCSM F 2 A_FaceTarget;
+			NCSM F 2 A_NTM_CSMAttack;
+			Goto See;
+		
+		Pain:
+			NCSM G 10 A_Pain;
+			Goto See;
+		
+		Death:
+			NCSM H 5 A_NTM_Death;
+			NZOM I 5 A_NoBlocking;
+			NZOM JK 5;
+			NZOM L -1;
+			Stop;
+		
+		Death.Chainsaw:
+			NCSM I 10 A_NTM_DeathStart;
+			NCSM I 15 A_NoBlocking(false);
+			
+			NCSM J 5 {
+				for (int i = 0; i < 3; ++i) {
+					A_SpawnItemEx("NTM_FlyingBlood", 8, 4, 28, FRandom(2, 5), FRandom(-5, -2), FRandom(2, 6));
+				}
+				
+				A_NTM_DeathEnd();
+				A_StartSound("NTM_Chainsaw/slash", Chan_5, ChanF_Overlap);
+			}
+			
+			NCSM K 5;
+			NZOM WXYZ[^ 5;
+			NZOM ] -1;
+			Stop;
+	}
+	
+	void A_NTM_CSMActive() {
+		A_StartSound("NTM_ChainsawManiac/active", Chan_Weapon);
+	}
+	
+	void A_NTM_CSMAttack() {
+		A_CustomMeleeAttack(2 * Random(1, 10), "NTM_ChainsawManiac/hit", "NTM_ChainsawManiac/miss", "Chainsaw");
+	}
+}

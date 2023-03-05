@@ -178,6 +178,7 @@ NTM_BulletPuff/hit NSBULHIT
 $volume NTM_BulletPuff/hit 0.5
 
 NTM_ChainsawPuff/miss NSCLANG
+$limit NTM_ChainsawPuff/miss 0
 
 NTM_BulletCasing/bounce1 NSCASIN1
 NTM_BulletCasing/bounce2 NSCASIN2
@@ -501,6 +502,24 @@ NTM_Hellhound/active NSDOGACT
 NTM_Hellhound/melee DSSGTJMP
 NTM_Hellhound/pain NSDOGPAI
 NTM_Hellhound/death NSDOGDIE
+
+// Chainsaw Man
+NTM_ChainsawManiac/sight DSSAWUP
+NTM_ChainsawManiac/active DSSAWIDL
+NTM_ChainsawManiac/miss DSSAWFUL
+NTM_ChainsawManiac/hit DSSAWHIT
+NTM_ChainsawManiac/pain DSPOPAIN
+NTM_ChainsawManiac/death1 DSPODTH1
+NTM_ChainsawManiac/death2 DSPODTH2
+NTM_ChainsawManiac/death3 DSPODTH3
+
+$random NTM_ChainsawManiac/death {
+	NTM_ChainsawManiac/death1
+	NTM_ChainsawManiac/death2
+	NTM_ChainsawManiac/death3
+}
+
+NTM_ChainsawManiac/burn DSPOBURN
 
 /* ========
    SCYTHE 2

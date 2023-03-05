@@ -34,6 +34,7 @@
 #include "zscript/enemies/custom/mayhem2019/motherbrain.txt"
 #include "zscript/enemies/custom/mayhem2019/bat.txt"
 #include "zscript/enemies/custom/mayhem2019/hellhound.txt"
+#include "zscript/enemies/custom/mayhem2019/chainsawmaniac.txt"
 
 #include "zscript/enemies/custom/scythe2/evilmarine.txt"
 #include "zscript/enemies/custom/scythe2/afrit.txt"
@@ -328,6 +329,24 @@ class NTM_Enemy : Actor {
 		} else {
 			A_Scream();
 		}
+	}
+	
+	void A_NTM_DeathStart() {
+		A_NTM_Death();
+		bCorpse = false;
+		height = default.height;
+		
+		DropItem drop = GetDropItems();
+		
+		while (drop != null) {
+			A_DropItem(drop.name, drop.amount);
+			drop = drop.next;
+		}
+	}
+	
+	void A_NTM_DeathEnd() {
+		bCorpse = true;
+		height = GetDeathHeight();
 	}
 	
 	void A_NTM_XDeath() {
