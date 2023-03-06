@@ -129,6 +129,7 @@ class NTM_Bone : NTM_ImpBall {
 		DeathSound "NTM_Skeleton/bonex";
 		RenderStyle "Normal";
 		
+		-Bright
 		-ZDoomTrans
 	}
 	
