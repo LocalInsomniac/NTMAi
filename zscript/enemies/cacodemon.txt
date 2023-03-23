@@ -65,15 +65,17 @@ class NTM_Cacodemon : NTM_Enemy {
 		Death:
 			NCAC G 7 A_NTM_Death;
 			NCAC H 7 A_NoBlocking;
-			NCAC IJ 7;
-			NCAC J 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
+			NCAC I 7;
+			NCAC I 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
 			Wait;
-			NCAC K -1 A_SetFloorClip;
+			NCAC J 7 A_SetFloorClip
+			NCAC K -1;
 			Stop;
 		
 		Raise:
-			NCAC K 8 A_UnSetFloorClip;
-			NCAC JIHG 8;
+			NCAC K 8;
+			NCAC J 8 A_UnSetFloorClip;
+			NCAC IHG 8;
 			Goto See;
 	}
 }
