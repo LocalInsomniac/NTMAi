@@ -68,7 +68,7 @@ class NTM_Cacodemon : NTM_Enemy {
 			NCAC I 7;
 			NCAC I 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
 			Wait;
-			NCAC J 7 A_SetFloorClip
+			NCAC J 7 A_SetFloorClip;
 			NCAC K -1;
 			Stop;
 		

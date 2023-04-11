@@ -86,3 +86,21 @@ class NTM_PumpkinGib : NTM_Gib {
 			Loop;
 	}
 }
+
+// Glass Shard
+class NTM_GlassShard : NTM_Gib {
+	Default {
+		Health 6;
+		Scale 0.625;
+		RenderStyle "Add";
+		
+		+ForceXYBillboard
+		+ZDoomTrans
+	}
+	
+	States {
+		Spawn:
+			NGLG ABCDEFGH 2;
+			Loop;
+	}
+}

@@ -1,0 +1,55 @@
+class NTM_TeslaCoil : Actor {
+	Default {
+		Health 150;
+		Radius 16;
+		Height 72;
+		Speed 0;
+		DeathSound "NTM_TeslaCoil/death";
+		
+		+DontCorpse
+		+DontThrust
+		+LookAllAround
+		+NoBlood
+		+NoRadiusDmg
+		+Shootable
+		+Solid
+	}
+	
+	States {
+		Spawn:
+			NTSL A 10 A_Look;
+			Loop;
+		
+		See:
+			NTSL A 10 A_Chase;
+			Loop;
+		
+		Missile:
+			NTSL B 5 Bright A_StartSound("NTM_TeslaCoil/attack");
+			NTSL CDBCDBCDBCDBCDBCDBCD 1 Bright;
+			NTSL C 2 Bright A_SpawnProjectile("NTM_LightningOrb2", 56);
+			NTSL D 2 Bright;
+			NTSL B 2 Bright;
+			Goto See;
+		
+		Death:
+			NTSL E -1 {
+				AddZ(32);
+				A_SpawnDebris("NTM_GlassShard", false, 1.5, 0.75);
+				AddZ(-32);
+				A_Scream();
+				A_SetSize(-1, 48);
+			}
+			
+			Stop;
+	}
+}
+
+class NTM_TeslaCoil2 : NTM_TeslaCoil {
+	States {
+		Spawn:
+		See:
+			NTSL A -1;
+			Stop;
+	}
+}

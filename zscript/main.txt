@@ -858,6 +858,18 @@ class NTMAi : EventHandler {
 					e.replacement = "NTM_ChainsawManiac";
 				}
 			break;
+			
+			case 'HangTLookingUp':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_TeslaCoil";
+				}
+			break;
+			
+			case 'Meat2':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_TeslaCoil2";
+				}
+			break;
 		}
 	}
 	
@@ -1037,6 +1049,14 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_ChainsawManiac':
 				e.replacee = "MBFHelperDog";
+			break;
+			
+			case 'NTM_TeslaCoil':
+				e.replacee = "HangTLookingUp";
+			break;
+			
+			case 'NTM_TeslaCoil2':
+				e.replacee = "Meat2";
 			break;
 		}
 	}

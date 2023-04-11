@@ -521,6 +521,11 @@ $random NTM_ChainsawManiac/death {
 
 NTM_ChainsawManiac/burn DSPOBURN
 
+// Tesla Coil
+NTM_TeslaCoil/attack NSTSLATK
+$attenuation NTM_TeslaCoil/attack 0.8
+NTM_TeslaCoil/death NSGLASS
+
 /* ========
    SCYTHE 2
    ======== */

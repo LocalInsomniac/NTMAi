@@ -89,3 +89,21 @@ class NTM_LightningOrb : NTM_LostSoul {
 			Stop;
 	}
 }
+
+class NTM_LightningOrb2 : NTM_LightningOrb {
+	Default {
+		Projectile;
+		Speed 20;
+		FastSpeed 40;
+		SeeSound "NTM_LightningOrb/attack";
+		
+		-CountKill
+	}
+	
+	States {
+		Spawn:
+		See:
+			NORB ABCD 2;
+			Loop;
+	}
+}
