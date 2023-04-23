@@ -67,8 +67,8 @@ class NTMAi : EventHandler {
 		   DeadLostSoul = Bat ✓
 		   HangBNoBrain = Mummy
 		   HangTLookingDown = Ghost
-		   HangTLookingUp = Tesla Coil
-		   Meat2 = Inactive Tesla Coil
+		   HangTLookingUp = Tesla Coil ✓
+		   Meat2 = Inactive Tesla Coil ✓
 		   HangTNoBrain = Baron of Hell ✓
 		   MBFHelperDog = Chainsaw Maniac ✓
 		   UnholyBible = Lich */
@@ -1319,7 +1319,6 @@ class NTM_Dummy_Gib : Actor {
 				if (tracer) {
 					tracer.A_StartSound("misc/gibbed");
 					tracer.sprite = GetSpriteIndex("NMG2");
-					tracer.scale = (0.666, 0.666);
 					
 					if (!(tracer is "PlayerPawn")) {
 						tracer.translation = tracer.bloodTranslation;

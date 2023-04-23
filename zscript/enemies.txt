@@ -60,7 +60,6 @@ class NTM_Enemy : Actor {
 	property XDeathSound: xDeathSound;
 	
 	Default {
-		Scale 0.666;
 		Monster;
 		
 		+FloorClip
