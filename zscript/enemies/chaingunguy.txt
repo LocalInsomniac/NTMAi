@@ -18,6 +18,7 @@ class NTM_ChaingunGuy : NTM_Humanoid {
 		Tag "$FN_HEAVY";
 		DropItem "Chaingun";
 		Species "ChaingunGuy";
+		Translation "NTM_ChaingunGuy_Red";
 		NTM_Enemy.TicsPerChase 3;
 	}
 	
@@ -84,9 +85,8 @@ class NTM_ChaingunGuy : NTM_Humanoid {
 		Death:
 			#### # 0 A_JumpIf(fired && Random(0, 1), "Death2");
 			NCGZ H 5 A_NTM_Death;
-			NCGZ I 5 A_NoBlocking;
-			NCGZ JK 5;
-			NCGZ L -1;
+			NCGZ IJK 5;
+			NCGZ L -1 A_NoBlocking;
 			Stop;
 		
 		Death2:
