@@ -3,11 +3,11 @@ class NTM_LittleMarine : NTM_Enemy {
 		Health 30;
 		PainChance 1000;
 		Speed 17;
-		Radius 16;
-		Height 32;
+		Radius 12;
+		Height 30;
 		Mass 50;
 		MeleeRange 80;
-		Scale 0.36;
+		Scale 0.5;
 		Tag "Little Marine";
 		HitObituary "%o was bludgeoned by %p tiny self.";
 		SeeSound "NTM_LittleMarine/sight";
