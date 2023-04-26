@@ -39,6 +39,7 @@ class NTM_Revenant : NTM_Enemy {
 				if (sv_ntm_enemyFly) {
 					if (stopFlying) {
 						if ((pos.z - GetGroundHeight()) < maxStepHeight) {
+							bFloatBob = false;
 							A_StopSound(Chan_Item);
 							bNoGravity = false;
 							lastFlyTime = level.time;
@@ -56,6 +57,7 @@ class NTM_Revenant : NTM_Enemy {
 								stopFlying = true;
 								A_UnsetFloat();
 							} else {
+								bFloatBob = true;
 								A_StartSound("skeleton/fly", Chan_Item, ChanF_Loop, 0.96);
 								lastFlyTime = flyTime;
 								bNoGravity = true;
@@ -128,16 +130,16 @@ class NTM_Revenant : NTM_Enemy {
 			Goto See;
 		
 		DukeFly:
-			NREV S 2 Bright A_NTM_DukeChase;
+			NREV S 2 A_NTM_DukeChase;
 			Goto See;
 		
 		BloodFly:
-			NREV S 2 Bright A_NTM_BloodChase;
+			NREV S 2 A_NTM_BloodChase;
 			Goto See;
 		
 		SWFly:
-			NREV S 1 Bright A_NTM_SWChase;
-			NREV S 1 Bright A_NTM_SWChase2;
+			NREV S 1 A_NTM_SWChase;
+			NREV S 1 A_NTM_SWChase2;
 			Goto See;
 		
 		Melee:
@@ -173,6 +175,7 @@ class NTM_Revenant : NTM_Enemy {
 			
 		Death:
 			NREV N 6 {
+				bFloatBob = false;
 				A_StopSound(Chan_Item);
 				A_SetFloorClip();
 				A_NTM_Death();
@@ -186,6 +189,13 @@ class NTM_Revenant : NTM_Enemy {
 			
 		Raise:
 			NREV RQPON 5;
+			
+			NREV N 0 {
+				if (bNoGravity) {
+					bFloatBob = false;
+				}
+			}
+			
 			Goto See;
 	}
 }
