@@ -103,10 +103,8 @@ class NTM_PainElemental : NTM_Enemy {
 			Stop;
 		
 		Raise:
-			PAIN M 8 A_SetScale(1, 1);
-			PAIN LKJ 8;
-			NPAI I 8 A_SetScale(0.666, 0.666);
-			NPAI H 8;
+			PAIN MLKJ 8;
+			NPAI IH 8;
 			Goto See;
 	}
 }

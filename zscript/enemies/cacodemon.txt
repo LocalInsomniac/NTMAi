@@ -41,9 +41,9 @@ class NTM_Cacodemon : NTM_Enemy {
 			Loop;
 		
 		Melee:
-			NCAC L 6 A_FaceTarget;
 			NCAC M 6 A_FaceTarget;
-			NCAC N 6 A_CustomMeleeAttack(10 * Random(1, 6), "caco/melee");
+			NCAC N 6 A_FaceTarget;
+			NCAC O 6 A_CustomMeleeAttack(10 * Random(1, 6), "caco/melee");
 			Goto See;
 		
 		Missile:
@@ -63,13 +63,13 @@ class NTM_Cacodemon : NTM_Enemy {
 			Goto See;
 		
 		Death:
-			NCAC G 7 A_NTM_Death;
-			NCAC H 7 A_NoBlocking;
-			NCAC I 7;
-			NCAC I 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
+			NCAC G 6 A_NTM_Death;
+			NCAC H 6 A_NoBlocking;
+			NCAC IJ 6;
+			NCAC J 1 A_JumpIf(bOnMObj || pos.z <= floorZ, 1);
 			Wait;
-			NCAC J 7 A_SetFloorClip;
-			NCAC K -1;
+			NCAC K 6 A_SetFloorClip;
+			NCAC L -1;
 			Stop;
 		
 		Raise:

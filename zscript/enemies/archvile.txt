@@ -105,7 +105,7 @@ class NTM_ArchVile : NTM_Enemy {
 			Goto See;
 			
 		Heal:
-			NARC Z[ 15 Bright;
+			NARC Z[][Z 6 Bright;
 			Goto See;
 			
 		Pain:
