@@ -84,19 +84,18 @@ pain/melee DSCACATK
 skeleton/fly DSSKEFLY
 skeleton/pain DSSKEPAI
 skeleton/tracex NSEXPLOD
-$limit skeleton/tracex 0
-$attenuation skeleton/tracex 0.75
+$attenuation skeleton/tracex 0.9
 
 vile/stop NSEXPLOD
 $limit vile/stop 0
-$attenuation vile/stop 0.7
+$attenuation vile/stop 0.8
 
 cyber/metal DSMETAL
 cyber/active DSCYBACT
 cyber/attack DSCYBATK
 cyber/tracex NSEXPLOD
 $attenuation cyber/attack 0.6
-$attenuation cyber/tracex 0.8
+$attenuation cyber/tracex 0.9
 cyber/pain DSBRSPAI
 
 spider/shoot DSCYBATK
