@@ -2,10 +2,11 @@ class NTM_Hellhound : NTM_Enemy {
 	Default {
 		Health 140;
 		Radius 24;
-		Height 56;
+		Height 48;
 		Speed 25;
 		PainChance 50;
 		Mass 300;
+		MeleeRange 70;
 		Obituary "%o was brutally mauled by a Hellhound.";
 		Tag "Hellhound";
 		SeeSound "NTM_Hellhound/sight";
@@ -23,51 +24,48 @@ class NTM_Hellhound : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NDOG ABCDEF 3 A_NTM_DukeChase;
+			NDOG BCDE 4 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
-			NDOG ABCDEF 3 A_NTM_BloodChase;
+			NDOG BCDE 4 A_NTM_BloodChase;
 			Loop;
 		
 		SWSee:
-			NDOG A 1 A_NTM_SWChase;
-			NDOG AA 1 A_NTM_SWChase2;
 			NDOG B 1 A_NTM_SWChase;
-			NDOG BB 1 A_NTM_SWChase2;
+			NDOG B 1 A_NTM_SWChase2;
 			NDOG C 1 A_NTM_SWChase;
-			NDOG CC 1 A_NTM_SWChase2;
+			NDOG C 1 A_NTM_SWChase2;
 			NDOG D 1 A_NTM_SWChase;
-			NDOG DD 1 A_NTM_SWChase2;
+			NDOG D 1 A_NTM_SWChase2;
 			NDOG E 1 A_NTM_SWChase;
-			NDOG EE 1 A_NTM_SWChase2;
-			NDOG F 1 A_NTM_SWChase;
-			NDOG FF 1 A_NTM_SWChase2;
+			NDOG E 1 A_NTM_SWChase2;
 			Loop;
 		
 		Melee:
-			NDOG G 0 A_StartSound("NTM_Hellhound/melee");
-			NDOG GH 3 A_FaceTarget;
-			NDOG I 8 A_CustomMeleeAttack(25);
+			NDOG F 0 A_StartSound("NTM_Hellhound/melee");
+			NDOG F 4 A_FaceTarget;
+			NDOG G 3 A_FaceTarget;
+			NDOG H 8 A_CustomMeleeAttack(25);
 			Goto See;
 		
 		Pain:
-			NDOG J 10 A_Pain;
+			NDOG I 10 A_Pain;
 			Goto See;
 		
 		Death:
-			NDOG K 5 A_NTM_Death;
-			NDOG L 5 A_NoBlocking;
-			NDOG MNO 5;
-			NDOG Q -1;
+			NDOG J 5 A_NTM_Death;
+			NDOG K 5 A_NoBlocking;
+			NDOG LMNO 5;
+			NDOG P -1;
 			Stop;
 		
 		Raise:
-			NDOG ONMLK 5;
+			NDOG ONMLKJ 5;
 			Goto See;
 			
 		Leap:
-			NDOG C 1 A_NTM_Leap;
+			NDOG C 1 A_NTM_Leap(false);
 			Loop;
 	}
 }
