@@ -2,7 +2,7 @@ class NTM_LightningOrb : NTM_LostSoul {
 	Default {
 		Health 40;
 		Speed 6;
-		Scale 0.5;
+		Scale 0.6;
 		ActiveSound "NTM_LightningOrb/active";
 		AttackSound "NTM_LightningOrb/attack";
 		DeathSound "NTM_LightningOrb/death";

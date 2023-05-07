@@ -132,9 +132,8 @@ class NTM_Demon : NTM_Enemy {
 		
 		Death:
 			NDEM I 5 A_NTM_Death;
-			NDEM J 5 A_Scream;
-			NDEM K 5 A_NoBlocking;
-			NDEM L 5;
+			NDEM J 5 A_NoBlocking;
+			NDEM KL 5;
 			NDEM M -1;
 			Stop;
 		

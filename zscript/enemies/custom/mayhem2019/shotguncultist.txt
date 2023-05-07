@@ -80,6 +80,7 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 					
 					if (height == 56) {
 						justCrawled = false;
+						A_NTM_PainEnable();
 						SetStateLabel("See");
 						
 						return;
