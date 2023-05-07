@@ -45,7 +45,8 @@ class NTM_Chainsaw : Chainsaw replaces Chainsaw {
 	}
 	
 	action void A_NTM_Saw() {
-		A_Saw("weapons/sawfull", "weapons/sawhit", 3, "NTM_ChainsawPuff", SF_NoTurn);
+		A_StartSound("weapons/sawfull", Chan_Weapon, ChanF_Looping);
+		A_Saw("", "weapons/sawhit", 3, "NTM_ChainsawPuff", SF_NoTurn);
 		A_WeaponOffset(Random(-2, 2), Random(32, 38), WOF_Interpolate);
 	}
 }
