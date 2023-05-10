@@ -1,10 +1,12 @@
 class NTM_TommyGunCultist : NTM_ShotgunCultist {
 	Default {
 		AttackSound"NTM_TommyGun/fire";
-		Translation "NTM_German_Gray";
+		Translation "NTM_Cultist_Gray";
 		Tag "Tommy Gun Cultist";
 		Species "NTM_ChaingunGuy";
 		Obituary "%o was perforated by a Tommy Gun Cultist.";
+		DropItem "NTM_TommyGun";
+		Health 70;
 	}
 	
 	States {

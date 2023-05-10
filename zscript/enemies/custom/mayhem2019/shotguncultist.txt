@@ -8,14 +8,14 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 		PainSound "NTM_Cultist/pain";
 		DeathSound "";
 		NTM_Humanoid.BurnSound "NTM_Cultist/burn";
-		Translation "NTM_German_Brown";
+		Translation "NTM_Cultist_Brown";
 		Tag "Shotgun Cultist";
 		Obituary "%o was shot by a Shotgun Cultist.";
 	}
 	
 	States {
 		Spawn:
-			NCUL E 10 A_Look;
+			NCUL N 10 A_Look;
 			Loop;
 		
 		DukeSee:
@@ -63,7 +63,7 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 			NCUL G 0 A_NTM_PainDisable;
 			NCUL G 6 A_Pain;
 			
-			NCUL P 0 {
+			NCUL O 0 {
 				if (sv_ntm_enemyMove == 1) {
 					AddZ(13.25, false);
 				}
@@ -74,7 +74,7 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 			Goto Crawl;
 		
 		Crawl:
-			NCUL P 0 {
+			NCUL O 0 {
 				if (justCrawled && Random(0, 256) < 96) {
 					A_SetSize(-1, 56, true);
 					
@@ -108,14 +108,18 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 			Loop;
 		
 		DukeCrawl:
-			NCUL PPQQRRSS 3 A_NTM_DukeCrawl;
+			NCUL OOPPQQRR 3 A_NTM_DukeCrawl;
 			Goto Crawl;
 		
 		BloodCrawl:
-			NCUL PPQQRRSS 3 A_NTM_BloodCrawl;
+			NCUL OOPPQQRR 3 A_NTM_BloodCrawl;
 			Goto Crawl;
 		
 		SWCrawl:
+			NCUL O 1 A_NTM_SWCrawl;
+			NCUL OO 1 A_NTM_SWCrawl2;
+			NCUL O 1 A_NTM_SWCrawl;
+			NCUL OO 1 A_NTM_SWCrawl2;
 			NCUL P 1 A_NTM_SWCrawl;
 			NCUL PP 1 A_NTM_SWCrawl2;
 			NCUL P 1 A_NTM_SWCrawl;
@@ -128,26 +132,23 @@ class NTM_ShotgunCultist : NTM_ShotgunGuy {
 			NCUL RR 1 A_NTM_SWCrawl2;
 			NCUL R 1 A_NTM_SWCrawl;
 			NCUL RR 1 A_NTM_SWCrawl2;
-			NCUL S 1 A_NTM_SWCrawl;
-			NCUL SS 1 A_NTM_SWCrawl2;
-			NCUL S 1 A_NTM_SWCrawl;
-			NCUL SS 1 A_NTM_SWCrawl2;
 			Goto Crawl;
 		
 		Death:
 		Death.Chainsaw:
 			NCUL H 5 A_NTM_Death("NTM_Cultist/death1", "NTM_Cultist/death2", "NTM_Cultist/death3");
-			NCUL I 5 A_NoBlocking;
-			NCUL JKLM 5;
-			NCUL N -1 A_Jump(100, 1);
+			NCUL I 6 A_NoBlocking;
+			NCUL J 5;
+			NCUL K 6;
+			NCUL L -1 A_Jump(100, 1);
 			Stop;
-			NCUL N Random(30, 180);
-			NCUL ONO 3;
-			NCUL N -1;
+			NCUL L Random(30, 180);
+			NCUL MLM 4;
+			NCUL L -1;
 			Stop;
 		
 		Raise:
-			NCUL MLKJIH 4;
+			NCUL KJIH 5;
 			Goto See;
 	}
 	
