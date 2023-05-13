@@ -140,6 +140,33 @@ class NTM_RadSuit : NTM_ToggleableInventory replaces RadSuit {
 		
 		owner.A_Log("Radiation Suit OFF", true);
 	}
+	
+	override void DoEffect() {
+		if (CVar.FindCVar("cl_ntm_autoRadSuit").GetBool()) {
+			// The suit will automatically be used underwater and on slime
+			if (waterLevel >= 3 || (owner.curSector && owner.curSector.damageType)) {
+				if (!active) {
+					GiveToggleablePowerup();
+					ActivatePowerup();
+					ticker = 0;
+					active = true;
+				}
+			} else {
+				if (active) {
+					owner.TakeInventory(type, 1);
+					DeactivatePowerup();
+					ticker = 0;
+					active = false;
+				}
+			}
+			
+			automatic = true;
+		} else {
+			automatic = false;
+		}
+		
+        super.DoEffect();
+    }
 }
 
 // Radiation Suit Power

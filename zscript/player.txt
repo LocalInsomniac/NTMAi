@@ -243,34 +243,6 @@ class NTM_Player : DoomPlayer {
 			--painTics;
 		}
 		
-		// Auto-activate radiation suit if allowed
-		if (CVar.FindCVar("cl_ntm_autoRadSuit").GetBool()) {
-			NTM_ToggleableInventory suit = NTM_ToggleableInventory(FindInventory("NTM_RadSuit"));
-			
-			if (suit) {
-				// The suit will automatically ¨be used underwater and on slime
-				if (waterLevel >=3 || (curSector && curSector.damageType)) {
-					if (!suit.active) {
-						suit.automatic = false;
-						UseInventory(suit);
-					}
-				} else {
-					if (suit.active) {
-						suit.automatic = false;
-						UseInventory(suit);
-					}
-				}
-				
-				suit.automatic = true;
-			}
-		} else {
-			NTM_ToggleableInventory suit = NTM_ToggleableInventory(FindInventory("NTM_RadSuit"));
-			
-			if (suit) {
-				suit.automatic = false;
-			}
-		}
-		
 		super.Tick();
 	}
 	

@@ -87,7 +87,7 @@ Can't Sleep, Kinsie • Base Programming
 
 Matt • "Hideous Destructor" Monster Movement
 
-Mikk- • "Build-Style Toggleable Powerups"
+Jarewill, Mikk- • "Build-Style Toggleable Powerups"
 
 Nash Muhandes • "Nash's Gore Mod: Vengeance Edition" Gore
 			  • "Less Slippery Movement"
