@@ -507,49 +507,9 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'RocketAmmo':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019 && e.replacement != null) {
 					e.replacement = "NTM_NapalmAmmo";
 				}
-			break;
-			
-			case 'Chaingun':
-				if (sv_ntm_r_custom && bMAYhem2019) {
-					e.replacement = "NTM_TommyGun";
-					
-					break;
-				}
-				
-				e.replacement = "NTM_Chaingun";
-			break;
-			
-			case 'RocketLauncher':
-				if (sv_ntm_r_custom && bMAYhem2019) {
-					e.replacement = "NTM_NapalmLauncher";
-					
-					break;
-				}
-				
-				e.replacement = "NTM_RocketLauncher";
-			break;
-			
-			case 'PlasmaRifle':
-				if (sv_ntm_r_custom && bMAYhem2019) {
-					e.replacement = "NTM_Flamethrower";
-					
-					break;
-				}
-				
-				e.replacement = "NTM_PlasmaRifle";
-			break;
-			
-			case 'BFG9000':
-				if (sv_ntm_r_custom  && bMAYhem2019) {
-					e.replacement = "NTM_Necronomicon";
-					
-					break;
-				}
-				
-				e.replacement = "NTM_BFG9000";
 			break;
 			
 			case 'Zombieman':
@@ -883,26 +843,6 @@ class NTMAi : EventHandler {
 				e.replacee = "Blood";
 			break;
 			
-			case 'NTM_Chaingun':
-			case 'NTM_TommyGun':
-				e.replacee = "Chaingun";
-			break;
-			
-			case 'NTM_RocketLauncher':
-			case 'NTM_NapalmLauncher':
-				e.replacee = "RocketLauncher";
-			break;
-			
-			case 'NTM_PlasmaRifle':
-			case 'NTM_Flamethrower':
-				e.replacee = "PlasmaRifle";
-			break;
-			
-			case 'NTM_BFG9000':
-			case 'NTM_Necronomicon':
-				e.replacee = "BFG9000";
-			break;
-			
 			case 'NTM_Zombieman':
 			case 'NTM_Zombie':
 				e.replacee = "Zombieman";
@@ -1029,10 +969,6 @@ class NTMAi : EventHandler {
 			// MAYhem 2019
 			case 'NTM_Pumpkin':
 				e.replacee = "SkullColumn";
-			break;
-			
-			case 'NTM_NapalmAmmo':
-				e.replacee = "RocketAmmo";
 			break;
 			
 			case 'NTM_Satyr2':

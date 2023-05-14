@@ -1,3 +1,22 @@
+class NTM_RocketLauncherSpawner : Actor replaces RocketLauncher {
+	override void Tick() {
+		super.Tick();
+		
+		class<Actor> cls = "NTM_RocketLauncher";
+		
+		if (sv_ntm_r_custom) {
+			NTMAi eh = NTMAi(EventHandler.Find("NTMAi"));
+			
+			if (eh && eh.bMAYhem2019) {
+				cls = "NTM_NapalmLauncher";
+			}
+		}
+		
+		A_SpawnItemEx(cls, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_AbsoluteVelocity | SXF_NoCheckPosition | SXF_TransferSpecial);
+		Destroy();
+	}
+}
+
 class NTM_RocketLauncher : RocketLauncher {
 	Default {
 		Scale 0.75;
@@ -110,5 +129,24 @@ class NTM_RocketBox : CustomInventory replaces RocketBox {
 			Stop;
 			TNT1 A 0;
 			Fail;
+	}
+}
+
+class NTM_RocketAmmoSpawner : Actor replaces RocketAmmo {
+	override void Tick() {
+		super.Tick();
+		
+		class<Actor> cls = "RocketAmmo";
+		
+		if (sv_ntm_r_custom) {
+			NTMAi eh = NTMAi(EventHandler.Find("NTMAi"));
+			
+			if (eh && eh.bMAYhem2019) {
+				cls = "NTM_NapalmAmmo";
+			}
+		}
+		
+		A_SpawnItemEx(cls, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_AbsoluteVelocity | SXF_NoCheckPosition | SXF_TransferSpecial);
+		Destroy();
 	}
 }
