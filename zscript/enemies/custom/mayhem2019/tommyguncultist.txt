@@ -5,7 +5,7 @@ class NTM_TommyGunCultist : NTM_ShotgunCultist {
 		Tag "Tommy Gun Cultist";
 		Species "NTM_ChaingunGuy";
 		Obituary "%o was perforated by a Tommy Gun Cultist.";
-		DropItem "NTM_TommyGun";
+		DropItem "Chaingun";
 		Health 70;
 	}
 	
