@@ -1,5 +1,5 @@
 # Nobody Told Me About id
-A Build Engine-style gameplay mod for GZDoom.
+A Build Engine-style mod for GZDoom.
 
 For the full credits list, [see credits.txt.](https://github.com/LocalInsomniac/NTMAi/blob/master/credits.txt)
 
