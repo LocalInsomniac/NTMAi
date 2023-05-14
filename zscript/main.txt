@@ -206,7 +206,7 @@ class NTMAi : EventHandler {
 		if (n == "NTM_Kick") {
 			let pmo = players[e.player].mo;
 			
-			if (pmo && pmo is "NTM_Player" && !pmo.CountInv("NTM_Kick")) {
+			if (pmo && !pmo.CountInv("NTM_Kick")) {
 				pmo.A_GiveInventory("NTM_Kick");
 				pmo.UseInventory(pmo.FindInventory("NTM_Kick"));
 			}
@@ -217,14 +217,18 @@ class NTMAi : EventHandler {
 				if (p) {
 					let pmo = p.mo;
 					
-					if (pmo && pmo is "NTM_Player" && (sv_infiniteAmmo || pmo.CountInv("NTM_GrenadeItem")) && !(p.readyWeapon is "NTM_GrenadeThrow")) {
-						pmo.A_GiveInventory("NTM_GrenadeThrow");
-						
-						let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
-						
-						if (grn) {
-							grn.prevWeapon = p.readyWeapon.GetClassName();
-							p.pendingWeapon = grn;
+					if (pmo && !(p.readyWeapon is "NTM_GrenadeThrow")) {
+						if (sv_infiniteAmmo || pmo.CountInv("NTM_GrenadeItem")) {
+							pmo.A_GiveInventory("NTM_GrenadeThrow");
+							
+							let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
+							
+							if (grn) {
+								grn.prevWeapon = p.readyWeapon.GetClassName();
+								p.pendingWeapon = grn;
+							}
+						} else {
+							pmo.A_Log("No grenades left");
 						}
 					}
 				}
