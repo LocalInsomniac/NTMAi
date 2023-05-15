@@ -163,3 +163,50 @@ class NTM_ToggleableInventory : CustomInventory {
 			Fail;
 	}
 }
+
+// Item Spawner
+class NTM_ItemSpawner : Actor {
+	class<Actor> type;
+	property Type: type;
+	
+	virtual void UpdateType(NTMAi e) {}
+	
+	override void Tick() {
+		super.Tick();
+		
+		NTMAi e = NTMAi(EventHandler.Find("NTMAi"));
+		
+		if (e) {
+			UpdateType(e);
+		}
+		
+		let new = Actor.Spawn(type, pos, Allow_Replace);
+		
+		new.bAmbush = bAmbush;
+		new.spawnAngle = spawnAngle;
+		new.angle = angle;
+		new.pitch = pitch;
+		new.roll = roll;
+		new.spawnPoint = spawnPoint;
+		new.special = special;
+		new.args[0] = args[0];
+		new.args[1] = args[1];
+		new.args[2] = args[2];
+		new.args[3] = args[3];
+		new.args[4] = args[4];
+		new.special1 = special1;
+		new.special2 = special2;
+		new.spawnFlags = spawnFlags & ~MTF_Secret;
+		new.HandleSpawnFlags();
+		new.spawnFlags = spawnFlags;
+		new.bCountSecret = spawnFlags & MTF_Secret;
+		new.ChangeTid(tid);
+		new.vel = vel;
+		new.master = master;
+		new.target = target;
+		new.tracer = tracer;
+		new.CopyFriendliness(self, false);
+		new.bDropped = bDropped;
+		Destroy();
+	}
+}

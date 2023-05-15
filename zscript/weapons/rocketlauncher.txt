@@ -1,19 +1,12 @@
-class NTM_RocketLauncherSpawner : Actor replaces RocketLauncher {
-	override void Tick() {
-		super.Tick();
-		
-		class<Actor> cls = "NTM_RocketLauncher";
-		
-		if (sv_ntm_r_custom) {
-			NTMAi eh = NTMAi(EventHandler.Find("NTMAi"));
-			
-			if (eh && eh.bMAYhem2019) {
-				cls = "NTM_NapalmLauncher";
-			}
+class NTM_RocketLauncherSpawner : NTM_ItemSpawner replaces RocketLauncher {
+	Default {
+		NTM_ItemSpawner.Type "NTM_RocketLauncher";
+	}
+	
+	override void UpdateType(NTMAi e) {
+		if (sv_ntm_r_custom && e.bMAYhem2019) {
+			type = "NTM_NapalmLauncher";
 		}
-		
-		A_SpawnItemEx(cls, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_AbsoluteVelocity | SXF_NoCheckPosition | SXF_TransferSpecial);
-		Destroy();
 	}
 }
 
@@ -132,21 +125,14 @@ class NTM_RocketBox : CustomInventory replaces RocketBox {
 	}
 }
 
-class NTM_RocketAmmoSpawner : Actor replaces RocketAmmo {
-	override void Tick() {
-		super.Tick();
-		
-		class<Actor> cls = "RocketAmmo";
-		
-		if (sv_ntm_r_custom) {
-			NTMAi eh = NTMAi(EventHandler.Find("NTMAi"));
-			
-			if (eh && eh.bMAYhem2019) {
-				cls = "NTM_NapalmAmmo";
-			}
+class NTM_RocketAmmoSpawner : NTM_ItemSpawner replaces RocketAmmo {
+	Default {
+		NTM_ItemSpawner.Type "RocketAmmo";
+	}
+	
+	override void UpdateType(NTMAi e) {
+		if (sv_ntm_r_custom && e.bMAYhem2019) {
+			type = "NTM_NapalmAmmo";
 		}
-		
-		A_SpawnItemEx(cls, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_AbsoluteVelocity | SXF_NoCheckPosition | SXF_TransferSpecial);
-		Destroy();
 	}
 }

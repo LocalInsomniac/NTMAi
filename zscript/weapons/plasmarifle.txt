@@ -1,19 +1,12 @@
-class NTM_PlasmaRifleSpawner : Actor replaces PlasmaRifle {
-	override void Tick() {
-		super.Tick();
-		
-		class<Actor> cls = "NTM_PlasmaRifle";
-		
-		if (sv_ntm_r_custom) {
-			NTMAi eh = NTMAi(EventHandler.Find("NTMAi"));
-			
-			if (eh && eh.bMAYhem2019) {
-				cls = "NTM_Flamethrower";
-			}
+class NTM_PlasmaRifleSpawner : NTM_ItemSpawner replaces PlasmaRifle {
+	Default {
+		NTM_ItemSpawner.Type "NTM_PlasmaRifle";
+	}
+	
+	override void UpdateType(NTMAi e) {
+		if (sv_ntm_r_custom && e.bMAYhem2019) {
+			type = "NTM_Flamethrower";
 		}
-		
-		A_SpawnItemEx(cls, 0, 0, 0, vel.x, vel.y, vel.z, 0, SXF_AbsoluteVelocity | SXF_NoCheckPosition | SXF_TransferSpecial);
-		Destroy();
 	}
 }
 
