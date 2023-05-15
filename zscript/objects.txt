@@ -180,7 +180,7 @@ class NTM_ItemSpawner : Actor {
 			UpdateType(e);
 		}
 		
-		let new = Actor.Spawn(type, pos, Allow_Replace);
+		let new = Actor.Spawn(type, pos);
 		
 		new.bAmbush = bAmbush;
 		new.spawnAngle = spawnAngle;
