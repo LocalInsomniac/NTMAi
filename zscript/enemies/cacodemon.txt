@@ -73,9 +73,8 @@ class NTM_Cacodemon : NTM_Enemy {
 			Stop;
 		
 		Raise:
-			NCAC K 8;
-			NCAC J 8 A_UnSetFloorClip;
-			NCAC IHG 8;
+			NCAC K 8 A_UnSetFloorClip;
+			NCAC JIHG 8;
 			Goto See;
 	}
 }
