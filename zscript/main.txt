@@ -228,7 +228,7 @@ class NTMAi : EventHandler {
 								p.pendingWeapon = grn;
 							}
 						} else {
-							pmo.A_Log("No grenades left");
+							pmo.A_Log("No grenades left", true);
 						}
 					}
 				}
