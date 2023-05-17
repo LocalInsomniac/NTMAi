@@ -102,13 +102,13 @@ class NTM_Player : DoomPlayer {
 		
 		XDeath:
 		XDeath.Fire:
-			NMGI A 5 {
+			NMGI A 4 {
 				A_XScream();
 				A_SkullPop("NTM_PlayerHead");
 			}
 			
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
+			NMGI B 4 A_NoBlocking;
+			NMGI CDEFG 4;
 			NMGI H -1;
 			Stop;
 		

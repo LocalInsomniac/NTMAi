@@ -23,9 +23,9 @@ class NTM_Humanoid : NTM_Enemy {
 		
 		XDeath:
 		XDeath.Fire:
-			NMGI A 5 A_NTM_XDeath;
-			NMGI B 5 A_NoBlocking;
-			NMGI CDEFG 5;
+			NMGI A 4 A_NTM_XDeath;
+			NMGI B 4 A_NoBlocking;
+			NMGI CDEFG 4;
 			NMGI H -1;
 			Stop;
 	}
