@@ -2,7 +2,7 @@
 class NTM_ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel {
 	Default {
 		Height 28;
-		Scale 0.6;
+		Scale 0.64;
 	}
 	
 	States {
@@ -102,5 +102,193 @@ class NTM_GlassShard : NTM_Gib {
 		Spawn:
 			NGLG ABCDEFGH 2;
 			Loop;
+	}
+}
+
+
+// Torch Base
+class NTM_TorchBase : Actor {
+	class<NTM_FireProp> fireType;
+	property FireType: fireType;
+	
+	double fireHeight;
+	property FireHeight: fireHeight;
+	
+	NTM_FireProp fire;
+	
+	Default {
+		ProjectilePassHeight -16;
+		
+		+Solid
+	}
+	
+	override void BeginPlay() {
+		super.BeginPlay();
+		
+		if (fireType) {
+			bool ok;
+			Actor a;
+			
+			[ok, a] = A_SpawnItemEx(fireType, 0, 0, fireHeight, 0, 0, 0, 0, SXF_NoCheckPosition);
+			fire = NTM_FireProp(a);
+		}
+	}
+	
+	override void Tick() {
+		super.Tick();
+		
+		if (fire) {
+			// GROSS HACK: Offset fire to appear behind the torch
+			double ang = angle;
+			let p = players[net_arbitrator];
+			
+			if (p) {
+				Actor pcam = p.camera;
+				
+				if (pcam) {
+					ang = AngleTo(pcam, true);
+				}
+			}
+			
+			fire.SetOrigin(pos + (-Cos(ang), -Sin(ang), fireHeight), true);
+		}
+	}
+	
+	override void OnDestroy() {
+		super.OnDestroy();
+		
+		if (fire) {
+			fire.Destroy();
+		}
+	}
+}
+
+// Fire Prop
+class NTM_FireProp : Actor {
+	Default {
+		RenderStyle "Add";
+		FloatBobPhase 0;
+		
+		+ZDoomTrans
+		+NoInteraction
+	}
+	
+	States {
+		Spawn:
+			NFIR A 0 NoDelay A_Jump(255, Random(0, 13));
+			NFIR ABCDEFGHIJKLMN 2 Bright;
+			Goto Spawn + 1;
+	}
+	
+	override void BeginPlay() {
+		super.BeginPlay();
+		
+		A_StartSound("NTM_World/fire", Chan_Body, ChanF_Looping);
+	}
+}
+
+// Burning Barrel
+class NTM_BurningBarrel : NTM_TorchBase {
+	Default {
+		Radius 12;
+		Height 28;
+		Scale 0.64;
+		NTM_TorchBase.FireType "NTM_BurningBarrelFire";
+		NTM_TorchBase.FireHeight 27;
+	}
+	
+	States {
+		Spawn:
+			NBAR E -1;
+			Stop;
+	}
+}
+
+// Burning Barrel Fire
+class NTM_BurningBarrelFire : NTM_FireProp {
+	Default {
+		Scale 0.5;
+		Translation "NTM_Fire_Yellow";
+	}
+}
+
+// Red Torch
+class NTM_RedTorch : NTM_TorchBase {
+	Default {
+		Radius 12;
+		Height 52;
+		NTM_TorchBase.FireType "NTM_RedTorchFire";
+		NTM_TorchBase.FireHeight 51;
+	}
+	
+	States {
+		Spawn:
+			NTOR B -1;
+			Stop;
+	}
+}
+
+// Red Torch Fire
+class NTM_RedTorchFire : NTM_FireProp {
+	Default {
+		Scale 0.6;
+		Translation "NTM_Fire_Red";
+	}
+}
+
+// Green Torch
+class NTM_GreenTorch : NTM_RedTorch {
+	Default {
+		NTM_TorchBase.FireType "NTM_GreenTorchFire";
+	}
+}
+
+// Green Torch Fire
+class NTM_GreenTorchFire : NTM_RedTorchFire {
+	Default {
+		Translation "NTM_Fire_Green";
+	}
+}
+
+// Blue Torch
+class NTM_BlueTorch : NTM_RedTorch {
+	Default {
+		NTM_TorchBase.FireType "NTM_BlueTorchFire";
+	}
+}
+
+// Blue Torch Fire
+class NTM_BlueTorchFire : NTM_RedTorchFire {
+	Default {
+		Translation "NTM_Fire_Blue";
+	}
+}
+
+// Short Red Torch
+class NTM_ShortRedTorch : NTM_RedTorch {
+	Default {
+		Radius 8;
+		Height 29;
+		NTM_TorchBase.FireHeight 28;
+	}
+	
+	States {
+		Spawn:
+			NTOR A -1;
+			Stop;
+	}
+}
+
+// Short Green Torch
+class NTM_ShortGreenTorch : NTM_ShortRedTorch {
+	Default {
+		NTM_TorchBase.FireType "NTM_GreenTorchFire";
+	}
+}
+
+// Short Blue Torch
+class NTM_ShortBlueTorch : NTM_ShortRedTorch {
+	Default {
+		NTM_TorchBase.FireType "NTM_BlueTorchFire";
 	}
 }

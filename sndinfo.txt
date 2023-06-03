@@ -117,6 +117,7 @@ NTMAi/chat NSCHAT
 NTM_World/splash NSSPLASH
 NTM_World/lava NSLAVA
 NTM_World/sizzle NSSIZZLE
+NTM_World/fire NSFIRE
 
 // Player
 $playersound player male *falling NSFALLIN

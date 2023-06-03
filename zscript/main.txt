@@ -500,6 +500,48 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			case 'BurningBarrel':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_BurningBarrel";
+				}
+			break;
+			
+			case 'RedTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_RedTorch";
+				}
+			break;
+			
+			case 'GreenTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_GreenTorch";
+				}
+			break;
+			
+			case 'BlueTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_BlueTorch";
+				}
+			break;
+			
+			case 'ShortRedTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_ShortRedTorch";
+				}
+			break;
+			
+			case 'ShortGreenTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_ShortGreenTorch";
+				}
+			break;
+			
+			case 'ShortBlueTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_ShortBlueTorch";
+				}
+			break;
+			
 			case 'SkullColumn':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Pumpkin";
@@ -841,6 +883,34 @@ class NTMAi : EventHandler {
 		switch (e.replacement.GetClassName()) {
 			case 'NTM_Blood':
 				e.replacee = "Blood";
+			break;
+			
+			case 'NTM_BurningBarrel':
+				e.replacee = "BurningBarrel";
+			break;
+			
+			case 'NTM_RedTorch':
+				e.replacee = "RedTorch";
+			break;
+			
+			case 'NTM_GreenTorch':
+				e.replacee = "GreenTorch";
+			break;
+			
+			case 'NTM_BlueTorch':
+				e.replacee = "BlueTorch";
+			break;
+			
+			case 'NTM_ShortRedTorch':
+				e.replacee = "ShortRedTorch";
+			break;
+			
+			case 'NTM_ShortGreenTorch':
+				e.replacee = "ShortGreenTorch";
+			break;
+			
+			case 'NTM_ShortBlueTorch':
+				e.replacee = "ShortBlueTorch";
 			break;
 			
 			case 'NTM_Zombieman':
