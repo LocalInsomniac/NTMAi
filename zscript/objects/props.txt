@@ -167,7 +167,6 @@ class NTM_TorchBase : Actor {
 class NTM_FireProp : Actor {
 	Default {
 		RenderStyle "Add";
-		FloatBobPhase 0;
 		
 		+ZDoomTrans
 		+NoInteraction
@@ -190,8 +189,8 @@ class NTM_FireProp : Actor {
 // Burning Barrel
 class NTM_BurningBarrel : NTM_TorchBase {
 	Default {
-		Radius 12;
-		Height 28;
+		Radius 16;
+		Height 32;
 		Scale 0.64;
 		NTM_TorchBase.FireType "NTM_BurningBarrelFire";
 		NTM_TorchBase.FireHeight 27;
@@ -215,8 +214,8 @@ class NTM_BurningBarrelFire : NTM_FireProp {
 // Red Torch
 class NTM_RedTorch : NTM_TorchBase {
 	Default {
-		Radius 12;
-		Height 52;
+		Radius 16;
+		Height 68;
 		NTM_TorchBase.FireType "NTM_RedTorchFire";
 		NTM_TorchBase.FireHeight 51;
 	}
@@ -267,8 +266,8 @@ class NTM_BlueTorchFire : NTM_RedTorchFire {
 // Short Red Torch
 class NTM_ShortRedTorch : NTM_RedTorch {
 	Default {
-		Radius 8;
-		Height 29;
+		Radius 16;
+		Height 37;
 		NTM_TorchBase.FireHeight 28;
 	}
 	
