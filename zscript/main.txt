@@ -45,6 +45,7 @@ class NTMAi : EventHandler {
 		
 		/* [MAYhem 2019]
 		   
+		   BurningBarrel = Burning Pillar
 		   Chaingun = Tommy Gun ✓
 		   RocketLauncher = Napalm Launcher ✓
 		   PlasmaRifle = Flamethrower ✓
@@ -501,7 +502,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'BurningBarrel':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
 					e.replacement = "NTM_BurningBarrel";
 				}
 			break;
@@ -525,19 +526,19 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'ShortRedTorch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
 					e.replacement = "NTM_ShortRedTorch";
 				}
 			break;
 			
 			case 'ShortGreenTorch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
 					e.replacement = "NTM_ShortGreenTorch";
 				}
 			break;
 			
 			case 'ShortBlueTorch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
 					e.replacement = "NTM_ShortBlueTorch";
 				}
 			break;
@@ -545,12 +546,6 @@ class NTMAi : EventHandler {
 			case 'SkullColumn':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Pumpkin";
-				}
-			break;
-			
-			case 'RocketAmmo':
-				if (sv_ntm_r_custom && bMAYhem2019 && e.replacement != null) {
-					e.replacement = "NTM_NapalmAmmo";
 				}
 			break;
 			
