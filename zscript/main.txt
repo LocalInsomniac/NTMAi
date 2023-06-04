@@ -543,6 +543,24 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			case 'TechLamp':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_TechLamp";
+				}
+			break;
+			
+			case 'TechLamp2':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_TechLamp2";
+				}
+			break;
+			
+			case 'Column':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_Column";
+				}
+			break;
+			
 			case 'SkullColumn':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Pumpkin";
@@ -954,6 +972,18 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_ShortBlueTorch':
 				e.replacee = "ShortBlueTorch";
+			break;
+			
+			case 'NTM_TechLamp':
+				e.replacee = "TechLamp";
+			break;
+			
+			case 'NTM_TechLamp2':
+				e.replacee = "TechLamp2";
+			break;
+			
+			case 'NTM_Column':
+				e.replacee = "Column";
 			break;
 			
 			case 'NTM_GibbedMarine':

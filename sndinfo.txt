@@ -119,6 +119,9 @@ NTM_World/lava NSLAVA
 NTM_World/sizzle NSSIZZLE
 NTM_World/fire NSFIRE
 
+NTM_World/glass NSGLASS
+$volume NTM_World/glass 0.64
+
 // Player
 $playersound player male *falling NSFALLIN
 $playersound player female *falling NSFALLIN

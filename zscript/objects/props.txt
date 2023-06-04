@@ -405,3 +405,72 @@ class NTM_DeadCacodemon : NTM_DeadImp {
 			Stop;
 	}
 }
+
+// Tech Lamp
+class NTM_TechLamp : TechLamp {
+	Default {
+		Health 10;
+		
+		+DontCorpse
+		+DontThrust
+		+NoBlood
+		+NoIceDeath
+		+NotAutoaimed
+		+Shootable
+	}
+	
+	States {
+		Spawn:
+			NLMP ABCB 3 Bright;
+			Loop;
+		
+		Death:
+			NLMP D 0;
+			Goto Broken;
+		
+		Broken:
+			#### # -1 {
+				AddZ(32);
+				A_SpawnDebris("NTM_GlassShard", false, 1.5, 0.75);
+				AddZ(-32);
+				A_StartSound("NTM_World/glass");
+				A_SetSize(-1, default.height);
+			}
+			
+			Stop;
+	}
+}
+
+// Tech Lamp 2
+class NTM_TechLamp2 : NTM_TechLamp {
+	Default {
+		Height 60;
+	}
+	
+	States {
+		Spawn:
+			NLMP EFGF 3 Bright;
+			Loop;
+		
+		Death:
+			NLMP H 0;
+			Goto Broken;
+	}
+}
+
+// Column
+class NTM_Column : NTM_TechLamp {
+	Default {
+		Height 48;
+	}
+	
+	States {
+		Spawn:
+			NLMP I -1 Bright;
+			Stop;
+		
+		Death:
+			NLMP J 0;
+			Goto Broken;
+	}
+}
