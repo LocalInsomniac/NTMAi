@@ -549,6 +549,54 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			case 'GibbedMarine':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_GibbedMarine";
+				}
+			break;
+			
+			case 'GibbedMarineExtra':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_GibbedMarine2";
+				}
+			break;
+			
+			case 'DeadMarine':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_DeadMarine";
+				}
+			break;
+			
+			case 'DeadZombieman':
+				if (sv_ntm_r_props && sv_ntm_r_zombieman) {
+					e.replacement = "NTM_DeadZombieman";
+				}
+			break;
+			
+			case 'DeadShotgunGuy':
+				if (sv_ntm_r_props && sv_ntm_r_shotgunGuy) {
+					e.replacement = "NTM_DeadShotgunGuy";
+				}
+			break;
+			
+			case 'DeadDoomImp':
+				if (sv_ntm_r_props && sv_ntm_r_imp) {
+					e.replacement = "NTM_DeadImp";
+				}
+			break;
+			
+			case 'DeadDemon':
+				if (sv_ntm_r_props && sv_ntm_r_demon) {
+					e.replacement = "NTM_DeadDemon";
+				}
+			break;
+			
+			case 'DeadCacodemon':
+				if (sv_ntm_r_props && sv_ntm_r_cacodemon) {
+					e.replacement = "NTM_DeadCacodemon";
+				}
+			break;
+			
 			case 'Zombieman':
 				if (sv_ntm_r_zombieman) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
@@ -906,6 +954,38 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_ShortBlueTorch':
 				e.replacee = "ShortBlueTorch";
+			break;
+			
+			case 'NTM_GibbedMarine':
+				e.replacee = "GibbedMarine";
+			break;
+			
+			case 'NTM_GibbedMarine2':
+				e.replacee = "GibbedMarineExtra";
+			break;
+			
+			case 'NTM_DeadMarine':
+				e.replacee = "DeadMarine";
+			break;
+			
+			case 'NTM_DeadZombieman':
+				e.replacee = "DeadZombieman";
+			break;
+			
+			case 'NTM_DeadShotgunGuy':
+				e.replacee = "DeadShotgunGuy";
+			break;
+			
+			case 'NTM_DeadImp':
+				e.replacee = "DeadDoomImp";
+			break;
+			
+			case 'NTM_DeadDemon':
+				e.replacee = "DeadDemon";
+			break;
+			
+			case 'NTM_DeadCacodemon':
+				e.replacee = "DeadCacodemon";
 			break;
 			
 			case 'NTM_Zombieman':

@@ -13,7 +13,7 @@ class NTM_ShotgunGuy : NTM_Zombieman {
 		Tag "$FN_SHOTGUN";
 		DropItem "Shotgun";
 		Species "ShotgunGuy";
-		Translation "128:143=100:111", "144:151=104:111", "152:159=104:111", "112:127=96:111", "78:79=5:6", "1:2=6:7", "16:47=24:47";
+		Translation "NTM_Zombieman_Gray";
 	}
 	
 	States {
