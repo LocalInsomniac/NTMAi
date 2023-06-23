@@ -3,9 +3,8 @@ GameInfo {
     PlayerClasses = "NTM_Player"
 	QuitSound = ""
 	BorderFlat = "AG128_1"
-	TitlePage = "NTMPIC"
-	TitleMusic = "$MUSIC_NTMAI"
 	ChatSound = "NTMAi/chat"
+	IntermissionMusic = "D_NINTER"
 }
 
 Skill Baby {
@@ -43,4 +42,8 @@ Skill Nightmare {
 	SpawnFilter = Nightmare
 	Name = "Nightmare"
 	Key = "n"
+}
+
+map TITLEMAP "Nobody Told Me About id" {
+	EventHandlers = "NTM_Title"
 }
