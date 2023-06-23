@@ -88,6 +88,8 @@ silentzora • "Project: Redux - DOOM 64 Main Theme"
 
 Can't Sleep, Kinsie • Base Programming
 
+FDARI • ACS "str_equal" Function
+
 Matt • "Hideous Destructor" Monster Movement
 
 Jarewill, Mikk- • "Build-Style Toggleable Powerups"
