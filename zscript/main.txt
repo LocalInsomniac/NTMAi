@@ -1477,6 +1477,7 @@ class NTM_Dummy_Gib : Actor {
 	}
 }
 
+// Title Screen
 class NTM_Title : EventHandler {
 	ui TextureID NTMGUYS;
 	ui TextureID NTMPIC;
@@ -1529,16 +1530,153 @@ class NTM_Title : EventHandler {
 			
 			if (keyframe > 170) {
 				let NTMLOGO1 = TexMan.CheckForTexture("NTMLOGO1", TexMan.Type_Any);
-				double scale = Min((keyframe - 170) * 0.0833333333333333, 1);
+				double scale = Min((keyframe - 170) * 0.09, 1);
 				
 				Screen.DrawTexture(NTMLOGO1, false, 160, 106, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
 			}
 			
 			if (keyframe > 200) {
 				let NTMLOGO2 = TexMan.CheckForTexture("NTMLOGO2", TexMan.Type_Any);
-				double scale = Min((keyframe - 200) * 0.0833333333333333, 1);
+				double scale = Min((keyframe - 200) * 0.09, 1);
 				
 				Screen.DrawTexture(NTMLOGO2, false, 160, 144, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+			}
+		}
+	}
+}
+
+// Intermission Screen
+class NTM_Stats : StatusScreen {
+	const strCompleted = "Completed";
+	const strAnyKey = "Press any key to continue";
+	const strEntering = "Entering";
+	
+	int keyframe;
+	
+	override void InitStats() {
+		curState = statCount;
+		accelerateStage = 0;
+		cnt_kills[0] = plrs[me].sKills;
+		cnt_items[0] = plrs[me].sItems;
+		cnt_secret[0] = plrs[me].sSecret;
+		cnt_time = Thinker.Tics2Seconds(plrs[me].sTime);
+		cnt_par = wbs.parTime / gameTicRate;
+		cnt_total_time = Thinker.Tics2Seconds(wbs.totalTime);
+		sp_state = 1;
+	}
+	
+	override void UpdateStats() {
+		if (accelerateStage) {
+			accelerateStage = 0;
+			
+			if (sp_state == 9) {
+				PlaySound("intermission/paststats");
+				curState = showNextLoc;
+			} else {
+				PlaySound("intermission/nextstage");
+				sp_state = 9;
+			}
+		}
+		
+		switch (sp_state) {
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+				if (++keyframe > 35) {
+					keyframe = 0;
+					++sp_state;
+				}
+			break;
+			
+			case 2:
+			case 4:
+			case 6:
+			case 8:
+				if (++keyframe > 12) {
+					PlaySound("intermission/nextstage");
+					keyframe = 0;
+					++sp_state;
+				}
+			break;
+		}
+	}
+	
+	// By DrPyspy
+	string GetTimeString(int time) {
+		int hours = time / 3600;
+		
+		time -= hours * 3600;
+		
+		int minutes = time / 60;
+		
+		time -= minutes * 60;
+		
+		int seconds = time;
+		
+		if (hours) {
+			String.Format("%02d:%02d:%02d", hours, minutes, seconds);
+		}
+		
+		return String.Format("%02d:%02d", minutes, seconds);
+	}
+	
+	override void Drawer() {
+		bg.drawBackground(curState, false, false);
+		
+		string mapName;
+		
+		if (curState == showNextLoc || curState == leavingIntermission || curState == noState) {
+			bg.drawBackground(curState, true, snl_pointeron);
+			DrawText(bigFont, Font.CR_Red, 160 - bigFont.StringWidth(strEntering) * 0.5, 80, strEntering);
+			mapName = lNameTexts[1];
+			DrawText(bigFont, Font.CR_Red, 160 - bigFont.StringWidth(mapName) * 0.5, 104, mapName);
+			
+			return;
+		}
+		
+		mapName = lNameTexts[0];
+		DrawText(bigFont, Font.CR_Red, 160 - bigFont.StringWidth(mapName) * 0.5, 2, mapName);
+		DrawText(bigFont, Font.CR_Red, 160 - bigFont.StringWidth(strCompleted) * 0.5, 20, strCompleted);
+		DrawText(smallFont, Font.CR_DarkGray, 160 - smallFont.StringWidth(strAnyKey) * 0.5, 190, strAnyKey);
+		
+		// Time
+		if (sp_state > 1) {
+			DrawText(smallFont, Font.CR_White, 32, 64, "Your Time:");
+			DrawText(smallFont, Font.CR_White, 32, 72, "Par Time:");
+			DrawText(smallFont, Font.CR_White, 32, 80, "Total Time:");
+			
+			if (sp_state > 2) {
+				DrawText(smallFont, Font.CR_White, 128, 64, GetTimeString(cnt_time));
+				DrawText(smallFont, Font.CR_White, 128, 72, GetTimeString(cnt_par));
+				DrawText(smallFont, Font.CR_White, 128, 80, GetTimeString(cnt_total_time));
+			}
+		}
+		
+		// Kills
+		if (sp_state > 3) {
+			DrawText(smallFont, Font.CR_White, 32, 96, "Kills:");
+			
+			if (sp_state > 4) {
+				DrawText(smallFont, Font.CR_White, 128, 96, cnt_kills[0].." / "..wbs.maxKills);
+			}
+		}
+		
+		// Items
+		if (sp_state > 5) {
+			DrawText(smallFont, Font.CR_White, 32, 112, "Items:");
+			
+			if (sp_state > 6) {
+				DrawText(smallFont, Font.CR_White, 128, 112, cnt_items[0].." / "..wbs.maxItems);
+			}
+		}
+		
+		// Secrets
+		if (sp_state > 7) {
+			DrawText(smallFont, Font.CR_White, 32, 128, "Secrets:");
+			
+			if (sp_state > 8) {
+				DrawText(smallFont, Font.CR_White, 128, 128, cnt_secret[0].." / "..wbs.maxSecret);
 			}
 		}
 	}

@@ -5,6 +5,7 @@ GameInfo {
 	BorderFlat = "AG128_1"
 	ChatSound = "NTMAi/chat"
 	IntermissionMusic = "D_NINTER"
+	StatScreen_Single = "NTM_Stats"
 }
 
 Skill Baby {
