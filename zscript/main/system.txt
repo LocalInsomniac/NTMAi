@@ -1,0 +1,236 @@
+// System Base
+class NTM_System : Inventory {
+	Default {
+		Inventory.MaxAmount 1;
+		FloatBobPhase 0;
+		
+		+Inventory.Undroppable
+		+Inventory.Untossable
+		+Inventory.AutoActivate
+	}
+	
+	States {
+		Use:
+			TNT1 A 0;
+			Fail;
+		
+		Pickup:
+			TNT1 A 0 {
+				return true;
+			}
+			
+			Stop;
+	}
+}
+
+// Actor System
+class NTM_System_Actor : NTM_System {
+	bool dead, gibbed, crushed, chopped, rKO, corpseGibbed;
+	int fallTics, footprintState, footprintTics, footprintSide, deathLastFrame;
+	double deathLastHeight;
+	Actor gibDummy, bloodPool, footprintBloodPool;
+	
+	override void PostBeginPlay() {
+		super.PostBeginPlay();
+		
+		footprintSide = -1;
+		deathLastFrame = -1;
+	}
+	
+	override void Tick() {
+		if (!owner) {
+			DepleteOrDestroy();
+			
+			return;
+		}
+		
+		// Monster/Player death effects
+		if (owner.health <= 0) {
+			// Blood: Jittering death animation
+			if (sv_ntm_enemyMove == 1 && !owner.bBoss && !(owner is "PlayerPawn")) {
+				int frame = owner.curState.frame;
+				
+				if (deathLastFrame != frame) {
+					TextureID tex = owner.curState.GetSpriteTexture(0);
+					
+					if (tex) {
+						Vector2 spriteSize = TexMan.GetScaledSize(tex);
+						double spriteHeight = spriteSize.y;
+						
+						if (frame > 0 && owner.waterLevel == 0) {
+							double jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
+							
+							owner.AddZ(owner.scale.y * jitter, false);
+						}
+						
+						deathLastFrame = frame;
+						deathLastHeight = spriteHeight;
+					}
+				}
+			}
+			
+			if (sv_ntm_gore && !owner.bNoBlood) {
+				// Duke Nukem 3D: Blood splatter on long falls
+				if (owner.pos.z <= owner.floorZ || owner.bOnMObj) {
+					if (fallTics > 18 && owner.waterLevel == 0) {
+						for (int i; i < Random(3, 6); i++) {
+							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+						}
+						
+						owner.A_StartSound("NTM_System_Actor/pancake");
+					}
+					
+					fallTics = 0;
+				} else {
+					if (!(owner is "PlayerChunk")) {
+						++fallTics;
+					}
+				}
+				
+				if (!dead) {
+					if (!gibbed) {
+						// Common: Ludicrous gibs and taunting
+						if (owner.health < owner.GetGibHealth()) {
+							for (int i; i < Random(5, 8); i++) {
+								if (i >= 0 && i <= 2) {
+									owner.A_SpawnItemEx("NTM_FlyingGib"..(i + 1), 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+								}
+								
+								owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+							}
+							
+							let killer = owner.target;
+							
+							if (killer is "NTM_Player" && killer.health > 0 && !Random(0, 16)) {
+								killer.A_StartSound("NTM_Player/taunt", Chan_Voice);
+							}
+							
+							gibbed = true;
+						}
+					}
+					
+					dead = true;
+				}
+				
+				// Duke Nukem 3D & Shadow Warrior: Blood pools
+				if (!bloodPool && owner.health < (owner.GetGibHealth() * 0.666) && !(owner is "PlayerChunk") && owner.vel.Length() == 0) {
+					double fz = owner.floorZ;
+					
+					if (owner.pos.z <= fz && fz == owner.GetZAt(1, 0, 0, GZF_AbsoluteAng)) {
+						bool result;
+						Actor bloodP;
+						
+						[result, bloodP] = owner.A_SpawnItemEx("NTM_BloodPool", flags: SXF_UseBloodColor);
+						
+						if (bloodP) {
+							// Slightly offset the blood pool so there's no
+							// Z-fighting in software mode
+							bloodPool = bloodP;
+							bloodP.target = owner;
+							bloodP.SetOrigin(owner.pos + (1, 0, 0), false);
+						}
+					}
+				}
+				
+				// Common: Gibbable corpses
+				bool isGibbable = dead && !corpseGibbed && !crushed && owner.curState.tics == -1 && !owner.bNoBlood && !owner.bBoss;
+				
+				if (gibDummy) {
+					if (!isGibbable) {
+						gibDummy.Destroy();
+						gibDummy = null;
+					}
+				} else {
+					if (isGibbable) {
+						let mo = NTM_Dummy_Gib(Actor.Spawn("NTM_Dummy_Gib", owner.pos));
+						
+						if (mo) {
+							gibDummy = mo;
+							gibDummy.tracer = owner;
+							gibDummy.health = -owner.GetGibHealth() * 0.25;
+							gibDummy.A_SetSize(owner.radius, owner.height);
+						}
+					}
+				}
+				
+				// Shadow Warrior: Gore effects on melee kill
+				if (!chopped && owner.damageTypeReceived == "Chainsaw") {
+					for (int i = 0; i < 2; ++i) {
+						owner.A_SpawnItemEx("NTM_FlyingBlood", 8, 4, 28, FRandom(2, 5), FRandom(-5, -2), FRandom(2, 6), 0, SXF_UseBloodColor);
+					}
+					
+					owner.A_StartSound("NTM_Chainsaw/slash", Chan_Body, ChanF_Overlap);
+					owner.A_GiveToTarget("NTM_Bloody", 1);
+					chopped = true;
+				}
+			}
+			
+			// Blood & Shadow Warrior: Knockback on powerful weapons
+			if (!rKO && !owner.bBoss && (owner.damageTypeReceived == "Berserk" || owner.damageTypeReceived == "SuperShotgun")) {
+				if (sv_ntm_enemyMove) {
+					let killer = owner.target;
+					
+					if (killer) {
+						double dist = owner.Distance3D(killer);
+						
+						if (dist > 0) {
+							double force = (8 / Max(1, dist * 0.005)) * (100 / Max(100, owner.mass * 0.32));
+							
+							if (force > 1.25) {
+								owner.vel.xy -= owner.AngleToVector(owner.AngleTo(killer, true), force);
+								
+								// Shadow Warrior does it better!
+								if (sv_ntm_enemyMove == 2) {
+									owner.vel.z += force * 0.8;
+								}
+							}
+						}
+					}
+				}
+				
+				rKO = true;
+			}
+		} else {
+			// Duke Nukem 3D & Shadow Warrior: Bloody Footprints
+			if (owner is "PlayerPawn" && owner.pos.z <= owner.floorZ) {
+				if (owner.vel.Length() > 0) {
+					--footprintTics;
+					++footprintState;
+					
+					if (footprintState >= 8) {
+						if (footprintTics > 0 && footprintBloodPool) {
+							bool result;
+							Actor footprint;
+							double ang = owner.angle;
+							
+							[result, footprint] = footprintBloodPool.A_SpawnItemEx("NTM_BloodyFootprint", angle: ang, flags: SXF_TransferTranslation | SXF_AbsoluteAngle | SXF_NoCheckPosition);
+							
+							if (footprint) {
+								double footAngle = ang + (footprintSide * 90);
+								
+								footprint.SetOrigin((owner.pos.x + Cos(footAngle) * 5, owner.pos.y + Sin(footAngle) * 5, owner.pos.z), false);
+							}
+						}
+						
+						footprintState = 0;
+						footprintSide *= -1;
+					}
+				} else {
+					footprintSide = -1;
+					footprintState = 0;
+				}
+			}
+			
+			// Reset all death mechanics
+			deathLastFrame = -1;
+			bloodPool = null;
+			
+			if (gibDummy) {
+				gibDummy.Destroy();
+				gibDummy = null;
+			}
+		}
+		
+		Super.Tick();
+	}
+}

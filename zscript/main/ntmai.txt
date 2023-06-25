@@ -1,0 +1,1195 @@
+class NTMAi : EventHandler {
+	bool bADMORTEM, bD64D2, bEviternity, bMAYhem2019, bScythe2, bValiant;
+	
+	static void LumpPrintHash(string lumpName) {
+		int lump = -1;
+		
+		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
+			Console.PrintF("'"..lumpName.."' ("..lump..") hash is '"..(MD5.Hash(WADs.ReadLump(lump))).."'");
+		}
+	}
+	
+	static bool LumpHasHash(string lumpName, string hash) {
+		int lump = -1;
+		
+		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
+			if (MD5.Hash(WADs.ReadLump(lump)) == hash) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	override void OnRegister() {
+		/* [AD MORTEM]
+		
+		   DeH_Actor_150 = Pumpkin Marine ✓
+		   DeH_Actor_151, DeH_Actor_209 = Gargoyle ✓
+		   DeH_Actor_152 = Satyr ✓
+		   DeH_Actor_153 = Rocket Warrior ✓
+		   DeH_Actor_156 = Skeleton ✓
+		   DeH_Actor_158 = Gjenganger ✓
+		   DeH_Actor_231 = Little Marine ✓ */
+		bADMORTEM = NTMAi.LumpHasHash("DSFRE048", "0f76f6c24ac906634562a7aadf8f527f");
+		
+		/* [DOOM 64 for DOOM II]
+		   
+		   SpiderMastermind = Mother Demon
+		   Cyberdemon = Cyberdemon (A_KeenDie)
+		   CommanderKeen = Nightmare Imp
+		   GibbedMarineExtra = Nightmare Cacodemon
+		   DeadLostSoul = Flames */
+		bD64D2 = NTMAi.LumpHasHash("CWILV30", "ed77f8e6d72be6d04d760259c2e8ed02");
+		
+		/* [Eviternity]
+		   
+		   BaronOfHell = Annihilator
+		   WolfensteinSS = Former Captain
+		   CommanderKeen = Astral Cacodemon
+		   BossBrain = Archangelus */
+		bEviternity = NTMAi.LumpHasHash("XLT_EV15", "4a96b98efc9a0ab68ffd2533a3a3ee01");
+		
+		/* [MAYhem 2019]
+		   
+		   BurningBarrel = Burning Pillar
+		   Chaingun = Tommy Gun ✓
+		   RocketLauncher = Napalm Launcher ✓
+		   PlasmaRifle = Flamethrower ✓
+		   BFG9000 = Necronomicon ✓
+		   Zombieman = Zombie ✓
+		   PainElemental = Hothead ✓
+		   ChaingunGuy, WolfensteinSS = Tommy Gun Cultist ✓
+		   ShotgunGuy = Shotgun Cultist ✓
+		   Demon = Skeleton ✓
+		   Spectre = Shadow Imp ✓
+		   HellKnight = Arachnorb ✓
+		   BaronOfHell = Mother Brain ✓
+		   LostSoul = Lightning Ball ✓
+		   SpiderMastermind = Abbot
+		   Arachnotron = Death Cube ✓
+		   Cyberdemon = Minotaur
+		   HangTSkull = Hellhound ✓
+		   CommanderKeen = Shadow Hellhound ✓
+		   Stalagtite = Satyr ✓
+		   DeadLostSoul = Bat ✓
+		   HangBNoBrain = Mummy
+		   HangTLookingDown = Ghost
+		   HangTLookingUp = Tesla Coil ✓
+		   Meat2 = Inactive Tesla Coil ✓
+		   HangTNoBrain = Baron of Hell ✓
+		   MBFHelperDog = Chainsaw Maniac ✓
+		   UnholyBible = Lich */
+		bMAYhem2019 = NTMAi.LumpHasHash("DSTINK", "3ab1f8e2c9fd05ab647881bc7f5a3fc9");
+		
+		/* [Scythe 2]
+		
+		   WolfensteinSS = Evil Marine ✓
+		   CommanderKeen = Afrit ✓ */
+		bScythe2 = NTMAi.LumpHasHash("DEHACKED", "64fec1191ba91059d450ddfbe7ac1d7d");
+		
+		/* [Valiant]
+		
+		   BaronOfHell = Daedabus
+		   HellKnight = Pyro Knight
+		   SpiderMastermind = Cybruiser
+		   Infrared = Spider Mastermind
+		   MBFHelperDog = Arachnorb
+		   Arachnotron = Arachnotron
+		   Heart Column = Lightning Orb
+		   DeadLostSoul = Kamikaze
+		   BlueTorch = Diablo
+		   TorchTree = Ghost Arch-Vile
+		   BigTree = Ghost Revenant */
+		bValiant = NTMAi.LumpHasHash("E1TEXT", "2363886efb272bb3dace286fd6475586");
+	}
+	
+	/* ====
+	   MATH
+	   ==== */
+	
+	static double Lerp(double a, double b, double f) {
+		return a + f * (b - a);
+	}
+	
+	static Vector3 Lerp3(Vector3 a, Vector3 b, double f) {
+		return (a + (f * (b - a)));
+	}
+	
+	/* =======
+	   ACTIONS
+	   ======= */
+	
+	static void Explode(Actor caller, int damage = 128, int distance = 128, int flags = 0, name mod = "None") {
+		if (!caller || damage <= 0 || distance <= 0) {
+			return;
+		}
+		
+		if (sv_ntm_blast) {
+			// Do blast damage like Blood
+			NTM_Blast blast = NTM_Blast(caller.Spawn("NTM_Blast", caller.pos));
+			
+			if (blast) {
+				if (caller.bMissile) {
+					blast.master = caller;
+					blast.target = caller.target;
+				} else {
+					blast.target = caller;
+				}
+				
+				blast.blastDamage = damage;
+				blast.blastDamage2 = damage;
+				blast.blastRadius = distance;
+				blast.damageType = mod;
+				blast.blastFlags = flags;
+			}
+		} else {
+			caller.A_Explode(damage, distance, flags, damageType: mod);
+		}
+	}
+	
+	/* ======
+	   PLAYER
+	   ====== */
+	
+	void PlayerClearInventory(PlayerPawn pmo) {
+		pmo.A_TakeInventory("NTM_Kick");
+		pmo.A_TakeInventory("NTM_GrenadeThrow");
+		pmo.A_TakeInventory("NTM_Bloody");
+		pmo.A_TakeInventory("NTM_PistolShots");
+		pmo.A_TakeInventory("NTM_Key_RedCard");
+		pmo.A_TakeInventory("NTM_Key_YellowCard");
+		pmo.A_TakeInventory("NTM_Key_BlueCard");
+		pmo.A_TakeInventory("NTM_Key_RedSkull");
+		pmo.A_TakeInventory("NTM_Key_YellowSkull");
+		pmo.A_TakeInventory("NTM_Key_BlueSkull");
+	}
+	
+	override void PlayerEntered(PlayerEvent e) {
+		let pmo = players[e.playerNumber].mo;
+		
+		if (pmo) {
+			PlayerClearInventory(pmo);
+			
+			if (!pmo.CountInv("NTM_System_Actor")) {
+				pmo.A_GiveInventory("NTM_System_Actor", 1);
+			}
+			
+			/* GROSS HACK: Reset NTM_Player's values in here instead of
+						   PostBeginPlay(), because they persist between level
+						   changes and can mess up things when spawning! */
+			if (pmo is "NTM_Player") {
+				NTM_Player nmo = NTM_Player(pmo);
+				
+				nmo.fallState = 0;
+				nmo.fallTics = 0;
+				nmo.fallTics2 = 0;
+				
+				nmo.oldHealth = nmo.health;
+				nmo.painTics = 0;
+				
+				nmo.doorTics = 0;
+				nmo.door = null;
+				
+				if (sv_ntm_startTwitch) {
+					// Emulate Duke3D twitching using spawn angle
+					nmo.A_SetViewAngle(nmo.DeltaAngle(nmo.angle, 0));
+				}
+			}
+		}
+	}
+	
+	override void PlayerRespawned(PlayerEvent e) {
+		let pmo = players[e.playerNumber].mo;
+		
+		if (pmo) {
+			PlayerClearInventory(pmo);
+			DoThingRevive(pmo);
+		}
+	}
+	
+	override void NetworkProcess(ConsoleEvent e) {
+		Name n = e.name;
+		
+		if (n == "NTM_Kick") {
+			let pmo = players[e.player].mo;
+			
+			if (pmo && !pmo.CountInv("NTM_Kick")) {
+				pmo.A_GiveInventory("NTM_Kick");
+				pmo.UseInventory(pmo.FindInventory("NTM_Kick"));
+			}
+		} else {
+			if (n == "NTM_UseGrenade") {
+				let p = players[e.player];
+				
+				if (p) {
+					let pmo = p.mo;
+					
+					if (pmo && !(p.readyWeapon is "NTM_GrenadeThrow")) {
+						if (sv_infiniteAmmo || pmo.CountInv("NTM_GrenadeItem")) {
+							pmo.A_GiveInventory("NTM_GrenadeThrow");
+							
+							let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
+							
+							if (grn) {
+								grn.prevWeapon = p.readyWeapon.GetClassName();
+								p.pendingWeapon = grn;
+							}
+						} else {
+							pmo.A_Log("No grenades left", true);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/* =====
+	   WORLD
+	   ===== */
+	
+	override void WorldLoaded(WorldEvent e) {
+		Name checksum = level.GetCheckSum();
+		
+		Console.PrintF("Level checksum is '" .. checksum .. "'");
+		
+		switch (checksum) {
+			case 'acf3adec8c02b9431f347231354db5ad': // MAYhem 2019, MAP02
+				S_ChangeMusic("D_NMAY2");
+			break;
+			
+			case '497e6a94a957334e984b18c081de3c7a': // MAYhem 2019, MAP03
+				S_ChangeMusic("D_NMAY3");
+			break;
+			
+			case 'cfa89ac059dc9b3963a9cbb4d78f7508': // MAYhem 2019, MAP05
+				S_ChangeMusic("D_NMAY5");
+			break;
+			
+			case '89f4f1508de623a21b3e2525fd58022a': // MAYhem 2019, MAP09
+				S_ChangeMusic("D_NMAY9");
+			break;
+			
+			case 'bb6fa847527237c9e5987338078cee0d': // MAYhem 2019, MAP12
+				S_ChangeMusic("D_NMAY12");
+			break;
+			
+			case '3174909bca569ba357de67f6c47ae70e': // MAYhem 2019, MAP13
+				S_ChangeMusic("D_NMAY13");
+				level.nextMap = "MAP15"; // MAP14 is just... uh... um... erm...
+			break;
+			
+			case '1d383dc934b35333a116a60f75441561': // MAYhem 2019, MAP32
+				S_ChangeMusic("D_NMAY32");
+			break;
+		}
+	}
+	
+	static void DoReplaceActor(Actor og, class<Actor> new) {
+		bool ok;
+		Actor rep;
+		
+		[ok, rep] = og.A_SpawnItemEx(new, flags: SXF_NoCheckPosition | SXF_TransferAmbushFlag | SXF_TransferPitch | SXF_TransferPointers | SXF_TransferSpecial | SXF_TransferRoll);
+		
+		if (rep) {
+			og.Destroy();
+		}
+	}
+	
+	static void ReplaceSecret(Actor og, class<Actor> rep, int cvar) {
+		if (cvar == 1) {
+			NTMAi.DoReplaceActor(og, rep);
+			
+			return;
+		}
+		
+		if (cvar >= 2) {
+			let s = og.curSector;
+			
+			if (s && !s.IsSecret()) {
+				NTMAi.DoReplaceActor(og, rep);
+			}
+		}
+	}
+	
+	override void WorldThingSpawned(WorldEvent e) {
+		let mo = e.thing;
+		
+		if (mo && mo.bIsMonster && !mo.CountInv("NTM_System_Actor")) {
+			mo.GiveInventory("NTM_System_Actor", 1);
+		}
+	}
+	
+	override void WorldThingDied(WorldEvent e) {
+		let mo = e.thing;
+		
+		if (mo) {
+			bool boo = mo.bIsMonster;
+			
+			if (sv_ntm_gore && (boo || mo is "PlayerPawn")) {
+				mo.bXFlip = Random(0, 1);
+			}
+			
+			// Add a small chance for Zombies to drop grenades
+			if (boo) {
+				class<Actor> s = mo.species;
+				
+				if (((mo is "Zombieman" || s is "Zombieman")
+					|| (mo is "ShotgunGuy" || s is "ShotgunGuy")
+					|| (mo is "ChaingunGuy" || s is "ChaingunGuy"))
+					&& mo.GetDropItems() != null) {
+					mo.A_DropItem("NTM_GrenadeItem", 1, 32);
+				}
+			}
+		}
+	}
+	
+	override void WorldThingGround(WorldEvent e) {
+		if (sv_ntm_gore) {
+			let mo = e.thing;
+			
+			if (mo) {
+				mo.A_XScream();
+				
+				if (mo.ceilingZ == mo.GetZAt(0, 0, 0, GZF_Ceiling)) {
+					mo.A_SpawnItemEx("NTM_GibMeat", flags: SXF_TransferTranslation);
+				}
+			}
+		}
+	}
+	
+	override void WorldThingRevived(WorldEvent e) {
+		DoThingRevive(e.thing);
+	}
+	
+	void DoThingRevive(Actor mo) {
+		if (mo.CountInv("NTM_System_Actor")) {
+			let actorSystem = NTM_System_Actor(mo.FindInventory("NTM_System_Actor"));
+			
+			actorSystem.dead = false;
+			actorSystem.gibbed = false;
+			actorSystem.crushed = false;
+			actorSystem.chopped = false;
+			actorSystem.rKO = false;
+			actorSystem.corpseGibbed = false;
+		}
+		
+		mo.bXFlip = mo.default.bXFlip;
+		mo.scale = mo.default.scale;
+		
+		if (!(mo is "PlayerPawn")) {
+			mo.translation = mo.default.translation;
+		}
+	}
+	
+	override void WorldLinePreActivated(WorldEvent e) {
+		let mo = e.thing;
+		Line l = e.activatedLine;
+		
+		// If this is a locked door, check if we can play a keycard animation
+		if (mo is "NTM_Player" && l.special == 13 && sv_ntm_keycard) {
+			bool lock = false;
+			NTM_Player pmo = NTM_Player(mo);
+			
+			if (pmo.door != l) {
+				switch (l.args[3]) {
+					case 1:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 2:
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 3:
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard")) {
+							lock = true;
+						}
+					break;
+					
+					case 4:
+						if (UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 5:
+						if (UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 6:
+						if (UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 100:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")
+						    || UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")
+							|| UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 129:
+					case 132:
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 130:
+					case 133:
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+							lock = true;
+						}
+					break;
+					
+					case 131:
+					case 134:
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							lock = true;
+						}
+					break;
+				}
+			}
+			
+			if (lock) {
+				// Queue this door so we can open it after the animation
+				pmo.door = l;
+				pmo.doorTics = 24;
+				e.shouldActivate = false;
+			}
+		}
+	}
+	
+	bool UseKey(WorldEvent e, class<Key> keyItem, class<NTM_Key> keyAnim) {
+		Actor pmo = e.thing;
+		
+		if (pmo.CountInv(keyItem)) {
+			let p = pmo.player;
+			
+			if (p && !(p.readyWeapon is keyAnim)) {
+				let prevWeapon = p.readyWeapon;
+				
+				pmo.A_GiveInventory(keyAnim);
+				
+				let keycard = NTM_Key(pmo.FindInventory(keyAnim));
+				
+				if (keycard) {
+					keycard.prevWeapon = prevWeapon.GetClassName();
+					p.pendingWeapon = keycard;
+				} else {
+					return false;
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/* ===========
+	   REPLACEMENT
+	   =========== */
+	
+	override void CheckReplacement(ReplaceEvent e) {
+		switch (e.replacee.GetClassName()) {
+			case 'Blood':
+				if (sv_ntm_gore) {
+					e.replacement = "NTM_Blood";
+				}
+			break;
+			
+			case 'BurningBarrel':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_BurningBarrel";
+				}
+			break;
+			
+			case 'RedTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_RedTorch";
+				}
+			break;
+			
+			case 'GreenTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_GreenTorch";
+				}
+			break;
+			
+			case 'BlueTorch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_BlueTorch";
+				}
+			break;
+			
+			case 'ShortRedTorch':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
+					e.replacement = "NTM_ShortRedTorch";
+				}
+			break;
+			
+			case 'ShortGreenTorch':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
+					e.replacement = "NTM_ShortGreenTorch";
+				}
+			break;
+			
+			case 'ShortBlueTorch':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
+					e.replacement = "NTM_ShortBlueTorch";
+				}
+			break;
+			
+			case 'TechLamp':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_TechLamp";
+				}
+			break;
+			
+			case 'TechLamp2':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_TechLamp2";
+				}
+			break;
+			
+			case 'Column':
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+					e.replacement = "NTM_Column";
+				}
+			break;
+			
+			case 'SkullColumn':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Pumpkin";
+				}
+			break;
+			
+			case 'GibbedMarine':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_GibbedMarine";
+				}
+			break;
+			
+			case 'GibbedMarineExtra':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_GibbedMarine2";
+				}
+			break;
+			
+			case 'DeadMarine':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_DeadMarine";
+				}
+			break;
+			
+			case 'DeadZombieman':
+				if (sv_ntm_r_props && sv_ntm_r_zombieman) {
+					e.replacement = "NTM_DeadZombieman";
+				}
+			break;
+			
+			case 'DeadShotgunGuy':
+				if (sv_ntm_r_props && sv_ntm_r_shotgunGuy) {
+					e.replacement = "NTM_DeadShotgunGuy";
+				}
+			break;
+			
+			case 'DeadDoomImp':
+				if (sv_ntm_r_props && sv_ntm_r_imp) {
+					e.replacement = "NTM_DeadImp";
+				}
+			break;
+			
+			case 'DeadDemon':
+				if (sv_ntm_r_props && sv_ntm_r_demon) {
+					e.replacement = "NTM_DeadDemon";
+				}
+			break;
+			
+			case 'DeadCacodemon':
+				if (sv_ntm_r_props && sv_ntm_r_cacodemon) {
+					e.replacement = "NTM_DeadCacodemon";
+				}
+			break;
+			
+			case 'BloodyTwitch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_BloodyTwitch";
+				}
+			break;
+			
+			case 'Zombieman':
+				if (sv_ntm_r_zombieman) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_Zombie";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_Zombieman";
+				}
+			break;
+			
+			case 'ShotgunGuy':
+				if (sv_ntm_r_shotgunGuy) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_ShotgunCultist";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_ShotgunGuy";
+				}
+			break;
+			
+			case 'ChaingunGuy':
+				if (sv_ntm_r_heavyWeaponDude) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_TommyGunCultist";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_ChaingunGuy";
+				}
+				
+			break;
+			
+			case 'DoomImp':
+				if (sv_ntm_r_imp) {
+					e.replacement = "NTM_Imp";
+				}
+			break;
+			
+			case 'LostSoul':
+				if (sv_ntm_r_lostSoul) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_LightningOrb";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_LostSoul";
+				}
+			break;
+			
+			case 'Demon':
+				if (sv_ntm_r_demon) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_Skeleton2";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_Demon";
+				}
+			break;
+			
+			case 'Spectre':
+				if (sv_ntm_r_spectre) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_ShadowImp";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_Spectre";
+				}
+			break;
+			
+			case 'Cacodemon':
+				if (sv_ntm_r_cacodemon) {
+					e.replacement = "NTM_Cacodemon";
+				}
+			break;
+			
+			case 'HellKnight':
+				if (sv_ntm_r_hellKnight) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_Arachnorb";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_HellKnight";
+				}
+			break;
+			
+			case 'BaronOfHell':
+				if (sv_ntm_r_baronOfHell) {
+					if (sv_ntm_r_custom) {
+						if (bEviternity) {
+							//e.replacement = "NTM_Cybruiser";
+							
+							break;
+						}
+						
+						if (bMAYhem2019) {
+							e.replacement = "NTM_MotherBrain";
+							
+							break;
+						}
+					}
+					
+					e.replacement = "NTM_BaronOfHell";
+				}
+			break;
+			
+			case 'Arachnotron':
+				if (sv_ntm_r_arachnotron) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_DeathCube";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_Arachnotron";
+				}
+			break;
+			
+			case 'PainElemental':
+				if (sv_ntm_r_painElemental) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_Hothead";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_PainElemental";
+				}
+			break;
+			
+			case 'Revenant':
+				if (sv_ntm_r_revenant) {
+					e.replacement = "NTM_Revenant";
+				}
+			break;
+			
+			case 'Fatso':
+				if (sv_ntm_r_mancubus) {
+					e.replacement = "NTM_Mancubus";
+				}
+			break;
+			
+			case 'Archvile':
+				if (sv_ntm_r_archVile) {
+					e.replacement = "NTM_ArchVile";
+				}
+			break;
+			
+			case 'Cyberdemon':
+				if (sv_ntm_r_cyberdemon) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						//e.replacement = "NTM_Minotaur";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_Cyberdemon";
+				}
+			break;
+			
+			case 'SpiderMastermind':
+				if (sv_ntm_r_spiderMastermind) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						//e.replacement = "NTM_Abbot";
+						
+						break;
+					}
+					
+					e.replacement = "NTM_SpiderMastermind";
+				}
+			break;
+			
+			case 'WolfensteinSS':
+				if (sv_ntm_r_ss) {
+					if (sv_ntm_r_custom) {
+						if (bEviternity) {
+							// e.replacement = "NTM_FormerCaptain";
+							
+							break;
+						}
+						
+						if (bMAYhem2019) {
+							e.replacement = "NTM_TommyGunCultist2";
+							
+							break;
+						}
+						
+						if (bScythe2) {
+							e.replacement = "NTM_EvilMarine";
+							
+							break;
+						}
+					}
+					
+					e.replacement = "NTM_German";
+				}
+			break;
+			
+			case 'CommanderKeen':
+				if (sv_ntm_r_custom) {
+					if (bEviternity) {
+						//e.replacement = "NTM_AstralCacodemon";
+						
+						break;
+					}
+					
+					if (bMAYhem2019) {
+						e.replacement = "NTM_ShadowHellhound";
+						
+						break;
+					}
+					
+					if (bScythe2) {
+						e.replacement = "NTM_Afrit";
+						
+						break;
+					}
+				}
+			break;
+			
+			// AD MORTEM
+			case 'DeH_Actor_150':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_PumpkinMarine";
+				}
+			break;
+			
+			case 'DeH_Actor_151':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Gargoyle";
+				}
+			break;
+			
+			case 'DeH_Actor_152':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Satyr";
+				}
+			break;
+			
+			case 'DeH_Actor_153':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_RocketWarrior";
+				}
+			break;
+			
+			case 'DeH_Actor_156':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Skeleton";
+				}
+			break;
+			
+			case 'DeH_Actor_158':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Gjenganger";
+				}
+			break;
+			
+			case 'DeH_Actor_209':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_Gargoyle2";
+				}
+			break;
+			
+			case 'DeH_Actor_231':
+				if (sv_ntm_r_custom && bADMORTEM) {
+					e.replacement = "NTM_LittleMarine";
+				}
+			break;
+			
+			// MAYhem2019
+			case 'Stalagtite':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Satyr2";
+				}
+			break;
+			
+			case 'HangTNoBrain':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_BaronOfHell2";
+				}
+			break;
+			
+			case 'DeadLostSoul':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Bat";
+				}
+			break;
+			
+			case 'HangTSkull':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_HellHound";
+				}
+			break;
+			
+			case 'MBFHelperDog':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_ChainsawManiac";
+				}
+			break;
+			
+			case 'HangTLookingUp':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_TeslaCoil";
+				}
+			break;
+			
+			case 'Meat2':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_TeslaCoil2";
+				}
+			break;
+		}
+	}
+	
+	override void CheckReplacee(ReplacedEvent e) {
+		switch (e.replacement.GetClassName()) {
+			case 'NTM_Blood':
+				e.replacee = "Blood";
+			break;
+			
+			case 'NTM_BurningBarrel':
+				e.replacee = "BurningBarrel";
+			break;
+			
+			case 'NTM_RedTorch':
+				e.replacee = "RedTorch";
+			break;
+			
+			case 'NTM_GreenTorch':
+				e.replacee = "GreenTorch";
+			break;
+			
+			case 'NTM_BlueTorch':
+				e.replacee = "BlueTorch";
+			break;
+			
+			case 'NTM_ShortRedTorch':
+				e.replacee = "ShortRedTorch";
+			break;
+			
+			case 'NTM_ShortGreenTorch':
+				e.replacee = "ShortGreenTorch";
+			break;
+			
+			case 'NTM_ShortBlueTorch':
+				e.replacee = "ShortBlueTorch";
+			break;
+			
+			case 'NTM_TechLamp':
+				e.replacee = "TechLamp";
+			break;
+			
+			case 'NTM_TechLamp2':
+				e.replacee = "TechLamp2";
+			break;
+			
+			case 'NTM_Column':
+				e.replacee = "Column";
+			break;
+			
+			case 'NTM_GibbedMarine':
+				e.replacee = "GibbedMarine";
+			break;
+			
+			case 'NTM_GibbedMarine2':
+				e.replacee = "GibbedMarineExtra";
+			break;
+			
+			case 'NTM_DeadMarine':
+				e.replacee = "DeadMarine";
+			break;
+			
+			case 'NTM_DeadZombieman':
+				e.replacee = "DeadZombieman";
+			break;
+			
+			case 'NTM_DeadShotgunGuy':
+				e.replacee = "DeadShotgunGuy";
+			break;
+			
+			case 'NTM_DeadImp':
+				e.replacee = "DeadDoomImp";
+			break;
+			
+			case 'NTM_DeadDemon':
+				e.replacee = "DeadDemon";
+			break;
+			
+			case 'NTM_DeadCacodemon':
+				e.replacee = "DeadCacodemon";
+			break;
+			
+			case 'NTM_BloodyTwitch':
+				e.replacee = "BloodyTwitch";
+			break;
+			
+			case 'NTM_Zombieman':
+			case 'NTM_Zombie':
+				e.replacee = "Zombieman";
+			break;
+			
+			case 'NTM_ShotgunGuy':
+			case 'NTM_ShotgunCultist':
+				e.replacee = "ShotgunGuy";
+			break;
+			
+			case 'NTM_ChaingunGuy':
+			case 'NTM_TommyGunCultist':
+				e.replacee = "ChaingunGuy";
+			break;
+			
+			case 'NTM_DoomImp':
+				e.replacee = "DoomImp";
+			break;
+			
+			case 'NTM_Demon':
+			case 'NTM_Skeleton2':
+				e.replacee = "Demon";
+			break;
+			
+			case 'NTM_Spectre':
+			case 'NTM_ShadowImp':
+				e.replacee = "Spectre";
+			break;
+			
+			case 'NTM_LostSoul':
+			case 'NTM_LightningOrb':
+				e.replacee = "LostSoul";
+			break;
+			
+			case 'NTM_Cacodemon':
+				e.replacee = "Cacodemon";
+			break;
+			
+			case 'NTM_HellKnight':
+			case 'NTM_Arachnorb':
+				e.replacee = "HellKnight";
+			break;
+			
+			case 'NTM_BaronOfHell':
+			case 'NTM_MotherBrain':
+				e.replacee = "BaronOfHell";
+			break;
+			
+			case 'NTM_Arachnotron':
+			case 'NTM_DeathCube':
+				e.replacee = "Arachnotron";
+			break;
+			
+			case 'NTM_PainElemental':
+			case 'NTM_Hothead':
+				e.replacee = "PainElemental";
+			break;
+			
+			case 'NTM_Revenant':
+				e.replacee = "Revenant";
+			break;
+			
+			case 'NTM_Mancubus':
+				e.replacee = "Fatso";
+			break;
+			
+			case 'NTM_ArchVile':
+				e.replacee = "ArchVile";
+			break;
+			
+			case 'NTM_Cyberdemon':
+				e.replacee = "Cyberdemon";
+			break;
+			
+			case 'NTM_SpiderMastermind':
+				e.replacee = "SpiderMastermind";
+			break;
+			
+			case 'NTM_German':
+			case 'NTM_TommyGunCultist2':
+			case 'NTM_EvilMarine':
+				e.replacee = "WolfensteinSS";
+			break;
+			
+			//case 'NTM_AstralCacodemon':
+			case 'NTM_ShadowHellHound':
+			case 'NTM_Afrit':
+				e.replacee = "CommanderKeen";
+			break;
+			
+			// AD MORTEM
+			case 'NTM_PumpkinMarine':
+				e.replacee = "DeH_Actor_150";
+			break;
+			
+			case 'NTM_Gargoyle':
+				e.replacee = "DeH_Actor_151";
+			break;
+			
+			case 'NTM_Satyr':
+				e.replacee = "DeH_Actor_152";
+			break;
+			
+			case 'NTM_RocketWarrior':
+				e.replacee = "DeH_Actor_153";
+			break;
+			
+			case 'NTM_Skeleton':
+				e.replacee = "DeH_Actor_156";
+			break;
+			
+			case 'NTM_Gjenganger':
+				e.replacee = "DeH_Actor_158";
+			break;
+			
+			case 'NTM_Gargoyle2':
+				e.replacee = "DeH_Actor_209";
+			break;
+			
+			case 'NTM_LittleMarine':
+				e.replacee = "DeH_Actor_231";
+			break;
+			
+			// MAYhem 2019
+			case 'NTM_Pumpkin':
+				e.replacee = "SkullColumn";
+			break;
+			
+			case 'NTM_Satyr2':
+				e.replacee = "Stalagtite";
+			break;
+			
+			case 'NTM_BaronOfHell2':
+				e.replacee = "HangTNoBrain";
+			break;
+			
+			case 'NTM_Bat':
+				e.replacee = "DeadLostSoul";
+			break;
+			
+			case 'NTM_Hellhound':
+				e.replacee = "HangTSkull";
+			break;
+			
+			case 'NTM_ChainsawManiac':
+				e.replacee = "MBFHelperDog";
+			break;
+			
+			case 'NTM_TeslaCoil':
+				e.replacee = "HangTLookingUp";
+			break;
+			
+			case 'NTM_TeslaCoil2':
+				e.replacee = "Meat2";
+			break;
+		}
+	}
+}

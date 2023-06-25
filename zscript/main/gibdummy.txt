@@ -1,0 +1,62 @@
+// Gib Dummy
+class NTM_Dummy_Gib : Actor {
+	Default {
+		+DontGib
+		+NotOnAutomap
+		+NoGravity
+		+Vulnerable
+		-Synchronized
+	}
+	
+	States {
+		Spawn:
+			TNT1 A -1;
+			Stop;
+		
+		Death:
+			NMG2 A 0 {
+				if (tracer) {
+					tracer.A_StartSound("misc/gibbed");
+					tracer.sprite = GetSpriteIndex("NMG2");
+					
+					if (!(tracer is "PlayerPawn")) {
+						tracer.translation = tracer.bloodTranslation;
+					}
+					
+					int gibHealth = tracer.GetGibHealth() - 1;
+					
+					if (tracer.health > gibHealth) {
+						tracer.health = gibHealth;
+					}
+					
+					for (int i; i < Random(5, 8); i++) {
+						tracer.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
+					}
+					
+					let actorSystem = NTM_System_Actor(tracer.FindInventory("NTM_System_Actor"));
+					
+					if (actorSystem) {
+						if (!actorSystem.gibbed) {
+							tracer.A_SpawnItemEx("NTM_FlyingGib1", 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+							tracer.A_SpawnItemEx("NTM_FlyingGib2", 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+							tracer.A_SpawnItemEx("NTM_FlyingGib3", 0, 0, 0, Random(-10, 10), Random(-10, 10), Random(8, 12), 0, SXF_UseBloodColor);
+						}
+						
+						actorSystem.corpseGibbed = true;
+					}
+				}
+			}
+			
+			Stop;
+	}
+	
+	override void Tick() {
+		Super.Tick();
+		
+		if (tracer) {
+			SetOrigin(tracer.pos, false);
+		} else {
+			Destroy();
+		}
+	}
+}

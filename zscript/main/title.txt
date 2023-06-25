@@ -1,0 +1,67 @@
+// Title Screen
+class NTM_Title : EventHandler {
+	ui TextureID NTMGUYS;
+	ui TextureID NTMPIC;
+	ui int keyframe;
+	
+	override void UiTick() {
+		switch (keyframe) {
+			case 5:
+				S_ChangeMusic("D_NTMAI", 0, false);
+			break;
+			
+			case 170:
+			case 200:
+				S_StartSound("world/barrelx", 0);
+			break;
+		}
+		
+		keyframe++;
+	}
+	
+	override void RenderOverlay(RenderEvent e) {
+		// Clear the screen before the title to hide the last frame
+		if (keyframe < 131) {
+			Screen.ClearScreen();
+		}
+		
+		// "Guys" Screen
+		if (keyframe > 10 && keyframe < 124) {
+			double alpha = 1;
+			
+			if (keyframe > 10 && keyframe < 17) {
+				Screen.ClearScreen();
+				alpha = (keyframe - 10) * 0.1428571428571429;
+			}
+			
+			if (keyframe > 117) {
+				alpha = 1 - ((keyframe - 117) * 0.1428571428571429);
+			}
+			
+			let NTMGUYS = TexMan.CheckForTexture("NTMGUYS", TexMan.Type_Any);
+			
+			Screen.DrawTexture(NTMGUYS, false, 0, 0, DTA_320x200, true, DTA_Alpha, alpha);
+		}
+		
+		// Title Screen & Logo
+		if (keyframe > 124) {
+			let NTMPIC = TexMan.CheckForTexture("NTMPIC", TexMan.Type_Any);
+			
+			Screen.DrawTexture(NTMPIC, false, 0, 0, DTA_320x200, true, DTA_Alpha, Min((keyframe - 124) * 0.1428571428571429, 1));
+			
+			if (keyframe > 170) {
+				let NTMLOGO1 = TexMan.CheckForTexture("NTMLOGO1", TexMan.Type_Any);
+				double scale = Min((keyframe - 170) * 0.09, 1);
+				
+				Screen.DrawTexture(NTMLOGO1, false, 160, 106, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+			}
+			
+			if (keyframe > 200) {
+				let NTMLOGO2 = TexMan.CheckForTexture("NTMLOGO2", TexMan.Type_Any);
+				double scale = Min((keyframe - 200) * 0.09, 1);
+				
+				Screen.DrawTexture(NTMLOGO2, false, 160, 144, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+			}
+		}
+	}
+}
