@@ -483,3 +483,13 @@ class NTM_BloodyTwitch : BloodyTwitch {
 			Loop;
 	}
 }
+
+// Flames (DOOM 64 for DOOM II)
+class NTM_Flames : NTM_FireProp {
+	Default {
+		Scale 0.75;
+		Translation "NTM_Fire_Red";
+		
+		-NoInteraction
+	}
+}

@@ -36,10 +36,10 @@ class NTMAi : EventHandler {
 		/* [DOOM 64 for DOOM II]
 		   
 		   SpiderMastermind = Mother Demon
-		   Cyberdemon = Cyberdemon (A_KeenDie)
+		   Cyberdemon = Cyberdemon (A_KeenDie) ✓
 		   CommanderKeen = Nightmare Imp
 		   GibbedMarineExtra = Nightmare Cacodemon
-		   DeadLostSoul = Flames */
+		   DeadLostSoul = Flames ✓ */
 		bD64D2 = NTMAi.LumpHasHash("CWILV30", "ed77f8e6d72be6d04d760259c2e8ed02");
 		
 		/* [Eviternity]
@@ -581,6 +581,12 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'GibbedMarineExtra':
+				if (sv_ntm_r_custom && bD64D2) {
+					//e.replacement = "NTM_NightmareCacodemon";
+					
+					break;
+				}
+				
 				if (sv_ntm_r_props) {
 					e.replacement = "NTM_GibbedMarine2";
 				}
@@ -789,10 +795,18 @@ class NTMAi : EventHandler {
 			
 			case 'Cyberdemon':
 				if (sv_ntm_r_cyberdemon) {
-					if (sv_ntm_r_custom && bMAYhem2019) {
-						//e.replacement = "NTM_Minotaur";
+					if (sv_ntm_r_custom) {
+						if (bD64D2) {
+							e.replacement = "NTM_Cyberdemon2";
+							
+							break;
+						}
 						
-						break;
+						if (bMAYhem2019) {
+							//e.replacement = "NTM_Minotaur";
+							
+							break;
+						}
 					}
 					
 					e.replacement = "NTM_Cyberdemon";
@@ -801,10 +815,18 @@ class NTMAi : EventHandler {
 			
 			case 'SpiderMastermind':
 				if (sv_ntm_r_spiderMastermind) {
-					if (sv_ntm_r_custom && bMAYhem2019) {
-						//e.replacement = "NTM_Abbot";
+					if (sv_ntm_r_custom) {
+						if (bD64D2) {
+							//e.replacement = "NTM_MotherDemon";
+							
+							break;
+						}
 						
-						break;
+						if (bMAYhem2019) {
+							//e.replacement = "NTM_Abbot";
+							
+							break;
+						}
 					}
 					
 					e.replacement = "NTM_SpiderMastermind";
@@ -839,6 +861,12 @@ class NTMAi : EventHandler {
 			
 			case 'CommanderKeen':
 				if (sv_ntm_r_custom) {
+					if (bD64D2) {
+						//e.replacement = "NTM_NightmareImp";
+						
+						break;
+					}
+					
 					if (bEviternity) {
 						//e.replacement = "NTM_AstralCacodemon";
 						
@@ -905,6 +933,16 @@ class NTMAi : EventHandler {
 			case 'DeH_Actor_231':
 				if (sv_ntm_r_custom && bADMORTEM) {
 					e.replacement = "NTM_LittleMarine";
+				}
+			break;
+			
+			// DOOM 64 for DOOM II
+			
+			// GROSS HACK: We have to directly check for a "Flames" actor since
+			//             using "DeadLostSoul" doesn't work!
+			case 'Flames':
+				if (sv_ntm_r_props && sv_ntm_r_custom && bD64D2) {
+					e.replacement = "NTM_Flames";
 				}
 			break;
 			
@@ -1004,6 +1042,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_GibbedMarine2':
+			//case 'NTM_NightmareCacodemon':
 				e.replacee = "GibbedMarineExtra";
 			break;
 			
@@ -1106,10 +1145,12 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_Cyberdemon':
+			case 'NTM_Cyberdemon2':
 				e.replacee = "Cyberdemon";
 			break;
 			
 			case 'NTM_SpiderMastermind':
+			//case 'NTM_MotherDemon':
 				e.replacee = "SpiderMastermind";
 			break;
 			
@@ -1119,6 +1160,7 @@ class NTMAi : EventHandler {
 				e.replacee = "WolfensteinSS";
 			break;
 			
+			//case 'NTM_NightmareImp':
 			//case 'NTM_AstralCacodemon':
 			case 'NTM_ShadowHellHound':
 			case 'NTM_Afrit':
@@ -1156,6 +1198,11 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_LittleMarine':
 				e.replacee = "DeH_Actor_231";
+			break;
+			
+			// DOOM 64 for DOOM II
+			case 'NTM_Flames':
+				e.replacee = "DeadLostSoul";
 			break;
 			
 			// MAYhem 2019

@@ -161,3 +161,16 @@ class NTM_CyberdemonMissile : NTM_Rocket {
 			Stop;
 	}
 }
+
+class NTM_Cyberdemon2 : NTM_Cyberdemon {
+	States {
+		Death:
+			NCYB J 10 A_NTM_Death;
+			NCYB JJJJJJKLM 8 A_NTM_BossDeath;
+			NCYB N 8 A_NoBlocking;
+			NCYB OPQ 8;
+			NCYB R 64;
+			NCYB R -1 A_KeenDie;
+			Stop;
+	}
+}
