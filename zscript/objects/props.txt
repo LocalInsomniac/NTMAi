@@ -474,3 +474,12 @@ class NTM_Column : NTM_TechLamp {
 			Goto Broken;
 	}
 }
+
+// Bloody Twitch
+class NTM_BloodyTwitch : BloodyTwitch {
+	States {
+		Spawn:
+			GOR1 ABAC 15;
+			Loop;
+	}
+}

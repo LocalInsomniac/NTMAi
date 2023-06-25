@@ -615,6 +615,12 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			case 'BloodyTwitch':
+				if (sv_ntm_r_props) {
+					e.replacement = "NTM_BloodyTwitch";
+				}
+			break;
+			
 			case 'Zombieman':
 				if (sv_ntm_r_zombieman) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
@@ -1016,6 +1022,10 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_DeadCacodemon':
 				e.replacee = "DeadCacodemon";
+			break;
+			
+			case 'NTM_BloodyTwitch':
+				e.replacee = "BloodyTwitch";
 			break;
 			
 			case 'NTM_Zombieman':
