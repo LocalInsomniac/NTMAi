@@ -46,6 +46,7 @@ class NTM_ToggleableInventory : CustomInventory {
 		Inventory.InterHubAmount 100;
 		
 		+Inventory.InvBar
+		+Inventory.Untossable
 	}
 	
 	override void AttachToOwner(Actor other) {
