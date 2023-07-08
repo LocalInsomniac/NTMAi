@@ -168,8 +168,8 @@ class NTM_FireProp : Actor {
 	Default {
 		RenderStyle "Add";
 		
-		+ZDoomTrans
 		+NoInteraction
+		+ZDoomTrans
 	}
 	
 	States {
@@ -487,7 +487,8 @@ class NTM_BloodyTwitch : BloodyTwitch {
 // Flames (DOOM 64 for DOOM II)
 class NTM_Flames : NTM_FireProp {
 	Default {
-		Scale 0.75;
+		XScale 0.75;
+		YScale 0.6;
 		Translation "NTM_Fire_Red";
 		
 		-NoInteraction
