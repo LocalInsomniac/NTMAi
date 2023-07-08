@@ -582,7 +582,7 @@ class NTMAi : EventHandler {
 			
 			case 'GibbedMarineExtra':
 				if (sv_ntm_r_custom && bD64D2) {
-					//e.replacement = "NTM_NightmareCacodemon";
+					e.replacement = "NTM_NightmareCacodemon";
 					
 					break;
 				}
@@ -862,7 +862,7 @@ class NTMAi : EventHandler {
 			case 'CommanderKeen':
 				if (sv_ntm_r_custom) {
 					if (bD64D2) {
-						//e.replacement = "NTM_NightmareImp";
+						e.replacement = "NTM_NightmareImp";
 						
 						break;
 					}
@@ -1042,7 +1042,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_GibbedMarine2':
-			//case 'NTM_NightmareCacodemon':
+			case 'NTM_NightmareCacodemon':
 				e.replacee = "GibbedMarineExtra";
 			break;
 			
@@ -1160,7 +1160,7 @@ class NTMAi : EventHandler {
 				e.replacee = "WolfensteinSS";
 			break;
 			
-			//case 'NTM_NightmareImp':
+			case 'NTM_NightmareImp':
 			//case 'NTM_AstralCacodemon':
 			case 'NTM_ShadowHellHound':
 			case 'NTM_Afrit':
