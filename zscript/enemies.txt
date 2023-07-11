@@ -24,6 +24,8 @@
 #include "zscript/enemies/custom/admortem/littlemarine.txt"
 #include "zscript/enemies/custom/admortem/rocketwarrior.txt"
 
+#include "zscript/enemies/custom/d64d2/motherdemon.txt"
+
 #include "zscript/enemies/custom/mayhem2019/zombie.txt"
 #include "zscript/enemies/custom/mayhem2019/shotguncultist.txt"
 #include "zscript/enemies/custom/mayhem2019/tommyguncultist.txt"

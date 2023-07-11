@@ -35,10 +35,10 @@ class NTMAi : EventHandler {
 		
 		/* [DOOM 64 for DOOM II]
 		   
-		   SpiderMastermind = Mother Demon
+		   SpiderMastermind = Mother Demon ✓
 		   Cyberdemon = Cyberdemon (A_KeenDie) ✓
-		   CommanderKeen = Nightmare Imp
-		   GibbedMarineExtra = Nightmare Cacodemon
+		   CommanderKeen = Nightmare Imp ✓
+		   GibbedMarineExtra = Nightmare Cacodemon ✓
 		   DeadLostSoul = Flames ✓ */
 		bD64D2 = NTMAi.LumpHasHash("CWILV30", "ed77f8e6d72be6d04d760259c2e8ed02");
 		
@@ -817,7 +817,7 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_spiderMastermind) {
 					if (sv_ntm_r_custom) {
 						if (bD64D2) {
-							//e.replacement = "NTM_MotherDemon";
+							e.replacement = "NTM_MotherDemon";
 							
 							break;
 						}
@@ -1150,7 +1150,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_SpiderMastermind':
-			//case 'NTM_MotherDemon':
+			case 'NTM_MotherDemon':
 				e.replacee = "SpiderMastermind";
 			break;
 			

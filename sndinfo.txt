@@ -347,6 +347,15 @@ NTM_RocketWarrior/death DSBAREXP
 $attenuation NTM_RocketWarrior/death 0.666
 $limit NTM_RocketWarrior/death 0
 
+/* ===================
+   DOOM 64 FOR DOOM II
+   =================== */
+
+NTM_MotherDemon/sight NSMOTSIT
+NTM_MotherDemon/active NSMOTACT
+NTM_MotherDemon/pain NSMOTPAI
+NTM_MotherDemon/death NSMOTDIE
+
 /* ===========
    MAYHEM 2019
    =========== */
