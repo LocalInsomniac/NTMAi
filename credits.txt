@@ -26,7 +26,9 @@ Can't Sleep, David G, DenisBelmondo, ElectricPulse, Gifty, • Graphics Editing
 	   Hellfire, HorrorMovieGuy, horselessheadsman, Jimmy, •
 Jimmy91, KaZudra, Mechadon, neoworm, osjclatchford, Xaser, •
 
-Captain J, Mike12 • Angled Chainsaw
+Can't Sleep, DoomerBlazkowicz, Hellfire, Joblez • Rocket Launcher
+
+Captain J, Mike12 • Chainsaw
 
 Captain Toenail • "Forgotten One" Lost Soul
 
@@ -40,9 +42,7 @@ Craneo, Jimmy, Jimmy91, • "DOOM 2016/Eternal Monsters" Arachnotron
 
 Craneo, Mike12 • "MAYhem 2019" Chainsaw Maniac
 
-Craneo, Mike12, Minigunner, Uboa, wildweasel • Angled Pistol
-
-DoomerBlazkowicz, Joblez • Rocket Launcher
+Craneo, Mike12, Minigunner, Uboa, wildweasel • Pistol
 
 Espi, Ebola • "Scythe 2" Afrit
 
@@ -53,16 +53,17 @@ gerolf • "Wolfenstein 3D" Helmeted SS Guard
 hidfan, Honey16, Lollie, NightFright, Scuba Steve, • "DOOM Neural Upscale 2X"
 											 Teder •
 
-jdredalert • "Angled DOOM" Weapon Graphics
+jdredalert, JoeyTD, Minigunner, MrEnchanter, • "Angled DOOM" Weapons
+									 Vostyok •
 
 Jekyll Grim Payne • "Beautiful Doom" Zombieman Chainsaw Death
 
 Joblez • "MAYhem 2019" Weapons
 
-Nash Muhandes • "Nash's Gore Mod", "Nash's Gore Mod: Vengeance Edition"
-              • Gore Graphics
+Joblez, Neccronixis, QuakeSlayer • Chaingun
 
-Scuba Steve • Flamethrower
+Nash Muhandes • "Nash's Gore Mod" and "Nash's Gore Mod: Vengeance Edition"
+              • Gore Graphics
 
 ShallowB • "DOOM 64" Imp
 
