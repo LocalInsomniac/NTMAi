@@ -1,6 +1,6 @@
 class NTM_SuperShotgun : SuperShotgun replaces SuperShotgun {
 	Default {
-		Scale 0.75;
+		Scale 0.85;
 		Weapon.SlotNumber 3;
 		Weapon.UpSound "weapons/sshotc";
 		Weapon.Kickback 100;
@@ -55,7 +55,7 @@ class NTM_SuperShotgun : SuperShotgun replaces SuperShotgun {
 			Goto LightDone;
 		
 		Spawn:
-			SGN2 A -1;
+			NSUP L -1;
 			Stop;
 	}
 }
