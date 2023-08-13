@@ -1,7 +1,27 @@
 #include "zcommon.acs"
 
+function int str_equal(int str1, int str2) {
+    if (str1 == str2) {
+		return true;
+	}
+	
+    int i = strlen(str1);
+	
+	if (i != strlen(str2)) {
+		return false;
+	}
+	
+    while (i--) {
+        if (getChar(str1, i) != getChar(str2, i)) {
+			return false;
+		}
+    }
+	
+    return true;
+}
+
 script "NTM_StartTitle" enter {
-	if (GetCVar("sv_ntm_startTitle")) {
+	if (GetCVar("sv_ntm_startTitle") && !(str_equal(strParam(n: PrintName_Level), "TITLEMAP"))) {
 		str name = strParam(n: PrintName_LevelName);
 		
 		SetFont("BIGFONT");

@@ -36,6 +36,7 @@ class NTM_PortableMedkit : CustomInventory {
 		+Inventory.BigPowerup
 		+Inventory.IsHealth
 		+Inventory.InvBar
+		+Inventory.Untossable
 	}
 	
 	States {

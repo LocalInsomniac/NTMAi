@@ -19,6 +19,10 @@ class NTM_Chaingun : Chaingun {
 	}
 	
 	States {
+		Spawn:
+			NCHA F -1;
+			Stop;
+			
 		Ready:
 			NCHA A 1 A_WeaponReady;
 			Loop;
@@ -40,7 +44,7 @@ class NTM_Chaingun : Chaingun {
 			}
 			
 			NCHA B 1 {
-				A_SpawnItemEx("NTM_BulletCasing", -5, 25, 22, FRandom(4, 6), 0, FRandom(4, 6), 90);
+				A_SpawnItemEx("NTM_BulletCasing", -4, 25, 21, FRandom(-7, -5), 0, FRandom(5, 7), 90);
 				A_WeaponOffset(Random(-2, 4), Random(34, 38), WOF_Interpolate);
 			}
 			

@@ -11,7 +11,8 @@ server bool sv_ntm_enemyLeap = true;
 server bool sv_ntm_grenadiers = true;
 server bool sv_ntm_enemyFly = true;
 
-// Enemy Replacement
+// Replacements
+server bool sv_ntm_r_props = true;
 server bool sv_ntm_r_zombieman = true;
 server bool sv_ntm_r_shotgunGuy = true;
 server bool sv_ntm_r_heavyWeaponDude = true;

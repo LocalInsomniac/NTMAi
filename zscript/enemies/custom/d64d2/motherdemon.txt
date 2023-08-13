@@ -1,0 +1,96 @@
+class NTM_MotherDemon : NTM_Boss {
+	Default {
+		Health 9000;
+		Radius 40;
+		Height 105;
+		Mass 10000;
+		Speed 25;
+		PainChance 4;
+		MinMissileChance 160;
+		SeeSound "NTM_MotherDemon/sight";
+		ActiveSound "NTM_MotherDemon/active";
+		AttackSound "";
+		PainSound "NTM_MotherDemon/pain";
+		DeathSound "NTM_MotherDemon/death";
+		Obituary "%o witnessed the power of the Mother Demon.";
+		Tag "Mother Demon";
+		
+		+Float
+		+NoGravity
+		+NoTelefrag
+	}
+	
+	States {
+		Spawn:
+			NMOT A 10 A_Look;
+			Loop;
+			
+		DukeSee:
+			NMOT AAABBBAAACCC 2 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NMOT AAABBBAAACCC 2 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NMOT A 1 A_NTM_SWChase;
+			NMOT A 1 A_NTM_SWChase2;
+			NMOT A 1 A_NTM_SWChase;
+			NMOT A 1 A_NTM_SWChase2;
+			NMOT A 1 A_NTM_SWChase;
+			NMOT A 1 A_NTM_SWChase2;
+			NMOT B 1 A_NTM_SWChase;
+			NMOT B 1 A_NTM_SWChase2;
+			NMOT B 1 A_NTM_SWChase;
+			NMOT B 1 A_NTM_SWChase2;
+			NMOT B 1 A_NTM_SWChase;
+			NMOT B 1 A_NTM_SWChase2;
+			NMOT A 1 A_NTM_SWChase;
+			NMOT A 1 A_NTM_SWChase2;
+			NMOT A 1 A_NTM_SWChase;
+			NMOT A 1 A_NTM_SWChase2;
+			NMOT A 1 A_NTM_SWChase;
+			NMOT A 1 A_NTM_SWChase2;
+			NMOT C 1 A_NTM_SWChase;
+			NMOT C 1 A_NTM_SWChase2;
+			NMOT C 1 A_NTM_SWChase;
+			NMOT C 1 A_NTM_SWChase2;
+			NMOT C 1 A_NTM_SWChase;
+			NMOT C 1 A_NTM_SWChase2;
+			Loop;
+			
+		Missile:
+			NMOT D 10 A_FaceTarget;
+			NMOT EE 2 Bright A_SkelMissile;
+			NMOT E 0 Bright A_FatAttack3;
+			NMOT F 2 Bright A_SkelMissile;
+			NMOT F 0 Bright A_FatAttack3;
+			NMOT F 1 Bright A_FatAttack1;
+			NMOT F 1 Bright A_FatAttack2;
+			NMOT G 0 Bright A_VileStart;
+			NMOT G 10 Bright A_FaceTarget;
+			NMOT G 8 Bright A_VileTarget;
+			NMOT GG 8 Bright A_FaceTarget;
+			NMOT HHHH 8 Bright A_FaceTarget;
+			NMOT I 8 Bright A_VileAttack;
+			NMOT I 20 Bright;
+			Goto See;
+			
+		Pain:
+			NMOT J 40 A_Pain;
+			NMOT G 4 Bright A_FaceTarget;
+			NMOT H 6 Bright A_FaceTarget;
+			NMOT IIII 4 Bright A_PainAttack;
+			Goto See;
+			
+		Death:
+			NMOT K 20 A_Scream;
+			NMOT L 10 A_Fall;
+			NMOT MN 8;
+			NMOT OPQR 6;
+			NMOT S 48;
+			NMOT S -1 A_BrainDie;
+			Stop;
+	}
+}

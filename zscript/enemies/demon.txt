@@ -1,6 +1,7 @@
 class NTM_Demon : NTM_Enemy {
 	Default {
 		Health 150;
+		GibHealth 75;
 		PainChance 180;
 		Speed 13;
 		Radius 30;
@@ -135,6 +136,13 @@ class NTM_Demon : NTM_Enemy {
 			NDEM J 5 A_NoBlocking;
 			NDEM KL 5;
 			NDEM M -1;
+			Stop;
+		
+		XDeath:
+			NDEM O 4 A_XScream;
+			NDEM P 4 A_NoBlocking;
+			NDEM QRSTU 4;
+			NDEM V -1;
 			Stop;
 		
 		Raise:

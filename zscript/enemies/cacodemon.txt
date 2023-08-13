@@ -52,7 +52,7 @@ class NTM_Cacodemon : NTM_Enemy {
 			
 			NCAC D 5 Bright {
 				A_FaceTarget();
-				A_SpawnProjectile("NTM_CacodemonBall", 32);
+				A_SpawnProjectile("NTM_CacodemonBall");
 			}
 			
 			Goto See;
@@ -75,6 +75,32 @@ class NTM_Cacodemon : NTM_Enemy {
 		Raise:
 			NCAC K 8 A_UnSetFloorClip;
 			NCAC JIHG 8;
+			Goto See;
+	}
+}
+
+class NTM_NightmareCacodemon : NTM_Cacodemon {
+	Default {
+		Speed 12;
+		PainChance 96;
+		RenderStyle "Stencil";
+		Alpha 0.5;
+		Obituary "%o was smitten by a Nightmare Cacodemon.";
+		HitObituary "%o got too close to a Nightmare Cacodemon.";
+		
+		+Shadow
+	}
+	
+	States {
+		Missile:
+			NCAC B 5 A_FaceTarget;
+			NCAC C 5 A_FaceTarget;
+			
+			NCAC DDD 3 Bright {
+				A_FaceTarget();
+				A_SpawnProjectile("NTM_NightmareBall");
+			}
+			
 			Goto See;
 	}
 }

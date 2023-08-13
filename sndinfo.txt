@@ -117,6 +117,10 @@ NTMAi/chat NSCHAT
 NTM_World/splash NSSPLASH
 NTM_World/lava NSLAVA
 NTM_World/sizzle NSSIZZLE
+NTM_World/fire NSFIRE
+
+NTM_World/glass NSGLASS
+$volume NTM_World/glass 0.64
 
 // Player
 $playersound player male *falling NSFALLIN
@@ -251,12 +255,10 @@ NTM_German/death3 NSGEDIE3
 
 NTM_German/burn1 NSGEBRN1
 NTM_German/burn2 NSGEBRN2
-NTM_German/burn3 NSGEBRN3
 
 $random NTM_German/burn {
 	NTM_German/burn1
 	NTM_German/burn2
-	NTM_German/burn3
 }
 
 /* =========
@@ -344,6 +346,15 @@ NTM_RocketWarrior/active NSRWLACT
 NTM_RocketWarrior/death DSBAREXP
 $attenuation NTM_RocketWarrior/death 0.666
 $limit NTM_RocketWarrior/death 0
+
+/* ===================
+   DOOM 64 FOR DOOM II
+   =================== */
+
+NTM_MotherDemon/sight NSMOTSIT
+NTM_MotherDemon/active NSMOTACT
+NTM_MotherDemon/pain NSMOTPAI
+NTM_MotherDemon/death NSMOTDIE
 
 /* ===========
    MAYHEM 2019
