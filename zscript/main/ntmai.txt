@@ -387,7 +387,7 @@ class NTMAi : EventHandler {
 		Line l = e.activatedLine;
 		
 		// If this is a locked door, check if we can play a keycard animation
-		if (mo is "NTM_Player" && l.special == 13 && sv_ntm_keycard) {
+		if (mo is "NTM_Player" && sv_ntm_keycard && !multiplayer && l.special == 13) {
 			bool lock = false;
 			NTM_Player pmo = NTM_Player(mo);
 			
