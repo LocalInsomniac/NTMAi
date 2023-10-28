@@ -28,12 +28,12 @@ class NTM_Pistol : Pistol replaces Pistol {
 				A_WeaponOffset(3, 35, WOF_Interpolate);
 			}
 			
-			NPIS C 2 A_WeaponOffset(9, 42, WOF_Interpolate);
+			NPIS C 2 A_WeaponOffset(10, 44, WOF_Interpolate);
 			
 			NPIS D 2 {
-				A_SpawnItemEx("NTM_BulletCasing", -12, 32, 36, FRandom(-6, -4), 0, FRandom(3, 6), 90);
+				A_SpawnItemEx("NTM_BulletCasing", -12, 32, 40, FRandom(-6, -4), 0, FRandom(3, 6), 90);
 				A_GiveInventory("NTM_PistolShots", 1);
-				A_WeaponOffset(2, 34, WOF_Interpolate);
+				A_WeaponOffset(3, 36, WOF_Interpolate);
 			}
 			
 			NPIS D 2 A_WeaponOffset(0, 32, WOF_Interpolate);
