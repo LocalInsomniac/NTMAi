@@ -232,8 +232,12 @@ class NTMAi : EventHandler {
 							let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
 							
 							if (grn) {
-								grn.prevWeapon = p.readyWeapon.GetClassName();
-								p.pendingWeapon = grn;
+								let rw = p.readyWeapon;
+								
+								if (rw) {
+									grn.prevWeapon = rw.GetClassName();
+									p.pendingWeapon = grn;
+								}
 							}
 						} else {
 							pmo.A_Log("No grenades left", true);
