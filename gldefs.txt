@@ -1,0 +1,204 @@
+brightmap sprite NIMPA1 {
+	map "brightmaps/imp/NIMPA1.png"
+	thiswad
+}
+
+brightmap sprite NIMPA2A8 {
+	map "brightmaps/imp/NIMPA2A8.png"
+	thiswad
+}
+
+brightmap sprite NIMPA3A7 {
+	map "brightmaps/imp/NIMPA3A7.png"
+	thiswad
+}
+
+brightmap sprite NIMPB1 {
+	map "brightmaps/imp/NIMPB1.png"
+	thiswad
+}
+
+brightmap sprite NIMPB2B8 {
+	map "brightmaps/imp/NIMPB2B8.png"
+	thiswad
+}
+
+brightmap sprite NIMPB3B7 {
+	map "brightmaps/imp/NIMPB3B7.png"
+	thiswad
+}
+
+brightmap sprite NIMPC1 {
+	map "brightmaps/imp/NIMPC1.png"
+	thiswad
+}
+
+brightmap sprite NIMPC2C8 {
+	map "brightmaps/imp/NIMPC2C8.png"
+	thiswad
+}
+
+brightmap sprite NIMPC3C7 {
+	map "brightmaps/imp/NIMPC3C7.png"
+	thiswad
+}
+
+brightmap sprite NIMPD1 {
+	map "brightmaps/imp/NIMPD1.png"
+	thiswad
+}
+
+brightmap sprite NIMPD2D8 {
+	map "brightmaps/imp/NIMPD2D8.png"
+	thiswad
+}
+
+brightmap sprite NIMPD3D7 {
+	map "brightmaps/imp/NIMPD3D7.png"
+	thiswad
+}
+
+brightmap sprite NIMPE1H1 {
+	map "brightmaps/imp/NIMPE1H1.png"
+	thiswad
+}
+
+brightmap sprite NIMPE2E8 {
+	map "brightmaps/imp/NIMPE2E8.png"
+	thiswad
+}
+
+brightmap sprite NIMPE3E7 {
+	map "brightmaps/imp/NIMPE3E7.png"
+	thiswad
+}
+
+brightmap sprite NIMPF1I1 {
+	map "brightmaps/imp/NIMPF1I1.png"
+	thiswad
+}
+
+brightmap sprite NIMPF2F8 {
+	map "brightmaps/imp/NIMPF2F8.png"
+	thiswad
+}
+
+brightmap sprite NIMPF3F7 {
+	map "brightmaps/imp/NIMPF3F7.png"
+	thiswad
+}
+
+brightmap sprite NIMPG1J1 {
+	map "brightmaps/imp/NIMPG1J1.png"
+	thiswad
+}
+
+brightmap sprite NIMPG2G8 {
+	map "brightmaps/imp/NIMPG2G8.png"
+	thiswad
+}
+
+brightmap sprite NIMPG3G7 {
+	map "brightmaps/imp/NIMPG3G7.png"
+	thiswad
+}
+
+brightmap sprite NIMPH2H8 {
+	map "brightmaps/imp/NIMPH2H8.png"
+	thiswad
+}
+
+brightmap sprite NIMPH3H7 {
+	map "brightmaps/imp/NIMPH3H7.png"
+	thiswad
+}
+
+brightmap sprite NIMPI2I8 {
+	map "brightmaps/imp/NIMPI2I8.png"
+	thiswad
+}
+
+brightmap sprite NIMPI3I7 {
+	map "brightmaps/imp/NIMPI3I7.png"
+	thiswad
+}
+
+brightmap sprite NIMPJ2J8 {
+	map "brightmaps/imp/NIMPJ2J8.png"
+	thiswad
+}
+
+brightmap sprite NIMPJ3J7 {
+	map "brightmaps/imp/NIMPJ3J7.png"
+	thiswad
+}
+
+brightmap sprite NIMPK1 {
+	map "brightmaps/imp/NIMPK1.png"
+	thiswad
+}
+
+brightmap sprite NIMPK2K8 {
+	map "brightmaps/imp/NIMPK2K8.png"
+	thiswad
+}
+
+brightmap sprite NIMPK3K7 {
+	map "brightmaps/imp/NIMPK3K7.png"
+	thiswad
+}
+
+brightmap sprite NIMPL0 {
+	map "brightmaps/imp/NIMPL0.png"
+	thiswad
+}
+
+brightmap sprite NIMPM0 {
+	map "brightmaps/imp/NIMPM0.png"
+	thiswad
+}
+
+brightmap sprite NIMPQ1 {
+	map "brightmaps/imp/NIMPQ1.png"
+	thiswad
+}
+
+brightmap sprite NIMPQ2Q8 {
+	map "brightmaps/imp/NIMPQ2Q8.png"
+	thiswad
+}
+
+brightmap sprite NIMPQ3Q7 {
+	map "brightmaps/imp/NIMPQ3Q7.png"
+	thiswad
+}
+
+brightmap sprite NIMPR1 {
+	map "brightmaps/imp/NIMPR1.png"
+	thiswad
+}
+
+brightmap sprite NIMPR2R8 {
+	map "brightmaps/imp/NIMPR2R8.png"
+	thiswad
+}
+
+brightmap sprite NIMPR3R7 {
+	map "brightmaps/imp/NIMPR3R7.png"
+	thiswad
+}
+
+brightmap sprite NIMPS1 {
+	map "brightmaps/imp/NIMPS1.png"
+	thiswad
+}
+
+brightmap sprite NIMPS2S8 {
+	map "brightmaps/imp/NIMPS2S8.png"
+	thiswad
+}
+
+brightmap sprite NIMPS3S7 {
+	map "brightmaps/imp/NIMPS3S7.png"
+	thiswad
+}

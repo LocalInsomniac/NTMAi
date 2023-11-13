@@ -232,8 +232,12 @@ class NTMAi : EventHandler {
 							let grn = NTM_GrenadeThrow(pmo.FindInventory("NTM_GrenadeThrow"));
 							
 							if (grn) {
-								grn.prevWeapon = p.readyWeapon.GetClassName();
-								p.pendingWeapon = grn;
+								let rw = p.readyWeapon;
+								
+								if (rw) {
+									grn.prevWeapon = rw.GetClassName();
+									p.pendingWeapon = grn;
+								}
 							}
 						} else {
 							pmo.A_Log("No grenades left", true);
@@ -387,7 +391,7 @@ class NTMAi : EventHandler {
 		Line l = e.activatedLine;
 		
 		// If this is a locked door, check if we can play a keycard animation
-		if (mo is "NTM_Player" && l.special == 13 && sv_ntm_keycard) {
+		if (mo is "NTM_Player" && sv_ntm_keycard && !multiplayer && l.special == 13) {
 			bool lock = false;
 			NTM_Player pmo = NTM_Player(mo);
 			

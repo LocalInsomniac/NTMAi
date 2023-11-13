@@ -24,7 +24,8 @@ Can't Sleep, Craneo, Midoriman, Neoworm, Tormentor667 • "MAYhem 2019" Cultists
 
 Can't Sleep, David G, DenisBelmondo, ElectricPulse, Gifty, • Graphics Editing
 	   Hellfire, HorrorMovieGuy, horselessheadsman, Jimmy, •
-Jimmy91, KaZudra, Mechadon, neoworm, osjclatchford, Xaser, •
+			  Jimmy91, Joblez, KaZudra, Mechadon, neoworm, •
+									 osjclatchford, Xaser, •
 
 Can't Sleep, DoomerBlazkowicz, Hellfire, Joblez • Rocket Launcher
 
@@ -42,13 +43,13 @@ Craneo, Jimmy, Jimmy91, • "DOOM 2016/Eternal Monsters" Arachnotron
 
 Craneo, Mike12 • "MAYhem 2019" Chainsaw Maniac
 
-Craneo, Mike12, Minigunner, Uboa, wildweasel • Pistol
-
 Espi, Ebola • "Scythe 2" Afrit
 
 fgsfds, Kinsie, NightFright • Menu Graphics
 
 gerolf • "Wolfenstein 3D" Helmeted SS Guard
+
+Hellfire, totallyrealrei • Keycard Animations
 
 hidfan, Honey16, Lollie, NightFright, Scuba Steve, • "DOOM Neural Upscale 2X"
 											 Teder •
@@ -66,6 +67,8 @@ Nash Muhandes • "Nash's Gore Mod" and "Nash's Gore Mod: Vengeance Edition"
               • Gore Graphics
 
 ShallowB • "DOOM 64" Imp
+
+tsf • Pistol
 
 ========
 [AUDIO]
