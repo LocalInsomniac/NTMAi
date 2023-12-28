@@ -304,7 +304,9 @@ class NTM_GibbedMarine : Actor {
 	
 	States {
 		Spawn:
-			NMGI H -1;
+			NCPS D -1 NoDelay A_Jump(128, 1);
+			Stop;
+			NCPS E -1;
 			Stop;
 		
 		Death:
@@ -340,7 +342,11 @@ class NTM_DeadMarine : NTM_GibbedMarine {
 	
 	States {
 		Spawn:
-			NPLA L -1;
+			NCPS A -1 NoDelay A_Jump(128, 1);
+			Stop;
+			NCPS B -1 A_Jump(128, 1);
+			Stop;
+			NCPS C -1;
 			Stop;
 	}
 }
