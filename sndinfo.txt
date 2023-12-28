@@ -191,11 +191,11 @@ $random NTM_BulletCasing/bounce {
 	NTM_BulletCasing/bounce2
 }
 
-$volume NTM_BulletCasing/bounce 0.4
+$volume NTM_BulletCasing/bounce 0.35
 
 NTM_ShellCasing/bounce NSCASIN3
 
-$volume NTM_ShellCasing/bounce 0.4
+$volume NTM_ShellCasing/bounce 0.35
 
 NTM_FlyingBlood/splat NSBSPLAT
 $volume NTM_FlyingBlood/splat 0.75
