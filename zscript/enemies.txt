@@ -26,6 +26,11 @@
 
 #include "zscript/enemies/custom/d64d2/motherdemon.txt"
 
+#include "zscript/enemies/custom/eviternity/annihilator.txt"
+#include "zscript/enemies/custom/eviternity/astralcacodemon.txt"
+#include "zscript/enemies/custom/eviternity/formercaptain.txt"
+#include "zscript/enemies/custom/eviternity/nightmaredemon.txt"
+
 #include "zscript/enemies/custom/mayhem2019/zombie.txt"
 #include "zscript/enemies/custom/mayhem2019/shotguncultist.txt"
 #include "zscript/enemies/custom/mayhem2019/tommyguncultist.txt"

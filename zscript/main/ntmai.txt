@@ -44,11 +44,11 @@ class NTMAi : EventHandler {
 		
 		/* [Eviternity]
 		   
-		   BaronOfHell = Annihilator
-		   WolfensteinSS = Former Captain
-		   CommanderKeen = Astral Cacodemon
+		   BaronOfHell = Annihilator ✓
+		   WolfensteinSS = Former Captain ✓
+		   CommanderKeen = Astral Cacodemon ✓
 		   BossBrain = Archangelus */
-		bEviternity = NTMAi.LumpHasHash("XLT_EV15", "4a96b98efc9a0ab68ffd2533a3a3ee01");
+		bEviternity = NTMAi.LumpHasHash("CWILV00", "6e8a89645bec3a49eb8995340a0ea59b");
 		
 		/* [MAYhem 2019]
 		   
@@ -739,7 +739,7 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_baronOfHell) {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
-							//e.replacement = "NTM_Cybruiser";
+							e.replacement = "NTM_Annihilator";
 							
 							break;
 						}
@@ -841,7 +841,7 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_ss) {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
-							// e.replacement = "NTM_FormerCaptain";
+							e.replacement = "NTM_FormerCaptain";
 							
 							break;
 						}
@@ -872,7 +872,7 @@ class NTMAi : EventHandler {
 					}
 					
 					if (bEviternity) {
-						//e.replacement = "NTM_AstralCacodemon";
+						e.replacement = "NTM_AstralCacodemon";
 						
 						break;
 					}
@@ -947,6 +947,16 @@ class NTMAi : EventHandler {
 			case 'Flames':
 				if (sv_ntm_r_props && sv_ntm_r_custom && bD64D2) {
 					e.replacement = "NTM_Flames";
+				}
+			break;
+			
+			// Eviternity
+			
+			// GROSS HACK: Same for this thing...
+			case 'NightmareDemon':
+				if (sv_ntm_r_custom && bEviternity) {
+					
+					e.replacement = "NTM_NightmareDemon";
 				}
 			break;
 			
@@ -1122,6 +1132,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_BaronOfHell':
+			case 'NTM_Annihilator':
 			case 'NTM_MotherBrain':
 				e.replacee = "BaronOfHell";
 			break;
@@ -1159,13 +1170,14 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_German':
+			case 'NTM_FormerCaptain':
 			case 'NTM_TommyGunCultist2':
 			case 'NTM_EvilMarine':
 				e.replacee = "WolfensteinSS";
 			break;
 			
 			case 'NTM_NightmareImp':
-			//case 'NTM_AstralCacodemon':
+			case 'NTM_AstralCacodemon':
 			case 'NTM_ShadowHellHound':
 			case 'NTM_Afrit':
 				e.replacee = "CommanderKeen";
@@ -1207,6 +1219,11 @@ class NTMAi : EventHandler {
 			// DOOM 64 for DOOM II
 			case 'NTM_Flames':
 				e.replacee = "DeadLostSoul";
+			break;
+			
+			// Eviternity
+			case 'NTM_NightmareDemon':
+				e.replacee = "MBFHelperDog";
 			break;
 			
 			// MAYhem 2019

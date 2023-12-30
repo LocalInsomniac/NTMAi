@@ -1,0 +1,37 @@
+class NTM_AstralCacodemon : NTM_Cacodemon {
+	Default {
+		Health 400;
+		Speed 16;
+		PainChance 20;
+		Mass 1000;
+		Obituary "%o was burned down by an Astral Cacodemon.";
+		HitObituary "%o gazed at an Astral Cacodemon.";
+		Tag "Astral Cacodemon";
+		Translation "NTM_Cacodemon_White";
+		SeeSound "NTM_AstralCacodemon/sight";
+		ActiveSound "NTM_AstralCacodemon/active";
+		PainSound "NTM_AstralCacodemon/pain";
+		DeathSound "NTM_AstralCacodemon/death";
+	}
+	
+	States {
+		Pain:
+			NCAC H 3 A_Pain;
+			NCAC I 3;
+			Goto See;
+			
+		Missile:
+			NCAC A 1 A_FaceTarget;
+			NCAC B 1 A_StartSound("NTM_AstralCacodemon/attack", Chan_Voice);
+			NCAC BBBBBBB 1 A_Chase(null);
+			NCAC C 5 A_FaceTarget;
+			
+			NCAC D 3 {
+				A_FaceTarget();
+				A_FatAttack3("NTM_MancubusShot");
+				A_SpawnProjectile("NTM_CacodemonBall");
+			}
+			
+			Goto See;
+	}
+}

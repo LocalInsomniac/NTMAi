@@ -1,0 +1,18 @@
+class NTM_NightmareDemon : NTM_Demon {
+	Default {
+		Health 300;
+		Speed 15;
+		PainChance 100;
+		SeeSound "NTM_NightmareDemon/sight";
+		ActiveSound "NTM_NightmareDemon/active";
+		AttackSound "NTM_NightmareDemon/melee";
+		PainSound "NTM_NightmareDemon/pain";
+		DeathSound "NTM_NightmareDemon/death";
+		Translation "NTM_Demon_Green";
+		Tag "Nightmare Demon";
+		Obituary "%o was crushed by a Nightmare Demon.";
+		
+		+MissileMore
+		+MissileEvenMore
+	}
+}

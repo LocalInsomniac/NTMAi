@@ -1,0 +1,77 @@
+class NTM_Annihilator : NTM_Enemy {
+	Default {
+		Health 1100;
+		Radius 24;
+		Height 64;
+		Mass 1000;
+		Speed 10;
+		PainChance 20;
+		SeeSound "NTM_Annihilator/sight";
+		ActiveSound "NTM_Annihilator/active";
+		AttackSound "NTM_Annihilator/shoot";
+		PainSound "NTM_Annihilator/pain";
+		DeathSound "NTM_Annihilator/death";
+		Obituary "%o underestimated the firepower of an Annihilator.";
+		Tag "Annihilator";
+		Species "BaronOfHell";
+		NTM_Enemy.TicsPerChase 3;
+	}
+	
+	States {
+		Spawn:
+			NANN A 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NANN AABBCCDD 3 A_NTM_DukeChase;
+			Goto See;
+		
+		BloodSee:
+			NANN AABBCCDD 3 A_NTM_BloodChase;
+			Goto See;
+		
+		SWSee:
+			NANN A 1 A_NTM_SWChase;
+			NANN AA 1 A_NTM_SWChase2;
+			NANN A 1 A_NTM_SWChase;
+			NANN AA 1 A_NTM_SWChase2;
+			NANN B 1 A_NTM_SWChase;
+			NANN BB 1 A_NTM_SWChase2;
+			NANN B 1 A_NTM_SWChase;
+			NANN BB 1 A_NTM_SWChase2;
+			NANN C 1 A_NTM_SWChase;
+			NANN CC 1 A_NTM_SWChase2;
+			NANN C 1 A_NTM_SWChase;
+			NANN CC 1 A_NTM_SWChase2;
+			NANN D 1 A_NTM_SWChase;
+			NANN DD 1 A_NTM_SWChase2;
+			NANN D 1 A_NTM_SWChase;
+			NANN DD 1 A_NTM_SWChase2;
+			Goto See;
+		
+		Missile:
+			NANN E 8 A_FaceTarget;
+			NANN F 5 Bright A_CyberAttack;
+			NANN E 7 A_FaceTarget;
+			NANN GS 10 A_FaceTarget;
+			NANN IHIHIHI 4 Bright A_SPosAttackUseAtkSound;
+			NANN S 10 A_FaceTarget;
+			Goto See;
+		
+		Pain:
+			NANN J 6 A_Pain;
+			Goto See;
+		
+		Death:
+			NANN K 8;
+			NANN L 8 A_Scream;
+			NANN M 8 A_Fall;
+			NANN NOPQ 8;
+			NANN R -1 A_KeenDie;
+			Stop;
+		
+		Raise:
+			NANN RQPONMLK 5;
+			Goto See;
+	}
+}

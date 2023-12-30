@@ -351,10 +351,48 @@ $limit NTM_RocketWarrior/death 0
    DOOM 64 FOR DOOM II
    =================== */
 
+// Mother Demon
 NTM_MotherDemon/sight NSMOTSIT
 NTM_MotherDemon/active NSMOTACT
 NTM_MotherDemon/pain NSMOTPAI
 NTM_MotherDemon/death NSMOTDIE
+
+/* ==========
+   EVITERNITY
+   ========== */
+
+// Annihilator
+NTM_Annihilator/sight NSANNSIT
+NTM_Annihilator/active DSBRSACT
+NTM_Annihilator/shoot DSCYBATK
+NTM_Annihilator/pain DSBRSPAI
+NTM_Annihilator/death NSANNDIE
+
+// Former Captain
+$alias NTM_FormerCaptain/sight chainguy/sight
+$alias NTM_FormerCaptain/active chainguy/active
+NTM_FormerCaptain/attack DSCYBATK
+$alias NTM_FormerCaptain/pain chainguy/pain
+$alias NTM_FormerCaptain/death chainguy/death
+$alias NTM_FormerCaptain/burn chainguy/burn
+
+$alias NTM_FormerCaptainBullet/miss NTM_BulletPuff/miss
+$alias NTM_FormerCaptainBullet/hit NTM_BulletPuff/hit
+
+// Nightmare Demon
+$alias NTM_NightmareDemon/sight demon/sight
+$alias NTM_NightmareDemon/active demon/active
+$alias NTM_NightmareDemon/melee demon/melee
+$alias NTM_NightmareDemon/attack demon/attack
+$alias NTM_NightmareDemon/pain demon/pain
+$alias NTM_NightmareDemon/death demon/death
+
+// Astral Cacodemon
+$alias NTM_AstralCacodemon/sight caco/sight
+$alias NTM_AstralCacodemon/active caco/active
+NTM_AstralCacodemon/attack NSASCATK
+$alias NTM_AstralCacodemon/pain caco/pain
+$alias NTM_AstralCacodemon/death caco/death
 
 /* ===========
    MAYHEM 2019
