@@ -1,4 +1,4 @@
-AddKeySection "NTMAI Controls" NewKeys
+AddKeySection "NTMAi Controls" NewKeys
 
 AddMenuKey "Trusty Boot" NTM_Kick
 alias NTM_Kick "netevent NTM_Kick"
