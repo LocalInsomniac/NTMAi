@@ -12,6 +12,7 @@ class NTM_AstralCacodemon : NTM_Cacodemon {
 		ActiveSound "NTM_AstralCacodemon/active";
 		PainSound "NTM_AstralCacodemon/pain";
 		DeathSound "NTM_AstralCacodemon/death";
+		BloodColor "Red";
 	}
 	
 	States {
