@@ -388,11 +388,11 @@ $alias NTM_NightmareDemon/pain demon/pain
 $alias NTM_NightmareDemon/death demon/death
 
 // Astral Cacodemon
-$alias NTM_AstralCacodemon/sight caco/sight
+NTM_AstralCacodemon/sight NSASCSIT
 $alias NTM_AstralCacodemon/active caco/active
 NTM_AstralCacodemon/attack NSASCATK
-$alias NTM_AstralCacodemon/pain caco/pain
-$alias NTM_AstralCacodemon/death caco/death
+NTM_AstralCacodemon/pain NSASCPAI
+NTM_AstralCacodemon/death NSASCDIE
 
 /* ===========
    MAYHEM 2019
