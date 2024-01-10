@@ -5,6 +5,7 @@ class NTM_NightmareDemon : NTM_Demon {
 		PainChance 100;
 		SeeSound "NTM_NightmareDemon/sight";
 		ActiveSound "NTM_NightmareDemon/active";
+		PushSound "NTM_NightmareDemon/attack";
 		AttackSound "NTM_NightmareDemon/melee";
 		PainSound "NTM_NightmareDemon/pain";
 		DeathSound "NTM_NightmareDemon/death";

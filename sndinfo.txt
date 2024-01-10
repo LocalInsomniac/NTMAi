@@ -380,12 +380,18 @@ $alias NTM_FormerCaptainBullet/miss NTM_BulletPuff/miss
 $alias NTM_FormerCaptainBullet/hit NTM_BulletPuff/hit
 
 // Nightmare Demon
-$alias NTM_NightmareDemon/sight demon/sight
-$alias NTM_NightmareDemon/active demon/active
-$alias NTM_NightmareDemon/melee demon/melee
-$alias NTM_NightmareDemon/attack demon/attack
-$alias NTM_NightmareDemon/pain demon/pain
-$alias NTM_NightmareDemon/death demon/death
+NTM_NightmareDemon/sight DSSGTSIT
+$pitchset NTM_NightmareDemon/sight 0.8
+NTM_NightmareDemon/active DSDMACT
+$pitchset NTM_NightmareDemon/active 0.8
+NTM_NightmareDemon/melee DSSGTATK
+$pitchset NTM_NightmareDemon/melee 0.8
+NTM_NightmareDemon/attack DSSGTJMP
+$pitchset NTM_NightmareDemon/attack 0.8
+NTM_NightmareDemon/pain DSDMPAIN
+$pitchset NTM_NightmareDemon/pain 0.8
+NTM_NightmareDemon/death DSSGTDTH
+$pitchset NTM_NightmareDemon/death 0.8
 
 // Astral Cacodemon
 NTM_AstralCacodemon/sight NSASCSIT
