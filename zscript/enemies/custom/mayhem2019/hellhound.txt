@@ -14,7 +14,7 @@ class NTM_Hellhound : NTM_Enemy {
 		PainSound "NTM_Hellhound/pain";
 		DeathSound "NTM_Hellhound/death";
 		MaxDropOffHeight 80;
-		NTM_Enemy.TicsPerChase 3;
+		NTM_Enemy.TicsPerChase 2;
 		NTM_Enemy.LeapDistance 360;
 	}
 	
@@ -24,20 +24,28 @@ class NTM_Hellhound : NTM_Enemy {
 			Loop;
 		
 		DukeSee:
-			NDOG BCDE 4 A_NTM_DukeChase;
+			NDOG BBCCDDEE 2 A_NTM_DukeChase;
 			Loop;
 		
 		BloodSee:
-			NDOG BCDE 4 A_NTM_BloodChase;
+			NDOG BBCCDDEE 2 A_NTM_BloodChase;
 			Loop;
 		
 		SWSee:
 			NDOG B 1 A_NTM_SWChase;
 			NDOG B 1 A_NTM_SWChase2;
+			NDOG B 1 A_NTM_SWChase;
+			NDOG B 1 A_NTM_SWChase2;
+			NDOG C 1 A_NTM_SWChase;
+			NDOG C 1 A_NTM_SWChase2;
 			NDOG C 1 A_NTM_SWChase;
 			NDOG C 1 A_NTM_SWChase2;
 			NDOG D 1 A_NTM_SWChase;
 			NDOG D 1 A_NTM_SWChase2;
+			NDOG D 1 A_NTM_SWChase;
+			NDOG D 1 A_NTM_SWChase2;
+			NDOG E 1 A_NTM_SWChase;
+			NDOG E 1 A_NTM_SWChase2;
 			NDOG E 1 A_NTM_SWChase;
 			NDOG E 1 A_NTM_SWChase2;
 			Loop;
@@ -45,7 +53,7 @@ class NTM_Hellhound : NTM_Enemy {
 		Melee:
 			NDOG F 0 A_StartSound("NTM_Hellhound/melee");
 			NDOG F 4 A_FaceTarget;
-			NDOG G 3 A_FaceTarget;
+			NDOG G 4 A_FaceTarget;
 			NDOG H 8 A_CustomMeleeAttack(25);
 			Goto See;
 		
