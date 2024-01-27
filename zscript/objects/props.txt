@@ -531,3 +531,33 @@ class NTM_Flames2 : NTM_Flames {
 		YScale 1.05;
 	}
 }
+
+// Bone Pile
+class NTM_BonePile : Actor {
+	Default {
+		Health 25;
+		Scale 0.9;
+		
+		+Vulnerable
+		+DontThrust
+	}
+	
+	States {
+		Spawn:
+			NBNS A -1;
+			Stop;
+		
+		Death:
+			NBNS A 0 NoDelay {
+				for (int i = 0; i < Random(5, 10); i++) {
+					A_SpawnItemEx("NTM_SkeletonBone", FRandom(-16, 16), FRandom(-16, 16), FRandom(0, 16), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20), FRandom(0, 360));
+				}
+				
+				for (int i = 0; i < Random(2, 4); i++) {
+					A_SpawnItemEx("NTM_SkeletonSkull", FRandom(-16, 16), FRandom(-16, 16), FRandom(0, 16), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20));
+				}
+			}
+			
+			Stop;
+	}
+}

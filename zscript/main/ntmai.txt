@@ -971,6 +971,12 @@ class NTMAi : EventHandler {
 			break;
 			
 			// MAYhem2019
+			case 'HeadCandles':
+				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019) {
+					e.replacement = "NTM_BonePile";
+				}
+			break;
+			
 			case 'Stalagtite':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Satyr2";
@@ -1288,6 +1294,10 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_Flames2':
 				e.replacee = "Column";
+			break;
+			
+			case 'NTM_BonePile':
+				e.replacee = "HeadCandles";
 			break;
 		}
 	}
