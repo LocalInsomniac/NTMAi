@@ -107,6 +107,9 @@ class NTM_NightmareCacodemon : NTM_Cacodemon {
 
 class NTM_CacodemonBall : CacodemonBall {
 	Default {
+		Speed 12;
+		FastSpeed 24;
+		
 		+ForceXYBillboard
 		+Bright
 	}
