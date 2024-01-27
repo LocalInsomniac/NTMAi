@@ -123,3 +123,10 @@ class NTM_ItemFog : NTM_TeleportFog replaces ItemFog {
 		Translation "NTM_Fog_Blue";
 	}
 }
+
+// Morph Fog
+class NTM_MorphFog : NTM_TeleportFog {
+	Default {
+		Translation "NTM_Explosion_Archvile";
+	}
+}

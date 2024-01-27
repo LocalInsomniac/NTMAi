@@ -15,6 +15,7 @@
 #include "zscript/weapons/custom/mayhem2019/napalmlauncher.txt"
 #include "zscript/weapons/custom/mayhem2019/flamethrower.txt"
 #include "zscript/weapons/custom/mayhem2019/necronomicon.txt"
+#include "zscript/weapons/custom/mayhem2019/mummy.txt"
 
 class NTM_Player : DoomPlayer {
 	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
@@ -378,5 +379,66 @@ class NTM_PlayerHead : BloodySkull {
 		}
 		
 		bXFlip = Random(0, 1);
+	}
+}
+
+class NTM_MummyPlayer : NTM_Player {
+	Default {
+		Health 440;
+		PainSound "NTM_Mummy/pain";
+		DeathSound "NTM_Mummy/death";
+		Player.DisplayName "Mummy";
+		Player.SpawnClass "NTM_Mummy";
+		Player.SoundClass "NTM_Mummy";
+		Player.ForwardMove 0.5, 0.5;
+		Player.SideMove 0.5, 0.5;
+		Player.ViewHeight 54;
+		Player.AttackZOffset 26;
+		Player.MorphWeapon "NTM_MummyWeapon";
+		
+		+NoSkin
+		-PickUp
+	}
+	
+	States {
+		Missile:
+		Spawn:
+			NMUM V -1;
+			Stop;
+		
+		See:
+			NMUM ABCD 4;
+			Loop;
+		
+		Melee:
+			NMUM EFG 5;
+			Goto Spawn;
+		
+		Pain:
+			NMUM K 8 {
+				if (painTics <= 0) {
+					A_Pain();
+					painTics = Random(20, 35);
+				}
+				
+				oldHealth = health;
+			}
+			
+			Goto Spawn;
+		
+		Death.Fire:
+		Death:
+		XDeath.Fire:
+		Death:
+			NMUM L 5 A_PlayerScream;
+			
+			NMUM M 5 {
+				A_NoBlocking();
+				A_StartSound("misc/gibbed", Chan_Body, ChanF_Overlap);
+			}
+			
+			NMUM NOPQR 5;
+			NMUM S -1;
+			Stop;
 	}
 }

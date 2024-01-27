@@ -211,6 +211,13 @@ class NTM_BurningBarrelFire : NTM_FireProp {
 	}
 }
 
+// Burning Column Fire
+class NTM_BurningColumnFire : NTM_BurningBarrelFire {
+	Default {
+		XScale 0.7;
+	}
+}
+
 // Red Torch
 class NTM_RedTorch : NTM_TorchBase {
 	Default {
@@ -289,6 +296,22 @@ class NTM_ShortGreenTorch : NTM_ShortRedTorch {
 class NTM_ShortBlueTorch : NTM_ShortRedTorch {
 	Default {
 		NTM_TorchBase.FireType "NTM_BlueTorchFire";
+	}
+}
+
+// Burning Column
+class NTM_BurningColumn : NTM_TorchBase {
+	Default {
+		Radius 16;
+		Height 22;
+		NTM_TorchBase.FireType "NTM_BurningColumnFire";
+		NTM_TorchBase.FireHeight 22;
+	}
+	
+	States {
+		Spawn:
+			NSCO A -1;
+			Stop;
 	}
 }
 
@@ -498,5 +521,13 @@ class NTM_Flames : NTM_FireProp {
 		Translation "NTM_Fire_Red";
 		
 		-NoInteraction
+	}
+}
+
+// Flames (MAYhem 2019)
+class NTM_Flames2 : NTM_Flames {
+	Default {
+		XScale 1.325;
+		YScale 1.05;
 	}
 }

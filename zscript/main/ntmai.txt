@@ -517,7 +517,13 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'BurningBarrel':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+				if (sv_ntm_r_props) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_BurningColumn";
+						
+						break;
+					}
+					
 					e.replacement = "NTM_BurningBarrel";
 				}
 			break;
@@ -971,6 +977,12 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			case 'HangBNoBrain':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Mummy";
+				}
+			break;
+			
 			case 'HangTNoBrain':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_BaronOfHell2";
@@ -1006,6 +1018,12 @@ class NTMAi : EventHandler {
 					e.replacement = "NTM_TeslaCoil2";
 				}
 			break;
+			
+			case 'Column':
+				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019) {
+					e.replacement = "NTM_Flames2";
+				}
+			break;
 		}
 	}
 	
@@ -1016,6 +1034,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_BurningBarrel':
+			case 'NTM_BurningColumn':
 				e.replacee = "BurningBarrel";
 			break;
 			
@@ -1261,6 +1280,14 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_TeslaCoil2':
 				e.replacee = "Meat2";
+			break;
+			
+			case 'NTM_Mummy':
+				e.replacee = "HangBNoBrain";
+			break;
+			
+			case 'NTM_Flames2':
+				e.replacee = "Column";
 			break;
 		}
 	}

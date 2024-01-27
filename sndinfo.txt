@@ -580,6 +580,17 @@ NTM_TeslaCoil/attack NSTSLATK
 $attenuation NTM_TeslaCoil/attack 0.8
 NTM_TeslaCoil/death NSGLASS
 
+// Mummy
+NTM_Mummy/sight NSMUMSIT
+NTM_Mummy/attack DSFIRSHT
+NTM_Mummy/attack2 DSSKEATK
+NTM_Mummy/attack3 NSNECRO
+NTM_Mummy/shotx DSFIRXPL
+NTM_Mummy/curse NSMUMATK
+NTM_Mummy/cursex NSNECRX2
+NTM_Mummy/pain NSMUMPAI
+NTM_Mummy/death NSMUMDIE
+
 /* ========
    SCYTHE 2
    ======== */
