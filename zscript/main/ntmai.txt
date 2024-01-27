@@ -280,7 +280,11 @@ class NTMAi : EventHandler {
 			
 			case '3174909bca569ba357de67f6c47ae70e': // MAYhem 2019, MAP13
 				S_ChangeMusic("D_NMAY13");
-				level.nextMap = "MAP15"; // MAP14 is just... uh... um... erm...
+				level.nextMap = "MAP15"; // MAP14 has an excessive difficulty spike, not worth it.
+			break;
+			
+			case '11428c1904a508f74411f666d46b8a5c': // MAYhem 2019, MAP31
+				S_ChangeMusic("D_NMAY31");
 			break;
 			
 			case '1d383dc934b35333a116a60f75441561': // MAYhem 2019, MAP32
