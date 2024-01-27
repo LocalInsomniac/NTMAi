@@ -384,14 +384,14 @@ class NTM_PlayerHead : BloodySkull {
 
 class NTM_MummyPlayer : NTM_Player {
 	Default {
-		Health 440;
+		Health 400;
 		PainSound "NTM_Mummy/pain";
 		DeathSound "NTM_Mummy/death";
 		Player.DisplayName "Mummy";
 		Player.SpawnClass "NTM_Mummy";
 		Player.SoundClass "NTM_Mummy";
-		Player.ForwardMove 0.5, 0.5;
-		Player.SideMove 0.5, 0.5;
+		Player.ForwardMove 0.64, 0.64;
+		Player.SideMove 0.64, 0.64;
 		Player.ViewHeight 54;
 		Player.AttackZOffset 26;
 		Player.MorphWeapon "NTM_MummyWeapon";
