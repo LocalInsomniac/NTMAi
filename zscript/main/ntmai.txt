@@ -157,6 +157,7 @@ class NTMAi : EventHandler {
 		pmo.A_TakeInventory("NTM_GrenadeThrow");
 		pmo.A_TakeInventory("NTM_Bloody");
 		pmo.A_TakeInventory("NTM_PistolShots");
+		pmo.A_TakeInventory("NTM_MummyShots");
 		pmo.A_TakeInventory("NTM_Key_RedCard");
 		pmo.A_TakeInventory("NTM_Key_YellowCard");
 		pmo.A_TakeInventory("NTM_Key_BlueCard");

@@ -130,3 +130,58 @@ class NTM_MorphFog : NTM_TeleportFog {
 		Translation "NTM_Explosion_Archvile";
 	}
 }
+
+// Flame Attack
+class NTM_FlameAttack : Actor {
+	Default {
+		Radius 4;
+		Height 8;
+		Speed 20;
+		Projectile;
+		MaxStepHeight 1024;
+		RipperLevel 65535;
+		
+		+FloorHugger
+		+BloodlessImpact
+		+Painless
+		+StepMissile
+		+NotOnAutomap
+		+ThruActors
+	}
+	
+	States {
+		Spawn:
+			TNT1 A 5 NoDelay;
+			TNT1 A 0 A_NTM_FlameAttack;
+			Loop;
+		
+		Death:
+			TNT1 A 0 A_NTM_FlameAttack;
+			Stop;
+	}
+	
+	action void A_NTM_FlameAttack() {
+		NTMAi.Explode(self, 100, mod: "Fire");
+		A_SpawnItemEx("NTM_FlameAttack2", flags: SXF_NoCheckPosition);
+	}
+}
+
+class NTM_FlameAttack2 : Actor {
+	Default {
+		XScale 0.325;
+		YScale 0.8;
+		RenderStyle "Add";
+		Translation "NTM_Explosion_Archvile";
+		
+		+NoInteraction
+		+ZDoomTrans
+		+NotOnAutomap
+	}
+	
+	States {
+		Spawn:
+			NEX3 A 0 NoDelay A_StartSound("NTM_FlameAttack/explode");
+			NEX3 ABCDEFGHIJKLMNOPQ 2 Bright;
+			Stop;
+	}
+}

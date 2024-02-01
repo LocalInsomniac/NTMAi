@@ -215,6 +215,9 @@ NTM_System_Actor/pancake NSPANCKE
 NTM_Burn/burn NSBURN
 $attenuation NTM_Burn/burn 0.666
 
+NTM_FlameAttack/explode NSFIRTRA
+$limit NTM_FlameAttack/explode 0
+
 // German
 NTM_German/sight1 NSGESIT1
 NTM_German/sight2 NSGESIT2
