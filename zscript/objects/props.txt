@@ -548,7 +548,7 @@ class NTM_BonePile : Actor {
 			Stop;
 		
 		Death:
-			NBNS A 0 NoDelay {
+			NBNS A 0 {
 				for (int i = 0; i < Random(5, 10); i++) {
 					A_SpawnItemEx("NTM_SkeletonBone", FRandom(-16, 16), FRandom(-16, 16), FRandom(0, 16), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20), FRandom(0, 360));
 				}
