@@ -101,7 +101,7 @@ class NTM_System_Actor : NTM_System {
 							
 							let killer = owner.target;
 							
-							if (killer is "NTM_Player" && killer.health > 0 && !Random(0, 16)) {
+							if (killer && killer.GetClassName() == "NTM_Player" && killer.health > 0 && !Random(0, 16)) {
 								killer.A_StartSound("NTM_Player/taunt", Chan_Voice);
 							}
 							

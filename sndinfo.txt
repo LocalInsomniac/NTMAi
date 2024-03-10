@@ -191,11 +191,11 @@ $random NTM_BulletCasing/bounce {
 	NTM_BulletCasing/bounce2
 }
 
-$volume NTM_BulletCasing/bounce 0.4
+$volume NTM_BulletCasing/bounce 0.35
 
 NTM_ShellCasing/bounce NSCASIN3
 
-$volume NTM_ShellCasing/bounce 0.4
+$volume NTM_ShellCasing/bounce 0.35
 
 NTM_FlyingBlood/splat NSBSPLAT
 $volume NTM_FlyingBlood/splat 0.75
@@ -214,6 +214,9 @@ NTM_System_Actor/pancake NSPANCKE
 
 NTM_Burn/burn NSBURN
 $attenuation NTM_Burn/burn 0.666
+
+NTM_FlameAttack/explode NSFIRTRA
+$limit NTM_FlameAttack/explode 0
 
 // German
 NTM_German/sight1 NSGESIT1
@@ -351,10 +354,54 @@ $limit NTM_RocketWarrior/death 0
    DOOM 64 FOR DOOM II
    =================== */
 
+// Mother Demon
 NTM_MotherDemon/sight NSMOTSIT
 NTM_MotherDemon/active NSMOTACT
 NTM_MotherDemon/pain NSMOTPAI
 NTM_MotherDemon/death NSMOTDIE
+
+/* ==========
+   EVITERNITY
+   ========== */
+
+// Annihilator
+NTM_Annihilator/sight NSANNSIT
+NTM_Annihilator/active DSBRSACT
+NTM_Annihilator/shoot DSCYBATK
+NTM_Annihilator/pain DSBRSPAI
+NTM_Annihilator/death NSANNDIE
+
+// Former Captain
+$alias NTM_FormerCaptain/sight chainguy/sight
+$alias NTM_FormerCaptain/active chainguy/active
+NTM_FormerCaptain/attack DSCYBATK
+$alias NTM_FormerCaptain/pain chainguy/pain
+$alias NTM_FormerCaptain/death chainguy/death
+$alias NTM_FormerCaptain/burn chainguy/burn
+
+$alias NTM_FormerCaptainBullet/miss NTM_BulletPuff/miss
+$alias NTM_FormerCaptainBullet/hit NTM_BulletPuff/hit
+
+// Nightmare Demon
+NTM_NightmareDemon/sight DSSGTSIT
+$pitchset NTM_NightmareDemon/sight 0.8
+NTM_NightmareDemon/active DSDMACT
+$pitchset NTM_NightmareDemon/active 0.8
+NTM_NightmareDemon/melee DSSGTATK
+$pitchset NTM_NightmareDemon/melee 0.8
+NTM_NightmareDemon/attack DSSGTJMP
+$pitchset NTM_NightmareDemon/attack 0.8
+NTM_NightmareDemon/pain DSDMPAIN
+$pitchset NTM_NightmareDemon/pain 0.8
+NTM_NightmareDemon/death DSSGTDTH
+$pitchset NTM_NightmareDemon/death 0.8
+
+// Astral Cacodemon
+NTM_AstralCacodemon/sight NSASCSIT
+$alias NTM_AstralCacodemon/active caco/active
+NTM_AstralCacodemon/attack NSASCATK
+NTM_AstralCacodemon/pain NSASCPAI
+NTM_AstralCacodemon/death NSASCDIE
 
 /* ===========
    MAYHEM 2019
@@ -535,6 +582,17 @@ NTM_ChainsawManiac/burn DSPOBURN
 NTM_TeslaCoil/attack NSTSLATK
 $attenuation NTM_TeslaCoil/attack 0.8
 NTM_TeslaCoil/death NSGLASS
+
+// Mummy
+NTM_Mummy/sight NSMUMSIT
+NTM_Mummy/attack DSFIRSHT
+NTM_Mummy/attack2 DSSKEATK
+NTM_Mummy/attack3 NSNECRO
+NTM_Mummy/shotx DSFIRXPL
+NTM_Mummy/curse NSMUMATK
+NTM_Mummy/cursex NSNECRX2
+NTM_Mummy/pain NSMUMPAI
+NTM_Mummy/death NSMUMDIE
 
 /* ========
    SCYTHE 2

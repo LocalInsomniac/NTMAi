@@ -31,7 +31,7 @@ class NTMAi : EventHandler {
 		   DeH_Actor_156 = Skeleton ✓
 		   DeH_Actor_158 = Gjenganger ✓
 		   DeH_Actor_231 = Little Marine ✓ */
-		bADMORTEM = NTMAi.LumpHasHash("DSFRE048", "0f76f6c24ac906634562a7aadf8f527f");
+		bADMORTEM = NTMAi.LumpHasHash("DSFRE048", "cb488e35f7231e16d0104d6f7e82bcd0");
 		
 		/* [DOOM 64 for DOOM II]
 		   
@@ -40,15 +40,15 @@ class NTMAi : EventHandler {
 		   CommanderKeen = Nightmare Imp ✓
 		   GibbedMarineExtra = Nightmare Cacodemon ✓
 		   DeadLostSoul = Flames ✓ */
-		bD64D2 = NTMAi.LumpHasHash("CWILV30", "ed77f8e6d72be6d04d760259c2e8ed02");
+		bD64D2 = NTMAi.LumpHasHash("CWILV30", "e7d777ffe6c6371edbea4d5c70f14b75");
 		
 		/* [Eviternity]
 		   
-		   BaronOfHell = Annihilator
-		   WolfensteinSS = Former Captain
-		   CommanderKeen = Astral Cacodemon
+		   BaronOfHell = Annihilator ✓
+		   WolfensteinSS = Former Captain ✓
+		   CommanderKeen = Astral Cacodemon ✓
 		   BossBrain = Archangelus */
-		bEviternity = NTMAi.LumpHasHash("XLT_EV15", "4a96b98efc9a0ab68ffd2533a3a3ee01");
+		bEviternity = NTMAi.LumpHasHash("CWILV00", "6e8a89645bec3a49eb8995340a0ea59b");
 		
 		/* [MAYhem 2019]
 		   
@@ -80,13 +80,13 @@ class NTMAi : EventHandler {
 		   HangTNoBrain = Baron of Hell ✓
 		   MBFHelperDog = Chainsaw Maniac ✓
 		   UnholyBible = Lich */
-		bMAYhem2019 = NTMAi.LumpHasHash("DSTINK", "3ab1f8e2c9fd05ab647881bc7f5a3fc9");
+		bMAYhem2019 = NTMAi.LumpHasHash("DSTINK", "8b74c09782a8f1a96405e4c13eb4f4c3");
 		
 		/* [Scythe 2]
 		
 		   WolfensteinSS = Evil Marine ✓
 		   CommanderKeen = Afrit ✓ */
-		bScythe2 = NTMAi.LumpHasHash("DEHACKED", "64fec1191ba91059d450ddfbe7ac1d7d");
+		bScythe2 = NTMAi.LumpHasHash("DEHACKED", "42df7a71bdfb6ec8904ec26bcfbb1709");
 		
 		/* [Valiant]
 		
@@ -101,7 +101,7 @@ class NTMAi : EventHandler {
 		   BlueTorch = Diablo
 		   TorchTree = Ghost Arch-Vile
 		   BigTree = Ghost Revenant */
-		bValiant = NTMAi.LumpHasHash("E1TEXT", "2363886efb272bb3dace286fd6475586");
+		bValiant = NTMAi.LumpHasHash("E1TEXT", "d381b1cb30b432c92f5e576b2b792449");
 	}
 	
 	/* ====
@@ -157,6 +157,7 @@ class NTMAi : EventHandler {
 		pmo.A_TakeInventory("NTM_GrenadeThrow");
 		pmo.A_TakeInventory("NTM_Bloody");
 		pmo.A_TakeInventory("NTM_PistolShots");
+		pmo.A_TakeInventory("NTM_MummyShots");
 		pmo.A_TakeInventory("NTM_Key_RedCard");
 		pmo.A_TakeInventory("NTM_Key_YellowCard");
 		pmo.A_TakeInventory("NTM_Key_BlueCard");
@@ -280,7 +281,11 @@ class NTMAi : EventHandler {
 			
 			case '3174909bca569ba357de67f6c47ae70e': // MAYhem 2019, MAP13
 				S_ChangeMusic("D_NMAY13");
-				level.nextMap = "MAP15"; // MAP14 is just... uh... um... erm...
+				level.nextMap = "MAP15"; // MAP14 has an excessive difficulty spike, not worth it.
+			break;
+			
+			case '11428c1904a508f74411f666d46b8a5c': // MAYhem 2019, MAP31
+				S_ChangeMusic("D_NMAY31");
 			break;
 			
 			case '1d383dc934b35333a116a60f75441561': // MAYhem 2019, MAP32
@@ -513,7 +518,13 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'BurningBarrel':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+				if (sv_ntm_r_props) {
+					if (sv_ntm_r_custom && bMAYhem2019) {
+						e.replacement = "NTM_BurningColumn";
+						
+						break;
+					}
+					
 					e.replacement = "NTM_BurningBarrel";
 				}
 			break;
@@ -739,7 +750,7 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_baronOfHell) {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
-							//e.replacement = "NTM_Cybruiser";
+							e.replacement = "NTM_Annihilator";
 							
 							break;
 						}
@@ -841,7 +852,7 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_ss) {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
-							// e.replacement = "NTM_FormerCaptain";
+							e.replacement = "NTM_FormerCaptain";
 							
 							break;
 						}
@@ -872,7 +883,7 @@ class NTMAi : EventHandler {
 					}
 					
 					if (bEviternity) {
-						//e.replacement = "NTM_AstralCacodemon";
+						e.replacement = "NTM_AstralCacodemon";
 						
 						break;
 					}
@@ -950,10 +961,32 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			// Eviternity
+			
+			// GROSS HACK: Same for this thing...
+			case 'NightmareDemon':
+				if (sv_ntm_r_custom && bEviternity) {
+					
+					e.replacement = "NTM_NightmareDemon";
+				}
+			break;
+			
 			// MAYhem2019
+			case 'HeadCandles':
+				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019) {
+					e.replacement = "NTM_BonePile";
+				}
+			break;
+			
 			case 'Stalagtite':
 				if (sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Satyr2";
+				}
+			break;
+			
+			case 'HangBNoBrain':
+				if (sv_ntm_r_custom && bMAYhem2019) {
+					e.replacement = "NTM_Mummy";
 				}
 			break;
 			
@@ -992,6 +1025,12 @@ class NTMAi : EventHandler {
 					e.replacement = "NTM_TeslaCoil2";
 				}
 			break;
+			
+			case 'Column':
+				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019) {
+					e.replacement = "NTM_Flames2";
+				}
+			break;
 		}
 	}
 	
@@ -1002,6 +1041,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_BurningBarrel':
+			case 'NTM_BurningColumn':
 				e.replacee = "BurningBarrel";
 			break;
 			
@@ -1122,6 +1162,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_BaronOfHell':
+			case 'NTM_Annihilator':
 			case 'NTM_MotherBrain':
 				e.replacee = "BaronOfHell";
 			break;
@@ -1159,13 +1200,14 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'NTM_German':
+			case 'NTM_FormerCaptain':
 			case 'NTM_TommyGunCultist2':
 			case 'NTM_EvilMarine':
 				e.replacee = "WolfensteinSS";
 			break;
 			
 			case 'NTM_NightmareImp':
-			//case 'NTM_AstralCacodemon':
+			case 'NTM_AstralCacodemon':
 			case 'NTM_ShadowHellHound':
 			case 'NTM_Afrit':
 				e.replacee = "CommanderKeen";
@@ -1209,6 +1251,11 @@ class NTMAi : EventHandler {
 				e.replacee = "DeadLostSoul";
 			break;
 			
+			// Eviternity
+			case 'NTM_NightmareDemon':
+				e.replacee = "MBFHelperDog";
+			break;
+			
 			// MAYhem 2019
 			case 'NTM_Pumpkin':
 				e.replacee = "SkullColumn";
@@ -1240,6 +1287,18 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_TeslaCoil2':
 				e.replacee = "Meat2";
+			break;
+			
+			case 'NTM_Mummy':
+				e.replacee = "HangBNoBrain";
+			break;
+			
+			case 'NTM_Flames2':
+				e.replacee = "Column";
+			break;
+			
+			case 'NTM_BonePile':
+				e.replacee = "HeadCandles";
 			break;
 		}
 	}

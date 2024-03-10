@@ -1,0 +1,158 @@
+class NTM_Mummy : NTM_Enemy {
+	Default {
+		Health 440;
+		Radius 24;
+		Height 64;
+		Mass 1000;
+		PainChance 50;
+		Speed 11;
+		NTM_Enemy.TicsPerChase 3;
+		Tag "Mummy";
+		Obituary "%o was desecrated by a Mummy.";
+		SeeSound "NTM_Mummy/sight";
+		PainSound "NTM_Mummy/pain";
+		DeathSound "NTM_Mummy/death";
+	}
+	
+	States {
+		Spawn:
+			NMUM V 10 A_Look;
+			Loop;
+		
+		DukeSee:
+			NMUM AABBCCDD 3 A_NTM_DukeChase;
+			Loop;
+		
+		BloodSee:
+			NMUM AABBCCDD 3 A_NTM_BloodChase;
+			Loop;
+		
+		SWSee:
+			NMUM A 1 A_NTM_SWChase;
+			NMUM AA 1 A_NTM_SWChase2;
+			NMUM A 1 A_NTM_SWChase;
+			NMUM AA 1 A_NTM_SWChase2;
+			NMUM B 1 A_NTM_SWChase;
+			NMUM BB 1 A_NTM_SWChase2;
+			NMUM B 1 A_NTM_SWChase;
+			NMUM BB 1 A_NTM_SWChase2;
+			NMUM C 1 A_NTM_SWChase;
+			NMUM CC 1 A_NTM_SWChase2;
+			NMUM C 1 A_NTM_SWChase;
+			NMUM CC 1 A_NTM_SWChase2;
+			NMUM D 1 A_NTM_SWChase;
+			NMUM DD 1 A_NTM_SWChase2;
+			NMUM D 1 A_NTM_SWChase;
+			NMUM DD 1 A_NTM_SWChase2;
+			Loop;
+		
+		Missile:
+			NMUM E 0 A_Jump(10, "Missile2");
+			NMUM E 7 A_FaceTarget;
+			NMUM F 4 A_FaceTarget;
+			NMUM G 4 A_NTM_MummyAttack;
+			NMUM H 7 A_FaceTarget;
+			NMUM I 4 A_FaceTarget;
+			NMUM J 4 A_NTM_MummyAttack;
+			Goto See;
+		
+		Missile2:
+			NMUM TXWXTXWXTXWXTXWX 1 Bright A_FaceTarget;
+			
+			NMUM U 3 Bright {
+				A_FaceTarget();
+				A_StartSound("NTM_Mummy/attack2", Chan_Weapon, ChanF_Overlap);
+				A_StartSound("NTM_Mummy/attack3", Chan_Weapon, ChanF_Overlap);
+				A_SpawnProjectile("NTM_MummyCurse");
+			}
+			
+			NMUM X 3 Bright A_FaceTarget;
+			NMUM T 8 A_FaceTarget;
+			Goto See;
+		
+		Pain:
+			NMUM K 4 A_Pain;
+			Goto See;
+		
+		Death:
+			NMUM L 5 A_Scream;
+			
+			NMUM M 5 {
+				A_NoBlocking();
+				A_StartSound("misc/gibbed", Chan_Body, ChanF_Overlap);
+			}
+			
+			NMUM NOPQR 5;
+			NMUM S -1;
+			Stop;
+	}
+	
+	action void A_NTM_MummyAttack() {
+		A_FaceTarget();
+		A_SpawnProjectile("NTM_MummyBall");
+	}
+}
+
+class NTM_MummyBall : NTM_CacodemonBall {
+	Default {
+		SeeSound "NTM_Mummy/attack";
+ 		DeathSound "NTM_Mummy/shotx";
+	}
+	
+	States {
+		Spawn:
+			NMBA ABCD 2;
+			Loop;
+			
+		Death:
+			NEXP A 2 {
+				scale *= 0.48;
+				A_SetTranslation("NTM_Explosion_Archvile");
+			}
+			
+			NEXP BCDEFGHIJ 2;
+			Stop;
+	}
+}
+
+class NTM_MummyCurse : MorphProjectile {
+	Default {
+ 		Radius 6;
+		Height 8;
+		Speed 10;
+ 		FastSpeed 20;
+		Damage 6;
+		RenderStyle "Add";
+		Alpha 1;
+		SeeSound "NTM_Mummy/curse";
+ 		DeathSound "NTM_Mummy/cursex";
+		MorphProjectile.PlayerClass "NTM_MummyPlayer";
+		MorphProjectile.MorphFlash "NTM_MorphFog";
+		MorphProjectile.UnmorphFlash "NTM_MorphFog";
+		MorphProjectile.Duration 700;
+		
+		+Randomize
+ 		+ZDoomTrans
+		+SeekerMissile
+		+Bright
+	}
+	
+	States {
+		Spawn:
+			NMCU ABC 2 {
+				A_Tracer2();
+				A_SpawnItemEx("NTM_NapalmTrail", -10, 0, 0, -1, FRandom(-1, 1), FRandom(0, 2));
+			}
+			
+			Loop;
+			
+		Death:
+			NEX4 A 2 {
+				scale *= 0.4;
+				A_SetTranslation("NTM_Explosion_Archvile");
+			}
+			
+			NEX4 BCDEFGHIJKL 2;
+			Stop;
+	}
+}

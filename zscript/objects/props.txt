@@ -211,6 +211,13 @@ class NTM_BurningBarrelFire : NTM_FireProp {
 	}
 }
 
+// Burning Column Fire
+class NTM_BurningColumnFire : NTM_BurningBarrelFire {
+	Default {
+		XScale 0.7;
+	}
+}
+
 // Red Torch
 class NTM_RedTorch : NTM_TorchBase {
 	Default {
@@ -292,6 +299,22 @@ class NTM_ShortBlueTorch : NTM_ShortRedTorch {
 	}
 }
 
+// Burning Column
+class NTM_BurningColumn : NTM_TorchBase {
+	Default {
+		Radius 16;
+		Height 22;
+		NTM_TorchBase.FireType "NTM_BurningColumnFire";
+		NTM_TorchBase.FireHeight 22;
+	}
+	
+	States {
+		Spawn:
+			NSCO A -1;
+			Stop;
+	}
+}
+
 // Gibbed Marine
 class NTM_GibbedMarine : Actor {
 	Default {
@@ -304,7 +327,9 @@ class NTM_GibbedMarine : Actor {
 	
 	States {
 		Spawn:
-			NMGI H -1;
+			NCPS D -1 NoDelay A_Jump(128, 1);
+			Stop;
+			NCPS E -1;
 			Stop;
 		
 		Death:
@@ -340,7 +365,11 @@ class NTM_DeadMarine : NTM_GibbedMarine {
 	
 	States {
 		Spawn:
-			NPLA L -1;
+			NCPS A -1 NoDelay A_Jump(128, 1);
+			Stop;
+			NCPS B -1 A_Jump(128, 1);
+			Stop;
+			NCPS C -1;
 			Stop;
 	}
 }
@@ -492,5 +521,43 @@ class NTM_Flames : NTM_FireProp {
 		Translation "NTM_Fire_Red";
 		
 		-NoInteraction
+	}
+}
+
+// Flames (MAYhem 2019)
+class NTM_Flames2 : NTM_Flames {
+	Default {
+		XScale 1.325;
+		YScale 1.05;
+	}
+}
+
+// Bone Pile
+class NTM_BonePile : Actor {
+	Default {
+		Health 25;
+		Scale 0.9;
+		
+		+Vulnerable
+		+DontThrust
+	}
+	
+	States {
+		Spawn:
+			NBNS A -1;
+			Stop;
+		
+		Death:
+			NBNS A 0 {
+				for (int i = 0; i < Random(5, 10); i++) {
+					A_SpawnItemEx("NTM_SkeletonBone", FRandom(-16, 16), FRandom(-16, 16), FRandom(0, 16), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20), FRandom(0, 360));
+				}
+				
+				for (int i = 0; i < Random(2, 4); i++) {
+					A_SpawnItemEx("NTM_SkeletonSkull", FRandom(-16, 16), FRandom(-16, 16), FRandom(0, 16), FRandom(-10, 10), FRandom(-10, 10), FRandom(5, 20));
+				}
+			}
+			
+			Stop;
 	}
 }

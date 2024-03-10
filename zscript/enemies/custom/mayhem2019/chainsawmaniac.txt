@@ -58,19 +58,37 @@ class NTM_ChainsawManiac : NTM_Humanoid {
 		Melee:
 			NCSM E 2 A_FaceTarget;
 			NCSM E 2 A_NTM_CSMAttack;
-			NCSM F 2 A_FaceTarget;
-			NCSM F 2 A_NTM_CSMAttack;
+			NCSM E 2 A_FaceTarget;
+			NCSM E 2 A_NTM_CSMAttack;
 			Goto See;
 		
 		Pain:
-			NCSM G 10 A_Pain;
+			NCSM F 10 A_Pain;
 			Goto See;
 		
 		Death:
-			NCSM H 5 A_NTM_Death;
-			NCSM I 5 A_NoBlocking;
-			NCSM JK 5;
-			NCSM L -1;
+			NCSM G 5 A_NTM_Death;
+			NZOM I 5 A_NoBlocking;
+			NZOM JK 5;
+			NZOM L -1;
+			Stop;
+		
+		Death.Chainsaw:
+			NCSM H 10 A_NTM_DeathStart;
+			NCSM H 15 A_NoBlocking(false);
+			
+			NCSM I 5 {
+				for (int i = 0; i < 3; ++i) {
+					A_SpawnItemEx("NTM_FlyingBlood", 8, 4, 28, FRandom(2, 5), FRandom(-5, -2), FRandom(2, 6));
+				}
+				
+				A_NTM_DeathEnd();
+				A_StartSound("NTM_Chainsaw/slash", Chan_5, ChanF_Overlap);
+			}
+			
+			NCSM J 5;
+			NZOM WXYZ[^ 5;
+			NZOM ] -1;
 			Stop;
 	}
 	

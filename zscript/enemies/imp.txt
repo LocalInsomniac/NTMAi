@@ -82,7 +82,7 @@ class NTM_Imp : NTM_Humanoid {
 			Goto See;
 		
 		Leap:
-			NIMP E 1 A_NTM_Leap;
+			NIMP T 1 A_NTM_Leap(false);
 			Loop;
 	}
 	
