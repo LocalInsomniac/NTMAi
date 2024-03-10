@@ -22,10 +22,10 @@ Cage • "DOOM 64 for DOOM II" Mother Demon
 
 Can't Sleep, Craneo, Midoriman, Neoworm, Tormentor667 • "MAYhem 2019" Cultists
 
-Can't Sleep, David G, DenisBelmondo, ElectricPulse, Gifty, • Graphics Editing
-	   Hellfire, HorrorMovieGuy, horselessheadsman, Jimmy, •
-			  Jimmy91, Joblez, KaZudra, Mechadon, neoworm, •
-									 osjclatchford, Xaser, •
+Can't Sleep, Craneo, David G, DenisBelmondo, ElectricPulse, • Graphics Editing
+ Gifty, Hellfire, HorrorMovieGuy, horselessheadsman, Jimmy, •
+			   Jimmy91, Joblez, KaZudra, Mechadon, neoworm, •
+									  osjclatchford, Xaser, •
 
 Can't Sleep, DoomerBlazkowicz, Hellfire, Joblez • Rocket Launcher
 
@@ -37,15 +37,17 @@ Chickenlegz • Demon Gibbage
 
 Craneo, Dr_Cosmobyte, Mr. Enchanter, Ninhil • Mighty Foot
 
+Craneo, fgsfds, Kinsie, NightFright • Menu Graphics
+
 Craneo, Jimmy, Jimmy91, • "DOOM 2016/Eternal Monsters" Arachnotron
        LitteWhiteMouse, •
           Logan McCloud •
 
 Craneo, Mike12, Solmyr • "MAYhem 2019" Chainsaw Maniac
 
-Espi, Ebola • "Scythe 2" Afrit
+cybermonday, neoworm • Hand Grenade
 
-Craneo, fgsfds, Kinsie, NightFright • Menu Graphics
+Espi, Ebola • "Scythe 2" Afrit
 
 gerolf • "Wolfenstein 3D" Helmeted SS Guard
 
