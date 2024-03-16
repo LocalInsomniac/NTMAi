@@ -12,7 +12,7 @@ class NTM_RocketLauncherSpawner : NTM_ItemSpawner replaces RocketLauncher {
 
 class NTM_RocketLauncher : RocketLauncher {
 	Default {
-		Scale 0.75;
+		Scale 0.8;
 		Weapon.SlotNumber 5;
 		Weapon.UpSound "NTM_Weapon/select";
 		Inventory.PickupMessage "Rocket Launcher!";

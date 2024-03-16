@@ -1,6 +1,6 @@
 class NTM_GrenadeItem : CustomInventory {
 	Default {
-		Scale 0.625;
+		Scale 0.666;
 		Tag "Hand Grenade";
 		Inventory.MaxAmount 20;
 		Inventory.InterHubAmount 0x7FFFFFFF;

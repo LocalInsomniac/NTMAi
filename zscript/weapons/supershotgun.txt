@@ -1,6 +1,6 @@
 class NTM_SuperShotgun : SuperShotgun replaces SuperShotgun {
 	Default {
-		Scale 0.85;
+		Scale 0.9;
 		Weapon.SlotNumber 3;
 		Weapon.UpSound "weapons/sshotc";
 		Weapon.Kickback 100;

@@ -1,6 +1,6 @@
 class NTM_Chainsaw : Chainsaw replaces Chainsaw {
 	Default {
-		Scale 0.75;
+		Scale 0.8;
 		Weapon.SlotNumber 1;
 	}
 	
