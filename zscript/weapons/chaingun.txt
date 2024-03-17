@@ -4,7 +4,7 @@ class NTM_ChaingunSpawner : NTM_ItemSpawner replaces Chaingun {
 	}
 	
 	override void UpdateType(NTMAi e) {
-		if (sv_ntm_r_custom && e.bMAYhem2019) {
+		if (sv_ntm_r_custom && (e.bADMORTEM || e.bMAYhem2019)) {
 			type = "NTM_TommyGun";
 		}
 	}
