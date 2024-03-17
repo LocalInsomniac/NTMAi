@@ -530,43 +530,43 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'RedTorch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && !bADMORTEM) {
 					e.replacement = "NTM_RedTorch";
 				}
 			break;
 			
 			case 'GreenTorch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && !bADMORTEM) {
 					e.replacement = "NTM_GreenTorch";
 				}
 			break;
 			
 			case 'BlueTorch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && !bADMORTEM) {
 					e.replacement = "NTM_BlueTorch";
 				}
 			break;
 			
 			case 'ShortRedTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bEviternity))) {
 					e.replacement = "NTM_ShortRedTorch";
 				}
 			break;
 			
 			case 'ShortGreenTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bEviternity))) {
 					e.replacement = "NTM_ShortGreenTorch";
 				}
 			break;
 			
 			case 'ShortBlueTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bEviternity)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bEviternity))) {
 					e.replacement = "NTM_ShortBlueTorch";
 				}
 			break;
 			
 			case 'TechLamp':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bMAYhem2019))) {
 					e.replacement = "NTM_TechLamp";
 				}
 			break;
