@@ -34,7 +34,7 @@ class NTM_PlasmaRifle : PlasmaRifle {
 			
 		Fire:
 			NPLS C 1 Bright {
-				A_FireProjectile("NTM_PlasmaBall", 0, true, 7, -4);
+				A_FireProjectile("NTM_PlasmaBall", 0, true, 8, -4);
 				A_GunFlash();
 				A_WeaponOffset(Random(-2, 2), Random(32, 36), WOF_Interpolate);
 			}

@@ -3,6 +3,8 @@
 A Build Engine-style mod for GZDoom
 Created by Can't Sleep
 
+If your name is missing in the credits, contact us!
+
 ==========
 [GRAPHICS]
 
@@ -22,10 +24,11 @@ Cage • "DOOM 64 for DOOM II" Mother Demon
 
 Can't Sleep, Craneo, Midoriman, Neoworm, Tormentor667 • "MAYhem 2019" Cultists
 
-Can't Sleep, Craneo, David G, DenisBelmondo, ElectricPulse, • Graphics Editing
- Gifty, Hellfire, HorrorMovieGuy, horselessheadsman, Jimmy, •
-			   Jimmy91, Joblez, KaZudra, Mechadon, neoworm, •
-									  osjclatchford, Xaser, •
+Can't Sleep, Craneo, David G, DenisBelmondo, donowa, • Graphics Editing
+	 ElectricPulse, Gifty, Hellfire, HorrorMovieGuy, •
+ horselessheadsman, Jimmy, Jimmy91, Joblez, KaZudra, •
+   Mechadon, neoworm, osjclatchford, totallyrealrei, •
+											  Xaser, •
 
 Can't Sleep, DoomerBlazkowicz, Hellfire, Joblez • Rocket Launcher
 
@@ -70,7 +73,7 @@ Nash Muhandes • "Nash's Gore Mod" and "Nash's Gore Mod: Vengeance Edition"
 
 ShallowB • "DOOM 64" Imp
 
-tsf • Pistol
+tsf • Pistol and Plasma Rifle
 
 ========
 [AUDIO]
