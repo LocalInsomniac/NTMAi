@@ -1,5 +1,5 @@
 class NTMAi : EventHandler {
-	bool bADMORTEM, bD64D2, bEviternity, bMAYhem2019, bScythe2, bValiant;
+	bool bADMORTEM, bAUGERZENITH, bD64D2, bEviternity, bMAYhem2019, bScythe2, bValiant;
 	
 	static void LumpPrintHash(string lumpName) {
 		int lump = -1;
@@ -14,6 +14,8 @@ class NTMAi : EventHandler {
 		
 		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
 			if (MD5.Hash(WADs.ReadLump(lump)) == hash) {
+				Console.PrintF("Found special lump '"..lumpName.."' ("..lump..", '"..(MD5.Hash(WADs.ReadLump(lump))).."')");
+				
 				return true;
 			}
 		}
@@ -22,70 +24,111 @@ class NTMAi : EventHandler {
 	}
 	
 	override void OnRegister() {
+		/* [REPLACEMENT CHART]
+			@ = Replaced
+			✓ = Replaced with new actor */
+		
 		/* [AD MORTEM]
 		
-		   DeH_Actor_150 = Pumpkin Marine ✓
-		   DeH_Actor_151, DeH_Actor_209 = Gargoyle ✓
-		   DeH_Actor_152 = Satyr ✓
-		   DeH_Actor_153 = Rocket Warrior ✓
-		   DeH_Actor_156 = Skeleton ✓
-		   DeH_Actor_158 = Gjenganger ✓
-		   DeH_Actor_231 = Little Marine ✓ */
+		   ✓ DeH_Actor_150 = Pumpkin Marine
+		   ✓ DeH_Actor_151, DeH_Actor_209 = Gargoyle
+		   ✓ DeH_Actor_152 = Satyr
+		   ✓ DeH_Actor_153 = Rocket Warrior
+		   ✓ DeH_Actor_156 = Skeleton
+		   ✓ DeH_Actor_158 = Gjenganger
+		   ✓ DeH_Actor_231 = Little Marine */
 		bADMORTEM = NTMAi.LumpHasHash("DSFRE048", "cb488e35f7231e16d0104d6f7e82bcd0");
+		
+		/* [AUGER;ZENITH]
+		   
+		     Stalagtite = Double Lamp
+		     Candelabra = Red Lamp
+		     TallGreenColumn = Satellite
+		     ShortGreenColumn = Red Beacon
+		     TallRedColumn = Pipe
+		     ShortRedColumn = Palm Tree
+		     HeartColumn = Purple Beacon
+		     SkullColumn = Steam Pipes
+		   @ Column = Green Lamp
+		     Candle = Floor Light
+		     DeadStick = Computer
+		     HeadsOnAStick = Mannequin
+		     HeadCandles = Wide Lamp
+		     HeadOnAStick = Plant
+		     LiveStick = Traffic Drone
+		     FloatingSkull = Spinning Beacon
+		     TechPillar = Tree
+		     TorchTree = Small Tree
+		     BigTree = Car
+		   @ BlueTorch = Blue Spotlight
+		   @ GreenTorch = Yellow Spotlight
+		   @ RedTorch = Red Spotlight
+		   @ TechLamp = Cool Lamp
+		   @ TechLamp2 = Small Cool Lamp
+		     EvilEye = Tech Fan
+		   @ BloodyTwitch = UAC Hologram
+		     Meat2 = Purple Lightbulb
+		     Meat3 = Disco Lightbulb
+		     Meat4 = Strobe Light
+		     Meat5 = Crane
+		   @ ShortBlueTorch = Doohickey
+		   @ ShortRedTorch = Flames
+		   @ ShortGreenTorch = Rain */
+		bAUGERZENITH = NTMAi.LumpHasHash("DBP_A227", "ccfe9d3cfb60d7e6668b9ba575c88d97");
 		
 		/* [DOOM 64 for DOOM II]
 		   
-		   SpiderMastermind = Mother Demon ✓
-		   Cyberdemon = Cyberdemon (A_KeenDie) ✓
-		   CommanderKeen = Nightmare Imp ✓
-		   GibbedMarineExtra = Nightmare Cacodemon ✓
-		   DeadLostSoul = Flames ✓ */
+		   ✓ SpiderMastermind = Mother Demon
+		   ✓ Cyberdemon = Cyberdemon (A_KeenDie)
+		   ✓ CommanderKeen = Nightmare Imp
+		   ✓ GibbedMarineExtra = Nightmare Cacodemon
+		   ✓ DeadLostSoul = Flames */
 		bD64D2 = NTMAi.LumpHasHash("CWILV30", "e7d777ffe6c6371edbea4d5c70f14b75");
 		
 		/* [Eviternity]
 		   
-		   BaronOfHell = Annihilator ✓
-		   WolfensteinSS = Former Captain ✓
-		   CommanderKeen = Astral Cacodemon ✓
-		   BossBrain = Archangelus */
+		   ✓ BaronOfHell = Annihilator
+		   ✓ WolfensteinSS = Former Captain
+		   ✓ CommanderKeen = Astral Cacodemon
+		     BossBrain = Archangelus */
 		bEviternity = NTMAi.LumpHasHash("CWILV00", "6e8a89645bec3a49eb8995340a0ea59b");
 		
 		/* [MAYhem 2019]
 		   
-		   BurningBarrel = Burning Pillar
-		   Chaingun = Tommy Gun ✓
-		   RocketLauncher = Napalm Launcher ✓
-		   PlasmaRifle = Flamethrower ✓
-		   BFG9000 = Necronomicon ✓
-		   Zombieman = Zombie ✓
-		   PainElemental = Hothead ✓
-		   ChaingunGuy, WolfensteinSS = Tommy Gun Cultist ✓
-		   ShotgunGuy = Shotgun Cultist ✓
-		   Demon = Skeleton ✓
-		   Spectre = Shadow Imp ✓
-		   HellKnight = Arachnorb ✓
-		   BaronOfHell = Mother Brain ✓
-		   LostSoul = Lightning Ball ✓
-		   SpiderMastermind = Abbot
-		   Arachnotron = Death Cube ✓
-		   Cyberdemon = Minotaur
-		   HangTSkull = Hellhound ✓
-		   CommanderKeen = Shadow Hellhound ✓
-		   Stalagtite = Satyr ✓
-		   DeadLostSoul = Bat ✓
-		   HangBNoBrain = Mummy
-		   HangTLookingDown = Ghost
-		   HangTLookingUp = Tesla Coil ✓
-		   Meat2 = Inactive Tesla Coil ✓
-		   HangTNoBrain = Baron of Hell ✓
-		   MBFHelperDog = Chainsaw Maniac ✓
-		   UnholyBible = Lich */
+		     BurningBarrel = Burning Pillar
+		   ✓ Chaingun = Tommy Gun
+		   ✓ RocketLauncher = Napalm Launcher
+		   ✓ PlasmaRifle = Flamethrower
+		   ✓ BFG9000 = Necronomicon
+		   ✓ Zombieman = Zombie
+		   ✓ PainElemental = Hothead
+		   ✓ ChaingunGuy, WolfensteinSS = Tommy Gun Cultist
+		   ✓ ShotgunGuy = Shotgun Cultist
+		   ✓ Demon = Skeleton
+		   ✓ Spectre = Shadow Imp
+		   ✓ HellKnight = Arachnorb
+		   ✓ BaronOfHell = Mother Brain
+		   ✓ LostSoul = Lightning Ball
+		     SpiderMastermind = Abbot
+		   ✓ Arachnotron = Death Cube
+		     Cyberdemon = Minotaur
+		   ✓ HangTSkull = Hellhound
+		   ✓ CommanderKeen = Shadow Hellhound
+		   ✓ Stalagtite = Satyr
+		   ✓ DeadLostSoul = Bat
+		     HangBNoBrain = Mummy
+		     HangTLookingDown = Ghost
+		   ✓ HangTLookingUp = Tesla Coil
+		   ✓ Meat2 = Inactive Tesla Coil
+		   ✓ HangTNoBrain = Baron of Hell
+		   ✓ MBFHelperDog = Chainsaw Maniac
+		     UnholyBible = Lich */
 		bMAYhem2019 = NTMAi.LumpHasHash("DSTINK", "8b74c09782a8f1a96405e4c13eb4f4c3");
 		
 		/* [Scythe 2]
 		
-		   WolfensteinSS = Evil Marine ✓
-		   CommanderKeen = Afrit ✓ */
+		   ✓ WolfensteinSS = Evil Marine
+		   ✓ CommanderKeen = Afrit */
 		bScythe2 = NTMAi.LumpHasHash("DEHACKED", "42df7a71bdfb6ec8904ec26bcfbb1709");
 		
 		/* [Valiant]
@@ -530,61 +573,61 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'RedTorch':
-				if (sv_ntm_r_props && !bADMORTEM) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH))) {
 					e.replacement = "NTM_RedTorch";
 				}
 			break;
 			
 			case 'GreenTorch':
-				if (sv_ntm_r_props && !bADMORTEM) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH))) {
 					e.replacement = "NTM_GreenTorch";
 				}
 			break;
 			
 			case 'BlueTorch':
-				if (sv_ntm_r_props && !bADMORTEM) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH))) {
 					e.replacement = "NTM_BlueTorch";
 				}
 			break;
 			
 			case 'ShortRedTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bEviternity))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity))) {
 					e.replacement = "NTM_ShortRedTorch";
 				}
 			break;
 			
 			case 'ShortGreenTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bEviternity))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity))) {
 					e.replacement = "NTM_ShortGreenTorch";
 				}
 			break;
 			
 			case 'ShortBlueTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bEviternity))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity))) {
 					e.replacement = "NTM_ShortBlueTorch";
 				}
 			break;
 			
 			case 'TechLamp':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bMAYhem2019))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bMAYhem2019))) {
 					e.replacement = "NTM_TechLamp";
 				}
 			break;
 			
 			case 'TechLamp2':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bAUGERZENITH && !bMAYhem2019))) {
 					e.replacement = "NTM_TechLamp2";
 				}
 			break;
 			
 			case 'Column':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bMAYhem2019)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bAUGERZENITH && !bMAYhem2019))) {
 					e.replacement = "NTM_Column";
 				}
 			break;
 			
 			case 'SkullColumn':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bMAYhem2019) {
 					e.replacement = "NTM_Pumpkin";
 				}
 			break;
@@ -644,7 +687,7 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'BloodyTwitch':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bAUGERZENITH)) {
 					e.replacement = "NTM_BloodyTwitch";
 				}
 			break;
