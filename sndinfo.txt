@@ -350,6 +350,12 @@ NTM_RocketWarrior/death DSBAREXP
 $attenuation NTM_RocketWarrior/death 0.666
 $limit NTM_RocketWarrior/death 0
 
+/* ============
+   AUGER;ZENITH
+   ============ */
+
+NTM_Joi/sight NSJOI
+
 /* ===================
    DOOM 64 FOR DOOM II
    =================== */

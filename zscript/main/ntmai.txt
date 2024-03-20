@@ -74,7 +74,8 @@ class NTMAi : EventHandler {
 		   @ ShortBlueTorch = Doohickey
 		   ✓ ShortRedTorch = Flames
 		   @ ShortGreenTorch = Rain
-		   ✓ DeadLostSoul, AUGZENGlassBreakActor = Glass */
+		   ✓ DeadLostSoul, AUGZENGlassBreakActor = Glass
+		   ✓ HangTLookingUp = Peter and the Wolf */
 		bAUGERZENITH = NTMAi.LumpHasHash("DBP_A227", "ccfe9d3cfb60d7e6668b9ba575c88d97");
 		
 		/* [DOOM 64 for DOOM II]
@@ -1144,8 +1145,14 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'HangTLookingUp':
-				if (sv_ntm_r_custom && bMAYhem2019) {
-					e.replacement = "NTM_TeslaCoil";
+				if (sv_ntm_r_custom) {
+					if (bAUGERZENITH) {
+						e.replacement = "NTM_Joi";
+					}
+					
+					if (bMAYhem2019) {
+						e.replacement = "NTM_TeslaCoil";
+					}
 				}
 			break;
 			
@@ -1465,6 +1472,10 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_GlassActor':
 				e.replacee = "DeadLostSoul";
+			break;
+			
+			case 'NTM_Joi':
+				e.replacee = "HangTLookingUp";
 			break;
 		}
 	}

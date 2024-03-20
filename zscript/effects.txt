@@ -185,3 +185,20 @@ class NTM_FlameAttack2 : Actor {
 			Stop;
 	}
 }
+
+class NTM_Joi : HangTLookingUp {
+	States {
+		Spawn:
+			TNT1 A 1 A_Look;
+			Loop;
+		
+		See:
+			TNT1 A 120 {
+				if (target) {
+					target.A_StartSound("NTM_Joi/sight", Chan_7, ChanF_Overlap | ChanF_UI | ChanF_Local);
+				}
+			}
+			
+			Stop;
+	}
+}
