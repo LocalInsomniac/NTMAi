@@ -44,10 +44,10 @@ class NTMAi : EventHandler {
 		     Stalagtite = Double Lamp
 		     Candelabra = Red Lamp
 		     TallGreenColumn = Satellite
-		     ShortGreenColumn = Red Beacon
+		   ✓ ShortGreenColumn = Red Beacon
 		     TallRedColumn = Pipe
 		     ShortRedColumn = Palm Tree
-		     HeartColumn = Purple Beacon
+		   ✓ HeartColumn = Purple Beacon
 		     SkullColumn = Steam Pipes
 		   @ Column = Green Lamp
 		     Candle = Floor Light
@@ -55,25 +55,26 @@ class NTMAi : EventHandler {
 		     HeadsOnAStick = Mannequin
 		     HeadCandles = Wide Lamp
 		     HeadOnAStick = Plant
-		     LiveStick = Traffic Drone
-		     FloatingSkull = Spinning Beacon
+		   ✓ LiveStick = Traffic Drone
+		   ✓ FloatingSkull = Blue Beacon
 		     TechPillar = Tree
 		     TorchTree = Small Tree
 		     BigTree = Car
-		   @ BlueTorch = Blue Spotlight
-		   @ GreenTorch = Yellow Spotlight
-		   @ RedTorch = Red Spotlight
+		   ✓ BlueTorch = Blue Spotlight
+		   ✓ GreenTorch = Yellow Spotlight
+		   ✓ RedTorch = Red Spotlight
 		   @ TechLamp = Cool Lamp
 		   @ TechLamp2 = Small Cool Lamp
-		     EvilEye = Tech Fan
+		   ✓ EvilEye = Tech Fan
 		   @ BloodyTwitch = UAC Hologram
 		     Meat2 = Purple Lightbulb
 		     Meat3 = Disco Lightbulb
 		     Meat4 = Strobe Light
 		     Meat5 = Crane
 		   @ ShortBlueTorch = Doohickey
-		   @ ShortRedTorch = Flames
-		   @ ShortGreenTorch = Rain */
+		   ✓ ShortRedTorch = Flames
+		   @ ShortGreenTorch = Rain
+		   ✓ DeadLostSoul, AUGZENGlassBreakActor = Glass */
 		bAUGERZENITH = NTMAi.LumpHasHash("DBP_A227", "ccfe9d3cfb60d7e6668b9ba575c88d97");
 		
 		/* [DOOM 64 for DOOM II]
@@ -573,25 +574,73 @@ class NTMAi : EventHandler {
 			break;
 			
 			case 'RedTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH))) {
+				if (sv_ntm_r_props) {
+					if (sv_ntm_r_custom) {
+						if (bADMORTEM) {
+							break;
+						}
+						
+						if (bAUGERZENITH) {
+							e.replacement = "NTM_RedSpotlight";
+							
+							break;
+						}
+					}
+					
 					e.replacement = "NTM_RedTorch";
 				}
 			break;
 			
 			case 'GreenTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH))) {
+				if (sv_ntm_r_props) {
+					if (sv_ntm_r_custom) {
+						if (bADMORTEM) {
+							break;
+						}
+						
+						if (bAUGERZENITH) {
+							e.replacement = "NTM_YellowSpotlight";
+							
+							break;
+						}
+					}
+					
 					e.replacement = "NTM_GreenTorch";
 				}
 			break;
 			
 			case 'BlueTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH))) {
+				if (sv_ntm_r_props) {
+					if (sv_ntm_r_custom) {
+						if (bADMORTEM) {
+							break;
+						}
+						
+						if (bAUGERZENITH) {
+							e.replacement = "NTM_BlueSpotlight";
+							
+							break;
+						}
+					}
+					
 					e.replacement = "NTM_BlueTorch";
 				}
 			break;
 			
 			case 'ShortRedTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity))) {
+				if (sv_ntm_r_props) {
+					if (sv_ntm_r_custom) {
+						if (bAUGERZENITH) {
+							e.replacement = "NTM_Flames3";
+							
+							break;
+						}
+						
+						if (bADMORTEM || bEviternity) {
+							break;
+						}
+					}
+					
 					e.replacement = "NTM_ShortRedTorch";
 				}
 			break;
@@ -994,6 +1043,43 @@ class NTMAi : EventHandler {
 				}
 			break;
 			
+			// AUGER;ZENITH
+			case 'AUGZENGlassBreakActor':
+				if (sv_ntm_r_custom && bAUGERZENITH) {
+					e.replacement = "NTM_GlassActor";
+				}
+			break;
+			
+			case 'ShortGreenColumn':
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+					e.replacement = "NTM_RedBeacon";
+				}
+			break;
+			
+			case 'HeartColumn':
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+					e.replacement = "NTM_PurpleBeacon";
+				}
+			break;
+			
+			case 'FloatingSkull':
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+					e.replacement = "NTM_BlueBeacon";
+				}
+			break;
+			
+			case 'LiveStick':
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+					e.replacement = "NTM_TrafficDrone";
+				}
+			break;
+			
+			case 'EvilEye':
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+					e.replacement = "NTM_TechFan";
+				}
+			break;
+			
 			// DOOM 64 for DOOM II
 			
 			// GROSS HACK: We have to directly check for a "Flames" actor since
@@ -1342,6 +1428,43 @@ class NTMAi : EventHandler {
 			
 			case 'NTM_BonePile':
 				e.replacee = "HeadCandles";
+			break;
+			
+			// AUGER;ZENITH
+			case 'NTM_Flames3':
+				e.replacee = "ShortRedTorch";
+			break;
+			
+			case 'NTM_RedSpotlight':
+				e.replacee = "RedTorch";
+			break;
+			
+			case 'NTM_YellowSpotlight':
+				e.replacee = "GreenTorch";
+			break;
+			
+			case 'NTM_BlueSpotlight':
+				e.replacee = "BlueTorch";
+			break;
+			
+			case 'NTM_RedBeacon':
+				e.replacee = "ShortGreenColumn";
+			break;
+			
+			case 'NTM_PurpleBeacon':
+				e.replacee = "HeartColumn";
+			break;
+			
+			case 'NTM_BlueBeacon':
+				e.replacee = "FloatingSkull";
+			break;
+			
+			case 'NTM_TechFan':
+				e.replacee = "EvilEye";
+			break;
+			
+			case 'NTM_GlassActor':
+				e.replacee = "DeadLostSoul";
 			break;
 		}
 	}
