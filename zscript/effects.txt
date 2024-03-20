@@ -187,6 +187,10 @@ class NTM_FlameAttack2 : Actor {
 }
 
 class NTM_Joi : HangTLookingUp {
+	Default {
+		-Solid
+	}
+	
 	States {
 		Spawn:
 			TNT1 A 1 A_Look;
