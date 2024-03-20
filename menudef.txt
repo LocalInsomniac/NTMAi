@@ -7,25 +7,25 @@ ListMenu "MainMenu" {
 		Position 96, 64
 	}
 	
-	PatchItem "M_NGAME", "n", "PlayerClassMenu"
+	TextItem "$MNU_NEWGAME", "n", "PlayerClassMenu"
 	
 	IfOption(SwapMenu) {
-		PatchItem "M_LOADG", "l", "LoadGameMenu"
-		PatchItem "M_SAVEG", "s", "SaveGameMenu"
-		PatchItem "M_OPTION", "o", "OptionsMenu"
+		TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+		TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+		TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
 		TextItem "NTMAi Options", "o", "NTM_Options"
 	} else {
-		PatchItem "M_OPTION","o", "OptionsMenu"
+		TextItem "$MNU_OPTIONS","o", "OptionsMenu"
 		TextItem "NTMAi Options", "o", "NTM_Options"
-		PatchItem "M_LOADG", "l", "LoadGameMenu"
-		PatchItem "M_SAVEG", "s", "SaveGameMenu"
+		TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+		TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
 	}
 	
 	IfOption(ReadThis) {
 		PatchItem "M_RDTHIS", "r", "ReadThisMenu"
 	}
 	
-	PatchItem "M_QUITG", "q", "QuitMenu"
+	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
 }
 
 // Player Class Menu
