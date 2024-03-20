@@ -533,7 +533,12 @@ class NTM_Flames2 : NTM_Flames {
 }
 
 // Flames (AUGER;ZENITH)
-class NTM_Flames3 : NTM_Flames2 {}
+class NTM_Flames3 : NTM_Flames2 {
+	Default {
+		Radius 16;
+		Height 37;
+	}
+}
 
 // Bone Pile
 class NTM_BonePile : Actor {
