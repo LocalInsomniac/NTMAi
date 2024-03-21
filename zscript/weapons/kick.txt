@@ -11,7 +11,6 @@ class NTM_Kick : CustomInventory {
 			Fail;
 		
 		Kick:
-			TNT1 A 3;
 			NKIK AB 2;
 			
 			NKIK C 6 {
