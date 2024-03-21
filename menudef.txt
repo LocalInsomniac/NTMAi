@@ -97,7 +97,7 @@ OptionMenu "NTM_Options" {
 OptionMenu "NTM_ActorOptions" {
 	Title "Compatibility Options"
 	StaticText "These options control which actors will be replaced with NTMAi's variants. This", "White"
-	StaticText "is useful for retaining i.e. DeHackEd content that replaces vanilla stuff.", "White"
+	StaticText "is useful for retaining i.e. DeHackEd features that replace vanilla content.", "White"
 	StaticText ""
 	StaticText "These changes will take full effect on level restart.", "White"
 	StaticText ""
@@ -122,7 +122,7 @@ OptionMenu "NTM_ActorOptions" {
 	Option "Cyberdemon", "sv_ntm_r_cyberdemon", "NTM_ActorOptions_Toggle"
 	Option "SS", "sv_ntm_r_ss", "NTM_ActorOptions_Toggle"
 	StaticText ""
-	StaticText "NTMAi will automatically replace custom content from AD MORTEM,", "White"
+	StaticText "NTMAi will automatically replace custom content from AD MORTEM, AUGER;ZENITH,", "White"
 	StaticText "DOOM 64 for DOOM II, Eviternity, MAYhem 2019 and Scythe 2.", "White"
 	StaticText "You can disable this option if you want the original experience of these WADs.", "White"
 	StaticText ""
