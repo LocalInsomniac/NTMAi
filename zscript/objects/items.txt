@@ -85,7 +85,6 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 	
 	override void ActivatePowerup() {
 		super.ActivatePowerup();
-		
 		owner.A_Log("Rip 'em a new one!", true);
 		owner.GiveBody(amount);
 		
@@ -107,6 +106,22 @@ class NTM_PowerBerserk : PowerSpeed {
 		+PowerSpeed.NoTrail
 		+Inventory.HubPower
 		-Inventory.NoTeleportFreeze
+	}
+	
+	override void InitEffect() {
+		super.InitEffect();
+		
+		if (owner) {
+			owner.A_StartSound("NTM_Berserk/heartbeat", flags: ChanF_Looping | ChanF_Overlap);
+		}
+	}
+	
+	override void EndEffect() {
+		super.EndEffect();
+		
+		if (owner) {
+			owner.A_StopSound(Chan_Body);
+		}
 	}
 }
 

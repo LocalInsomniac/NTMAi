@@ -146,6 +146,8 @@ NTM_Player/taunt NSTAUNT
 
 NTM_RadSuit/use NSSUIT
 NTM_Infrared/use NSGOGGLE
+NTM_Berserk/heartbeat NSHEART
+$attenuation NTM_Berserk/heartbeat 1.2
 
 // Weapons
 NTM_Weapon/select NSGUNUP
