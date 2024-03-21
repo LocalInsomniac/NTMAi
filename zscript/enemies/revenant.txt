@@ -202,7 +202,9 @@ class NTM_Revenant : NTM_Enemy {
 
 class NTM_RevenantTracer : RevenantTracer {
 	Default {
+		Radius 10;
 		Damage 5;
+		Scale 0.8;
 	}
 	
 	States {
