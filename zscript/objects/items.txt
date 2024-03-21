@@ -68,6 +68,7 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 	Default {
 		NTM_ToggleableInventory.Type "NTM_PowerBerserk";
 		NTM_ToggleableInventory.ActivateSound "misc/p_pkup";
+		NTM_ToggleableInventory.DepletePeriod -2;
 		Inventory.PickupMessage "Berserk Pack";
 		Inventory.PickupSound "misc/i_pkup";
 		Inventory.Icon "NBERB0";
@@ -85,7 +86,7 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 	override void ActivatePowerup() {
 		super.ActivatePowerup();
 		
-		owner.A_Log("Rip and tear!", true);
+		owner.A_Log("Rip 'em a new one!", true);
 		owner.GiveBody(amount);
 		
 		if (owner.CountInv("NTM_Fists")) {
@@ -100,7 +101,7 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 class NTM_PowerBerserk : PowerSpeed {
 	Default {
 		Powerup.Duration 0x7FFFFFFF;
-		Powerup.Color "Red";
+		Powerup.Color "Red", 0.25;
 		Speed 1.2;
 		
 		+PowerSpeed.NoTrail
