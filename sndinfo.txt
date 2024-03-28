@@ -113,6 +113,9 @@ $alias intermission/tick weapons/chngun
 
 NTMAi/chat NSCHAT
 
+NTM_Intro/saw NSINTSAW
+NTM_Intro/shotgun DSDSHTGN
+
 // World
 NTM_World/splash NSSPLASH
 NTM_World/lava NSLAVA

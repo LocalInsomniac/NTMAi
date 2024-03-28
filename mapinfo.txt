@@ -4,7 +4,7 @@ GameInfo {
 	QuitSound = ""
 	BorderFlat = "AG128_1"
 	ChatSound = "NTMAi/chat"
-	IntermissionMusic = "D_NINTER"
+	IntermissionMusic = ""
 	StatScreen_Single = "NTM_Stats"
 }
 

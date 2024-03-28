@@ -77,6 +77,7 @@ OptionMenu "NTM_Options" {
 	Submenu "Customize Controls", "CustomizeControls"
 	StaticText ""
     StaticText "Visual Options", "Yellow"
+	Option "Use CD Tracks for Title and Intermission", "cl_ntm_cdMusic", "YesNo"
 	Option "Show Title On Level Start", "sv_ntm_startTitle", "YesNo"
 	Option "Twitch On Level Start", "sv_ntm_startTwitch", "YesNo"
 	Option "Gore Effects", "sv_ntm_gore", "OnOff"
