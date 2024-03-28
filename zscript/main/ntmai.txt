@@ -97,7 +97,7 @@ class NTMAi : EventHandler {
 		
 		/* [MAYhem 2019]
 		   
-		     BurningBarrel = Burning Pillar
+		   ✓ BurningBarrel = Burning Pillar
 		   ✓ Chaingun = Tommy Gun
 		   ✓ RocketLauncher = Napalm Launcher
 		   ✓ PlasmaRifle = Flamethrower
@@ -118,7 +118,7 @@ class NTMAi : EventHandler {
 		   ✓ CommanderKeen = Shadow Hellhound
 		   ✓ Stalagtite = Satyr
 		   ✓ DeadLostSoul = Bat
-		     HangBNoBrain = Mummy
+		   ✓ HangBNoBrain = Mummy
 		     HangTLookingDown = Ghost
 		   ✓ HangTLookingUp = Tesla Coil
 		   ✓ Meat2 = Inactive Tesla Coil

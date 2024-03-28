@@ -2,7 +2,6 @@
 class NTM_System : Inventory {
 	Default {
 		Inventory.MaxAmount 1;
-		FloatBobPhase 0;
 		
 		+Inventory.Undroppable
 		+Inventory.Untossable
