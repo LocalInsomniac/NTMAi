@@ -68,6 +68,7 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 	Default {
 		NTM_ToggleableInventory.Type "NTM_PowerBerserk";
 		NTM_ToggleableInventory.ActivateSound "misc/p_pkup";
+		NTM_ToggleableInventory.DepletePeriod -2;
 		Inventory.PickupMessage "Berserk Pack";
 		Inventory.PickupSound "misc/i_pkup";
 		Inventory.Icon "NBERB0";
@@ -84,8 +85,7 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 	
 	override void ActivatePowerup() {
 		super.ActivatePowerup();
-		
-		owner.A_Log("Rip and tear!", true);
+		owner.A_Log("Rip 'em a new one!", true);
 		owner.GiveBody(amount);
 		
 		if (owner.CountInv("NTM_Fists")) {
@@ -100,12 +100,28 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 class NTM_PowerBerserk : PowerSpeed {
 	Default {
 		Powerup.Duration 0x7FFFFFFF;
-		Powerup.Color "Red";
+		Powerup.Color "Red", 0.25;
 		Speed 1.2;
 		
 		+PowerSpeed.NoTrail
 		+Inventory.HubPower
 		-Inventory.NoTeleportFreeze
+	}
+	
+	override void InitEffect() {
+		super.InitEffect();
+		
+		if (owner) {
+			owner.A_StartSound("NTM_Berserk/heartbeat", flags: ChanF_Looping | ChanF_Overlap);
+		}
+	}
+	
+	override void EndEffect() {
+		super.EndEffect();
+		
+		if (owner) {
+			owner.A_StopSound(Chan_Body);
+		}
 	}
 }
 
@@ -143,7 +159,7 @@ class NTM_RadSuit : NTM_ToggleableInventory replaces RadSuit {
 	}
 	
 	override void DoEffect() {
-		if (CVar.FindCVar("cl_ntm_autoRadSuit").GetBool()) {
+		if (owner.GetCVar("cl_ntm_autoRadSuit")) {
 			// The suit will automatically be used underwater and on slime
 			if (owner.waterLevel >= 3 || (owner.curSector && owner.curSector.damageType)) {
 				if (!active) {

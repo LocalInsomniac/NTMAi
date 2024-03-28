@@ -532,6 +532,14 @@ class NTM_Flames2 : NTM_Flames {
 	}
 }
 
+// Flames (AUGER;ZENITH)
+class NTM_Flames3 : NTM_Flames2 {
+	Default {
+		Radius 16;
+		Height 37;
+	}
+}
+
 // Bone Pile
 class NTM_BonePile : Actor {
 	Default {
@@ -559,5 +567,172 @@ class NTM_BonePile : Actor {
 			}
 			
 			Stop;
+	}
+}
+
+// AUGER;ZENITH Lights
+class NTM_RedSpotlight : Actor {
+	Default {
+		RenderStyle "Add";
+		
+		+ZDoomTrans
+		+Synchronized
+	}
+	
+	States {
+		Spawn:
+			NSPO GHIH 3 Bright;
+			Loop;
+	}
+}
+
+class NTM_YellowSpotlight : NTM_RedSpotlight {
+	States {
+		Spawn:
+			NSPO DEFE 3 Bright;
+			Loop;
+	}
+}
+
+class NTM_BlueSpotlight : NTM_RedSpotlight {
+	States {
+		Spawn:
+			NSPO ABCB 3 Bright;
+			Loop;
+	}
+}
+
+class NTM_RedBeacon : NTM_RedSpotlight {
+	States {
+		Spawn:
+			NBEA A -1 Bright;
+			Stop;
+	}
+}
+
+class NTM_PurpleBeacon : NTM_RedBeacon {
+	States {
+		Spawn:
+			NBEA BC 10 Bright;
+			Loop;
+	}
+}
+
+class NTM_BlueBeacon : NTM_RedBeacon {
+	States {
+		Spawn:
+			NBEA DEFE 6 Bright;
+			Loop;
+	}
+}
+
+// Traffic Drone
+class NTM_TrafficDrone : LiveStick {
+	Default {
+		Health 10;
+		
+		+DontCorpse
+		+DontThrust
+		+NoBlood
+		+NoIceDeath
+		+NotAutoaimed
+		+Shootable
+		+FloatBob
+	}
+	
+	States {
+		Spawn:
+			NDRO AB 25;
+			Loop;
+		
+		Death:
+			NDRO C -1 {
+				A_StartSound("NTM_World/glass");
+				A_SetSize(-1, default.height);
+			}
+			
+			Stop;
+	}
+}
+
+// Tech Fan
+class NTM_TechFan : EvilEye {
+	States {
+		Spawn:
+			NFAN ABC 3;
+			Loop;
+	}
+}
+
+// Glass (AUGER;ZENITH)
+class NTM_GlassActor : Actor {
+	double spawnZ;
+	
+	Default {
+		Radius 1;
+		Height 2;
+		
+		-Solid
+		+NotOnAutomap
+		+SlidesOnWalls
+	}
+	
+	override void BeginPlay() {
+		super.BeginPlay();
+		
+		/* GROSS HACK: In AUGER;ZENITH, some glass actors aren't inside of
+					   their designated sectors. Attempt to nudge them forwards
+					   or backwards to place them back inside.
+					   HINT: Most if not all glass sectors have a height of 1. */
+		
+		double fz = GetZAt();
+		
+		if ((GetZAt(flags: GZF_Ceiling) - fz) > 1) {
+			bool success;
+			Vector3 spawnPos = pos;
+			Vector3 unit = (Cos(angle), Sin(angle), 0) * 0.5;
+			
+			for (int i; i < 2; i++) {
+				for (int j; j < 128; ++j) {
+					SetOrigin(pos + unit, false);
+					fz = GetZAt();
+					
+					if ((GetZAt(flags: GZF_Ceiling) - fz) <= 1) {
+						success = true;
+						
+						break;
+					}
+				}
+				
+				if (success) {
+					break;
+				}
+				
+				SetOrigin(spawnPos, false);
+				unit = -unit;
+			}
+			
+			if (!success) {
+				Destroy();
+				
+				return;
+			}
+		}
+		
+		SetZ(fz);
+		spawnZ = fz;
+	}
+	
+	override void Tick() {
+		super.Tick();
+		
+		if (pos.z != spawnZ) {
+			for (int i; i < 10; ++i) {
+				A_SpawnItemEX("NTM_GlassShard", FRandom(-32, 32), FRandom(-16, 16), FRandom(0, 48), FRandom(1, 8), FRandom(-2, 2), FRandom(0, 4));
+			}
+			
+			A_StartSound("NTM_World/glass");
+			Destroy();
+		}
 	}
 }

@@ -1,5 +1,6 @@
 class NTM_Necronomicon : DoomWeapon {
 	Default {
+		Scale 0.8;
 		Height 20;
 		Weapon.SelectionOrder 2800;
 		Weapon.UpSound "NTM_Necronomicon/up";

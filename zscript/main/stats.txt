@@ -5,6 +5,7 @@ class NTM_Stats : StatusScreen {
 	const strEntering = "Entering";
 	
 	int keyframe;
+	bool started;
 	
 	override void InitStats() {
 		curState = statCount;
@@ -19,6 +20,11 @@ class NTM_Stats : StatusScreen {
 	}
 	
 	override void UpdateStats() {
+		if (!started) {
+			S_ChangeMusic(CVar.FindCVar("cl_ntm_cdMusic").GetBool() ? "D_NINCD" : "D_NINTER");
+			started = true;
+		}
+		
 		if (accelerateStage) {
 			accelerateStage = 0;
 			

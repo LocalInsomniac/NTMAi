@@ -67,7 +67,7 @@ StatusBar FullScreen, ForceScaled, FullScreenOffsets {
 		DrawImage "NTMAIR", 4, -44, None;
 	}
 	
-	DrawSelectedInventory AlternateOnEmpty | AlwaysShowCounter, NTM_Digit, 108, -32, 149, -21 {
+	DrawSelectedInventory AlternateOnEmpty | AlwaysShowCounter, NTM_Digit, 108, -32, 148, -21 {
 	} else {
 		DrawImage "NTMITEM", 127, -2, CenterBottom;
 	}

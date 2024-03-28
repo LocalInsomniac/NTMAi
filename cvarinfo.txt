@@ -1,3 +1,4 @@
+user bool cl_ntm_cdMusic = true;
 server bool sv_ntm_startTitle = true;
 server bool sv_ntm_startTwitch = false;
 server bool sv_ntm_flinch = true;

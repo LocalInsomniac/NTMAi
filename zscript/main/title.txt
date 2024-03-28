@@ -1,18 +1,137 @@
 // Title Screen
 class NTM_Title : EventHandler {
+	const credits = "NOBODY TOLD ME ABOUT ID
+by Can't Sleep
+
+DOOM BOOMEM SAYS:
+Make sure to check your
+settings before playing!
+
+
+
+CREDITS
+
+00_Zombie_00
+3D Realms
+3saster
+Ac!d
+Amuscaria
+Antares031
+Aubrey Hodges
+Banjo Software
+borogk
+Cage
+Captain J
+Captain Toenail
+Chickenlegz
+Craneo
+Crunchynut44
+cybermonday
+David G
+DenisBelmondo
+DILDOMASTER666
+donowa
+DoomerBlazkowicz
+Dr_Cosmobyte
+Dynamo
+Ebola
+ElectricPulse
+Espi
+FDARI
+fgsfds
+gerolf
+Gifty
+GuyDoom
+Hellfire
+hidfan
+Honey16
+HorrorMovieGuy
+horselessheadsman
+id Software
+James \"Jimmy\" Paddock
+Jarewill
+Jaxxoon R
+jdredalert
+Jekyll Grim Payne
+Joblez
+JoeyTD
+katherinecode
+KaZudra
+Kinsie
+LittleWhiteMouse
+Lobotomy Software
+Logan McCloud
+Lollie
+Matt
+Mechadon
+Megaherz
+Michael Barrette
+Midoriman
+Midway
+Mike12
+Mikk-
+Minigunner
+Monolith Productions
+Mr. Enchanter
+Nash Muhandes
+Nathan \"Lippeth\" Maxx
+Neccronixis
+neoworm
+NightFright
+Ninhil
+osjclatchford
+Overkill Software
+Pandemic
+President People
+QuakeSlayer
+Rachael
+Raven Software
+RoastBeefo
+Rogue Entertainment
+Scuba Steve
+SD EnterNET
+ShallowB
+silentzora
+Sledgehammer Games
+Solmyr
+Teder
+Tormentor667
+totallyrealrei
+Treyarch
+tsf
+Valve Software
+Virtue
+Vostyok
+Xaser
+Yukes Von Faust
+ZZYZX";
+	
 	ui TextureID NTMGUYS;
 	ui TextureID NTMPIC;
+	ui TextureID NTMLOGO;
+	ui TextureID NTMLOGO2;
+	ui TextureID NINTRO;
+	ui TextureID NTMCRED;
+	ui Font NTMFONT;
 	ui int keyframe;
 	
 	override void UiTick() {
 		switch (keyframe) {
-			case 5:
-				S_ChangeMusic("D_NTMAI", 0, false);
+			case 1:
+				S_ChangeMusic(CVar.FindCVar("cl_ntm_cdMusic").GetBool() ? "D_NTMCD" : "D_NTMAI", 0, false);
 			break;
 			
 			case 170:
 			case 200:
 				S_StartSound("world/barrelx", 0);
+			break;
+			
+			case 300:
+				S_StartSound("NTM_Intro/saw", 1);
+			break;
+			
+			case 400:
+				S_StartSound("NTM_Intro/shotgun", 1);
 			break;
 		}
 		
@@ -22,47 +141,77 @@ class NTM_Title : EventHandler {
 	override void RenderOverlay(RenderEvent e) {
 		let time = keyframe + e.fracTic;
 		
-		// Clear the screen before the title to hide the last frame
-		if (time < 131) {
-			Screen.ClearScreen();
-		}
-		
-		// "Guys" Screen
-		if (time > 10 && time < 124) {
-			double alpha = 1;
-			
-			if (time > 10 && time < 17) {
+		if (time < 403) {
+			// Clear the screen before the title to hide the last frame
+			if (time < 131) {
 				Screen.ClearScreen();
-				alpha = (time - 10) * 0.1428571428571429;
 			}
 			
-			if (time > 117) {
-				alpha = 1 - ((time - 117) * 0.1428571428571429);
-			}
-			
-			let NTMGUYS = TexMan.CheckForTexture("NTMGUYS", TexMan.Type_Any);
-			
-			Screen.DrawTexture(NTMGUYS, false, 0, 0, DTA_320x200, true, DTA_Alpha, alpha);
-		}
-		
-		// Title Screen & Logo
-		if (time > 124) {
-			let NTMPIC = TexMan.CheckForTexture("NTMPIC", TexMan.Type_Any);
-			
-			Screen.DrawTexture(NTMPIC, false, 0, 0, DTA_320x200, true, DTA_Alpha, Min((time - 124) * 0.1428571428571429, 1));
-			
-			if (time > 170) {
-				let NTMLOGO1 = TexMan.CheckForTexture("NTMLOGO1", TexMan.Type_Any);
-				double scale = Min((time - 170) * 0.0955, 1);
+			// "Guys" Screen
+			if (time > 10 && time < 124) {
+				double alpha = 1;
 				
-				Screen.DrawTexture(NTMLOGO1, false, 160, 106, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+				if (time > 10 && time < 17) {
+					Screen.ClearScreen();
+					alpha = (time - 10) * 0.1428571428571429;
+				}
+				
+				if (time > 117) {
+					alpha = 1 - ((time - 117) * 0.1428571428571429);
+				}
+				
+				let NTMGUYS = TexMan.CheckForTexture("NTMGUYS", TexMan.Type_Any);
+				
+				Screen.DrawTexture(NTMGUYS, false, 0, 0, DTA_320x200, true, DTA_Alpha, alpha);
 			}
 			
-			if (time > 200) {
-				let NTMLOGO2 = TexMan.CheckForTexture("NTMLOGO2", TexMan.Type_Any);
-				double scale = Min((time - 200) * 0.0955, 1);
+			// Title Screen & Logo
+			if (time > 124) {
+				let NTMPIC = TexMan.CheckForTexture("NTMPIC", TexMan.Type_Any);
 				
-				Screen.DrawTexture(NTMLOGO2, false, 160, 144, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+				Screen.DrawTexture(NTMPIC, false, 0, 0, DTA_320x200, true, DTA_Alpha, Min((time - 124) * 0.1428571428571429, 1));
+				
+				if (time > 170) {
+					let NTMLOGO1 = TexMan.CheckForTexture("NTMLOGO1", TexMan.Type_Any);
+					double scale = Min((time - 170) * 0.0955, 1);
+					
+					Screen.DrawTexture(NTMLOGO1, false, 160, 106, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+				}
+				
+				if (time > 200) {
+					let NTMLOGO2 = TexMan.CheckForTexture("NTMLOGO2", TexMan.Type_Any);
+					double scale = Min((time - 200) * 0.0955, 1);
+					
+					Screen.DrawTexture(NTMLOGO2, false, 160, 144, DTA_320x200, true, DTA_ScaleX, scale, DTA_ScaleY, scale);
+				}
+			}
+			
+			// Shadow Warrior Intro
+			if (time > 315) {
+				int frame = 1 + ((time - 315) * 0.4285714285714286);
+				let NINTRO = TexMan.CheckForTexture("NINTRO"..frame, TexMan.Type_Any);
+				
+				Screen.DrawTexture(NINTRO, false, 0, 0, DTA_320x200, true);
+			}
+		} else {
+			if (time < 490) {
+				// Screen Flash
+				int flash = Max(255 * (1 - ((time - 403) * 0.05)), 0);
+				let NTMPIC = TexMan.CheckForTexture("NTMPIC", TexMan.Type_Any);
+				
+				Screen.DrawTexture(NTMPIC, false, 0, 0, DTA_320x200, true, DTA_FillColor, Color(flash, flash, flash));
+			} else {
+				// Credits
+				let NTMCRED = TexMan.CheckForTexture("NTMCRED", TexMan.Type_Any);
+				let NTMFONT = Font.GetFont("NTMFONT");
+				
+				Screen.DrawTexture(NTMCRED, false, 0, 0, DTA_320x200, true);
+				
+				let height = Screen.GetHeight();
+				
+				Screen.SetClipRect(0, height * 0.28, Screen.GetWidth(), height * 0.64);
+				Screen.DrawText(NTMFONT, Font.CR_White, 160 - (NTMFONT.StringWidth(credits) * 0.5), Ceil(184 - (((time - 490) * 0.333) % (NTMFONT.GetHeight() * 138))), credits, DTA_320x200, true);
+				Screen.ClearClipRect();
 			}
 		}
 	}

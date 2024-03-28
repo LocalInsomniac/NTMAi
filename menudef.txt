@@ -7,25 +7,25 @@ ListMenu "MainMenu" {
 		Position 96, 64
 	}
 	
-	PatchItem "M_NGAME", "n", "PlayerClassMenu"
+	TextItem "$MNU_NEWGAME", "n", "PlayerClassMenu"
 	
 	IfOption(SwapMenu) {
-		PatchItem "M_LOADG", "l", "LoadGameMenu"
-		PatchItem "M_SAVEG", "s", "SaveGameMenu"
-		PatchItem "M_OPTION", "o", "OptionsMenu"
+		TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+		TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
+		TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
 		TextItem "NTMAi Options", "o", "NTM_Options"
 	} else {
-		PatchItem "M_OPTION","o", "OptionsMenu"
+		TextItem "$MNU_OPTIONS","o", "OptionsMenu"
 		TextItem "NTMAi Options", "o", "NTM_Options"
-		PatchItem "M_LOADG", "l", "LoadGameMenu"
-		PatchItem "M_SAVEG", "s", "SaveGameMenu"
+		TextItem "$MNU_LOADGAME", "l", "LoadGameMenu"
+		TextItem "$MNU_SAVEGAME", "s", "SaveGameMenu"
 	}
 	
 	IfOption(ReadThis) {
 		PatchItem "M_RDTHIS", "r", "ReadThisMenu"
 	}
 	
-	PatchItem "M_QUITG", "q", "QuitMenu"
+	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
 }
 
 // Player Class Menu
@@ -77,27 +77,29 @@ OptionMenu "NTM_Options" {
 	Submenu "Customize Controls", "CustomizeControls"
 	StaticText ""
     StaticText "Visual Options", "Yellow"
-	Option "Show Title On Level Start", "sv_ntm_startTitle", "YesNo"
-	Option "Twitch On Level Start", "sv_ntm_startTwitch", "YesNo"
-	Option "Gore Effects", "sv_ntm_gore", "OnOff"
+	Option "Use CD tracks for title and intermission", "cl_ntm_cdMusic", "YesNo"
+	Option "Show title on level start", "sv_ntm_startTitle", "YesNo"
+	Option "Twitch on level start", "sv_ntm_startTwitch", "YesNo"
+	Option "Gore effects", "sv_ntm_gore", "OnOff"
 	StaticText ""
 	StaticText "Gameplay Options", "Yellow"
-	Option "Flinch From Long Falls", "sv_ntm_flinch", "YesNo"
-	Option "Play Keycard Animation On Locked Doors", "sv_ntm_keycard", "YesNo"
-	Option "Auto-Activate Radiation Suit On Hazards", "cl_ntm_autoRadSuit", "YesNo"
-	Option "Replace Soulspheres With Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
-	Option "Blood Explosion Damage (Experimental)", "sv_ntm_blast", "OnOff"
+	Option "Flinch from long falls", "sv_ntm_flinch", "YesNo"
+	Option "Play keycard animation on locked doors", "sv_ntm_keycard", "YesNo"
+	Option "Auto-activate Radiation Suit on hazards", "cl_ntm_autoRadSuit", "YesNo"
+	Option "Replace Soulspheres with Portable Medkits", "sv_ntm_soulsphere", "NTM_Options_Soulsphere"
+	Option "Blood explosion damage (Experimental)", "sv_ntm_blast", "OnOff"
 	StaticText ""
-	Option "Enemy Movement Style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
-	Option "Zombies Throw Grenades On Hard", "sv_ntm_grenadiers", "YesNo"
-	Option "Enemies Leap Over Ledges (Experimental)", "sv_ntm_enemyLeap", "YesNo"
+	Option "Enemy movement style", "sv_ntm_enemyMove", "NTM_Options_EnemyMovementStyle"
+	Option "Zombies throw grenades on hard difficulties", "sv_ntm_grenadiers", "YesNo"
+	Option "Enemies leap over ledges (Experimental)", "sv_ntm_enemyLeap", "YesNo"
 	Option "Flying Revenants", "sv_ntm_enemyFly", "OnOff"
 }
 
 OptionMenu "NTM_ActorOptions" {
 	Title "Compatibility Options"
 	StaticText "These options control which actors will be replaced with NTMAi's variants. This", "White"
-	StaticText "is useful for retaining i.e. DeHackEd content that replaces vanilla stuff.", "White"
+	StaticText "is useful for retaining i.e. custom sprites and DeHackEd features that replace", "White"
+	StaticText "vanilla content", "White"
 	StaticText ""
 	StaticText "These changes will take full effect on level restart.", "White"
 	StaticText ""
@@ -122,7 +124,7 @@ OptionMenu "NTM_ActorOptions" {
 	Option "Cyberdemon", "sv_ntm_r_cyberdemon", "NTM_ActorOptions_Toggle"
 	Option "SS", "sv_ntm_r_ss", "NTM_ActorOptions_Toggle"
 	StaticText ""
-	StaticText "NTMAi will automatically replace custom content from AD MORTEM,", "White"
+	StaticText "NTMAi will automatically replace custom content from AD MORTEM, AUGER;ZENITH,", "White"
 	StaticText "DOOM 64 for DOOM II, Eviternity, MAYhem 2019 and Scythe 2.", "White"
 	StaticText "You can disable this option if you want the original experience of these WADs.", "White"
 	StaticText ""

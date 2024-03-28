@@ -113,6 +113,9 @@ $alias intermission/tick weapons/chngun
 
 NTMAi/chat NSCHAT
 
+NTM_Intro/saw NSINTSAW
+NTM_Intro/shotgun DSDSHTGN
+
 // World
 NTM_World/splash NSSPLASH
 NTM_World/lava NSLAVA
@@ -146,6 +149,8 @@ NTM_Player/taunt NSTAUNT
 
 NTM_RadSuit/use NSSUIT
 NTM_Infrared/use NSGOGGLE
+NTM_Berserk/heartbeat NSHEART
+$attenuation NTM_Berserk/heartbeat 1.2
 
 // Weapons
 NTM_Weapon/select NSGUNUP
@@ -349,6 +354,12 @@ NTM_RocketWarrior/active NSRWLACT
 NTM_RocketWarrior/death DSBAREXP
 $attenuation NTM_RocketWarrior/death 0.666
 $limit NTM_RocketWarrior/death 0
+
+/* ============
+   AUGER;ZENITH
+   ============ */
+
+NTM_Joi/sight NSJOI
 
 /* ===================
    DOOM 64 FOR DOOM II

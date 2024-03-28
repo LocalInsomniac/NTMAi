@@ -1,6 +1,6 @@
 class NTM_Shotgun : Shotgun replaces Shotgun {
 	Default {
-		Scale 0.75;
+		Scale 0.8;
 		Weapon.SlotNumber 3;
 		Weapon.UpSound "weapons/shotgr";
 		Inventory.PickupMessage "Shotgun!";
