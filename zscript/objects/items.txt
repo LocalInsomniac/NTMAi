@@ -159,7 +159,7 @@ class NTM_RadSuit : NTM_ToggleableInventory replaces RadSuit {
 	}
 	
 	override void DoEffect() {
-		if (CVar.FindCVar("cl_ntm_autoRadSuit").GetBool()) {
+		if (owner.GetCVar("cl_ntm_autoRadSuit")) {
 			// The suit will automatically be used underwater and on slime
 			if (owner.waterLevel >= 3 || (owner.curSector && owner.curSector.damageType)) {
 				if (!active) {
