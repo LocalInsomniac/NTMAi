@@ -72,6 +72,7 @@ class NTM_BerserkPack : NTM_ToggleableInventory replaces Berserk {
 		Inventory.PickupMessage "Berserk Pack";
 		Inventory.PickupSound "misc/i_pkup";
 		Inventory.Icon "NBERB0";
+		Tag "Berserk Pack";
 		
 		+Inventory.IsHealth
 		+NTM_ToggleableInventory.ActiveOnly
