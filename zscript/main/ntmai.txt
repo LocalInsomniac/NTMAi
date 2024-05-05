@@ -166,7 +166,7 @@ class NTMAi : EventHandler {
 	   ACTIONS
 	   ======= */
 	
-	static void Explode(Actor caller, int damage = 128, int distance = 128, int flags = 0, name mod = "None") {
+	static void Explode(Actor caller, int damage = 128, double distance = 128, int flags = XF_HurtSource, name mod = "None") {
 		if (!caller || damage <= 0 || distance <= 0) {
 			return;
 		}
@@ -231,6 +231,7 @@ class NTMAi : EventHandler {
 				nmo.fallState = 0;
 				nmo.fallTics = 0;
 				nmo.fallTics2 = 0;
+				nmo.A_SetViewPitch(0);
 				
 				nmo.oldHealth = nmo.health;
 				nmo.painTics = 0;
