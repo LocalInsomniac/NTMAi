@@ -34,6 +34,7 @@ donowa
 DoomerBlazkowicz
 Dr_Cosmobyte
 Dynamo
+EA
 Ebola
 ElectricPulse
 Espi
@@ -87,6 +88,7 @@ QuakeSlayer
 Rachael
 Raven Software
 RoastBeefo
+Rockstar Games
 Rogue Entertainment
 Scuba Steve
 SD EnterNET
@@ -210,7 +212,7 @@ ZZYZX";
 				let height = Screen.GetHeight();
 				
 				Screen.SetClipRect(0, height * 0.28, Screen.GetWidth(), height * 0.64);
-				Screen.DrawText(NTMFONT, Font.CR_White, 160 - (NTMFONT.StringWidth(credits) * 0.5), Ceil(184 - (((time - 490) * 0.333) % (NTMFONT.GetHeight() * 138))), credits, DTA_320x200, true);
+				Screen.DrawText(NTMFONT, Font.CR_White, 160 - (NTMFONT.StringWidth(credits) * 0.5), Ceil(184 - (((time - 490) * 0.333) % (NTMFONT.GetHeight() * 141))), credits, DTA_320x200, true);
 				Screen.ClearClipRect();
 			}
 		}

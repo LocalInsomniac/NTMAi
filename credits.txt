@@ -80,9 +80,9 @@ tsf • Pistol and Plasma Rifle
 ========
 [AUDIO]
 
-3D Realms, id Software, Midway, Monolith Productions, • Base Sounds
-		 Overkill Software, Pandemic, Raven Software, •
-						  SD EnterNET, Valve Software •
+3D Realms, EA, id Software, Midway, Monolith Productions, • Base Sounds
+			 Overkill Software, Pandemic, Raven Software, •
+			  Rockstar Games, SD EnterNET, Valve Software •
 
 Antares031, Can't Sleep, donowa, Dynamo, Jaxxoon R, Kinsie, • Sound Mixing
 							 Nash Muhandes, Yukes Von Faust •
