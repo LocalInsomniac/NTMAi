@@ -29,8 +29,8 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 1, "NTM_Fists", "NTM_Chainsaw";
 		Player.WeaponSlot 2, "NTM_Pistol";
 		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
-		Player.WeaponSlot 4, "NTM_TommyGun", "NTM_Chaingun";
-		Player.WeaponSlot 5, "NTM_NapalmLauncher", "NTM_RocketLauncher";
+		Player.WeaponSlot 4, "NTM_Chaingun", "NTM_TommyGun";
+		Player.WeaponSlot 5, "NTM_RocketLauncher", "NTM_NapalmLauncher";
 		Player.WeaponSlot 6, "NTM_Flamethrower", "NTM_PlasmaRifle";
 		Player.WeaponSlot 7, "NTM_Necronomicon", "NTM_BFG9000";
 		Player.CrouchSprite "NPLC";

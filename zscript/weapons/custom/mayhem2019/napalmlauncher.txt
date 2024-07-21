@@ -1,5 +1,6 @@
 class NTM_NapalmLauncher : NTM_RocketLauncher {
 	Default {
+		Weapon.SelectionOrder 2499;
 		Inventory.PickUpMessage "Napalm Launcher!";
 		Obituary "%o went up in flames from %k's Napalm Launcher.";
 		Tag "Napalm Launcher";

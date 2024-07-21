@@ -11,6 +11,8 @@ server int sv_ntm_enemyMove = 2;
 server bool sv_ntm_enemyLeap = true;
 server bool sv_ntm_grenadiers = true;
 server bool sv_ntm_enemyFly = true;
+server int sv_ntm_playerRandom = 0;
+server int sv_ntm_enemyRandom = 0;
 
 // Replacements
 server bool sv_ntm_r_props = true;

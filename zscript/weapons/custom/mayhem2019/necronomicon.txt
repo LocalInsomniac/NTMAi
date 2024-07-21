@@ -2,7 +2,7 @@ class NTM_Necronomicon : DoomWeapon {
 	Default {
 		Scale 0.8;
 		Height 20;
-		Weapon.SelectionOrder 2800;
+		Weapon.SelectionOrder 2801;
 		Weapon.UpSound "NTM_Necronomicon/up";
 		Inventory.PickupMessage "The Necronomicon! Maybe you shouldn't...";
 		Tag "Necronomicon";
