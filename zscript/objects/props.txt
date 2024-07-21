@@ -207,7 +207,7 @@ class NTM_BurningBarrel : NTM_TorchBase {
 class NTM_BurningBarrelFire : NTM_FireProp {
 	Default {
 		Scale 0.5;
-		Translation "NTM_Fire_Yellow";
+		Translation "NTM_Fire_Red";
 	}
 }
 

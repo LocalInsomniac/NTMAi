@@ -154,6 +154,7 @@ $attenuation NTM_Berserk/heartbeat 1.2
 
 // Weapons
 NTM_Weapon/select NSGUNUP
+$volume NTM_Weapon/select 0.75
 
 NTM_Chainsaw/slash1 NSGSPLAT
 NTM_Chainsaw/slash2 NSGSPLA2

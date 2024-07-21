@@ -1,5 +1,6 @@
 class NTMAi : EventHandler {
 	bool bADMORTEM, bAUGERZENITH, bD64D2, bEviternity, bMAYhem2019, bScythe2, bValiant;
+	bool compNoBloodExplode;
 	
 	static void LumpPrintHash(string lumpName) {
 		int lump = -1;
@@ -165,12 +166,12 @@ class NTMAi : EventHandler {
 	   ACTIONS
 	   ======= */
 	
-	static void Explode(Actor caller, int damage = 128, int distance = 128, int flags = 0, name mod = "None") {
+	static void Explode(Actor caller, int damage = 128, double distance = 128, int flags = XF_HurtSource, name mod = "None") {
 		if (!caller || damage <= 0 || distance <= 0) {
 			return;
 		}
 		
-		if (sv_ntm_blast) {
+		if (sv_ntm_blast && !NTMAi(EventHandler.Find("NTMAi")).compNoBloodExplode) {
 			// Do blast damage like Blood
 			NTM_Blast blast = NTM_Blast(caller.Spawn("NTM_Blast", caller.pos));
 			
@@ -230,6 +231,7 @@ class NTMAi : EventHandler {
 				nmo.fallState = 0;
 				nmo.fallTics = 0;
 				nmo.fallTics2 = 0;
+				nmo.A_SetViewPitch(0);
 				
 				nmo.oldHealth = nmo.health;
 				nmo.painTics = 0;
@@ -304,6 +306,10 @@ class NTMAi : EventHandler {
 		Console.PrintF("Level checksum is '" .. checksum .. "'");
 		
 		switch (checksum) {
+			case '19057943ecc4b12563fe3869e794a603': // AUGER;ZENITH, MAP21
+				compNoBloodExplode = true;
+			break;
+			
 			case 'acf3adec8c02b9431f347231354db5ad': // MAYhem 2019, MAP02
 				S_ChangeMusic("D_NMAY2");
 			break;
