@@ -340,8 +340,7 @@ class NTM_Player : DoomPlayer {
 
 class NTM_PlayerHead : BloodySkull {
 	Default {
-		Scale 0.666;
-		Gravity 0.36;
+		Gravity 0.4;
 		BounceType "Doom";
 		
 		+Missile
