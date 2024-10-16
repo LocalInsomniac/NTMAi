@@ -49,22 +49,15 @@ class NTM_Chaingun : Chaingun {
 			}
 			
 			NCHA CD 1 A_WeaponOffset(Random(-2, 2), Random(32, 34), WOF_Interpolate);
-			NCHA A 2 A_Refire;
+			NCHA AA 1 A_Refire;
 			
-			NCHA B 3 {
+			NCHA B 1 {
 				A_WeaponOffset(flags: WOF_Interpolate);
 				A_Refire("Refire");
 			}
 			
-			NCHA C 4 A_Refire("Refire2");
-			NCHA D 5 A_Refire;
+			NCHA BBCCCCDDDDD 1 A_Refire;
 			Goto Ready;
-		
-		Refire:
-			NCHA B 1;
-		Refire2:
-			NCHA CD 1;
-			Goto Fire;
 		
 		Flash:
 			TNT1 A 1 A_Light2;
