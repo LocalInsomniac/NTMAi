@@ -11,6 +11,8 @@ class NTM_ChaingunSpawner : NTM_ItemSpawner replaces Chaingun {
 }
 
 class NTM_Chaingun : Chaingun {
+	int fractionTic;
+	
 	Default {
 		Scale 0.8;
 		Weapon.SlotNumber 4;
@@ -41,6 +43,7 @@ class NTM_Chaingun : Chaingun {
 				A_FireBullets(5.6, 0, 1, 5, "BulletPuff");
 				A_GunFlash();
 				A_WeaponOffset(Random(0, 8), Random(36, 40), WOF_Interpolate);
+				invoker.fractionTic = (invoker.fractionTic + 1) % 3;
 			}
 			
 			NCHA B 1 {
@@ -48,12 +51,13 @@ class NTM_Chaingun : Chaingun {
 				A_WeaponOffset(Random(-2, 4), Random(34, 38), WOF_Interpolate);
 			}
 			
+			NCHA B 0 A_Jump(256, invoker.fractionTic);
 			NCHA CD 1 A_WeaponOffset(Random(-2, 2), Random(32, 34), WOF_Interpolate);
 			NCHA AA 1 A_Refire;
 			
 			NCHA B 1 {
 				A_WeaponOffset(flags: WOF_Interpolate);
-				A_Refire("Refire");
+				A_Refire();
 			}
 			
 			NCHA BBCCCCDDDDD 1 A_Refire;
