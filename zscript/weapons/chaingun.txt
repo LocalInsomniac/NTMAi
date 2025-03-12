@@ -51,7 +51,7 @@ class NTM_Chaingun : Chaingun {
 				A_WeaponOffset(Random(-2, 4), Random(34, 38), WOF_Interpolate);
 			}
 			
-			NCHA B 0 A_Jump(256, invoker.fractionTic);
+			NCHA B 0 A_JumpIf(invoker.fractionTic, invoker.fractionTic);
 			NCHA CD 1 A_WeaponOffset(Random(-2, 2), Random(32, 34), WOF_Interpolate);
 			NCHA AA 1 A_Refire;
 			
