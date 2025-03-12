@@ -256,7 +256,7 @@ class NTM_RevenantFlare : Actor {
 	
 	States {
 		Spawn:
-			NCRN A 2 Bright;
+			NCRN A 3 Bright;
 			Stop;
 	}
 }
