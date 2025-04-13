@@ -3,7 +3,7 @@
 A Build Engine-style mod for GZDoom
 Created by Can't Sleep
 
-If your name is missing in the credits, contact us!
+If your name is missing in the credits, contact me!
 
 ==========
 [GRAPHICS]
