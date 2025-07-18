@@ -161,7 +161,7 @@ class NTM_FlameAttack : Actor {
 	}
 	
 	action void A_NTM_FlameAttack() {
-		NTMAi.Explode(self, 100, mod: "Fire");
+		NTMAi.Explode(self, 100, flags: 0, mod: "Fire");
 		A_SpawnItemEx("NTM_FlameAttack2", flags: SXF_NoCheckPosition);
 	}
 }

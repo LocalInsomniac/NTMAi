@@ -31,7 +31,8 @@ class NTM_Revenant : NTM_Enemy {
 			Goto Spawn + 1;
 		
 		SpawnFly:
-			NREV S 10 A_Look;
+			NREV S 0 A_Look;
+			#### ##### 2 A_SpawnItemEx("NTM_RevenantFlare", -10, 0, 44, flags: SXF_NoCheckPosition); 
 			Loop;
 		
 		See:
@@ -76,19 +77,13 @@ class NTM_Revenant : NTM_Enemy {
 		
 		Fly:
 			#### # 0 {
+				A_SpawnItemEx("NTM_RevenantFlare", -10, 0, 44, flags: SXF_NoCheckPosition);
+				
 				switch (sv_ntm_enemyMove) {
-					case 0:
-						SetStateLabel("DukeFly");
-					break;
-					
-					case 1:
-						SetStateLabel("BloodFly");
-					break;
-					
+					case 0: SetStateLabel("DukeFly"); break;
+					case 1: SetStateLabel("BloodFly"); break;
 					case 2:
-					default:
-						SetStateLabel("SWFly");
-					break;
+					default: SetStateLabel("SWFly"); break;
 				}
 			}
 			
@@ -244,5 +239,25 @@ class NTM_RevenantTracerSmoke : RocketSmokeTrail {
 		Alpha 0.4;
 		
 		+ForceXYBillboard
+	}
+}
+
+class NTM_RevenantFlare : Actor {
+	Default {
+		Scale 0.7;
+		RenderStyle "Add";
+		Radius 1;
+		Height 1;
+		
+		+NoClip
+		+NoGravity
+		+ForceXYBillboard
+		+NotOnAutomap
+	}
+	
+	States {
+		Spawn:
+			NCRN A 3 Bright;
+			Stop;
 	}
 }

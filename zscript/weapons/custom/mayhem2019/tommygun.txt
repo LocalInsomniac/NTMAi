@@ -1,5 +1,6 @@
 class NTM_TommyGun : NTM_Chaingun {
 	Default {
+		Weapon.SelectionOrder 699;
 		Weapon.UpSound "NTM_TommyGun/in";
 		Inventory.PickupMessage "Tommy Gun!";
 		Obituary "%o was turned into swiss cheese by %k's Tommy Gun.";

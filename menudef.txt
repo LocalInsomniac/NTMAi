@@ -63,6 +63,12 @@ OptionValue "NTM_Options_EnemyMovementStyle" {
 	2, "Shadow Warrior"
 }
 
+OptionValue "NTM_Options_Randomizer" {
+	0, "Off"
+	1, "Chaotic"
+	//2, "Gothic"
+}
+
 OptionValue "NTM_ActorOptions_Toggle" {
 	0, "Don't Replace"
 	1, "Replace"
@@ -93,6 +99,12 @@ OptionMenu "NTM_Options" {
 	Option "Zombies throw grenades on hard difficulties", "sv_ntm_grenadiers", "YesNo"
 	Option "Enemies leap over ledges (Experimental)", "sv_ntm_enemyLeap", "YesNo"
 	Option "Flying Revenants", "sv_ntm_enemyFly", "OnOff"
+	//StaticText ""
+	//StaticText "Randomizer Options", "Yellow"
+	//StaticText "Pandora's Box. Open at your own risk...", "White"
+	//StaticText ""
+	//Option "Weapon Randomizer", "sv_ntm_playerRandom", "NTM_Options_Randomizer"
+	//Option "Enemy Randomizer", "sv_ntm_enemyRandom", "NTM_Options_Randomizer"
 }
 
 OptionMenu "NTM_ActorOptions" {

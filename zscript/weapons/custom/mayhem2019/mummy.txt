@@ -5,6 +5,11 @@ class NTM_MummyWeapon : Fist {
 		Tag "Mummy Hands";
 		Weapon.SlotNumber 1;
 		Inventory.AltHUDIcon "NMUWA0";
+		
+		+Weapon.CheatNotWeapon
+		+Weapon.Explosive
+		+Inventory.Undroppable
+		+Inventory.Untossable
 	}
 	
 	States {
