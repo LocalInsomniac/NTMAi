@@ -17,8 +17,7 @@ class NTM_LightningOrb : NTM_LostSoul {
 		+Bright
 		+NoPain
 		+ForceXYBillboard
-		-MissileMore
-		-MissileEvenMore
+		MissileChanceMult 1;
 	}
 	
 	States {

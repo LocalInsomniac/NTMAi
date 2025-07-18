@@ -14,7 +14,7 @@ class NTM_Satyr : NTM_HellKnight {
 		Obituary "%o was scorched by a Satyr.";
 		HitObituary "%o was mauled by a Satyr.";
 		
-		+MissileEvenMore
+		MissileChanceMult 0.0625;
 	}
 	
 	States {
