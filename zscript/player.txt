@@ -38,6 +38,7 @@ class NTM_Player : DoomPlayer {
 		Player.CrouchSprite "NPLC";
 		Player.ViewHeight 46;
 		Player.AttackZOffset 18;
+		Player.SideMove 1.041666666666667, 1.25;
 	}
 	
 	States {
@@ -146,10 +147,12 @@ class NTM_Player : DoomPlayer {
 		super.PlayerThink();
 		
 		// Less slippery movement
-		if (!curSector || !(curSector.flags & 16)) {
-			level.airControl = 0.64;
-			A_SetSpeed(2.24);
+		if (!curSector || !(curSector.flags & Sector.SecF_Friction)) {
+			level.airControl = 1;
+			A_SetSpeed(2.507836990595611);
 			vel.xy *= 0.88;
+			if (pos.z > floorZ && !bOnMObj)
+				vel.xy *= level.airFriction * 0.90625;
 		} else {
 			level.airControl = 0.00390625;
 			A_SetSpeed(1);
