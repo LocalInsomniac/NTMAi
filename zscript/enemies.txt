@@ -437,7 +437,7 @@ class NTM_Enemy : Actor {
 class NTM_Boss : NTM_Enemy {
 	Default {
 		+Boss
-		+MissileMore
+		MissileChanceMult 0.5;
 		+NoRadiusDmg
 		+DontMorph
 		+BossDeath

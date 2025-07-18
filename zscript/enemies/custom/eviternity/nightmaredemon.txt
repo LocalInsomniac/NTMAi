@@ -13,7 +13,6 @@ class NTM_NightmareDemon : NTM_Demon {
 		Tag "Nightmare Demon";
 		Obituary "%o was crushed by a Nightmare Demon.";
 		
-		+MissileMore
-		+MissileEvenMore
+		MissileChanceMult 0.0625;
 	}
 }

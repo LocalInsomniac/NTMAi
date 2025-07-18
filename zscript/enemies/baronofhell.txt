@@ -132,7 +132,7 @@ class NTM_HellKnight : NTM_BaronOfHell {
 		Tag "$FN_HELL";
 		NTM_Enemy.TicsPerChase 2;
 		
-		+MissileMore
+		MissileChanceMult 0.5;
 		-BossDeath
 	}
 	

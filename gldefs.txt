@@ -1,3 +1,4 @@
+// Imp
 brightmap sprite NIMPA1 {
 	map "brightmaps/imp/NIMPA1.png"
 	thiswad
@@ -200,5 +201,141 @@ brightmap sprite NIMPS2S8 {
 
 brightmap sprite NIMPS3S7 {
 	map "brightmaps/imp/NIMPS3S7.png"
+	thiswad
+}
+
+// Demon
+brightmap sprite NDEMA1C1 {
+	map "brightmaps/demon/NDEMA1C1.png"
+	thiswad
+}
+
+brightmap sprite NDEMA2C8 {
+	map "brightmaps/demon/NDEMA2C8.png"
+	thiswad
+}
+
+brightmap sprite NDEMA3C7 {
+	map "brightmaps/demon/NDEMA3C7.png"
+	thiswad
+}
+
+brightmap sprite NDEMB1D1 {
+	map "brightmaps/demon/NDEMB1D1.png"
+	thiswad
+}
+
+brightmap sprite NDEMB2D8 {
+	map "brightmaps/demon/NDEMB2D8.png"
+	thiswad
+}
+
+brightmap sprite NDEMB3D7 {
+	map "brightmaps/demon/NDEMB3D7.png"
+	thiswad
+}
+
+brightmap sprite NDEMC2A8 {
+	map "brightmaps/demon/NDEMC2A8.png"
+	thiswad
+}
+
+brightmap sprite NDEMC3A7 {
+	map "brightmaps/demon/NDEMC3A7.png"
+	thiswad
+}
+
+brightmap sprite NDEMD2B8 {
+	map "brightmaps/demon/NDEMD2B8.png"
+	thiswad
+}
+
+brightmap sprite NDEMD3B7 {
+	map "brightmaps/demon/NDEMD3B7.png"
+	thiswad
+}
+
+brightmap sprite NDEME1 {
+	map "brightmaps/demon/NDEME1.png"
+	thiswad
+}
+
+brightmap sprite NDEME2E8 {
+	map "brightmaps/demon/NDEME2E8.png"
+	thiswad
+}
+
+brightmap sprite NDEME3E7 {
+	map "brightmaps/demon/NDEME3E7.png"
+	thiswad
+}
+
+brightmap sprite NDEMF1 {
+	map "brightmaps/demon/NDEMF1.png"
+	thiswad
+}
+
+brightmap sprite NDEMF2F8 {
+	map "brightmaps/demon/NDEMF2F8.png"
+	thiswad
+}
+
+brightmap sprite NDEMF3F7 {
+	map "brightmaps/demon/NDEMF3F7.png"
+	thiswad
+}
+
+brightmap sprite NDEMG1 {
+	map "brightmaps/demon/NDEMG1.png"
+	thiswad
+}
+
+brightmap sprite NDEMG2G8 {
+	map "brightmaps/demon/NDEMG2G8.png"
+	thiswad
+}
+
+brightmap sprite NDEMG3G7 {
+	map "brightmaps/demon/NDEMG3G7.png"
+	thiswad
+}
+
+brightmap sprite NDEMH1 {
+	map "brightmaps/demon/NDEMH1.png"
+	thiswad
+}
+
+brightmap sprite NDEMH2H8 {
+	map "brightmaps/demon/NDEMH2H8.png"
+	thiswad
+}
+
+brightmap sprite NDEMH3H7 {
+	map "brightmaps/demon/NDEMH3H7.png"
+	thiswad
+}
+
+brightmap sprite NDEMH4H6 {
+	map "brightmaps/demon/NDEMH4H6.png"
+	thiswad
+}
+
+brightmap sprite NDEMG1 {
+	map "brightmaps/demon/NDEMG1.png"
+	thiswad
+}
+
+brightmap sprite NDEMN1 {
+	map "brightmaps/demon/NDEMN1.png"
+	thiswad
+}
+
+brightmap sprite NDEMN2N8 {
+	map "brightmaps/demon/NDEMN2N8.png"
+	thiswad
+}
+
+brightmap sprite NDEMN3N7 {
+	map "brightmaps/demon/NDEMN3N7.png"
 	thiswad
 }
