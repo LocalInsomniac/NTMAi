@@ -31,7 +31,8 @@ class NTM_Revenant : NTM_Enemy {
 			Goto Spawn + 1;
 		
 		SpawnFly:
-			NREV S 10 A_Look;
+			NREV S 0 A_Look;
+			#### ##### 2 A_SpawnItemEx("NTM_RevenantFlare", -10, 0, 44, flags: SXF_NoCheckPosition); 
 			Loop;
 		
 		See:
