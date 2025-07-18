@@ -18,7 +18,9 @@
 #include "zscript/weapons/custom/mayhem2019/mummy.txt"
 
 class NTM_Player : DoomPlayer {
-	int fallState, fallTics, fallTics2, oldHealth, painTics, doorTics;
+	int fallState, fallTics, fallTics2;
+	int oldHealth, painTics;
+	int doorTics;
 	double hNewAngle;
 	Line door;
 	
@@ -205,13 +207,11 @@ class NTM_Player : DoomPlayer {
 		// Level start twitch like Duke3D
 		if (sv_ntm_startTwitch) {
 			int time = level.mapTime;
-			
-			if (time <= 26) {
-				if (time == 26) {
+			if (time <= 25) {
+				if (time == 25) {
 					A_SetViewAngle(0, SPF_Interpolate);
 				} else {
-					double f = (26 - time) * 0.0384615384615385;
-					
+					double f = (25 - time) * 0.04;
 					A_SetViewAngle(Round(DeltaAngle(angle, 0) * (f * f * f)), SPF_Interpolate);
 				}
 			}
@@ -234,46 +234,53 @@ class NTM_Player : DoomPlayer {
 				A_TakeInventory("NTM_Key_BlueSkull");
 			}
 			
-			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow")) {
+			if (!(r is "NTM_GrenadeThrow") && !(l is "NTM_GrenadeThrow"))
 				A_TakeInventory("NTM_GrenadeThrow");
-			}
 		}
 		
 		// Pain timer to avoid voice spam
-		if (painTics > 0) {
+		if (painTics > 0)
 			--painTics;
-		}
+		
+		hNewAngle = NTMAi.Lerp(hNewAngle, (vel.Length() > 0) * 25, 0.2);
 		
 		super.Tick();
 	}
 	
 	// Shadow Warrior-styled weapon bobbing
 	override Vector2 BobWeapon(double ticFrac) {
-		if (multiplayer) {
-			return Super.BobWeapon(ticFrac);
-		}
-		
-		Vector2 p[2];
-		Weapon w = player ? player.readyWeapon : null;
-		
-		if (!w || w.bDontBob) {
+		Vector2 p1, p2, r;
+		Vector2 result;
+
+		let player = player;
+		if (!player)
 			return (0, 0);
-		}
+		let weapon = player.readyWeapon;
+		if (weapon == null || weapon.bDontBob)
+			return (0, 0);
+
+		double bobSpeed = weapon.bobSpeed * 128;
+		double rangeX = weapon.bobRangeX;
+		double rangeY = weapon.bobRangeY;
 		
+		// Add weapon panning like Duke3D
+		double shiftX = (Normalize180(viewAngle) * 0.0111111111111111) * 320;
+		double shiftY = Max(fallTics2 - 5, 0) * 5;
+
 		for (int i = 0; i < 2; i++) {
-			p[i] = (0, 0);
+			double angle = (bobSpeed * player.GetWBobSpeed() * 35 / TICRATE * (level.mapTime - 1 + i)) * (360. / 8192.);
+			double bobX = hNewAngle * rangeX * viewBob;
+			double bobY = player.bob * rangeY * viewBob;
+			r.x = Round(bobX * Cos(angle)) + shiftX;
+			r.y = Round(bobY * Abs(Sin(angle))) + shiftY;
 			
-			let angle = w.bobSpeed * 128 * player.GetWBobSpeed() * (level.mapTime - 1 + i) * 360 * 0.0001220703125;
-			double hAngle = (player.vel.Length() > 0) ? (3, 3) dot (3, 3) : 0;
-			
-			hNewAngle = NTMAI.Lerp(hNewAngle, hAngle, 0.1);
-			
-			// Add weapon panning like Duke3D
-			p[i].x = Round((hNewAngle * w.bobRangeX * viewBob) * Cos(angle)) + ((Normalize180(viewAngle) * 0.0111111111111111) * 320);
-			p[i].y = Round((player.bob * ((hAngle * 0.0625) * w.bobRangeY * viewBob)) * Abs(Sin(angle))) + Max(fallTics2 - 5, 0) * 5;
+			if (i == 0)
+				p1 = r;
+			else
+				p2 = r;
 		}
 		
-		return (p[0] * (1 - ticFrac) + p[1] * ticFrac);
+		return p1 * (1.0 - ticFrac) + p2 * ticFrac;
 	}
 	
 	void A_ItBurnsItBurns() {
