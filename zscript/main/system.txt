@@ -47,23 +47,25 @@ class NTM_System_Actor : NTM_System {
 		if (owner.health <= 0) {
 			// Blood: Jittering death animation
 			if (sv_ntm_enemyMove == 1 && !owner.bBoss && !(owner is "PlayerPawn")) {
-				int frame = owner.curState.frame;
-				
-				if (deathLastFrame != frame) {
-					TextureID tex = owner.curState.GetSpriteTexture(0);
-					
-					if (tex) {
-						Vector2 spriteSize = TexMan.GetScaledSize(tex);
-						double spriteHeight = spriteSize.y;
-						
-						if (frame > 0 && owner.waterLevel == 0) {
-							double jitter = Max(0, (deathLastHeight - spriteHeight) * 0.5);
-							
-							owner.AddZ(owner.scale.y * jitter, false);
+				State st = (owner.tics > 0 && owner.tics <= 1) ? owner.curState.nextState : owner.curState;
+				if (st) {
+					int frame = st.frame;
+					if (deathLastFrame != frame && st.ValidateSpriteFrame()) {
+						TextureID tex = st.GetSpriteTexture(0);
+						if (tex) {
+							Vector2 spriteSize = TexMan.GetScaledSize(tex);
+							Vector2 spriteOffset = TexMan.GetScaledOffset(tex);
+							double spriteHeight = spriteSize.y - (spriteSize.y - spriteOffset.y);
+							if (deathLastFrame == -1) {
+								deathLastHeight = spriteHeight;
+							} else if (frame > 0 && owner.waterLevel == 0 && spriteHeight < deathLastHeight) {
+								double jitter = deathLastHeight - spriteHeight;
+								if (jitter > 3 && jitter < 24)
+									owner.AddZ(owner.scale.y * (deathLastHeight - spriteHeight), false);
+								deathLastHeight = spriteHeight;
+							}
+							deathLastFrame = frame;
 						}
-						
-						deathLastFrame = frame;
-						deathLastHeight = spriteHeight;
 					}
 				}
 			}
@@ -71,7 +73,7 @@ class NTM_System_Actor : NTM_System {
 			if (sv_ntm_gore && !owner.bNoBlood) {
 				// Duke Nukem 3D: Blood splatter on long falls
 				if (owner.pos.z <= owner.floorZ || owner.bOnMObj) {
-					if (fallTics > 18 && owner.waterLevel == 0) {
+					if (fallTics > ((sv_ntm_enemyMove == 1) ? 20 : 18) && owner.waterLevel == 0) {
 						for (int i; i < Random(3, 6); i++) {
 							owner.A_SpawnItemEx("NTM_FlyingBlood", 0, 0, 0, Random(-8, 8), Random(-8, 8), Random(3, 8), 0, SXF_UseBloodColor);
 						}
