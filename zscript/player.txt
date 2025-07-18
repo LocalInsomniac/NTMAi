@@ -245,7 +245,7 @@ class NTM_Player : DoomPlayer {
 		if (painTics > 0)
 			--painTics;
 		
-		hNewAngle = NTMAi.Lerp(hNewAngle, (vel.Length() > 0) * 25, 0.2);
+		hNewAngle = NTMAi.Lerp(hNewAngle, (vel.Length() > 0) * 22, 0.2);
 		
 		super.Tick();
 	}
