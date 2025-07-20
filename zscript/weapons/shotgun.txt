@@ -26,8 +26,9 @@ class NTM_Shotgun : Shotgun replaces Shotgun {
 			NSHO A 1 Bright A_WeaponOffset(8, 42, WOF_Interpolate);
 			NSHO A 1 A_WeaponOffset(5, 39, WOF_Interpolate);
 			NSHO A 3 A_WeaponOffset(flags: WOF_Interpolate);
-			NSHO BC 3;
-			NSHO D 3 A_StartSound("weapons/shotgr", Chan_Weapon, ChanF_Overlap);
+			NSHO B 3;
+			NSHO C 2;
+			NSHO D 4 A_StartSound("weapons/shotgr", Chan_Weapon, ChanF_Overlap);
 			NSHO E 5 A_SpawnItemEx("NTM_ShellCasing", -22, 28, 26, FRandom(-6, -4), 0, FRandom(4, 6), 90);
 			NSHO DCB 3;
 			NSHO A 2;
