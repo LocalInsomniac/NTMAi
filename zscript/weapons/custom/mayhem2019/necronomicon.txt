@@ -108,7 +108,7 @@ class NTM_NecronomiconBall : BFGBall {
 		
 		Death:
 			NNEB E 2 {
-				NTMAi.Explode(self, 256, 256);
+				NTMAi.Explode(self, 256, 256, 0);
 				
 				for (double i; i < 360; i += 45) {
 					A_SpawnItemEx("NTM_NecronomiconBall2", angle: i, flags: SXF_NoCheckPosition);
@@ -143,7 +143,7 @@ class NTM_NecronomiconBall2 : NTM_NecronomiconBall {
 			
 		Death:
 			NNEB E 2 {
-				NTMAi.Explode(self, 128, 128);
+				NTMAi.Explode(self, 128, 128, 0);
 			}
 			
 			Goto Super::Death + 1;
