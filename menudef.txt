@@ -89,6 +89,7 @@ OptionMenu "NTM_Options" {
 	Option "Gore effects", "sv_ntm_gore", "OnOff"
 	StaticText ""
 	StaticText "Gameplay Options", "Yellow"
+	Option "Air control (Experimental)", "sv_ntm_airControl", "OnOff"
 	Option "Flinch from long falls", "sv_ntm_flinch", "YesNo"
 	Option "Play keycard animation on locked doors", "sv_ntm_keycard", "YesNo"
 	Option "Auto-activate Radiation Suit on hazards", "cl_ntm_autoRadSuit", "YesNo"
