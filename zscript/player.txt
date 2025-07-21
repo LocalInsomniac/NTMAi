@@ -23,6 +23,7 @@ class NTM_Player : DoomPlayer {
 	int doorTics;
 	double hNewAngle;
 	Line door;
+	bool eagle;
 	
 	Default {
 		Player.StartItem "NTM_Pistol";
@@ -147,14 +148,21 @@ class NTM_Player : DoomPlayer {
 		super.PlayerThink();
 		
 		// Less slippery movement
-		if (!curSector || !(curSector.flags & Sector.SecF_Friction)) {
-			level.airControl = 1;
+		if (eagle) {
+			if (!curSector || !(curSector.flags & Sector.SecF_Friction)) {
+				level.airControl = 1;
+				A_SetSpeed(2.507836990595611);
+				vel.xy *= 0.88;
+				if (pos.z > floorZ && !bOnMObj)
+					vel.xy *= level.airFriction * 0.90625;
+			} else {
+				level.airControl = 0.00390625;
+				A_SetSpeed(1);
+			}
+		} else if ((pos.z <= floorZ || bOnMObj) && (!curSector || !(curSector.flags & Sector.SecF_Friction))) {
 			A_SetSpeed(2.507836990595611);
 			vel.xy *= 0.88;
-			if (pos.z > floorZ && !bOnMObj)
-				vel.xy *= level.airFriction * 0.90625;
 		} else {
-			level.airControl = 0.00390625;
 			A_SetSpeed(1);
 		}
 		

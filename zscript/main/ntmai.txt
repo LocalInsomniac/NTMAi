@@ -243,6 +243,8 @@ class NTMAi : EventHandler {
 					// Emulate Duke3D twitching using spawn angle
 					nmo.A_SetViewAngle(nmo.DeltaAngle(nmo.angle, 0));
 				}
+				
+				nmo.eagle = sv_ntm_airControl;
 			}
 		}
 	}
