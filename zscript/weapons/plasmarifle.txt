@@ -8,6 +8,7 @@ class NTM_PlasmaRifleSpawner : NTM_ItemSpawner replaces PlasmaRifle {
 			type = "NTM_Flamethrower";
 		else if ((sv_ntm_r_custom && e.bLegacyOfRust) || (sv_ntm_playerRandom == 1 && Random(0, 1)))
 			type = "ID24Incinerator";
+	}
 }
 
 class NTM_PlasmaRifle : PlasmaRifle {
